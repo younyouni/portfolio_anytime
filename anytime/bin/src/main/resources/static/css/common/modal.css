@@ -1,0 +1,116 @@
+#createBoard>input.button {
+	margin-top: 15px !important;
+	font-size: 12px !important;
+	width: 65px !important;
+}
+
+#createBoard>span {
+	border-bottom: 2px solid #7869E6;
+	color: #7869E6;
+	font-weight: bold;
+	letter-spacing: -0.5px;
+	font-family: NanumSquareEB;
+	font-size: 16px;
+	line-height: 24px;
+}
+
+#createBoard {
+	border-radius: 12px;
+}
+
+#createBoard>div#option {
+	margin-left: 12px;
+	font-size: 13px;
+	width: 500px;
+	color: #7869E6;
+	font-weight: bold;
+}
+
+#createBoard>div>label {
+	margin-right: 86px;
+}
+
+#createBoard>p:nth-child(3) {
+	clear: both;
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+#createBoard>p:nth-child(3)>label:nth-child(2) {
+	margin-top: 31px;
+}
+
+#boarddetail {
+	margin-top: 25px;
+	display: block;
+	margin-bottom: 5px;
+	color: #737373;
+	font-size: 11px;
+	font-weight: bold;
+	margin-left: 2px;
+}
+
+#createBoard>input, #createBoard>input {
+	padding: 8px;
+	border: 1px solid #7869E6;
+	line-height: 24px;
+	color: #292929;
+	font-size: 16px !important;
+	background-color: #F9F9F9;
+	display: block;
+	margin-bottom: 5px;
+	color: #737373;
+	font-size: 11px;
+	margin-left: 1px;
+	display: block;
+	box-sizing: border-box;
+	border-radius: 12px;
+	width: 100%;
+	height: 40px;
+}
+
+#createBoard>input::placeholder {
+	font-size: 15px !important;
+	font-weight: 300 !important;
+	color: #a6a6a6 !important;
+}
+
+.custom-checkbox-label {
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.custom-checkbox {
+	display: none;
+}
+
+.custom-checkbox-image {
+	margin-top: 10px;
+	width: 75px;
+	height: 45px;
+	background: url('/Anytime/image/anony/anony_not_permission.png')
+		no-repeat;
+	background-size: contain;
+	margin-right: 5px;
+}
+
+.custom-checkbox:checked+.custom-checkbox-image {
+	margin-top: 10px;
+	width: 75px;
+	height: 45px;
+	background: url('/Anytime/image/anony/anony_permission.png') no-repeat;
+	background-size: contain;
+	margin-right: 5px;
+}
+
+#createBoard>p#option {
+	flex-shrink: 0 !important;
+	line-height: 20px !important;
+	color: #a6a6a6 !important;
+	font-size: 12px !important;
+}
+
+#createBoard>div:nth-child(11) {
+	display: flex;
+}
