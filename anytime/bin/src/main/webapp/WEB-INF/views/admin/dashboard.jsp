@@ -22,8 +22,9 @@
 				<form class="admin">
 					<img src="${pageContext.request.contextPath}/resources/image/common/0.png"
 						class="picture">
-					<p class="nickname">${member.nickname}</p>
-					<p class="userid">${member.userid}</p>
+					<p class="userid">${member.nickname}admin</p>
+					<p class="nickname">${member.userid}관리자</p>
+					<p class="email">${member.email}admin@anytime.com</p>
 					<ul class="buttons">
 						<li><a href="account.com">내 정보</a></li>
 						<li><a href="logout.com">로그아웃</a></li>
