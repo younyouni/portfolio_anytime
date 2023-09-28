@@ -22,7 +22,7 @@
                         $(this).hide();
                     }
                 });
-            });
+            });a
         });
     </script>
     
@@ -50,7 +50,7 @@
         <c:forEach var="school" items="${schoolList}">
             <a href="">
                 <span class="name">${school.name}</span>
-               <span class="count">${school.total_count}명</span>
+                <span class="count">${school.total_count} 명</span>
             </a>
         </c:forEach>
     </div>

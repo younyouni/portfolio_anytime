@@ -9,12 +9,23 @@
 		select * from member where login_id = #{login_id}
 	</select>
 	
+	<!-- nickname 체크하기 위한 쿼리문 -->
+	<select id="isNickname" resultType="member" parameterType="String">
+		select * from member where nickname = #{nickname}
+	</select>
+	
+	<select id="getSchoolIdByName" resultType="int">
+      SELECT school_id FROM school WHERE name = #{campusName}
+    </select>
+	
+	
 	<insert id="insert" parameterType="member">
 	    INSERT INTO member
 	    VALUES 
-	    (#{id}, #{password}, #{name}, #{age}, #{gender}, #{email}, #{auth})
+	    (#{user_id},#{school_id},#{login_id},#{nickname}#{password},#{email},#{school_check},#{address_num},#{address1},#{address2},#{phone_num},#{board_admin},#{account_status},#{admission_year},#{auth})
 	</insert>
-	
+
+
 	<update id="update" parameterType="member">
 		update member
 		set name = #{name}, age = #{age},

@@ -43,10 +43,7 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
-	@Override
-	public int insert(Member m) {
-		return dao.insert(m);
-	}
+	
 
 	@Override
 	public int isId(String id) {
@@ -55,6 +52,25 @@ public class MemberServiceImpl implements MemberService {
 											// 1은 아이디가 존재하는 경우
 	}
 
+	@Override
+	public int isNickname(String nickname) {
+		Member rmember = dao.isNickname(nickname);
+		return (rmember == null) ? -1 : 1; // -1은 아이디가 존재하지 않는 경우
+											// 1은 아이디가 존재하는 경우
+	}
+	
+	@Override
+	public int getSchoolIdByName(String campusName) {
+		return dao.getSchoolIdByName(campusName);
+	}
+
+	
+	@Override
+	public int insert(Member m) {
+		return dao.insert(m);
+	}
+	
+	
 	@Override
 	public Member member_info(String id) {
 		return dao.isId(id);
@@ -101,4 +117,7 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSearchListCount(map);
 
 	}
+
+	
+	
 }

@@ -15,6 +15,10 @@ public interface MemberMapper {
 
 	public Member isId(String id);
 	
+	public Member isNickname(String nickname);
+
+	public int getSchoolIdByName(String campusName);
+
 	public int insert(Member m);
 	
 	public int update(Member m);
@@ -24,5 +28,6 @@ public interface MemberMapper {
 	public int getSearchListCount(Map<String, String> map);
 	
 	public List<Member> getSearchList(Map<String, Object> map);
+
 	
 }

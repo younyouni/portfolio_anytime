@@ -4,7 +4,7 @@
 <html>
 <head>
 <title>애니타임</title>
-<script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/jquery-3.7.0.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 	function Postcode() {
@@ -46,7 +46,7 @@
 		let checkPhoneNumber = false;
 
 		//id 유효성 검사
-		$("input[name=userid]").on(
+		$("input[name=login_id]").on(
 				'keyup',
 				function() {
 
@@ -61,10 +61,8 @@
 					}
 
 					$.ajax({
-						url : "idcheck.com",
-						data : {
-							"userid" : id
-						},
+						url : "idcheck",
+						data : {"login_id" : id},
 						success : function(resp) {
 							if (resp == -1) { //db에 해당 id가 없는 경우
 								$("#message").css('color', '#624cff').html(
@@ -170,7 +168,7 @@
 					}
 
 					$.ajax({
-						url : "nicknamecheck.com",
+						url : "nicknamecheck",
 						data : {
 							"nickname" : nickname
 						},
@@ -267,7 +265,7 @@
 				<label>아이디<span>*</span></label>
 				<p>영문, 숫자, 4~20자</p>
 			</div>
-			<input type="text" name="userid" maxlength="20" placeholder="아이디"
+			<input type="text" name="login_id" maxlength="20" placeholder="아이디"
 				autocomplete="off">
 			<div class="caution"></div>
 			<span id="message" style="font-size: 12px; "></span>
