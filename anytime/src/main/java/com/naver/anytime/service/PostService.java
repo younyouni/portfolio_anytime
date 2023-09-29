@@ -12,7 +12,7 @@ public interface PostService {
 
 	public int getListCount(int board_id);
 
-	public List<Post> getPostList(int board_num, int page, int limit);
+	public List<Post> getPostList(int page, int limit, int board_id);
 
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit);
 

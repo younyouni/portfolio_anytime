@@ -1,5 +1,7 @@
 package com.naver.anytime.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Post;
@@ -35,10 +39,10 @@ public class PostController {
       this.commentService = commentService;
    }
    
-   @GetMapping(value = "/list") 
-   public String postList() {
-      return "post/postList";
-   }
+//   @GetMapping(value = "/list") 
+//   public String postList() {
+//      return "post/postList";
+//   }
    
    @GetMapping("/detail") // board/write
    public ModelAndView postDetail( 
@@ -80,4 +84,66 @@ public class PostController {
 	     
 	   }
    
+   
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
+   
+   //테스트 페이지
+   @RequestMapping(value = "/test", method = RequestMethod.GET)
+   public String test() {
+	   return "post/test";
+   }
+   
+   
+   
+   @RequestMapping(value = "/list", method = RequestMethod.GET)
+   public ModelAndView postlist(
+   @RequestParam(value = "page", defaultValue = "1", required = false) int page, 
+   @RequestParam(value = "board_id", required = false) int b, 
+   ModelAndView mv) {
+		
+	   	int limit = 10;
+		//
+		// 총 리스트 수를 받아옴
+		int listcount = postService.getListCount(b);
+		String boardname = boardService.getBoardName(b);
+		
+		// 총 페이지 수
+	    int maxpage = (listcount + limit - 1) / limit;
+
+	    // 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
+	    int startpage = ((page - 1) / 10) * 10 + 1;
+
+	    // 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
+	    int endpage = startpage + 10 - 1;
+
+	    if (endpage > maxpage)
+	       endpage = maxpage;
+
+	    // 리스트를 받아옴
+	    List<Post> postlist = postService.getPostList(page, limit, b);
+	    mv.setViewName("post/postList");
+	    mv.addObject("page", page);
+	    mv.addObject("maxpage", maxpage);
+	    mv.addObject("startpage", startpage);
+	    mv.addObject("endpage", endpage);
+	    mv.addObject("listcount", listcount);
+	    mv.addObject("postlist", postlist);
+	    mv.addObject("limit", limit);
+	    
+	    mv.addObject("boardname", boardname);
+	    mv.addObject("allsearchcheck", 0);
+	    mv.addObject("emptycheck", 0);
+	    mv.addObject("board_id", b);
+	    
+	    if(postlist != null) {
+	    	mv.addObject("emptycheck", 1);
+	    }
+	      
+	    System.out.println("보드넘테스트" + b);
+	    System.out.println("값테스트" + postlist);
+		/*return "post/postList";*/
+		return mv;
+	}
+	
 }

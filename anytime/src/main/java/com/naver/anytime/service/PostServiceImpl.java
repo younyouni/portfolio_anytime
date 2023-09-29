@@ -2,6 +2,7 @@ package com.naver.anytime.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,19 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public int getListCount(int board_id) {
-		return 0;
+		return postDao.getListCount(board_id);
 	}
 
 	@Override
-	public List<Post> getPostList(int board_num, int page, int limit) {
-		return null;
+	public List<Post> getPostList(int page, int limit, int board_id) {			//수정
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int startrow = (page - 1) * limit + 1;
+	    int endrow = startrow + limit - 1;
+	    map.put("start", startrow);
+	    map.put("end", endrow);
+	    map.put("board_id", board_id);
+		return postDao.getPostList(map);
 	}
 
 	@Override

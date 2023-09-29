@@ -5,6 +5,15 @@
 
 <mapper namespace="com.naver.anytime.mybatis.mapper.BoardMapper">
 
+	<select id="getBoardName" resultType="String">
+		select name from board
+		where board_id = #{board_id}
+	</select>
+
+
+
+
+
 	<select id="getListCount" resultType="int">
 		select count(*) from board3
 	</select>
