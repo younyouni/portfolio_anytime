@@ -10,15 +10,17 @@
 		where board_id = #{board_id}
 	</select>
 
+	<select id="getBoardList" resultType="board">
+		select * from board
+	</select>
 
 
 
-
-	<select id="getListCount" resultType="int">
+<!-- 	<select id="getListCount" resultType="int">
 		select count(*) from board3
 	</select>
 	
-	 <!-- 문법 오류
+	 문법 오류
       where rnum >= #{start}
       ==> 해결법
          where rnum &gt;=#{start}
@@ -34,7 +36,7 @@
          
         ② CDATA(Character DATA) - XML 파서가 분석하지 않는 문자 데이터를 의미합니다.
                사용하는 방법은 <![CDATA[ 와 ]]> 사이에 문자들을 넣으면 됩니다.
-    -->
+   
 	
 	<select id="getBoardList" parameterType="java.util.Map" resultType="board">
 		select * from
@@ -58,7 +60,7 @@
 		where name=#{schoolName}
 	</select>
 	
-	<!--   1. jdbcType=VARCHAR : 첨부 파일을 추가 하지 않은 경우 에러 처리해 줍니다.
+	  1. jdbcType=VARCHAR : 첨부 파일을 추가 하지 않은 경우 에러 처리해 줍니다.
                         해당 필드가 null인 경우 jdbcType=VARCHAR로 처리하면 null로 설정됩니다.
                         
            2. ① insert 전에 (order="BEFORE")
@@ -68,7 +70,7 @@
                 (public void setBOARD_NUM(int BOARD_NUM))
               ③ insert 문의 #{BOARD_NUM}는 지금 구한 값을 BoardBean에서 가져옵니다.
                 (public String getBOARD_NUM() {return BOARD_NUM;})
-    -->
+   
 	<insert id="insertBoard" parameterType="board">
 		<selectKey resultType="int" order="BEFORE" keyProperty="BOARD_NUM">
 			select nvl(max(BOARD_NUM),0)+1 from board3
@@ -101,7 +103,7 @@
 		where BOARD_NUM = #{number}	
 	</select>
 	
-	<!-- map은 java.util.Map의 별칭입니다. -->
+	map은 java.util.Map의 별칭입니다.
 	<select id="isBoardWriter" parameterType="map" resultType="board">
 		select * from board3
 		where BOARD_NUM = #{num}
@@ -174,6 +176,6 @@
 		delete delete_file
 		where board_file=#{file_name}
 	</delete>
-	
+	 -->
 	
 </mapper>

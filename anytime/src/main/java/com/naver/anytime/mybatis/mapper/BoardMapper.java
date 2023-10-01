@@ -15,6 +15,9 @@ public interface BoardMapper {
 
 	//보드 이름 구하기
 	public String getBoardName(int board_id);
+	
+	//보드 리스트
+	public List<Board> getBoardList (HashMap<String, Integer> map);
 		
 //	// 글의 갯수 구하기
 //		public int getListCount();

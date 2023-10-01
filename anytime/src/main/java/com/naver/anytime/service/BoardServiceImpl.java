@@ -24,6 +24,11 @@ public class BoardServiceImpl implements BoardService {
 	public String getBoardName(int board_id) {
 		return dao.getBoardName(board_id);
 	}
+	
+	public List<Board> getBoardList(){
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		return dao.getBoardList(map);
+	}
 
 //	@Override
 //	public int getListCount() {

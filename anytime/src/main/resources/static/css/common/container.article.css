@@ -32,8 +32,7 @@ form.writecomment.clone.grandchild {
 	cursor: text;
 	color: #a6a6a6;
 	font-size: 14px;
-	background: #f9f9f9 url('/images/new/container.write.background.png')
-		no-repeat right center;
+	/* 안쓰는거 background: #f9f9f9 url('../../image/post/container.write.background.png') no-repeat right center; */
 	background-size: 40px 40px;
 }
 
@@ -258,7 +257,7 @@ form.writecomment.clone.grandchild {
 
 #container>div.articles>form.write ol.thumbnails>li.new {
 	background: transparent
-		url('/images/new/container.articles.write.thumbnails.new.png')
+		url('../../image/post/test_thumbnail.png')
 		no-repeat center center;
 	background-size: 24px 24px;
 }
@@ -294,6 +293,7 @@ form.writecomment.clone.grandchild {
 	cursor: pointer;
 }
 
+/*안쓰는거 해시태그*/
 #container>div.articles>form.write ul.option li.hashtag {
 	float: left;
 	background-image:
@@ -848,25 +848,25 @@ form.writecomment.clone.grandchild {
 #container>div.articles>article ul.status li.attach {
 	padding-left: 15px;
 	color: #737373;
-	background-image: url('../image/new/container.articles.attach.png');
+	background-image: url('../../image/post/container.articles.attach.png');
 }
 
 #container>div.articles>article ul.status li.vote {
 	padding-left: 15px;
 	color: #c62917;
-	background-image: url('../image/new/container.articles.vote.png');
+	background-image: url('../../image/post/container.articles.vote.png');
 }
 
 #container>div.articles>article ul.status li.comment {
 	padding-left: 15px;
 	color: #0ca5af;
-	background-image: url('../image/new/container.articles.comment.png');
+	background-image: url('../../image/post/container.articles.comment.png');
 }
 
 #container>div.articles>article ul.status li.scrap {
 	padding-left: 15px;
 	color: #ffcc1c;
-	background-image: url('../image/new/container.articles.scrap.png');
+	background-image: url('../../image/post/container.articles.scrap.png');
 }
 
 #container>div.articles>article ul.status.left li {

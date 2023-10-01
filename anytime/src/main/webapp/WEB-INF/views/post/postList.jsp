@@ -9,22 +9,22 @@
 <title>애니타임</title>
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/submenu.jsp" />
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/common.partial.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/container.article.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/container.community.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/container.modal.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/post/postlist.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/post/postwrite.css' />">
-
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/common.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.article.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.community.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
+<script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
 
 <body>
 
 	<div id="container" class="article">
-		<input type="hidden" id="isUser" value="1"> 
+<!-- 		<input type="hidden" id="isUser" value="1"> 
 		<input type="hidden" id="boardId" value="385967">
-		<input type="hidden" id="board_id" value="2">
+		<input type="hidden" id="board_id" value="2"> -->
 		
 		<%-------------------------------- ▼제목▼ --------------------------------%> 
 		
@@ -50,7 +50,7 @@
 				<jsp:include page="postlist_write.jsp" />
 			</label>	
 			<a id="writeArticleButton">새 글을 작성해주세요! 
-			<img src="/Anytime/image/boardlist/write.button.png">
+			<img src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
 
 			</a>
 			</c:if>

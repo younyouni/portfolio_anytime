@@ -4,7 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link type="text/css" href="/Anytime/css/submenu.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/submenu.css">
+<!-- <script src="https://code.jquery.com/jquery-latest.js"></script> -->
+<script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body style="">
 	<div id="submenu">
@@ -22,7 +24,7 @@
 						<c:set var="itemCount" value="0" />
 						<c:forEach var="menu" items="${boardlist}" varStatus="status">
 							<%-- type이 일치할때, 승인을 받았을때, --%>
-							<c:if test="${menu.type == type && menu.approval eq 'Y'}">
+							<c:if test="${menu.type == type && menu.status == 1}">
 								<%-- 게시판 3개 출력했을때, --%>
 								<c:if test="${itemCount % itemsPerGroup == 0 && itemCount != 0}">
 					</ul>
@@ -31,7 +33,7 @@
 				<div class="group">
 					<ul>
 						</c:if>
-						<li><a href="PostList.bo?board_num=${menu.board_num}">${menu.name}</a></li>
+						<li><a href="post/list?board_id=${menu.board_id}">${menu.name}</a></li>
 						<c:set var="itemCount" value="${itemCount + 1}" />
 						</c:if>
 			</c:forEach>
@@ -45,3 +47,76 @@
 	</div>
 	<input type="hidden" id="communityCampusId" value="37">
 	</div>
+</body>
+<script>
+function sendAjaxRequest() {
+  var NAME = "some_value"; // NAME 변수를 정의하고 값 할당
+	
+  $.ajax({
+    url: "${pageContext.request.contextPath}/board/list",
+    data: {
+      "NAME": NAME
+    },
+    dataType: "json", // JSON 데이터로 응답을 예상함
+    success: function (responseData) {
+		// 서버로부터의 응답 데이터는 response 매개변수에 JSON 객체로 저장됨
+	    console.log("Ajax 요청 성공: ", responseData);
+	
+	  	// JSON 데이터를 JavaScript 객체로 파싱
+	    var boardlist = responseData;
+	
+	    // submenu 요소 선택
+	    var submenu = $("#submenu");
+	    var wrap = $("#wrap");
+	 
+	
+	    // submenu 초기화 (기존 내용 삭제)
+	    submenu.empty();
+	    submenu.append('<div class="wrap">');
+		
+	    // type (1~4)를 나눠서 출력
+	    for (var type = 1; type <= 4; type++) {
+	    	// type을 나누는 구분
+	    	submenu.find('.wrap').append('<div class="divider"></div>');
+	    	// 3개씩 출력을 위해 그룹을 나누는 구분
+	    	submenu.find('.wrap').append('<div class="group"><ul>');
+	    	// 게시판 카운터 초기화
+	    	var itemCount = 0;
+	    	
+	    	// boardlist를 반복하고 메뉴 생성
+	    	for (var i = 0; i < boardlist.length; i++){
+	    		var menu = boardlist[i];
+	    		
+	    		// type이 일치하고 status가 1인 경우
+	    		if (menu.type == type && menu.status == 1){
+	    			// boardlist 출력
+	    			submenu.find('.group:last ul').append('<li><a href="list?board_id=' + menu.board_ID + '">' + menu.name + '</a></li>');
+	                itemCount++;
+	                
+	                // itemConut가 3의 배수일 때 ul 요소 닫기
+	                if (itemCount % 3 == 0 && itemCount != 0){
+	                	submenu.find('.group:last').append('</ul></div>'); // 그룹 닫기
+	                    if (i + 1 < boardlist.length) {
+	                      // 새 그룹 열기 (다음 항목이 존재하는 경우)
+	                      submenu.find('.wrap').append('<div class="group"><ul>');
+	                }
+	    		}
+	    	}
+	    
+	    		submenu.append('</ul></div>'); // 그룹 닫기
+	    }
+	    	submenu.append('<hr></div>');	// 타입 닫기
+	    }
+    	submenu.find('.wrap').append('<div class="divider"></div>');	// 마지막 닫기
+	    
+    },
+    error: function (error) {
+      alert("Ajax 요청 실패: " + error);
+    }
+  });
+}
+
+sendAjaxRequest();
+
+</script>
+</html>

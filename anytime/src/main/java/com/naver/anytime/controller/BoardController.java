@@ -50,7 +50,20 @@ public class BoardController {
 		this.boardService = boardService;
 		this.commentService = commentService;
 	}
-
+	
+	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Board> getBoardList(@RequestParam("NAME") String name) {
+		
+	    // 여기에서 데이터베이스 조회 또는 다른 로직을 수행하여 JSON 형식의 응답 데이터를 생성
+	    List<Board> responseData = boardService.getBoardList();
+	    // 생성된 JSON 데이터를 클라이언트에 응답으로 전송
+	    return responseData;
+	}
+	
+	 
+	 
+	 
 //	@RequestMapping(value = "/list", method = RequestMethod.GET)
 //	public ModelAndView boardlist(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 //			ModelAndView mv) {
