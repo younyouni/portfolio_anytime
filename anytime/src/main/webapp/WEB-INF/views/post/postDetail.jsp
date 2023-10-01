@@ -151,7 +151,7 @@
                             } else {
                                 // 삭제 성공 시, 해당 게시물을 화면에서 숨깁니다.
                                 alert("게시물이 삭제되었습니다.");
-                                window.location.href = "PostList.bo?board_num=" + ${boarddata.board_num}
+                                window.location.href = "list?board_num=" + ${boarddata.board_num}
                                 $(".article").hide();  // 해당 게시물 영역을 숨깁니다.
                             }
                         },
@@ -164,7 +164,7 @@
         });
      
         $("#goListButton").click(function() {
-        	window.location.href = "PostList.bo?board_num=" + ${boarddata.board_num}
+        	window.location.href = "list?board_num=" + ${boarddata.board_num}
         });
      	
     });
