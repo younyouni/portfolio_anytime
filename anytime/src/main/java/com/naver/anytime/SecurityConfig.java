@@ -50,7 +50,6 @@ public class SecurityConfig {
 				.antMatchers("/member/joinProcess").permitAll()
 	
 				
-				
 				.antMatchers("/member/forgotid").permitAll()
 				.antMatchers("/member/forgotpwd").permitAll()
 				.antMatchers("/member/forgotpwd_mailcheck").permitAll()

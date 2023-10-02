@@ -71,8 +71,10 @@ public class MemberController {
 	// http://localhost:9700/anytime/member/login
 	// 로그인 폼이동
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login(ModelAndView mv, @CookieValue(value = "autologin", required = false) Cookie readCookie,
-			HttpSession session, Principal userPrincipal) {
+	public ModelAndView login(ModelAndView mv, 
+			@CookieValue(value = "autologin", required = false) Cookie readCookie,
+			HttpSession session, 
+			Principal userPrincipal) {
 		if (readCookie != null) {
 			logger.info("저장된 아이디 :" + userPrincipal.getName());// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 			mv.setViewName("redirect:/main/home");
@@ -86,17 +88,17 @@ public class MemberController {
 
 	// 로그인 처리
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam("login_id") String login_id, @RequestParam("password") String password,
+	public String loginProcess(@RequestParam("login_id") String id, @RequestParam("password") String password,
 			@RequestParam(value = "autologin", defaultValue = "", required = false) String autologin,
 			HttpServletResponse response, HttpSession session, RedirectAttributes rattr) {
 
-		int result = memberservice.isId(login_id, password);
+		int result = memberservice.isId(id, password);
 		logger.info("결과 :" + result);
 
 		if (result == 1) {
 			// 로그인 성공
-			session.setAttribute("login_id", login_id);
-			Cookie savecookie = new Cookie("saveid", login_id);
+			session.setAttribute("login_id", id);
+			Cookie savecookie = new Cookie("saveid", id);
 			if (!autologin.equals("")) {
 				savecookie.setMaxAge(60 * 60);
 				logger.info("쿠키저장 : 60*60");
@@ -255,11 +257,11 @@ public class MemberController {
 		if (result == 1) {
 
 			rattr.addFlashAttribute("result", "joinSuccess");
-			model.addAttribute("message", "회원가입 성공");
+			model.addAttribute("message", "회원가입 성공입니다.");
 			return "redirect:login"; // 로그인 페이지로 이동
 		} else {
 			model.addAttribute("url", request.getRequestURL());
-			model.addAttribute("message", "회원가입 실패");
+			model.addAttribute("message", "회원가입 실패입니다.");
 			return "error/error"; // 회원 가입 폼 페이지로 이동
 		}
 	}

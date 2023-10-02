@@ -178,7 +178,7 @@
 										.html("&nbsp;&nbsp;&nbsp;사용 가능한 닉네임입니다.");
 								checknickname = true;
 							} else {
-								$("#nickname_message").css('color', 'blue')
+								$("#nickname_message").css('color', '#e54787')
 										.html("&nbsp;&nbsp;&nbsp;사용중인 닉네임입니다.");
 								checknickname = false;
 							}
@@ -256,7 +256,7 @@
 	rel="stylesheet">
 </head>
 <body style="">
-	<form name="joinform" action="joinProcess" method="get"
+	<form name="joinform" action="joinProcess" method="post"
 		id="container" data-adagreement="1" data-redirecturl="/">
 
 		<h2>회원 정보</h2>
