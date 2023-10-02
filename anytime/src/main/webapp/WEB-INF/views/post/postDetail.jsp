@@ -40,7 +40,7 @@
 			<h1>
 				<a href="list?board_id=${postdata.BOARD_ID}">${boardtest.NAME}</a>
 			</h1>
-			<p>${boardtest.CONTENT}</p> 
+			<p>${boardtest.CONTENT2}</p> 
 			<hr>
 			
 		</div>
