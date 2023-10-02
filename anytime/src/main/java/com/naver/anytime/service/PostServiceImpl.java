@@ -35,7 +35,6 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<Post> getPostList(int page, int limit, int board_id) {			//수정
-		
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		int startrow = (page - 1) * limit + 1;
 	    int endrow = startrow + limit - 1;
@@ -44,6 +43,8 @@ public class PostServiceImpl implements PostService {
 	    map.put("board_id", board_id);
 		return postDao.getPostList(map);
 	}
+	
+	
 
 	@Override
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit) {

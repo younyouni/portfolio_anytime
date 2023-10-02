@@ -67,7 +67,7 @@
          			<p class="small">${post.CONTENT}</p> 
          			
          			<time class="small">${post.POST_DATE}</time>
-					<h3 class="small"></h3>
+					<h3 class="small">${post.nickname}</h3>
 			<ul class="status">
 			
 				<c:set var="fileCount" value="0" />

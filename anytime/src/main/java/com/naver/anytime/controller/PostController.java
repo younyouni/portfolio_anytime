@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
+import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
 
 
@@ -32,11 +33,14 @@ public class PostController {
 
    private CommentService commentService;
    
+   private MemberService memberService;
+   
    @Autowired
-   public PostController(PostService postService, BoardService boardService, CommentService commentService) {
+   public PostController(PostService postService, BoardService boardService, CommentService commentService, MemberService memberService) {
 	  this.postService = postService;
       this.boardService = boardService;
       this.commentService = commentService;
+      this.memberService = memberService;
    }
    
 //   @GetMapping(value = "/list") 
@@ -122,6 +126,11 @@ public class PostController {
 
 	    // 리스트를 받아옴
 	    List<Post> postlist = postService.getPostList(page, limit, b);
+	    
+//	    for (Post post : postlist) {
+//	    	if (post.getUSER_ID() == )
+//	    }
+	    
 	    mv.setViewName("post/postList");
 	    mv.addObject("page", page);
 	    mv.addObject("maxpage", maxpage);
@@ -142,7 +151,6 @@ public class PostController {
 	      
 	    System.out.println("보드넘테스트" + b);
 	    System.out.println("값테스트" + postlist);
-		/*return "post/postList";*/
 		return mv;
 	}
 	

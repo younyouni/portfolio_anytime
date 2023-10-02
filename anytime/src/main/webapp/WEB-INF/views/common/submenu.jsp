@@ -19,7 +19,7 @@
 				<%-- type을 나누는 구분 --%>
 				<div class="group">
 					<%-- 게시판을 3개씩 출력하기 위한 구분 --%>
-					<ul>
+					<ul> 
 						<%-- 게시판을 3줄씩 출력하기 위한 count, 다음 type때 0으로 초기화 --%>
 						<c:set var="itemCount" value="0" />
 						<c:forEach var="menu" items="${boardlist}" varStatus="status">
@@ -89,20 +89,16 @@ function sendAjaxRequest() {
 	    		
 	    		// type이 일치하고 status가 1인 경우
 	    		if (menu.type == type && menu.status == 1){
-	    			// boardlist 출력
-	    			submenu.find('.group:last ul').append('<li><a href="list?board_id=' + menu.board_ID + '">' + menu.name + '</a></li>');
-	                itemCount++;
 	                
 	                // itemConut가 3의 배수일 때 ul 요소 닫기
 	                if (itemCount % 3 == 0 && itemCount != 0){
 	                	submenu.find('.group:last').append('</ul></div>'); // 그룹 닫기
-	                    if (i + 1 < boardlist.length) {
-	                      // 새 그룹 열기 (다음 항목이 존재하는 경우)
-	                      submenu.find('.wrap').append('<div class="group"><ul>');
-	                }
+	                    submenu.find('.wrap').append('<div class="group"><ul>');                
 	    		}
-	    	}
-	    
+	    			// boardlist 출력
+	    			submenu.find('.group:last ul').append('<li><a href="list?board_id=' + menu.board_ID + '">' + menu.name + '</a></li>');
+	                itemCount++;
+	    	}	    
 	    		submenu.append('</ul></div>'); // 그룹 닫기
 	    }
 	    	submenu.append('<hr></div>');	// 타입 닫기

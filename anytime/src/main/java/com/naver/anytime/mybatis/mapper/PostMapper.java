@@ -66,6 +66,6 @@ public interface PostMapper {
 	 */
 
 	public int postDelete(int post_num);
-
-	public List<Post> getPostList(HashMap<String, Integer> map);		//추가
+	
+	public List<Post> getPostList(HashMap<String, Integer> map);
 }

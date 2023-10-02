@@ -20,6 +20,14 @@
 	</properties>
 	<dependencies>
 	
+
+	<dependency>
+    	<groupId>com.h2database</groupId>
+    	<artifactId>h2</artifactId>
+    	<scope>runtime</scope>
+	</dependency>
+	
+	
 	<!-- 스프링 시큐리티 tag 라이브러리 -->
    <dependency>
       <groupId>org.springframework.security</groupId>

@@ -36,5 +36,10 @@
     	) 
     	WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
 	</select>
+	
+	<select id="getUserNickname" parameterType="int" resultType="string">
+    	SELECT user_id, nickname
+    	FROM member
+	</select>
 
 </mapper>
