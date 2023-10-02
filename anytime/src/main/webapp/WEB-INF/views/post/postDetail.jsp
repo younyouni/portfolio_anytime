@@ -4,11 +4,11 @@
 <html>
 <head>
 <title>애니타임</title>
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common.partial.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/container.article.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/container.community.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/container.modal.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.article.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!-- <script src="js/comment.js"></script> -->
 
@@ -23,8 +23,10 @@
 <body>
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/submenu.jsp" />
+	
 	<div id="container" class="article">
 		<input type="hidden" id="isUser" value="1"> <input type="hidden" id="post_id" value="${postdata.POST_ID}"> <br>
+<%-- -------------------------------- ▼삭제 예정인 aside 폼입니다.▼ --------------------------------
 		<aside class="none">
 			<div class="title">
 				<a class="hamburger"></a>
@@ -32,22 +34,24 @@
 					<a href="list?board_id=${boarddata.board_id}">${boarddata.name}</a>
 				</h1>
 			</div>
-		</aside>
+		</aside> 
+--%>
 		<div class="wrap title">
 			<h1>
-				<a href="list?board_id=${boarddata.board_num}"><%-- ${boarddata.name} --%>자유게시판테스트</a>
+				<a href="list?board_id=${postdata.BOARD_ID}">${boardtest.NAME}</a>
 			</h1>
-			<p>${boarddata.content}</p>
+			<p>${boardtest.CONTENT}</p> 
 			<hr>
+			
 		</div>
 		<div class="wrap articles">
 			<article>
 				<a class="article"> <img src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 					class="picture large">
 					<div class="profile">
-						<c:if test="${anonymous eq 0}">
+						<%-- <c:if test="${anonymous eq 0}">
 							<h3 class="large">${postdata.nickname}</h3>
-						</c:if>
+						</c:if> --%>
 						<%-- <c:if test="${anonymous eq 1}"> --%>
 							<h3 class="large">익명</h3>
 						<%-- </c:if> --%>
@@ -61,9 +65,9 @@
 					           <li class="del">삭제</li>
 					       </c:when>
 					       <c:otherwise>
-					           <li class="messagesend" data-modal="messageSend"
+					           <%-- <li class="messagesend" data-modal="messageSend"
 					               data-article-id="${postdata.POST_ID}" data-is-anonym="${boarddata.anonymous}">쪽지</li>
-					           <li class="abuse">신고</li>
+					           <li class="abuse">신고</li> --%>
 					       </c:otherwise>
 					   </c:choose>
 					</ul>
@@ -118,7 +122,7 @@
 		<jsp:include page="../common/rightside3.jsp" />
 	</div>
 	<jsp:include page="../common/footer.jsp" />
-	<script>
+	<!-- <script>
     $(document).ready(function() {
         // "수정" 버튼을 클릭하면 동작하는 스크립트
         $("#updateButton").click(function() {
@@ -168,6 +172,6 @@
         });
      	
     });
-</script>
+</script> -->
 </body>
 </html>

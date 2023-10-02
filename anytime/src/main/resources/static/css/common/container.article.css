@@ -845,28 +845,40 @@ form.writecomment.clone.grandchild {
 	cursor: pointer;
 }
 
+/*
+	1. 상대경로 -> 절대경로(/anytime/) 수정
+	2. container.articles.attach.png -> attach.png 수정 (859라인부터)
+	   container.articles.vote.png -> vote.png 수정
+	   container.articles.comment.png -> postDetail.comment.png 수정
+	   container.articles.scrap.png -> scrap.png 수정
+	   container.articles.buttons.posvote.png -> buttons.posvote.png 수정 (916라인부터)
+	   container.articles.buttons.scrap.png -> buttons.scrap.png 수정
+	   container.articles.write.submit.png -> write.submit 수정 (1033라인부터)
+*/
+
 #container>div.articles>article ul.status li.attach {
 	padding-left: 15px;
 	color: #737373;
-	background-image: url('../image/new/container.articles.attach.png');
+	background-image: url('/anytime/resources/image/post/attach.png');
+	
 }
 
 #container>div.articles>article ul.status li.vote {
 	padding-left: 15px;
 	color: #c62917;
-	background-image: url('../image/new/container.articles.vote.png');
+	background-image: url('/anytime/resources/image/post/vote.png');
 }
 
 #container>div.articles>article ul.status li.comment {
 	padding-left: 15px;
 	color: #0ca5af;
-	background-image: url('../image/new/container.articles.comment.png');
+	background-image: url('/anytime/resources/image/post/postDetail.comment.png');
 }
 
 #container>div.articles>article ul.status li.scrap {
 	padding-left: 15px;
 	color: #ffcc1c;
-	background-image: url('../image/new/container.articles.scrap.png');
+	background-image: url('/anytime/resources/image/post/scrap.png');
 }
 
 #container>div.articles>article ul.status.left li {
@@ -903,12 +915,12 @@ form.writecomment.clone.grandchild {
 
 #container>div.articles>article div.buttons span.posvote {
 	background-image:
-		url('/Anytime/image/new/container.articles.buttons.posvote.png');
+		url('/anytime/resources/image/post/buttons.posvote.png');
 }
 
 #container>div.articles>article div.buttons span.scrap {
 	background-image:
-		url('/Anytime/image/new/container.articles.buttons.scrap.png');
+		url('/anytime/resources/image/post/buttons.scrap.png');
 }
 
 #container>div.articles>article>div.comments {
@@ -1021,7 +1033,7 @@ form.writecomment.clone.grandchild {
 #container>div.articles>article form.writecomment ul.option li.submit {
 	background-color: #7869E6;
 	background-image:
-		url('/Anytime/image/new/container.articles.write.submit.png');
+		url('/anytime/resources/image/post/write.submit.png');
 }
 
 #container>div.articles>div.pagination>a {
@@ -1045,25 +1057,25 @@ form.writecomment.clone.grandchild {
 #container>div.articles>div.pagination>a.list {
 	float: left;
 	background-image:
-		url('../image/new/container.articles.pagination.list.png');
+		url('/anytime/resources/image/post/pagination.list.png');
 }
 
 #container>div.articles>div.pagination>a.first {
 	float: left;
 	background-image:
-		url('../image/new/container.articles.pagination.first.png');
+		url('/anytime/resources/image/post/container.articles.pagination.first.png');
 }
 
 #container>div.articles>div.pagination>a.prev {
 	float: left;
 	background-image:
-		url('../image/new/container.articles.pagination.prev.png');
+		url('/anytime/resources/image/post/container.articles.pagination.prev.png');
 }
 
 #container>div.articles>div.pagination>a.cancel {
 	float: left;
 	background-image:
-		url('../image/new/container.articles.pagination.prev.png');
+		url('/anytime/resources/image/post/container.articles.pagination.prev.png');
 }
 
 #container>div.articles>div.pagination>a.next {

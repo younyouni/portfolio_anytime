@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link type="text/css" href="/Anytime/css/submenu.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/submenu.css" rel="stylesheet">
 </head>
 <body style="">
 	<div id="submenu">
@@ -31,7 +31,7 @@
 				<div class="group">
 					<ul>
 						</c:if>
-						<li><a href="PostList.bo?board_num=${menu.board_num}">${menu.name}</a></li>
+						<li><a href="list?board_id=${menu.BOARD_ID}">${menu.NAME}</a></li>
 						<c:set var="itemCount" value="${itemCount + 1}" />
 						</c:if>
 			</c:forEach>
