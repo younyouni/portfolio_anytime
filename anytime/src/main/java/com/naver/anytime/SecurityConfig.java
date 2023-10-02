@@ -45,14 +45,15 @@ public class SecurityConfig {
 				.antMatchers("/member/email").permitAll()
 				.antMatchers("/member/emailsend").permitAll()
 				.antMatchers("/member/join").permitAll()
+				.antMatchers("/member/idcheck").permitAll()
+				.antMatchers("/member/nickname").permitAll()
 				.antMatchers("/member/joinProcess").permitAll()
-				
+	
 				
 				.antMatchers("/member/forgotid").permitAll()
 				.antMatchers("/member/forgotpwd").permitAll()
 				.antMatchers("/member/forgotpwd_mailcheck").permitAll()
 				.antMatchers("/member/forgotpwd_result").permitAll()
-				.antMatchers("/member/idcheck").permitAll()
 				
 				.antMatchers("/post/list").permitAll()
 				.antMatchers("/**/**").permitAll()
