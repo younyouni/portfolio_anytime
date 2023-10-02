@@ -31,9 +31,9 @@ public class MemberServiceImpl implements MemberService {
 			// 사용자에게 입력받은 패스워드를 비교하고자 할 때 사용하는 메서드입니다.
 			// rawPassword : 사용자가 입력한 패스워드
 			// encodedPassword : DB에 저장된 패스워드
-//			if (passwordEncoder.matches(password, dbmember.getPassword())) {
-//				result = 1; // 아이디와 비밀번호가 일치하는 경우
-//			} else
+		    // if (passwordEncoder.matches(password, dbmember.getPassword())) {
+            // result = 1; // 아이디와 비밀번호가 일치하는 경우
+            // } else
 
 			if (dbmember.getPassword().equals(password)) {
 				result = 1;
@@ -43,10 +43,7 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
-	@Override
-	public int insert(Member m) {
-		return dao.insert(m);
-	}
+	
 
 	@Override
 	public int isId(String id) {
@@ -55,6 +52,25 @@ public class MemberServiceImpl implements MemberService {
 											// 1은 아이디가 존재하는 경우
 	}
 
+	@Override
+	public int isNickname(String nickname) {
+		Member rmember = dao.isNickname(nickname);
+		return (rmember == null) ? -1 : 1; // -1은 아이디가 존재하지 않는 경우
+											// 1은 아이디가 존재하는 경우
+	}
+	
+	@Override
+	public int getSchoolIdByName(String campusName) {
+		return dao.getSchoolIdByName(campusName);
+	}
+
+	
+	@Override
+	public int insert(Member m) {
+		return dao.insert(m);
+	}
+	
+	
 	@Override
 	public Member member_info(String id) {
 		return dao.isId(id);
@@ -101,4 +117,7 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSearchListCount(map);
 
 	}
+
+	
+	
 }
