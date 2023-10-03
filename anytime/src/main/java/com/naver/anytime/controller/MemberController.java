@@ -88,9 +88,13 @@ public class MemberController {
 
 	// 로그인 처리
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam("login_id") String id, @RequestParam("password") String password,
-			@RequestParam(value = "autologin", defaultValue = "", required = false) String autologin,
-			HttpServletResponse response, HttpSession session, RedirectAttributes rattr) {
+	public String loginProcess(@RequestParam("login_id") String id,
+			@RequestParam("password") String password,
+			@RequestParam(value = "autologin", defaultValue = "", required = false) 
+	        String autologin,
+			HttpServletResponse response, 
+			HttpSession session, 
+			RedirectAttributes rattr) {
 
 		int result = memberservice.isId(id, password);
 		logger.info("결과 :" + result);
