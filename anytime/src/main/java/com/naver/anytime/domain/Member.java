@@ -9,13 +9,13 @@ public class Member {
 	// member_joinForm.jsp에서 비밀번호 name속성 값을 확인해 주세요
 	private String password;
 	private String email;
-	private String school_check;
+	private int school_check = 0;
 	private String address_num;
 	private String address1;
 	private String address2;
 	private String phone_num;
-	private int board_admin;
-	private int account_status;
+	private int board_admin = 0;
+	private int account_status = 1;
 	private int admission_year;
 
 	private String auth = "ROLE_MEMBER";
@@ -68,11 +68,11 @@ public class Member {
 		this.email = email;
 	}
 
-	public String getSchool_check() {
+	public int getSchool_check() {
 		return school_check;
 	}
 
-	public void setSchool_check(String school_check) {
+	public void setSchool_check(int school_check) {
 		this.school_check = school_check;
 	}
 

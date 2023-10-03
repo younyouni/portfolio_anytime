@@ -21,7 +21,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException{
 		logger.info("로그인 성공 : LoginSuccessHandler");
-		String url=request.getContextPath()+"/board/list";
+		String url=request.getContextPath()+"/main/home";
 		response.sendRedirect(url);
 	}
 }

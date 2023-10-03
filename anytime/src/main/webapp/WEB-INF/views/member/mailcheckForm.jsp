@@ -116,7 +116,7 @@ function Verifyemail(){
 
 </head>
 <body style="">
-	<form name="emailform" action="${pageContext.request.contextPath}/member/join"  method="get"
+	<form name="emailform" action="${pageContext.request.contextPath}/member/join"  method="post"
 		id="container" data-adagreement="1" data-redirecturl="/">
 		
 
@@ -147,7 +147,7 @@ function Verifyemail(){
 		</div>
 		
 		<input type="submit" value="회원가입하기" >
-		
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</form>
 	
 </body>

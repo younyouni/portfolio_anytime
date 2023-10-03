@@ -71,8 +71,10 @@ public class MemberController {
 	// http://localhost:9700/anytime/member/login
 	// 로그인 폼이동
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login(ModelAndView mv, @CookieValue(value = "autologin", required = false) Cookie readCookie,
-			HttpSession session, Principal userPrincipal) {
+	public ModelAndView login(ModelAndView mv, 
+			@CookieValue(value = "autologin", required = false) Cookie readCookie,
+			HttpSession session, 
+			Principal userPrincipal) {
 		if (readCookie != null) {
 			logger.info("저장된 아이디 :" + userPrincipal.getName());// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 			mv.setViewName("redirect:/main/home");
@@ -86,17 +88,21 @@ public class MemberController {
 
 	// 로그인 처리
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam("login_id") String login_id, @RequestParam("password") String password,
-			@RequestParam(value = "autologin", defaultValue = "", required = false) String autologin,
-			HttpServletResponse response, HttpSession session, RedirectAttributes rattr) {
+	public String loginProcess(@RequestParam("login_id") String id,
+			@RequestParam("password") String password,
+			@RequestParam(value = "autologin", defaultValue = "", required = false) 
+	        String autologin,
+			HttpServletResponse response, 
+			HttpSession session, 
+			RedirectAttributes rattr) {
 
-		int result = memberservice.isId(login_id, password);
+		int result = memberservice.isId(id, password);
 		logger.info("결과 :" + result);
 
 		if (result == 1) {
 			// 로그인 성공
-			session.setAttribute("login_id", login_id);
-			Cookie savecookie = new Cookie("saveid", login_id);
+			session.setAttribute("login_id", id);
+			Cookie savecookie = new Cookie("saveid", id);
 			if (!autologin.equals("")) {
 				savecookie.setMaxAge(60 * 60);
 				logger.info("쿠키저장 : 60*60");
@@ -181,7 +187,7 @@ public class MemberController {
 
 	// http://localhost:9700/anytime/member/join
 	// 회원가입 입력폼 이동
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	@RequestMapping(value = "/join", method = {RequestMethod.GET, RequestMethod.POST})
 	public String join() {
 		return "member/joinForm";// WEB-IF/views/member/joinForm.jsp
 	}
@@ -190,37 +196,76 @@ public class MemberController {
 	@ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
 					// HTTP Response BODY에 설정됩니다.
 	@RequestMapping(value = "/idcheck", method = RequestMethod.GET)
-	public int idcheck(@RequestParam("id") String id) {
-		return memberservice.isId(id);// WEB-IF/views/member/member_joinForm.jsp
+	public int idcheck(@RequestParam("login_id") String id) {
+		return memberservice.isId(id);// WEB-IF/views/member/oinForm.jsp
 	}
 
+	
+	 // 회원가입폼에서 닉네임 검사
+     @ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
+					// HTTP Response BODY에 설정됩니다.
+	 @RequestMapping(value = "/nicknamecheck", method = RequestMethod.GET)
+	 public int nicknamecheck(@RequestParam("nickname") String nickname) {
+	     return memberservice.isNickname(nickname);// WEB-IF/views/member/joinForm.jsp
+		}
+	
+	
+	
+	
+	
 	// 회원가입 처리
 	@RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
-	public String joinProcess(Member member, RedirectAttributes rattr, Model model, HttpServletRequest request) {
+	public String joinProcess(Member member,
+							  RedirectAttributes rattr, 
+			                  Model model,
+			                  HttpServletRequest request) {
 
-		// 비밀번호 암호화 추가
-		String encPassword = passwordEncoder.encode(member.getPassword());
-		logger.info(encPassword);
-		member.setPassword(encPassword);
+		//비밀번호 암호화 추가
+        String encPassword = passwordEncoder.encode(member.getPassword());
+        logger.info(encPassword);
+        member.setPassword(encPassword);
+		
+		// HttpSession 객체를 가져오기
+        HttpSession session = request.getSession();
+        
+        String enterYear = (String) session.getAttribute("enter_year");
+        String campusName = (String) session.getAttribute("campus_name");
+        
+        // 값이 제대로 들어있는지 확인
+    	if (enterYear == null || campusName == null) {
+    		model.addAttribute("url", request.getRequestURL());
+    		model.addAttribute("message", "세션 값이 없습니다.");
+    		return "error/error";
+    	} 
+        
+    	int admission_year = Integer.parseInt(enterYear);
+    	member.setAdmission_year(admission_year);
 
+    	int school_id = memberservice.getSchoolIdByName(campusName);
+    	member.setSchool_id(school_id);
+    	
+    	
 		// MemberService를 사용하여 회원을 데이터베이스에 추가합니다.
 		int result = memberservice.insert(member);
 		// result=0;
+		
 		/*
 		 * 스프링에서 제공하는 RedirectAttributes는 기존의 Servlet에서 사용되던 response.sendRedirect()를
 		 * 사용할 때와 동일한 용도로 사용합니다. 리다이렉트로 전송하면 파라미터를 전달하고자 할 때 addAttribute()나
 		 * addFlashAttribute()를 사용합니다. 예) response.sendRedirect("/test?result=1"); =>
 		 * rattr.addAttribute("result",1);
 		 */
+		
 		// 삽입이 된 경우
 		// 회원 가입 결과에 따라 리다이렉트할 페이지를 결정합니다.
 		if (result == 1) {
 
 			rattr.addFlashAttribute("result", "joinSuccess");
+			model.addAttribute("message", "회원가입 성공입니다.");
 			return "redirect:login"; // 로그인 페이지로 이동
 		} else {
 			model.addAttribute("url", request.getRequestURL());
-			model.addAttribute("message", "회원가입 실패");
+			model.addAttribute("message", "회원가입 실패입니다.");
 			return "error/error"; // 회원 가입 폼 페이지로 이동
 		}
 	}
