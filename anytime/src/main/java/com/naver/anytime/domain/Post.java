@@ -14,11 +14,9 @@ public class Post {
 	private int	   STATUS;			// 게시물 상태
 	
 	/* 게시물(POST) 테이블 별도로 추가부분 */	
-	private int    comment_count;	//코멘트 수
-	private String nickname;		//유저 번호로 닉네임 매칭
-	private String boardname;		//게시판 번호로 게시판이름 매칭
-	
-	/* ---------- POST테이블 Getter/Setter ---------- */
+	private int    COMMENT_COUNT;	//코멘트 수
+	private String NICKNAME;		//유저 번호로 닉네임 매칭
+	private String BOARDNAME;		//게시판 번호로 게시판이름 매칭
 	public int getPOST_ID() {
 		return POST_ID;
 	}
@@ -85,33 +83,32 @@ public class Post {
 	public void setSTATUS(int sTATUS) {
 		STATUS = sTATUS;
 	}
-	public int getComment_count() {
-		return comment_count;
+	public int getCOMMENT_COUNT() {
+		return COMMENT_COUNT;
 	}
-	public void setComment_count(int comment_count) {
-		this.comment_count = comment_count;
+	public void setCOMMENT_COUNT(int cOMMENT_COUNT) {
+		COMMENT_COUNT = cOMMENT_COUNT;
 	}
-	public String getNickname() {
-		return nickname;
+	public String getNICKNAME() {
+		return NICKNAME;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setNICKNAME(String nICKNAME) {
+		NICKNAME = nICKNAME;
 	}
-	public String getBoardname() {
-		return boardname;
+	public String getBOARDNAME() {
+		return BOARDNAME;
 	}
-	public void setBoardname(String boardname) {
-		this.boardname = boardname;
+	public void setBOARDNAME(String bOARDNAME) {
+		BOARDNAME = bOARDNAME;
 	}
 	
-	/* ---------- POST테이블 toString ---------- */
 	@Override
 	public String toString() {
 		return "Post [POST_ID=" + POST_ID + ", BOARD_ID=" + BOARD_ID + ", USER_ID=" + USER_ID + ", SUBJECT=" + SUBJECT
 				+ ", CONTENT=" + CONTENT + ", POST_FILE=" + POST_FILE + ", POST_DATE=" + POST_DATE + ", LIKE_COUNT="
 				+ LIKE_COUNT + ", SCRAP_COUNT=" + SCRAP_COUNT + ", REPORT_COUNT=" + REPORT_COUNT + ", STATUS=" + STATUS
-				+ ", comment_count=" + comment_count + ", nickname=" + nickname + ", boardname=" + boardname + "]";
+				+ ", COMMENT_COUNT=" + COMMENT_COUNT + ", NICKNAME=" + NICKNAME + ", BOARDNAME=" + BOARDNAME + "]";
 	}
 	
-	
+
 }

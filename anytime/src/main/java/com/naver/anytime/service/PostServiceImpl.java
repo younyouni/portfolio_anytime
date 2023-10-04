@@ -29,12 +29,14 @@ public class PostServiceImpl implements PostService {
 	public String getPostlist(String SchoolName) {
 		return postDao.getPostlist(SchoolName);
 	}
-
+	
+	//게시물 리스트 총 수
 	@Override
 	public int getListCount(int board_id) {
 		return postDao.getListCount(board_id);
 	}
-
+	
+	//게시물 리스트 결과
 	@Override
 	public List<Post> getPostList(int page, int limit, int board_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -52,21 +54,31 @@ public class PostServiceImpl implements PostService {
 		return postDao.getUserNickname(map);
 	}
 	
-	//검색용 리스트 총 수
+	//검색용 게시물 리스트 총 수
 	public int getListCount(int board_id, int search_field, String search_word) {
 		return postDao.getListCount(board_id, search_word, search_word);
 	}
 	
-	//검색용 리스트 결과
-	public List<Post> getPostList(int page, int limit, int board_id, int search_field, String search_word) {
-		return null;
+	//검색용 게시물 리스트 결과
+	@Override
+	public List<Post> getSearchPostList(int page, int limit, int board_id, int search_field, String search_word) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+	    int endrow = startrow + limit - 1;
+	    map.put("start", startrow);
+	    map.put("end", endrow);
+	    map.put("board_id", board_id);
+	    map.put("search_field", search_field);
+	    map.put("search_word", search_word);
+	    
+		return postDao.getSearchPostList(map);
 	}
 
 	@Override
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit) {
 		return null;
 	}
-
+	
 	@Override
 	public List<Post> findSchoolBoardlistcount(int school_num) {
 		return null;
@@ -161,4 +173,5 @@ public class PostServiceImpl implements PostService {
 	public int postDelete(int post_num) {
 		return 0;
 	}
+
 }

@@ -74,4 +74,6 @@ public interface PostMapper {
 	// 이름 확인용
 	public List<Post> getUserNickname(Map<String, String> map);
 	
+	public List<Post> getSearchPostList(HashMap<String, Object> map);
+	
 }

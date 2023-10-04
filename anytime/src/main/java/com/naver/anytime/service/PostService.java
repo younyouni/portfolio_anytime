@@ -72,6 +72,6 @@ public interface PostService {
 	public int getListCount(int board_id, int search_field, String search_word);
 	
 	//검색용 리스트 결과
-	public List<Post> getPostList(int page, int limit, int board_id, int search_field, String search_word);
+	public List<Post> getSearchPostList(int page, int limit, int board_id, int search_field, String search_word);
 
 }

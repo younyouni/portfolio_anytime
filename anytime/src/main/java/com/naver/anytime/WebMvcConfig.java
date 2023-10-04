@@ -17,7 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		//url mapping "/"로 접속하면 "member/login"로 이동합니다.
-		registry.addViewController("/").setViewName("forward:/main/home");
+		registry.addViewController("/").setViewName("forward:/post/test");
 	}
 	
 	@Override

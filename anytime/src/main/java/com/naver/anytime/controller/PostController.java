@@ -139,13 +139,13 @@ public class PostController {
 	    // 익명성 체크
 	    if(anonymous == 1) {
 	    	for(Post post : postlist) {
-	    		post.setNickname("익명");
+	    		post.setNICKNAME("익명");
 	    	}
 	    } else {
 	    	for(Post post : postlist) {
 	    		for(Post post2 : username) {
 	    			if(post.getUSER_ID() == post2.getUSER_ID()) {
-	    				post.setNickname(post2.getNickname());
+	    				post.setNICKNAME(post2.getNICKNAME());
 	    			}
 	    		}
 	    	} 	
@@ -167,7 +167,7 @@ public class PostController {
 	    mv.addObject("emptycheck", 0);
 	    mv.addObject("board_id", board_id);
 	    
-	    // 글이 없을때 체크
+	    // 글이 없을때 체크 (1= 일반, 2= 검색)
 	    if(postlist != null) {
 	    	mv.addObject("emptycheck", 1);
 	    }
@@ -204,7 +204,7 @@ public class PostController {
 	       endpage = maxpage;
 
 	    // 게시글 리스트
-	    List<Post> postlist = postService.getPostList(page, limit, board_id, search_field, search_word);
+	    List<Post> postlist = postService.getSearchPostList(page, limit, board_id, search_field, search_word);
 	    
 	    // 유저 닉네임
 	    List<Post> username = postService.getUserNickname();
@@ -215,13 +215,13 @@ public class PostController {
 	    // 익명성 체크
 	    if(anonymous == 1) {
 	    	for(Post post : postlist) {
-	    		post.setNickname("익명");
+	    		post.setNICKNAME("익명");
 	    	}
 	    } else {
 	    	for(Post post : postlist) {
 	    		for(Post post2 : username) {
 	    			if(post.getUSER_ID() == post2.getUSER_ID()) {
-	    				post.setNickname(post2.getNickname());
+	    				post.setNICKNAME(post2.getNICKNAME());
 	    			}
 	    		}
 	    	} 	
@@ -242,9 +242,9 @@ public class PostController {
 	    mv.addObject("emptycheck", 0);
 	    mv.addObject("board_id", board_id);
 	    
-	    // 글이 없을때 체크
+	    // 글이 없을때 체크 (1= 일반, 2= 검색)
 	    if(postlist != null) {
-	    	mv.addObject("emptycheck", 1);
+	    	mv.addObject("emptycheck", 2);
 	    }
 	      
 	    System.out.println("보드넘테스트" + board_id);
