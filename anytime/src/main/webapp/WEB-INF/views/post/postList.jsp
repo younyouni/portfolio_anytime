@@ -17,6 +17,7 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
 </head>
 
 <body>
@@ -44,7 +45,7 @@
 		
 		<%-------------------------------- ▼글쓰기▼ --------------------------------%>
 			
-			<div class="wrap articles">
+			<div class="wrap articles" id="writeBoardContainer">
 			<c:if test="${allsearchcheck == 0}">	<!-- 천제 검색이 아닐 경우 -->
 			<label class="postwriteform" style="display: none;">
 				<jsp:include page="postlist_write.jsp" />
