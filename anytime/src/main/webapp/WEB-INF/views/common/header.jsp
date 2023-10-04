@@ -12,9 +12,9 @@
 	rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
 	rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/post/postlist.css"
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/post/postlist.css"
 	rel="stylesheet">
-<script src="js/jquery-3.7.0.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script>
 	$(function() {
 

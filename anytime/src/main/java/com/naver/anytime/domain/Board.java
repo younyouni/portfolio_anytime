@@ -1,5 +1,6 @@
 package com.naver.anytime.domain;
 
+
 public class Board {
     private int BOARD_ID;
     private int SCHOOL_ID;

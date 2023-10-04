@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: flex-start;
     height: 4vh;
-    background: transparent url(/Anytime/image/new/container.articles.pagination.search.png) no-repeat right 10px center;
+    background: transparent url(../../image/common/container.articles.pagination.search.png) no-repeat right 10px center;
         background-size: 15px 15px;
     background-position-x: 290px;
     border: 2px solid #d6d6d6;

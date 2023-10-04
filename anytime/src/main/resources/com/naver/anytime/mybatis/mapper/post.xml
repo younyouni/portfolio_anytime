@@ -13,4 +13,37 @@
         where POST_ID = #{post_id}
 	</select>
 
+	<select id="getListCount" resultType="int">
+		select count(*) from post
+		where board_id = #{board_id}
+	</select>
+	
+	<select id="getPostList" parameterType="map" resultType="post">
+   		SELECT * 
+    	FROM (
+      	  SELECT ROWNUM RNUM, j.*
+      	  FROM (
+        	    SELECT post.*, NVL(cnt, 0) AS comment_count
+        	    FROM post
+        	    LEFT OUTER JOIN (
+        	        SELECT post_id, COUNT(*) cnt
+        	        FROM comments
+        	        GROUP BY post_id
+       	     ) sub_C
+       	     ON post.post_id = sub_C.post_id
+            	WHERE post.board_id = #{board_id}
+            	ORDER BY post.post_id DESC
+        	) j 
+        	WHERE ROWNUM &lt;= #{end} 
+    	) 
+    	WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+	
+	<select id="getUserNickname" parameterType="int" resultType="post">
+    	SELECT user_id, nickname
+    	FROM member
+	</select>
+	
+	
+	
 </mapper>
