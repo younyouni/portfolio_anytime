@@ -2,11 +2,14 @@ package com.naver.anytime.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.mybatis.mapper.BoardMapper;
 import com.naver.anytime.mybatis.mapper.PostMapper;
@@ -29,13 +32,26 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public int getListCount(int board_id) {
-		return 0;
+		return postDao.getListCount(board_id);
 	}
 
 	@Override
-	public List<Post> getPostList(int board_num, int page, int limit) {
-		return null;
+	public List<Post> getPostList(int page, int limit, int board_id) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int startrow = (page - 1) * limit + 1;
+	    int endrow = startrow + limit - 1;
+	    map.put("start", startrow);
+	    map.put("end", endrow);
+	    map.put("board_id", board_id);
+		return postDao.getPostList(map);
 	}
+	
+	//포스트 닉네임 확인용
+	public List<Post> getUserNickname(){
+		Map<String, String> map = new HashMap<String, String>();
+		return postDao.getUserNickname(map);
+	}
+	
 
 	@Override
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit) {

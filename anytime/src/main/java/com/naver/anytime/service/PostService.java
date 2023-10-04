@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 
 public interface PostService {
@@ -12,7 +13,7 @@ public interface PostService {
 
 	public int getListCount(int board_id);
 
-	public List<Post> getPostList(int board_num, int page, int limit);
+	public List<Post> getPostList(int page, int limit, int board_id);
 
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit);
 
@@ -62,5 +63,8 @@ public interface PostService {
 	 */
 
 	public int postDelete(int post_num);
+	
+	//포스트 닉네임 확인용
+	public List<Post> getUserNickname();
 
 }
