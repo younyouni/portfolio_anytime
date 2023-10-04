@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
 <title>애니타임</title>
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
@@ -26,16 +27,6 @@
 	
 	<div id="container" class="article">
 		<input type="hidden" id="isUser" value="1"> <input type="hidden" id="post_id" value="${postdata.POST_ID}"> <br>
-<%-- -------------------------------- ▼삭제 예정인 aside 폼입니다.▼ --------------------------------
-		<aside class="none">
-			<div class="title">
-				<a class="hamburger"></a>
-				<h1>
-					<a href="list?board_id=${boarddata.board_id}">${boarddata.name}</a>
-				</h1>
-			</div>
-		</aside> 
---%>
 		<div class="wrap title">
 			<h1>
 				<a href="list?board_id=${postdata.BOARD_ID}">${boardtest.NAME}</a>
@@ -49,12 +40,12 @@
 				<a class="article"> <img src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 					class="picture large">
 					<div class="profile">
-						<%-- <c:if test="${anonymous eq 0}">
-							<h3 class="large">${postdata.nickname}</h3>
-						</c:if> --%>
-						<%-- <c:if test="${anonymous eq 1}"> --%>
+						 <c:if test="${boardtest.ANONYMOUS eq 0}">
+							<h3 class="large">${nickname}</h3>
+						</c:if> 
+						 <c:if test="${boardtest.ANONYMOUS eq 1}"> 
 							<h3 class="large">익명</h3>
-						<%-- </c:if> --%>
+						 </c:if> 
 						<time class="large">${postdata.POST_DATE}</time>
 					</div>
 					<ul class="status">
@@ -65,9 +56,9 @@
 					           <li class="del">삭제</li>
 					       </c:when>
 					       <c:otherwise>
-					           <%-- <li class="messagesend" data-modal="messageSend"
+					            <li class="messagesend" data-modal="messageSend"
 					               data-article-id="${postdata.POST_ID}" data-is-anonym="${boarddata.anonymous}">쪽지</li>
-					           <li class="abuse">신고</li> --%>
+					           <li class="abuse">신고</li> 
 					       </c:otherwise>
 					   </c:choose>
 					</ul>
@@ -121,8 +112,10 @@
 		<hr>
 		<jsp:include page="../common/rightside3.jsp" />
 	</div>
-	<jsp:include page="../common/footer.jsp" />
-	<!-- <script>
+	<%-- -------------------------------- ▼footer CSS수정 전이라 임시주석처리중입니다.▼ --------------------------------
+	<jsp:include page="../common/footer.jsp" /> 
+	--%>
+	<script>
     $(document).ready(function() {
         // "수정" 버튼을 클릭하면 동작하는 스크립트
         $("#updateButton").click(function() {
@@ -166,12 +159,11 @@
                 }
             }
         });
-     
         $("#goListButton").click(function() {
-        	window.location.href = "list?board_num=" + ${boarddata.board_num}
+        	window.location.href = "list?board_id=" + ${boardtest.BOARD_ID}
         });
      	
     });
-</script> -->
+</script> 
 </body>
 </html>

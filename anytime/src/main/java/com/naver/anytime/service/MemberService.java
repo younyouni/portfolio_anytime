@@ -25,6 +25,8 @@ public interface MemberService {
 	public List<Member> getSearchList(int index, String search_word, int page, int limit);
 
 	public int getSearchListCount(int index, String search_word);
+	
+	public Member findMemberByUserId(int user_id);
 
 	
 }
