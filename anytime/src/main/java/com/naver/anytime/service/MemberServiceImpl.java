@@ -69,6 +69,16 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	@Override
+	public String findIdByEmail(String email) {
+		return dao.findIdByEmail(email);
+	}
+	
+	
+	
+	
+	
+	
+	@Override
 	public Member member_info(String id) {
 		return dao.isId(id);
 	}
@@ -114,6 +124,8 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSearchListCount(map);
 
 	}
+
+	
 
 	
 	
