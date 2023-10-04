@@ -29,5 +29,7 @@ public interface MemberMapper {
 	
 	public List<Member> getSearchList(Map<String, Object> map);
 
+	public String findIdByEmail(String email);
+
 	
 }
