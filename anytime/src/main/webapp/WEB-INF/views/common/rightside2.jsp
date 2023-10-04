@@ -17,7 +17,7 @@ $(function() {
 		<div class="rightside2">
 		
 		<form id="searchArticleForm" class="search" 
-			action="postSearch.bo?board_num=${board_num}" method="post">
+			action="search?board_id=${board_id}" method="post">
 			<select name="search_field">
 				<option value="0">전체</option>
 				<option value="1">글 제목</option>

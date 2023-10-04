@@ -22,7 +22,7 @@
 	<insert id="insert" parameterType="member">
     INSERT INTO member
     VALUES 
-    (#{user_id}, #{school_id}, #{login_id}, #{nickname}, #{password},
+    (member_seq.nextval, #{school_id}, #{login_id}, #{nickname}, #{password},
      #{email}, #{school_check}, #{address_num}, #{address1},
      #{address2}, #{phone_num}, #{board_admin},
      #{account_status},#{admission_year} ,#{auth})

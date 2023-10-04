@@ -169,6 +169,5 @@ public class PostController {
 		return mv;
 	}
    
-   
 	
 }
