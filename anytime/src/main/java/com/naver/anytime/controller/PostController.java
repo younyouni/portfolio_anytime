@@ -3,6 +3,7 @@ package com.naver.anytime.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
+import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
 
 
@@ -30,13 +33,16 @@ public class PostController {
    private PostService postService;
    
    private BoardService boardService;
-
+   
+   private MemberService memberservice;
+   
    private CommentService commentService;
    
    @Autowired
-   public PostController(PostService postService, BoardService boardService, CommentService commentService) {
+   public PostController(PostService postService, BoardService boardService, MemberService memberservice, CommentService commentService) {
 	  this.postService = postService;
       this.boardService = boardService;
+      this.memberservice = memberservice;
       this.commentService = commentService;
    }
    
@@ -98,6 +104,15 @@ public class PostController {
 	   ModelAndView mv,
 	   HttpServletRequest request) {
 	   
+	   // 현재 사용자의 아이디 가져오기
+       HttpSession session = request.getSession();
+       int currentUserNum = 0; // 기본값 0으로 설정
+       Object userIdObject = session.getAttribute("userId");
+       
+       if (userIdObject != null) {
+           currentUserNum = Integer.parseInt(userIdObject.toString());
+       }
+	   
 	   Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
 	   
 	   Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
@@ -110,10 +125,22 @@ public class PostController {
 	         mv.addObject("message", "상세보기 실패입니다.");
 	      }else {
 	    	  logger.info("상세보기 성공");
+	    	  
+	    	  if (board.getANONYMOUS() == 0) {
+	              Member member = memberservice.findMemberByUserId(post.getUSER_ID());
+	              if (member != null){
+	                  String nickname = member.getNickname();
+	                  mv.addObject("nickname", nickname);
+	              }
+	          }
+	    	  
 	    	  mv.setViewName("post/postDetail");
 	    	  mv.addObject("postdata", post);
 	    	  mv.addObject("boardtest", board);
 	    	  System.out.println("post테스트=>"+post);
+	    	  
+	    	
+	    	  
 	      }
 	      return mv;
 	     

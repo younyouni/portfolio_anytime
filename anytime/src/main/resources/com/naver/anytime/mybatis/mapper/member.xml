@@ -36,6 +36,11 @@
 		where id = #{id}	
 	</update>
 	
+	<select id="findMemberByUserId" parameterType="int" resultType="member">
+	  	SELECT * FROM member
+	   	WHERE USER_ID = #{USER_ID}
+	</select>
+	
 	<!--  
 	<select id="searchCount" resultType="int" parameterType="map">
 		select count(*)
