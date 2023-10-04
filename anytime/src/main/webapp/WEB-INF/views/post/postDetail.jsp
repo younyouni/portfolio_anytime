@@ -12,7 +12,7 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!-- <script src="js/comment.js"></script> -->
-
+//
 <style>
 .status.disabled {
   pointer-events: none; /* 클릭 및 이벤트 무시 */
