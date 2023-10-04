@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
@@ -99,7 +100,7 @@ public class PostController {
    }
    
    
-   
+   //게시물 리스트 출력
    @RequestMapping(value = "/list", method = RequestMethod.GET)
    public ModelAndView postlist(
    @RequestParam(value = "page", defaultValue = "1", required = false) int page, 
@@ -110,7 +111,7 @@ public class PostController {
 		//
 		// 총 리스트 수를 받아옴
 		int listcount = postService.getListCount(b);
-		String boardname = boardService.getBoardName(b);
+		String board = boardService.getBoardName(b);
 		
 		// 총 페이지 수
 	    int maxpage = (listcount + limit - 1) / limit;
@@ -126,11 +127,24 @@ public class PostController {
 
 	    // 리스트를 받아옴
 	    List<Post> postlist = postService.getPostList(page, limit, b);
+	    List<Post> username = postService.getUserNickname();
+	    int anonymous = boardService.getBoardAnonymous(b);
 	    
-//	    for (Post post : postlist) {
-//	    	if (post.getUSER_ID() == )
-//	    }
-	    
+	    if(anonymous == 1) {
+	    	for(Post post : postlist) {
+	    		post.setNickname("익명");
+	    	}
+	    } else {
+	    	for(Post post : postlist) {
+	    		for(Post post2 : username) {
+	    			if(post.getUSER_ID() == post2.getUSER_ID()) {
+	    				post.setNickname(post2.getNickname());
+	    			}
+	    		}
+	    	} 	
+	    }
+
+
 	    mv.setViewName("post/postList");
 	    mv.addObject("page", page);
 	    mv.addObject("maxpage", maxpage);
@@ -140,7 +154,8 @@ public class PostController {
 	    mv.addObject("postlist", postlist);
 	    mv.addObject("limit", limit);
 	    
-	    mv.addObject("boardname", boardname);
+	    mv.addObject("un", username);
+	    mv.addObject("board", board);
 	    mv.addObject("allsearchcheck", 0);
 	    mv.addObject("emptycheck", 0);
 	    mv.addObject("board_id", b);
@@ -153,5 +168,7 @@ public class PostController {
 	    System.out.println("값테스트" + postlist);
 		return mv;
 	}
+   
+   
 	
 }

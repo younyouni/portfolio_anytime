@@ -29,6 +29,11 @@ public class BoardServiceImpl implements BoardService {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		return dao.getBoardList(map);
 	}
+	
+	//보드 익명 체크
+	public int getBoardAnonymous(int board_id) {
+		return dao.getBoardAnonymous(board_id);
+	}
 
 //	@Override
 //	public int getListCount() {

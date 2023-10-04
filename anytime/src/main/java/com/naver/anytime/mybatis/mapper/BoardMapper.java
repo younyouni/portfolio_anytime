@@ -18,6 +18,9 @@ public interface BoardMapper {
 	
 	//보드 리스트
 	public List<Board> getBoardList (HashMap<String, Integer> map);
+	
+	//보드 익명 체크
+	public int getBoardAnonymous(int board_id);
 		
 //	// 글의 갯수 구하기
 //		public int getListCount();

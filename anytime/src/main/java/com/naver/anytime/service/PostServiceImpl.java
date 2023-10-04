@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.mybatis.mapper.BoardMapper;
 import com.naver.anytime.mybatis.mapper.PostMapper;
@@ -34,7 +36,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getPostList(int page, int limit, int board_id) {			//수정
+	public List<Post> getPostList(int page, int limit, int board_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		int startrow = (page - 1) * limit + 1;
 	    int endrow = startrow + limit - 1;
@@ -44,6 +46,11 @@ public class PostServiceImpl implements PostService {
 		return postDao.getPostList(map);
 	}
 	
+	//포스트 닉네임 확인용
+	public List<Post> getUserNickname(){
+		Map<String, String> map = new HashMap<String, String>();
+		return postDao.getUserNickname(map);
+	}
 	
 
 	@Override

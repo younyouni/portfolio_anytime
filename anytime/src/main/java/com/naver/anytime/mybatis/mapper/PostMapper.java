@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 
 @Mapper
@@ -68,4 +70,8 @@ public interface PostMapper {
 	public int postDelete(int post_num);
 	
 	public List<Post> getPostList(HashMap<String, Integer> map);
+	
+	// 이름 확인용
+	public List<Post> getUserNickname(Map<String, String> map);
+	
 }

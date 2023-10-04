@@ -14,7 +14,11 @@
 		select * from board
 	</select>
 
-
+	<select id="getBoardAnonymous" resultType="int">
+		select anonymous
+		from board
+		where board_id = #{board_id}
+	</select>
 
 <!-- 	<select id="getListCount" resultType="int">
 		select count(*) from board3
