@@ -17,6 +17,8 @@ public class Post {
 	private int    COMMENT_COUNT;	//코멘트 수
 	private String NICKNAME;		//유저 번호로 닉네임 매칭
 	private String BOARDNAME;		//게시판 번호로 게시판이름 매칭
+	
+	/* ---------- POST테이블 Getter/Setter ---------- */
 	public int getPOST_ID() {
 		return POST_ID;
 	}
@@ -102,13 +104,24 @@ public class Post {
 		BOARDNAME = bOARDNAME;
 	}
 	
+	/* ---------- POST테이블 toString ---------- */
 	@Override
 	public String toString() {
 		return "Post [POST_ID=" + POST_ID + ", BOARD_ID=" + BOARD_ID + ", USER_ID=" + USER_ID + ", SUBJECT=" + SUBJECT
 				+ ", CONTENT=" + CONTENT + ", POST_FILE=" + POST_FILE + ", POST_DATE=" + POST_DATE + ", LIKE_COUNT="
 				+ LIKE_COUNT + ", SCRAP_COUNT=" + SCRAP_COUNT + ", REPORT_COUNT=" + REPORT_COUNT + ", STATUS=" + STATUS
-				+ ", COMMENT_COUNT=" + COMMENT_COUNT + ", NICKNAME=" + NICKNAME + ", BOARDNAME=" + BOARDNAME + "]";
+				+ ", COMMENT_COUNT=" + COMMENT_COUNT + ", NICKNAME=" + NICKNAME + ", BOARDNAME=" + BOARDNAME
+				+ ", getPOST_ID()=" + getPOST_ID() + ", getBOARD_ID()=" + getBOARD_ID() + ", getUSER_ID()="
+				+ getUSER_ID() + ", getSUBJECT()=" + getSUBJECT() + ", getCONTENT()=" + getCONTENT()
+				+ ", getPOST_FILE()=" + getPOST_FILE() + ", getPOST_DATE()=" + getPOST_DATE() + ", getLIKE_COUNT()="
+				+ getLIKE_COUNT() + ", getSCRAP_COUNT()=" + getSCRAP_COUNT() + ", getREPORT_COUNT()="
+				+ getREPORT_COUNT() + ", getSTATUS()=" + getSTATUS() + ", getCOMMENT_COUNT()=" + getCOMMENT_COUNT()
+				+ ", getNICKNAME()=" + getNICKNAME() + ", getBOARDNAME()=" + getBOARDNAME() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
 	
-
+	
+	
+	
+	
 }

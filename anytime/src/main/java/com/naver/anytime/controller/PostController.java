@@ -3,6 +3,7 @@ package com.naver.anytime.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.service.BoardService;
@@ -26,12 +28,12 @@ import com.naver.anytime.service.PostService;
 @RequestMapping(value = "/post")
 public class PostController {
 	
-   private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+   private static final Logger logger = LoggerFactory.getLogger(PostController.class);
    
    private PostService postService;
    
    private BoardService boardService;
-
+   
    private CommentService commentService;
    
    private MemberService memberService;
@@ -44,34 +46,28 @@ public class PostController {
       this.memberService = memberService;
    }
    
-//   @GetMapping(value = "/list") 
-//   public String postList() {
-//      return "post/postList";
-//   }
+
    
-   @GetMapping("/detail") // board/write
+   @GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
    public ModelAndView postDetail( 
-	   int post_id,  ModelAndView mv,
+	   @RequestParam(value = "post_id", required = false) int post_id,
+	   ModelAndView mv,
 	   HttpServletRequest request) {
-//	   @RequestHeader(value="referer", required=false) String beforeURL) 
 	   
-   /*
-       1. String beforeURL = request.getHeader("referer"); 의미로
-       	  어느 주소에서 detail로 이동했는지 header의 정보 중에서 "referer"를 통해 알 수 있습니다.
-       2. 수정 후 이곳으로 이동하는 경우 조회수는 증가하지 않도록 합니다.
-       3. myhome4/board/list에서 제목을 클릭한 경우 조회수가 증가하도록 합니다.
-       4. 주소창에서 http://localhost:8088/myhome4/board/detail?num=5 엔터
-       	  referer는 header에 존재하지 않아 오류 발생하므로
-       	   required=false로 설정 합니다. 이 경우 beforeURL의 값은 null입니다.
-    */
-		   
-	   /*logger.info("referer:" + beforeURL);
-	   if(beforeURL != null && beforeURL.endsWith("list")) {
-			 postService.setReadCountUpdate(num); 
-	   }*/
+	   // 현재 사용자의 아이디 가져오기
+       HttpSession session = request.getSession();
+       int currentUserNum = 0; // 기본값 0으로 설정
+       Object userIdObject = session.getAttribute("userId");
+       
+       if (userIdObject != null) {
+           currentUserNum = Integer.parseInt(userIdObject.toString());
+       }
 	   
-	   Post post = postService.getDetail(post_id);
-	      // board = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
+	   Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
+	   
+	   Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
+
+	      // post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
 	      if (post == null) {
 	         logger.info("상세보기 실패");
 	         mv.setViewName("error/error");
@@ -79,11 +75,22 @@ public class PostController {
 	         mv.addObject("message", "상세보기 실패입니다.");
 	      }else {
 	    	  logger.info("상세보기 성공");
-	    	  //int count = commentService.getListCount(num);
+	    	  
+	    	  if (board.getANONYMOUS() == 0) {
+	              Member member = memberService.findMemberByUserId(post.getUSER_ID());
+	              if (member != null){
+	                  String nickname = member.getNickname();
+	                  mv.addObject("nickname", nickname);
+	              }
+	          }
+	    	  
 	    	  mv.setViewName("post/postDetail");
-	    	  //mv.addObject("count", count);
 	    	  mv.addObject("postdata", post);
-	    	  System.out.println("테스트데이터"+ post);
+	    	  mv.addObject("boardtest", board);
+	    	  System.out.println("post테스트=>"+post);
+	    	  
+	    	
+	    	  
 	      }
 	      return mv;
 	     
@@ -176,6 +183,7 @@ public class PostController {
 	    System.out.println("값테스트" + postlist);
 		return mv;
 	}
+<<<<<<< HEAD
    
    //검색기능
    @RequestMapping(value = "/search", method = RequestMethod.POST)
@@ -251,5 +259,7 @@ public class PostController {
 	    System.out.println("값테스트" + postlist);
 		return mv;
    }
+=======
+>>>>>>> branch 'main' of https://github.com/chosangwoon95/Anytime.git
 	
 }

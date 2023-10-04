@@ -2,8 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<link rel="shortcut icon" type="image/x-icon"
-	href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
 	rel="stylesheet">
