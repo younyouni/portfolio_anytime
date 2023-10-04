@@ -56,13 +56,13 @@ public class SecurityConfig {
 				.antMatchers("/member/forgotpwd_result").permitAll()
 				
 				.antMatchers("/post/list").permitAll()
-				.antMatchers("/**/**").permitAll()
+				.antMatchers("/**/**").permitAll();
 				
 				
-				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
-			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
+//				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
+//				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
+//			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")
+//				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
 		
 		http.formLogin().loginPage("/main/home")
 				        .loginProcessingUrl("/member/loginProcess")

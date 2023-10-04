@@ -14,7 +14,7 @@ import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
 
 @Controller
-@RequestMapping(value = "/{schoolName}") // http://localhost:9700/anytime/{schoolName}/youn로 시작하는 주소 매핑
+@RequestMapping(value = "/{schoolDomain}") // http://localhost:9700/anytime/{schoolName}/youn로 시작하는 주소 매핑
 public class MemberController2 {
 	// import org.slf4j.Logger;
 	// import org.slf4j.LoggerFactory;

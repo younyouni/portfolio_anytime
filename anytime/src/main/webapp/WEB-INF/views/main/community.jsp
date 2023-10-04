@@ -21,22 +21,6 @@
 	console.log(school_check);
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
-<style>
-/*body {
-	margin: 0;
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	background-color: #ffffff !important;
-}
-
-element.style {
-	margin-left: -200px;
-	margin-top: -135.5px;
-	display: none;
-}*/
-</style>
 </head>
 <body style="">
 	<jsp:include page="../common/header.jsp" />

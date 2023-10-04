@@ -118,6 +118,15 @@
       delete from Member3
       where id = #{id}
    </delete>
+   
+   <!-- ===========윤희============ -->
+   <select id="getSchoolDomain" parameterType="String" resultType="String">
+   	SELECT SCHOOL.DOMAIN
+	FROM SCHOOL
+	INNER JOIN MEMBER 
+	ON SCHOOL.SCHOOL_ID = MEMBER.SCHOOL_ID
+	WHERE MEMBER.LOGIN_ID = #{login_id}
+   </select>
 	
 	
 </mapper>

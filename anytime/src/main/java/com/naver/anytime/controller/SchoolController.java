@@ -1,5 +1,7 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import com.naver.anytime.service.SchoolService;
 @Controller
 public class SchoolController {
 
-	private static final Logger logger = LoggerFactory.getLogger(MemberController2.class);
+	private static final Logger logger = LoggerFactory.getLogger(SchoolController.class);
 
 	private SchoolService schoolService;
 	private BoardService boardService;
@@ -33,10 +35,21 @@ public class SchoolController {
 	// 학교별 커뮤니티 페이지 접근 주소 @PathVariable 사용
 	// {schoolName}은 school database에 저장된 학교별 도메인 값
 	// {schoolName}을 활용하여 학교 별 게시판 & 게시물 등을 출력
-	@RequestMapping(value = "/{schoolName}", method = RequestMethod.GET)
-	public String getPage(@PathVariable String schoolName) {
+//	@RequestMapping(value = "/{schoolName}", method = RequestMethod.GET)
+//	public String getCommunityPage(@PathVariable String schoolName) {
+//
+//		return "/main/community";
+//	}
 
-		return "/main/community";
+	@RequestMapping(value = "/{schoolDomain}", method = RequestMethod.GET)
+	public ModelAndView getLoginCommunityPage(@PathVariable("schoolDomain") String schoolDomain, ModelAndView mv,
+			Principal userPrincipal) {
+		String schoolName = schoolService.getSchoolName(schoolDomain);
+		mv.setViewName("main/community");
+		mv.addObject("schoolName", schoolName);
+		logger.info("학교 이름 : " + schoolName);
+		logger.info("인증된 사용자 : " + userPrincipal.getName());
+		return mv;
 	}
 
 //	@RequestMapping(value = "/{schoolName}", method = RequestMethod.GET)

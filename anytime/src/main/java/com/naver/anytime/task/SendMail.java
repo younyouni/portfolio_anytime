@@ -27,7 +27,7 @@ public class SendMail {
 
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				helper.setFrom("chaji281@naver.com"); // 보내는 사람의 이메일 주소
+				helper.setFrom("youni100@naver.com"); // 보내는 사람의 이메일 주소
 				helper.setTo(to);
 				helper.setSubject(subject);
 

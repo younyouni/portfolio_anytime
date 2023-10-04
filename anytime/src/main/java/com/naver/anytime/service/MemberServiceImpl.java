@@ -114,6 +114,13 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSearchListCount(map);
 
 	}
+	
+	//----------------------------윤희----------------------------
+
+	@Override
+	public String getSchoolDomain(String id) {
+		return dao.getSchoolDomain(id);
+	}
 
 	
 	
