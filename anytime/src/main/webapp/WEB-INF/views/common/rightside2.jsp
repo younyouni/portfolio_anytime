@@ -3,10 +3,11 @@
 <html>
 <head>
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/rightside2.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-latest.js"></script>
 <script>
 $(function() {
-    document.getElementById("searchButton").addEventListener("click", function() {
-        document.getElementById("searchArticleForm").submit();
+    $("#searchButton").click(function() {
+        $("#searchArticleForm").submit();
     });
 });
 </script>
@@ -16,17 +17,18 @@ $(function() {
 	<!-- <div class="card"> -->
 		<div class="rightside2">
 		
-		<form id="searchArticleForm" class="search" 
-			action="search?board_id=${board_id}" method="post">
-			<select name="search_field">
-				<option value="0">전체</option>
-				<option value="1">글 제목</option>
-				<option value="2">글 내용</option>
-			</select> 
-				<input name="search_word" placeholder="검색어를 입력하세요." 
-					   value="${search_word}" type="text">
-				<button type="button" id="searchButton">&nbsp;&nbsp;</button>
-		</form>
+		 <form id="searchArticleForm" class="search" 
+                action="${pageContext.request.contextPath}/post/search" method="get">
+                <input type="hidden" name="board_id" value="${board_id}">
+                <select name="search_field" id="search_field">
+                    <option value="0">전체</option>
+                    <option value="1">글 제목</option>
+                    <option value="2">글 내용</option>
+                </select> 
+                <input name="search_word" id="search_word" placeholder="검색어를 입력하세요." 
+                       value="${search_word}" type="text">
+                <button type="button" id="searchButton">&nbsp;&nbsp;</button>
+            </form>
 		
 		</div>
 

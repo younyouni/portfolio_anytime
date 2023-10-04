@@ -74,6 +74,11 @@ public interface PostMapper {
 	// 이름 확인용
 	public List<Post> getUserNickname(Map<String, String> map);
 	
+	
+	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
+
+	// 검색용 
+	public int getListCount(int board_id, int search_field, String search_word);
 	
 }

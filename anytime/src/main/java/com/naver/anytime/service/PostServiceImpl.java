@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService {
 	
 	//검색용 게시물 리스트 총 수
 	public int getListCount(int board_id, int search_field, String search_word) {
-		return postDao.getListCount(board_id, search_word, search_word);
+		return postDao.getListCount(board_id, search_field, search_word);
 	}
 	
 	//검색용 게시물 리스트 결과

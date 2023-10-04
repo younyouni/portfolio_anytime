@@ -60,9 +60,5 @@ public class BoardController {
 	    // 생성된 JSON 데이터를 클라이언트에 응답으로 전송
 	    return responseData;
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'main' of https://github.com/chosangwoon95/Anytime.git
 
 }

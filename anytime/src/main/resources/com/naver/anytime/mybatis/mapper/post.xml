@@ -44,6 +44,38 @@
     	FROM member
 	</select>
 	
+	<select id="getSearchPostList" parameterType="map" resultType="post">
+		SELECT * 
+		FROM (
+		    SELECT ROWNUM RNUM, j.* 
+		    FROM (
+		        SELECT post.*, NVL(cnt, 0) AS COMMENT_COUNT 
+		        FROM post 
+		        LEFT OUTER JOIN (
+		            SELECT post_id, COUNT(*) cnt 
+		            FROM comments 
+		            GROUP BY post_id
+		        ) sub_C 
+		        ON post.post_id = sub_C.post_id 
+		        WHERE post.board_id = #{board_id}
+		    <include refid="search"/>
+			ORDER BY post.post_id DESC) j
+			         WHERE ROWNUM &lt;= #{end}
+				)
+				WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+	
+	<sql id="search">
+		<if test='search_field = 0'>
+			AND post.subject LIKE #{search_word} OR post.content LIKE #{search_word}
+		</if>
+		<if test='search_field = 1'>
+			AND post.subject LIKE #{search_word}
+		</if>
+		<if test='search_field = 2'>
+			AND post.content LIKE #{search_word}
+		</if>
+	</sql>
 	
 	
 </mapper>

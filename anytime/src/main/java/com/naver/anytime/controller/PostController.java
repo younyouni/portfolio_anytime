@@ -183,15 +183,14 @@ public class PostController {
 	    System.out.println("값테스트" + postlist);
 		return mv;
 	}
-<<<<<<< HEAD
-   
+
    //검색기능
-   @RequestMapping(value = "/search", method = RequestMethod.POST)
+   @RequestMapping(value = "/search")
    public ModelAndView postsearch(
+		   @RequestParam(value = "board_id") int board_id,
 		   @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-		   @RequestParam(value = "board_id", required = false) int board_id, 
-		   @RequestParam(value = "search_field")int search_field,
-		   @RequestParam(value = "search_word")String search_word,
+		   @RequestParam(value = "search_field", defaultValue = "0") int search_field,
+		   @RequestParam(value = "search_word", defaultValue = "") String search_word,
 		   ModelAndView mv){
 	   
 		int limit = 10;
@@ -248,18 +247,18 @@ public class PostController {
 	    mv.addObject("un", username);
 	    mv.addObject("allsearchcheck", 0);
 	    mv.addObject("emptycheck", 0);
-	    mv.addObject("board_id", board_id);
+
 	    
 	    // 글이 없을때 체크 (1= 일반, 2= 검색)
 	    if(postlist != null) {
 	    	mv.addObject("emptycheck", 2);
 	    }
+	    
+	    // 검색 확인
+	    
 	      
 	    System.out.println("보드넘테스트" + board_id);
 	    System.out.println("값테스트" + postlist);
 		return mv;
    }
-=======
->>>>>>> branch 'main' of https://github.com/chosangwoon95/Anytime.git
-	
 }
