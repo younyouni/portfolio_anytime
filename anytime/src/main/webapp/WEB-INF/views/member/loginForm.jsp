@@ -13,9 +13,12 @@
 <script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>	
 	
 <script>
-   if("${loginfail}" == 'loginFailMsg'){
+	if("${result}" == 'joinSuccess'){
+		alert("회원가입을 축하합니다.")
+	}else if("${loginfail}" == 'loginFailMsg'){
 		alert("아이디나 비밀번호 오류 입니다.")
-	}
+	}else if("${result}" == 'Success'){
+		alert("아이디 정보가 발송되었습니다..")
 
 	$(function() {
 	

@@ -28,5 +28,7 @@ public interface MemberService {
 	
 	public Member findMemberByUserId(int user_id);
 
+	public String findIdByEmail(String email);
+
 	
 }
