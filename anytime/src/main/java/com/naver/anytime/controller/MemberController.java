@@ -306,8 +306,6 @@ public class MemberController {
 			
 			
 	
-		
-	
 	
 	
 	// http://localhost:9700/anytime/member/forgotpwd
@@ -317,23 +315,71 @@ public class MemberController {
 		return "member/forgotPwd";// WEB-IF/views/member/forgotpwd.jsp
 	}
 
+	
 	// http://localhost:9700/anytime/member/forgotpwd_mailcheck
-	// 비밀번호 찾기 본인인증 이동
-	@RequestMapping(value = "/forgotpwd_mailcheck", method = RequestMethod.GET)
-	public String forgotpwd_mailcheck() {
+	// 비밀번호 찾기 본인인증 jsp 이동
+	@RequestMapping(value = "/forgotpwd_mailcheck", method = RequestMethod.POST)
+	public String forgotpwd_mailcheck(HttpServletRequest request ) {
+		HttpSession session = request.getSession();
+		session.setAttribute("id", request.getParameter("login_id"));
+		
 		return "member/forgotPwd_mailcheck";// WEB-IF/views/member/forgotpwd_mailcheck.jsp
 	}
 
+	
+	
+	// 비밀번호 찾기 본인인증 진행
+	    @ResponseBody
+		@RequestMapping(value = "/forgotpwd_mailsend", method = RequestMethod.POST)
+		public String forgotpwd_mailcheck(@RequestParam("email") String email, HttpSession session) {
+			//난수(인증번호 )생성
+			String authCode = generateAuthCode();
+			
+			//세션에 인증번호 저장
+	        session.setAttribute("authCode", authCode);
+	        
+	        //이메일 발송
+	        String subject ="애니타임 비밀번호 찾기 본인 인증";
+	        try {
+	        	sendMail.sendAuthEmail(email, subject, authCode);
+	        }catch(Exception e) {
+	        	logger.error("메일 전송 실패", e);
+	        	
+	        }
+	        return authCode;
+	
+		}	
+	
 	// http://localhost:9700/anytime/member/forgotpwd_result
 	// 비밀번호 찾기 비번 변경폼 이동
-	@RequestMapping(value = "/forgotpwd_result", method = RequestMethod.GET)
+	@RequestMapping(value = "/forgotpwd_result", method = RequestMethod.POST)
 	public String forgotpwd_result() {
 		return "member/forgotPwd_result";// WEB-IF/views/member/forgotpwd_result.jsp
 	}
 
-	//
-	@RequestMapping(value = "/forgotpwd_resultProcess", method = RequestMethod.GET)
-	public String forgotpwdresultProcess() {
+	// 비밀번호 찾기 비번 변경
+	@RequestMapping(value = "/forgotpwd_resultProcess", method = RequestMethod.POST)
+	public String forgotpwdresultProcess(@RequestParam("password") String password, 
+			                                                       Member member, 
+			                                                       RedirectAttributes rattr,
+			                                                       Model model,
+			                                                       HttpServletRequest request) {
+		// 비밀번호 암호화 추가
+        String encPassword = passwordEncoder.encode(password);
+        logger.info(encPassword);
+        
+		// HttpSession 객체 가져오기
+		HttpSession session = request.getSession();
+		
+		String id =(String) session.getAttribute("id");
+		
+		// 비밀번호 변경 작업 수행
+	    memberservice.changePassword(id, encPassword);
+		
+		
+		
+		
+		
 		return "redirect:login";
 	}
 

@@ -28,5 +28,7 @@ public interface MemberService {
 
 	public String findIdByEmail(String email);
 
+	void changePassword(String login_id, String password);
+
 	
 }

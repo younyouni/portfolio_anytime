@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.naver.anytime.domain.Member;
 /*
@@ -30,6 +31,9 @@ public interface MemberMapper {
 	public List<Member> getSearchList(Map<String, Object> map);
 
 	public String findIdByEmail(String email);
+
+	public void updatePassword(@Param("login_id") String login_id,
+            @Param("password") String password);
 
 	
 }

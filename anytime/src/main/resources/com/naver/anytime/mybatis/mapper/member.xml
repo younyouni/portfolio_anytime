@@ -34,6 +34,12 @@
     </select>
 
 
+  <update id="updatePassword" parameterType="map">
+      UPDATE member_table SET 
+          password = #{password} 
+      WHERE login_id = #{login_id}
+  </update>
+
 
 
 	<update id="update" parameterType="member">
