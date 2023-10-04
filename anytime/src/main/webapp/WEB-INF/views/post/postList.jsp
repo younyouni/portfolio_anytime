@@ -18,7 +18,7 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
-
+//
 <body>
 
 	<div id="container" class="article">
