@@ -859,42 +859,26 @@ form.writecomment.clone.grandchild {
 #container>div.articles>article ul.status li.attach {
 	padding-left: 15px;
 	color: #737373;
-<<<<<<< HEAD
 	background-image: url('/anytime/resources/image/post/attach.png');
 	
-=======
-	background-image: url('../../image/post/container.articles.attach.png');
->>>>>>> branch 'main' of https://github.com/chosangwoon95/Anytime.git
 }
 
 #container>div.articles>article ul.status li.vote {
 	padding-left: 15px;
 	color: #c62917;
-<<<<<<< HEAD
 	background-image: url('/anytime/resources/image/post/vote.png');
-=======
-	background-image: url('../../image/post/container.articles.vote.png');
->>>>>>> branch 'main' of https://github.com/chosangwoon95/Anytime.git
 }
 
 #container>div.articles>article ul.status li.comment {
 	padding-left: 15px;
 	color: #0ca5af;
-<<<<<<< HEAD
 	background-image: url('/anytime/resources/image/post/postDetail.comment.png');
-=======
-	background-image: url('../../image/post/container.articles.comment.png');
->>>>>>> branch 'main' of https://github.com/chosangwoon95/Anytime.git
 }
 
 #container>div.articles>article ul.status li.scrap {
 	padding-left: 15px;
 	color: #ffcc1c;
-<<<<<<< HEAD
 	background-image: url('/anytime/resources/image/post/scrap.png');
-=======
-	background-image: url('../../image/post/container.articles.scrap.png');
->>>>>>> branch 'main' of https://github.com/chosangwoon95/Anytime.git
 }
 
 #container>div.articles>article ul.status.left li {
