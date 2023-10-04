@@ -22,11 +22,18 @@
 	<insert id="insert" parameterType="member">
     INSERT INTO member
     VALUES 
-    (#{user_id}, #{school_id}, #{login_id}, #{nickname}, #{password},
+    (member_seq.NEXTVAL, #{school_id}, #{login_id}, #{nickname}, #{password},
      #{email}, #{school_check}, #{address_num}, #{address1},
      #{address2}, #{phone_num}, #{board_admin},
-     #{account_status},#{admission_year} ,#{auth})
+     #{account_status}, #{admission_year}, #{auth})
   </insert>
+
+
+    <select id = "findIdByEmail" resultType="String">
+       select login_id from member where email = #{email}
+    </select>
+
+
 
 
 	<update id="update" parameterType="member">
@@ -35,6 +42,11 @@
 			gender = #{gender}, email = #{email}
 		where id = #{id}	
 	</update>
+	
+	<select id="findMemberByUserId" parameterType="int" resultType="member">
+	  	SELECT * FROM member
+	   	WHERE USER_ID = #{USER_ID}
+	</select>
 	
 	<!--  
 	<select id="searchCount" resultType="int" parameterType="map">

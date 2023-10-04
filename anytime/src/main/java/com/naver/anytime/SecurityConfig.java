@@ -51,6 +51,7 @@ public class SecurityConfig {
 	
 				
 				.antMatchers("/member/forgotid").permitAll()
+				.antMatchers("/member/forgotid_email").permitAll()
 				.antMatchers("/member/forgotpwd").permitAll()
 				.antMatchers("/member/forgotpwd_mailcheck").permitAll()
 				.antMatchers("/member/forgotpwd_result").permitAll()

@@ -30,7 +30,10 @@ public interface MemberMapper {
 
 	public List<Member> getSearchList(Map<String, Object> map);
 
-//윤희
-	public String getSchoolDomain(String id);
+	public Member findMemberByUserId(int user_id);
 
+	public String findIdByEmail(String email);
+
+	// 윤희
+	public String getSchoolDomain(String id);
 }

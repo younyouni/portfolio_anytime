@@ -10,7 +10,7 @@
 <body>
 	<div>
 	${exception} <br>
-	<img src="${pageContext.request.contextPath}/resources/image/404.jpg" width="300px"><br>
+	<img src="${pageContext.request.contextPath}/resources/image/error/404.png" width="300px"><br>
 		요청하신 <b>${url}</b> 이 존재하지 않습니다.
 	</div>
 </body>

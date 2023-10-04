@@ -22,6 +22,7 @@ public class SendMail {
 		this.mailSender = mailSender;
 	}
 
+	// 회원가입시 메일 본인 인증
 	public void sendAuthEmail(String to, String subject, String authCode) {
 		MimeMessagePreparator mp = new MimeMessagePreparator() {
 
@@ -39,4 +40,28 @@ public class SendMail {
 		mailSender.send(mp);
 		logger.info("메일 전송했습니다.");
 	}
+
+	// 아이디 찾기 이메일
+	public void sendFindIdEmail(String to, String subject, String foundId) {
+		MimeMessagePreparator mp = new MimeMessagePreparator() {
+
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+				helper.setFrom("youni100@naver.com"); // 보내는 사람 이메일 주소
+				helper.setTo(to);
+				helper.setSubject(subject);
+
+				String content = "애니타임 가입 아이디 " + foundId;
+				helper.setText(content, true);
+
+			}
+		};
+		try {
+			mailSender.send(mp);
+			logger.info("아이디 찾기 메일 전송했습니다. ");
+		} catch (MailException e) {
+			logger.error("메일 전송 실패", e);
+		}
+	}
+
 }

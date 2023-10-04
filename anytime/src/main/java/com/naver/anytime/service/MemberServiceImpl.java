@@ -22,25 +22,22 @@ public class MemberServiceImpl implements MemberService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	 @Override
-	   public int isId(String id, String password) {
-			Member dbmember = dao.isId(id);
-			int result =-1; //아이디가 존재하지 않는 경우 - rmember가 null인 경우
-			if(dbmember!=null) {//아이디가 존재하는 경우
-				 //passwordEncoder.matches(rawPassword,encodedPassword)
-		         //사용자에게 입력받은 패스워드를 비교하고자 할 때 사용하는 메서드입니다.
-		         //rawPassword : 사용자가 입력한 패스워드
-		         //encodedPassword : DB에 저장된 패스워드
-				if(passwordEncoder.matches(password, dbmember.getPassword())) {
-					result=1;//아이디와 비밀번호가 일치하는 경우
-				}else
-					result=0;//아이디는 존재하지만 비밀번호가 일치하지 않는 경우
-			}
-			return result;
+	@Override
+	public int isId(String id, String password) {
+		Member dbmember = dao.isId(id);
+		int result = -1; // 아이디가 존재하지 않는 경우 - rmember가 null인 경우
+		if (dbmember != null) {// 아이디가 존재하는 경우
+			// passwordEncoder.matches(rawPassword,encodedPassword)
+			// 사용자에게 입력받은 패스워드를 비교하고자 할 때 사용하는 메서드입니다.
+			// rawPassword : 사용자가 입력한 패스워드
+			// encodedPassword : DB에 저장된 패스워드
+			if (passwordEncoder.matches(password, dbmember.getPassword())) {
+				result = 1;// 아이디와 비밀번호가 일치하는 경우
+			} else
+				result = 0;// 아이디는 존재하지만 비밀번호가 일치하지 않는 경우
 		}
-
-
-	
+		return result;
+	}
 
 	@Override
 	public int isId(String id) {
@@ -55,19 +52,22 @@ public class MemberServiceImpl implements MemberService {
 		return (rmember == null) ? -1 : 1; // -1은 아이디가 존재하지 않는 경우
 											// 1은 아이디가 존재하는 경우
 	}
-	
+
 	@Override
 	public int getSchoolIdByName(String campusName) {
 		return dao.getSchoolIdByName(campusName);
 	}
 
-	
 	@Override
 	public int insert(Member m) {
 		return dao.insert(m);
 	}
-	
-	
+
+	@Override
+	public String findIdByEmail(String email) {
+		return dao.findIdByEmail(email);
+	}
+
 	@Override
 	public Member member_info(String id) {
 		return dao.isId(id);
@@ -114,14 +114,17 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSearchListCount(map);
 
 	}
-	
-	//----------------------------윤희----------------------------
+
+	@Override
+	public Member findMemberByUserId(int user_id) {
+		return dao.findMemberByUserId(user_id);
+	}
+
+	// ----------------------------윤희----------------------------
 
 	@Override
 	public String getSchoolDomain(String id) {
 		return dao.getSchoolDomain(id);
 	}
 
-	
-	
 }
