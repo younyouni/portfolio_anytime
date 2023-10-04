@@ -155,7 +155,7 @@ public class PostController {
 	    mv.addObject("limit", limit);
 	    
 	    mv.addObject("un", username);
-	    mv.addObject("board", board);
+	    mv.addObject("boardname", board);
 	    mv.addObject("allsearchcheck", 0);
 	    mv.addObject("emptycheck", 0);
 	    mv.addObject("board_id", b);
