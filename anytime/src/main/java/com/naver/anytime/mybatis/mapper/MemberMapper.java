@@ -30,6 +30,8 @@ public interface MemberMapper {
 	
 	public List<Member> getSearchList(Map<String, Object> map);
 
+	public Member findMemberByUserId(int user_id);
+	
 	public String findIdByEmail(String email);
 
 	public void updatePassword(@Param("login_id") String login_id,

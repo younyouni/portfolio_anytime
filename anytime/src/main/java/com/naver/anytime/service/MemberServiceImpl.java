@@ -128,6 +128,11 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSearchListCount(map);
 
 	}
+	
+	@Override
+	public Member findMemberByUserId(int user_id) {
+	    return dao.findMemberByUserId(user_id);
+	}
 
 	
 

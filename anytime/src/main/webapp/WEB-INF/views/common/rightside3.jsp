@@ -4,13 +4,13 @@
 <html>
 <head>
 	<link rel="shortcut icon" type="image/x-icon" href="/Anytime/image/new/nav.logo.png">
-    <link type="text/css" href="/Anytime/css/rightside3.css" rel="stylesheet">
+    <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/rightside3.css" rel="stylesheet">
 </head>
 <body style="">
     <div class="rightside">
         <div class="card">
             <div class="board">
-            	    <c:if test="${not empty userid}">
+            	    <%-- <c:if test="${not empty userid}"> --%>
                         <h3>
                             <a href="/Anytime/HotListView.bo">HOT 게시물<span>더 보기</span></a>
                         </h3>
@@ -23,7 +23,7 @@
                                 </a>
                             </c:if>
                         </c:forEach>
-                    </c:if>
+                    <%-- </c:if> --%>
             </div>
         </div>
         <div class="card">
