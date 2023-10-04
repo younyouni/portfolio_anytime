@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-	<form class="write" action="PostAddAction.bo?board_num=${board_num}" method="post" enctype="multipart/form-data" name="boardform">
+	<form class="write" action="PostAddAction.bo?board_id=${board_ID}" method="post" enctype="multipart/form-data" name="boardform">
 		<p>
 			<input name="subject" autocomplete="off" placeholder="글 제목" class="title">
 		</p>

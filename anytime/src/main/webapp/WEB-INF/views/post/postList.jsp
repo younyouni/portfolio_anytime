@@ -67,7 +67,7 @@
          			<p class="small">${post.CONTENT}</p> 
          			
          			<time class="small">${post.POST_DATE}</time>
-					<h3 class="small">${post.nickname}</h3>
+					<h3 class="small">${post.NICKNAME}</h3>
 			<ul class="status">
 			
 				<c:set var="fileCount" value="0" />
@@ -80,7 +80,7 @@
                 <li class="attach">${fileCount}</li>
                 
 				<li title="공감" class="vote">${post.LIKE_COUNT}</li>
-				<li title="댓글" class="comment">${post.comment_count}</li>
+				<li title="댓글" class="comment">${post.COMMENT_COUNT}</li>
 			</ul>
 			<hr>
 			</a>
