@@ -52,6 +52,15 @@ public class PostServiceImpl implements PostService {
 		return postDao.getUserNickname(map);
 	}
 	
+	//검색용 리스트 총 수
+	public int getListCount(int board_id, int search_field, String search_word) {
+		return postDao.getListCount(board_id, search_word, search_word);
+	}
+	
+	//검색용 리스트 결과
+	public List<Post> getPostList(int page, int limit, int board_id, int search_field, String search_word) {
+		return null;
+	}
 
 	@Override
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit) {

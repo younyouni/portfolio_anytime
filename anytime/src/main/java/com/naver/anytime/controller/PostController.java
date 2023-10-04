@@ -104,14 +104,16 @@ public class PostController {
    @RequestMapping(value = "/list", method = RequestMethod.GET)
    public ModelAndView postlist(
    @RequestParam(value = "page", defaultValue = "1", required = false) int page, 
-   @RequestParam(value = "board_id", required = false) int b, 
+   @RequestParam(value = "board_id", required = false) int board_id, 
    ModelAndView mv) {
 		
 	   	int limit = 10;
-		//
-		// 총 리스트 수를 받아옴
-		int listcount = postService.getListCount(b);
-		String board = boardService.getBoardName(b);
+	   	
+		// 총 리스트 수
+		int listcount = postService.getListCount(board_id);
+		
+		// 게시판 이름
+		String board = boardService.getBoardName(board_id);
 		
 		// 총 페이지 수
 	    int maxpage = (listcount + limit - 1) / limit;
@@ -125,11 +127,16 @@ public class PostController {
 	    if (endpage > maxpage)
 	       endpage = maxpage;
 
-	    // 리스트를 받아옴
-	    List<Post> postlist = postService.getPostList(page, limit, b);
-	    List<Post> username = postService.getUserNickname();
-	    int anonymous = boardService.getBoardAnonymous(b);
+	    // 게시글 리스트
+	    List<Post> postlist = postService.getPostList(page, limit, board_id);
 	    
+	    // 유저 닉네임
+	    List<Post> username = postService.getUserNickname();
+	    
+	    // 익명성
+	    int anonymous = boardService.getBoardAnonymous(board_id);
+	    
+	    // 익명성 체크
 	    if(anonymous == 1) {
 	    	for(Post post : postlist) {
 	    		post.setNickname("익명");
@@ -158,16 +165,91 @@ public class PostController {
 	    mv.addObject("boardname", board);
 	    mv.addObject("allsearchcheck", 0);
 	    mv.addObject("emptycheck", 0);
-	    mv.addObject("board_id", b);
+	    mv.addObject("board_id", board_id);
 	    
+	    // 글이 없을때 체크
 	    if(postlist != null) {
 	    	mv.addObject("emptycheck", 1);
 	    }
 	      
-	    System.out.println("보드넘테스트" + b);
+	    System.out.println("보드넘테스트" + board_id);
 	    System.out.println("값테스트" + postlist);
 		return mv;
 	}
    
+   //검색기능
+   @RequestMapping(value = "/search", method = RequestMethod.POST)
+   public ModelAndView postsearch(
+		   @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+		   @RequestParam(value = "board_id", required = false) int board_id, 
+		   @RequestParam(value = "search_field")int search_field,
+		   @RequestParam(value = "search_word")String search_word,
+		   ModelAndView mv){
+	   
+		int limit = 10;
+
+		// 총 리스트 수
+		int listcount = postService.getListCount(board_id, search_field, search_word);
+		
+		// 총 페이지 수
+	    int maxpage = (listcount + limit - 1) / limit;
+
+	    // 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
+	    int startpage = ((page - 1) / 10) * 10 + 1;
+
+	    // 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
+	    int endpage = startpage + 10 - 1;
+
+	    if (endpage > maxpage)
+	       endpage = maxpage;
+
+	    // 게시글 리스트
+	    List<Post> postlist = postService.getPostList(page, limit, board_id, search_field, search_word);
+	    
+	    // 유저 닉네임
+	    List<Post> username = postService.getUserNickname();
+	    
+	    // 익명성
+	    int anonymous = boardService.getBoardAnonymous(board_id);
+	    
+	    // 익명성 체크
+	    if(anonymous == 1) {
+	    	for(Post post : postlist) {
+	    		post.setNickname("익명");
+	    	}
+	    } else {
+	    	for(Post post : postlist) {
+	    		for(Post post2 : username) {
+	    			if(post.getUSER_ID() == post2.getUSER_ID()) {
+	    				post.setNickname(post2.getNickname());
+	    			}
+	    		}
+	    	} 	
+	    }
+
+
+	    mv.setViewName("post/postList");
+	    mv.addObject("page", page);
+	    mv.addObject("maxpage", maxpage);
+	    mv.addObject("startpage", startpage);
+	    mv.addObject("endpage", endpage);
+	    mv.addObject("listcount", listcount);
+	    mv.addObject("postlist", postlist);
+	    mv.addObject("limit", limit);
+	    
+	    mv.addObject("un", username);
+	    mv.addObject("allsearchcheck", 0);
+	    mv.addObject("emptycheck", 0);
+	    mv.addObject("board_id", board_id);
+	    
+	    // 글이 없을때 체크
+	    if(postlist != null) {
+	    	mv.addObject("emptycheck", 1);
+	    }
+	      
+	    System.out.println("보드넘테스트" + board_id);
+	    System.out.println("값테스트" + postlist);
+		return mv;
+   }
 	
 }

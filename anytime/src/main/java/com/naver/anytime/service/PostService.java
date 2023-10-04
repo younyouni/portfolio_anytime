@@ -66,5 +66,12 @@ public interface PostService {
 	
 	//포스트 닉네임 확인용
 	public List<Post> getUserNickname();
+	
+
+	//검색용 리스트 총 수
+	public int getListCount(int board_id, int search_field, String search_word);
+	
+	//검색용 리스트 결과
+	public List<Post> getPostList(int page, int limit, int board_id, int search_field, String search_word);
 
 }
