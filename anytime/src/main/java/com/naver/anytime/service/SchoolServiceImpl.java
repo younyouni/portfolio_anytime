@@ -40,4 +40,9 @@ public class SchoolServiceImpl implements SchoolService {
 	public String getSchoolName(String SchoolDomain) {
 		return dao.getSchoolName(SchoolDomain);
 	}
+
+	@Override
+	public School getSchool(String schoolDomain) {
+		return dao.getSchool(schoolDomain);
+	}
 }

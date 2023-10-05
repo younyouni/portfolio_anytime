@@ -22,10 +22,6 @@
 
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-<script>
-	var school_check = "${member.school_check}";
-	console.log(school_check);
-</script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
 </head>
@@ -59,8 +55,8 @@
 						<h3>
 							커뮤니티 이용을 위해<br> <strong>로그인</strong>이 필요합니다!
 						</h3>
-						<a href="/member/login" class="button login">로그인</a> <a
-							href="register.com" class="button register">애니타임 회원가입</a>
+						<a href="${pageContext.request.contextPath}/member/login" class="button login">로그인</a> <a
+							href="${pageContext.request.contextPath}/member/register" class="button register">애니타임 회원가입</a>
 					</form>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
@@ -105,18 +101,53 @@
 			<div class="main">
 				<div class="card">
 					<div class="board">
-						<h3>
-							<c:forEach var="board" items="${outerList}" begin="0" end="0">
+						<c:forEach var="board" items="${outerList}" begin="0" end="0">
+							<h3>
 								<a href="post/list?board_id=${board.BOARD_ID}">
 									${board.BOARDNAME}</a>
-							</c:forEach>
-						</h3>
-						<c:forEach var="post" items="${outerList}">
-							<a class="list"
-								href="post/detail?post_id=${post.POST_ID}"> <time>${post.POST_DATE}</time>
-								<p>${post.SUBJECT}</p>
-								<hr>
-							</a>
+							</h3>
+							<c:choose>
+								<c:when test="${board.BOARDNAME eq '한국대 비밀게시판(익명)' }">
+									<sec:authorize access="isAnonymous()">
+										<div class="needauth">
+											<p>
+												로그인을 한 학생들만<br>이용할 수 있어요!
+											</p>
+											<a class="button" href="${pageContext.request.contextPath}/member/login">로그인</a>
+										</div>
+									</sec:authorize>
+									<sec:authorize access="isAuthenticated()">
+										<c:choose>
+											<c:when test="${member.school_check eq 0}">
+												<div class="needauth">
+													<p>
+														학교 인증을 거친 학생들만<br>이용할 수 있어요!
+													</p>
+													<a class="button" href="${pageContext.request.contextPath}/my">학교 인증하기</a>
+												</div>
+											</c:when>
+											<c:otherwise>
+												<c:forEach var="post" items="${outerList}">
+													<a class="list" href="post/detail?post_id=${post.POST_ID}">
+														<time>${post.POST_DATE}</time>
+														<p>${post.SUBJECT}</p>
+														<hr>
+													</a>
+												</c:forEach>
+											</c:otherwise>
+										</c:choose>
+									</sec:authorize>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="post" items="${outerList}">
+										<a class="list" href="post/detail?post_id=${post.POST_ID}">
+											<time>${post.POST_DATE}</time>
+											<p>${post.SUBJECT}</p>
+											<hr>
+										</a>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 					</div>
 				</div>

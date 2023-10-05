@@ -21,4 +21,6 @@ public interface BoardService {
 	// ********************************= 윤희 =********************************
 	public int[] getBoardIds(String id);
 
+	public int[] getBoardIdsByDomain(String schoolDomain);
+
 }

@@ -19,4 +19,6 @@ public interface SchoolMapper {
 	public String getSchoolDomain(String SchoolName);
 
 	String getSchoolName(String schoolDomain);
+
+	School getSchool(String schoolDomain);
 }

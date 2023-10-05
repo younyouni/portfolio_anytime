@@ -1,7 +1,6 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
+import com.naver.anytime.domain.School;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
@@ -71,13 +71,12 @@ public class SchoolController {
 			mv.addObject("member", m);
 			mv.addObject("list", commonPostsByBoard);
 
-//			for (List<Post> board : commonPostsByBoard) {
-//				for (Post post : board) {
-//					logger.info("게시판이름: " + post.getBOARDNAME());
-//					logger.info("게시글제목: " + post.getSUBJECT());
-//					logger.info("게시글작성일자: " + post.getPOST_DATE());
-//				}
-//			}
+		}else {
+			int[] board_ids = boardService.getBoardIdsByDomain(schoolDomain);
+			School s = schoolService.getSchool(schoolDomain);
+			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
+			mv.addObject("list", commonPostsByBoard);
+			mv.addObject("school",s);
 		}
 
 		return mv;

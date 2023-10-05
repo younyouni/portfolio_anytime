@@ -1,5 +1,7 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
@@ -34,9 +38,18 @@ public class MemberController2 {
 	}
 
 	@RequestMapping(value = "/my", method = RequestMethod.GET)
-	public String info() {
-		// memberservice.delete(id);
-		return "/member/memberAccount";
+	public ModelAndView info(Principal principal, ModelAndView mv) {
+		String id = principal.getName();
+		
+		if(id == null) {
+			mv.setViewName("redirect:login");
+			logger.info("id is null");
+		} else {
+			Member m = memberservice.getLoginMember(id);
+			mv.setViewName("member/memberAccount");
+			mv.addObject("member", m);
+		}
+		return mv;
 	}
 
 	@RequestMapping(value = "/password", method = RequestMethod.GET)
