@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,11 @@
 		alert("아이디나 비밀번호 오류 입니다.")
 	}else if("${result}" == 'Success'){
 		alert("아이디 정보가 발송되었습니다..")
+	}else if("${changePassword}" == "Success"){
+		alert("비밀번호 수정이 완료 되었습니다.")
+	} 	
+		
+	
 
 	$(function() {
 	

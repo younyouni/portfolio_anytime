@@ -54,16 +54,18 @@ public class SecurityConfig {
 				.antMatchers("/member/forgotid_email").permitAll()
 				.antMatchers("/member/forgotpwd").permitAll()
 				.antMatchers("/member/forgotpwd_mailcheck").permitAll()
+				.antMatchers("/member/forgotpwd_mailsend").permitAll()
 				.antMatchers("/member/forgotpwd_result").permitAll()
+				.antMatchers("/member/forgotpwd_resultProcess").permitAll()
 				
 				.antMatchers("/post/list").permitAll()
-				.antMatchers("/**/**").permitAll()
+				.antMatchers("/**/**").permitAll();
 				
 				
-				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
-			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
+//				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
+//				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
+//			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")
+//				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
 		
 		http.formLogin().loginPage("/main/home")
 				        .loginProcessingUrl("/member/loginProcess")

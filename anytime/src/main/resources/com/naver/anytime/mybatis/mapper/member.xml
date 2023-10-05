@@ -34,6 +34,12 @@
     </select>
 
 
+  	<update id="updatePassword" parameterType="map">
+      UPDATE member SET 
+          password = #{password} 
+      WHERE login_id = #{login_id}
+ 	 </update>
+
 
 
 	<update id="update" parameterType="member">
@@ -130,6 +136,21 @@
       delete from Member3
       where id = #{id}
    </delete>
+   
+   <!-- ===========윤희============ -->
+   <select id="getSchoolDomain" parameterType="String" resultType="String">
+   	SELECT SCHOOL.DOMAIN
+	FROM SCHOOL
+	INNER JOIN MEMBER 
+	ON SCHOOL.SCHOOL_ID = MEMBER.SCHOOL_ID
+	WHERE MEMBER.LOGIN_ID = #{login_id}
+   </select>
+   
+   <select id ="getLoginMember" parameterType="String" resultType="member">
+    SELECT * 
+    FROM MEMBER
+    WHERE LOGIN_ID = #{login_id}
+   </select>
 	
 	
 </mapper>

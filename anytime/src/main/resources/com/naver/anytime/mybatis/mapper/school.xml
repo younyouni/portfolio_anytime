@@ -5,14 +5,20 @@
 
 <mapper namespace="com.naver.anytime.mybatis.mapper.SchoolMapper">
 
-    <select id ="getSchoolList" resultType="School">
-      SELECT name, NVL(cnt, 0) AS total_count
-    							FROM SCHOOL 
-    							LEFT JOIN (
-       									 SELECT school_id, COUNT(*) cnt 
-        								 FROM member
-       									 GROUP BY school_id) b 
-   									 ON SCHOOL.school_id = b.school_id
+	<select id="getSchoolList" resultType="School">
+		SELECT name, NVL(cnt, 0) AS total_count
+		FROM SCHOOL
+		LEFT JOIN (
+		SELECT school_id, COUNT(*) cnt
+		FROM member
+		GROUP BY school_id) b
+		ON SCHOOL.school_id = b.school_id
 	</select>
-	
+
+	<select id="getSchoolName" parameterType="String" resultType="String">
+		SELECT NAME
+		FROM SCHOOL
+		WHERE domain=#{schoolDomain}
+	</select>
+
 </mapper>
