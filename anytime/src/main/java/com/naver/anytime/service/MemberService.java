@@ -3,6 +3,7 @@ package com.naver.anytime.service;
 import java.util.List;
 
 import com.naver.anytime.domain.Member;
+import com.naver.anytime.domain.School;
 
 public interface MemberService {
 
@@ -35,5 +36,9 @@ public interface MemberService {
 	// 윤희
 	public String getSchoolDomain(String id);
 
-	public Member getLoginMember(String login_id);
+	public Member getLoginMember(String id);
+
+	public String getSchoolId(String id);
+
+	public School getSchool(String id);
 }
