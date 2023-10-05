@@ -33,4 +33,6 @@ public interface MemberService {
 	// 윤희
 	public String getSchoolDomain(String id);
 
+	public Member getLoginMember(String login_id);
+
 }

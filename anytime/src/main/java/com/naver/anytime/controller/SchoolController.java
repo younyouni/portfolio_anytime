@@ -1,6 +1,8 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.service.BoardService;
+import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.SchoolService;
 
@@ -23,13 +27,16 @@ public class SchoolController {
 	private SchoolService schoolService;
 	private BoardService boardService;
 	private PostService postService;
+	private MemberService memberService;
 
 	@Autowired
-	public SchoolController(SchoolService schoolService, BoardService boardService, PostService postService) {
+	public SchoolController(SchoolService schoolService, BoardService boardService, PostService postService,
+			MemberService memberService) {
 
 		this.schoolService = schoolService;
 		this.boardService = boardService;
 		this.postService = postService;
+		this.memberService = memberService;
 	}
 
 	// 학교별 커뮤니티 페이지 접근 주소 @PathVariable 사용
@@ -44,11 +51,25 @@ public class SchoolController {
 	@RequestMapping(value = "/{schoolDomain}", method = RequestMethod.GET)
 	public ModelAndView getLoginCommunityPage(@PathVariable("schoolDomain") String schoolDomain, ModelAndView mv,
 			Principal userPrincipal) {
-		String schoolName = schoolService.getSchoolName(schoolDomain);
+
 		mv.setViewName("main/community");
-		mv.addObject("schoolName", schoolName);
-		logger.info("학교 이름 : " + schoolName);
-		logger.info("인증된 사용자 : " + userPrincipal.getName());
+
+		if (userPrincipal != null) {
+			String id = userPrincipal.getName();
+			logger.info("인증된 사용자 : " + userPrincipal.getName());
+			logger.info("유저 학교 도메인 : " + memberService.getSchoolDomain(id));
+
+			if (!schoolDomain.equals(memberService.getSchoolDomain(id))) {
+				mv.setViewName("redirect:/" + memberService.getSchoolDomain(id));
+				logger.info("다른학교 출입");
+			}
+			String schoolName = schoolService.getSchoolName(schoolDomain);
+			logger.info("학교 이름 : " + schoolName);
+			Member m = memberService.getLoginMember(id);
+			Map<String, Object> map = new HashMap<String, Object>();
+			mv.addObject("member", m);
+			mv.addObject("schoolName", schoolName);
+		}
 		return mv;
 	}
 

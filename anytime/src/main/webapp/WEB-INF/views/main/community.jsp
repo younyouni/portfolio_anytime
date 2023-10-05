@@ -1,26 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>애니타임</title>
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/common.css"
 	rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css"
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
 	rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/modal.css"
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/container.community.css"
+	rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/modal.css"
 	rel="stylesheet">
 
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script>
-	var school_num = ${school.school_num};
-	var userid = "${userid}";
 	var school_check = "${member.school_check}";
 	console.log(school_check);
+
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
 </head>
 <body style="">
 	<jsp:include page="../common/header.jsp" />
@@ -34,7 +42,7 @@
 			</form>
 			<div class="title">
 				<a class="hamburger"></a>
-				<h1>${school.school_name}애니타임</h1>
+				<h1>애니타임</h1>
 				<ol class="buttons">
 					<li><a id="searchArticle">글 검색</a></li>
 				</ol>
@@ -47,27 +55,29 @@
 		</div>
 		<div class="leftside">
 			<div class="card pconly">
-				<c:if test="${!empty userid}">
+				<sec:authorize access="isAnonymous()">
+					<form class="login">
+						<h3>
+							커뮤니티 이용을 위해<br> <strong>로그인</strong>이 필요합니다!
+						</h3>
+						<a href="/member/login" class="button login">로그인</a> <a
+							href="register.com" class="button register">애니타임 회원가입</a>
+					</form>
+				</sec:authorize>
+				<sec:authorize access="isAuthenticated()">
 					<form class="logged">
-						<img src="${pageContext.request.contextPath}/resources/image/common/0.png" class="picture">
+						<img
+							src="${pageContext.request.contextPath}/resources/image/common/profile.png"
+							class="picture">
 						<p class="nickname">${member.nickname}</p>
-						<p class="userid">${member.userid}</p>
+						<p class="userid">${member.login_id}</p>
 						<ul class="buttons">
 							<li><a href="account.com">내 정보</a></li>
 							<li><a href="logout.com">로그아웃</a></li>
 						</ul>
 						<hr>
 					</form>
-				</c:if>
-				<c:if test="${ empty userid}">
-					<form class="login">
-						<h3>
-							커뮤니티 이용을 위해<br> <strong>로그인</strong>이 필요합니다!
-						</h3>
-						<a href="login.com" class="button login">로그인</a> <a
-							href="register.com" class="button register">애니타임 회원가입</a>
-					</form>
-				</c:if>
+				</sec:authorize>
 			</div>
 			<div class="card">
 				<div class="menus">
@@ -75,7 +85,8 @@
 						href="/mycommentarticle" class="mycommentarticle">댓글 단 글</a> <a
 						href="/myscrap" class="myscrap">내 스크랩</a>
 					<c:if test="${member.board_admin eq 1}">
-						<a href="${pageContext.request.contextPath}/youn/boardlist" class="myboard">게시판 관리</a>
+						<a href="${pageContext.request.contextPath}/youn/boardlist"
+							class="myboard">게시판 관리</a>
 					</c:if>
 					<c:if test="${member.board_admin eq 0}">
 						<p>
@@ -96,13 +107,12 @@
 						<h3>
 							<c:forEach var="board" items="${outerList}" begin="0" end="0">
 								<a href="PostList.bo?board_num=${board.board_num}">
-								   ${board.boardname}</a>
+									${board.boardname}</a>
 							</c:forEach>
 						</h3>
 						<c:forEach var="post" items="${outerList}">
 							<a class="list"
-								href="PostDetailAction.bo?post_num=${post.post_num}"> 
-								<time>${post.post_date}</time>
+								href="PostDetailAction.bo?post_num=${post.post_num}"> <time>${post.post_date}</time>
 								<p>${post.subject}</p>
 								<hr>
 							</a>
@@ -111,7 +121,7 @@
 				</div>
 			</div>
 		</c:forEach>
-		
+
 		<form id="createBoard" class="modal"
 			style="margin-left: -200px; margin-top: -220.5px; display: none;">
 			<a title="닫기" class="close"></a> <span class="new">새 게시판 만들기</span>

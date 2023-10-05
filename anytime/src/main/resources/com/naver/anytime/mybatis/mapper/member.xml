@@ -139,6 +139,12 @@
 	ON SCHOOL.SCHOOL_ID = MEMBER.SCHOOL_ID
 	WHERE MEMBER.LOGIN_ID = #{login_id}
    </select>
+   
+   <select id ="getLoginMember" parameterType="String" resultType="member">
+    SELECT * 
+    FROM MEMBER
+    WHERE LOGIN_ID = #{login_id}
+   </select>
 	
 	
 </mapper>

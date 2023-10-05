@@ -52,8 +52,6 @@
 
 <nav>
 	<div class="wrap">
-		<sec:authorize access="isAuthenticated()">
-			<sec:authentication property="principal" var="pinfo" />
 		<div id="logo">
 			<a href="MainBoard.bo"><img
 				src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
@@ -62,6 +60,8 @@
 					${schoolName}</span>
 			</p>
 		</div>
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="pinfo" />
 			<div id="account">
 				<a href="/message" title="쪽지함" class="icon message">쪽지함</a> <a
 					href="account.com" title="내 정보" class="icon my">내 정보</a> <input

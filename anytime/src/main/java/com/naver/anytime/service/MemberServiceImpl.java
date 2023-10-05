@@ -127,4 +127,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSchoolDomain(id);
 	}
 
+	@Override
+	public Member getLoginMember(String id) {
+		return dao.getLoginMember(id);
+	}
+
 }

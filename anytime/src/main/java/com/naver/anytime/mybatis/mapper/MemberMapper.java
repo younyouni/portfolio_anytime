@@ -36,4 +36,6 @@ public interface MemberMapper {
 
 	// 윤희
 	public String getSchoolDomain(String id);
+
+	public Member getLoginMember(String id);
 }
