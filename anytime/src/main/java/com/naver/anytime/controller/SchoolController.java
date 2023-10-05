@@ -66,7 +66,6 @@ public class SchoolController {
 			String schoolName = schoolService.getSchoolName(schoolDomain);
 			logger.info("학교 이름 : " + schoolName);
 			Member m = memberService.getLoginMember(id);
-			Map<String, Object> map = new HashMap<String, Object>();
 			mv.addObject("member", m);
 			mv.addObject("schoolName", schoolName);
 		}
