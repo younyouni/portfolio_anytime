@@ -82,12 +82,12 @@ public class SecurityConfig {
 		* (4) deleteCookies : 쿠키 제거
 		*/
 		http.logout().logoutSuccessUrl("/member/main")
-		.logoutUrl("/member/logout")
+		.logoutUrl("/member/login")
 		.invalidateHttpSession(true)
-		.deleteCookies("remember-me", "JSESSION_ID");
+		.deleteCookies("autologin", "JSESSION_ID");
 		
 		http.rememberMe()
-	      .rememberMeParameter("remember-me")
+	      .rememberMeParameter("autologin")
 	      .userDetailsService(customUserService())
 	      .tokenValiditySeconds(2419200)
 	      .tokenRepository(tokenRepository());

@@ -79,4 +79,12 @@ public class MemberController2 {
 		return "/member/login";
 	}
 
+	
+	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
+	public String certificate(@PathVariable String schoolName) {
+		return "/member/memberAuth";
+	}
+	
+	
+	
 }

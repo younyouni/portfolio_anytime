@@ -65,6 +65,7 @@ public class MemberController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(ModelAndView mv, @CookieValue(value = "autologin", required = false) Cookie readCookie,
 			HttpSession session, Principal userPrincipal) {
+		logger.info("로그인전");// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 		if (readCookie != null) {
 			logger.info("저장된 아이디 :" + userPrincipal.getName());// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 
@@ -74,6 +75,7 @@ public class MemberController {
 
 			mv.setViewName("redirect:/" + schoolDomain);
 		} else {
+			logger.info("쿠키가없어!!!!");
 			mv.setViewName("member/loginForm");
 			mv.addObject("loginfail", session.getAttribute("loginfail"));// 세션에 저장된 값을 한 번만 실행될 수 있도록 mv에 저장합니다
 			session.removeAttribute("loginfail");// 세션의 값은 제거합니다.
@@ -81,40 +83,6 @@ public class MemberController {
 		return mv;
 	}
 
-	// 로그인 처리
-	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam("login_id") String id, @RequestParam("password") String password,
-			@RequestParam(value = "autologin", defaultValue = "", required = false) String autologin,
-			HttpServletResponse response, HttpSession session, RedirectAttributes rattr) {
-
-		int result = memberservice.isId(id, password);
-		logger.info("결과 :" + result);
-
-		if (result == 1) {
-			// 로그인 성공
-			session.setAttribute("login_id", id);
-			Cookie savecookie = new Cookie("saveid", id);
-			if (!autologin.equals("")) {
-				savecookie.setMaxAge(60 * 60);
-				logger.info("쿠키저장 : 60*60");
-			} else {
-				logger.info("쿠키저장 : 0 ");
-				savecookie.setMaxAge(0);
-			}
-			response.addCookie(savecookie);
-			String schoolDomain = memberservice.getSchoolDomain(id);
-			// getschoolDomain : 데이터베이스 접근하여 로그인 유저의 학교 주소 호출
-			logger.info("학교 도메인 : " + schoolDomain);
-
-			return "redirect:/" + schoolDomain;
-		} else {// 로그인 실패
-			rattr.addFlashAttribute("result", result);
-			return "redirect:login"; // http://localhost:8088/myhome4/member/login
-		}
-	}
-
-	
-	
 	
 	// http://localhost:9700/anytime/member/register
 	// 학교,학번등록 폼 이동
@@ -196,15 +164,15 @@ public class MemberController {
 	public int idcheck(@RequestParam("login_id") String id) {
 		return memberservice.isId(id);// WEB-IF/views/member/oinForm.jsp
 	}
-	
-	 // 회원가입폼에서 닉네임 중복 검사
-     @ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
-				   // HTTP Response BODY에 설정됩니다.
-	 @RequestMapping(value = "/nicknamecheck", method = RequestMethod.GET)
-	 public int nicknamecheck(@RequestParam("nickname") String nickname) {
-	     return memberservice.isNickname(nickname);// WEB-IF/views/member/joinForm.jsp
-		}
-	
+
+	// 회원가입폼에서 닉네임 중복 검사
+	@ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
+					// HTTP Response BODY에 설정됩니다.
+	@RequestMapping(value = "/nicknamecheck", method = RequestMethod.GET)
+	public int nicknamecheck(@RequestParam("nickname") String nickname) {
+		return memberservice.isNickname(nickname);// WEB-IF/views/member/joinForm.jsp
+	}
+
 	// 회원가입 처리
 	@RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
 	public String joinProcess(Member member, RedirectAttributes rattr, Model model, HttpServletRequest request) {
@@ -214,14 +182,13 @@ public class MemberController {
 		logger.info(encPassword);
 		member.setPassword(encPassword);
 		// HttpSession 객체를 가져오기
-        HttpSession session = request.getSession();
-        
-        String enterYear = (String) session.getAttribute("enter_year");
-        String campusName = (String) session.getAttribute("campus_name");
-        
-        
-    	int admission_year = Integer.parseInt(enterYear);
-    	member.setAdmission_year(admission_year);
+		HttpSession session = request.getSession();
+
+		String enterYear = (String) session.getAttribute("enter_year");
+		String campusName = (String) session.getAttribute("campus_name");
+
+		int admission_year = Integer.parseInt(enterYear);
+		member.setAdmission_year(admission_year);
 
 		// MemberService를 사용하여 회원을 데이터베이스에 추가합니다.
 		int school_id = memberservice.getSchoolIdByName(campusName);
@@ -291,41 +258,38 @@ public class MemberController {
 		return "member/forgotPwd";// WEB-IF/views/member/forgotpwd.jsp
 	}
 
-	
 	// http://localhost:9700/anytime/member/forgotpwd_mailcheck
 	// 비밀번호 찾기 본인인증 jsp 이동
 	@RequestMapping(value = "/forgotpwd_mailcheck", method = RequestMethod.POST)
-	public String forgotpwd_mailcheck(HttpServletRequest request ) {
+	public String forgotpwd_mailcheck(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setAttribute("id", request.getParameter("login_id"));
-		
+
 		return "member/forgotPwd_mailcheck";// WEB-IF/views/member/forgotpwd_mailcheck.jsp
 	}
 
-	
-	
 	// 비밀번호 찾기 본인인증 진행
-	    @ResponseBody
-		@RequestMapping(value = "/forgotpwd_mailsend", method = RequestMethod.POST)
-		public String forgotpwd_mailcheck(@RequestParam("email") String email, HttpSession session) {
-			//난수(인증번호 )생성
-			String authCode = generateAuthCode();
-			
-			//세션에 인증번호 저장
-	        session.setAttribute("authCode", authCode);
-	        
-	        //이메일 발송
-	        String subject ="애니타임 비밀번호 찾기 본인 인증";
-	        try {
-	        	sendMail.sendAuthEmail(email, subject, authCode);
-	        }catch(Exception e) {
-	        	logger.error("메일 전송 실패", e);
-	        	
-	        }
-	        return authCode;
-	
-		}	
-	
+	@ResponseBody
+	@RequestMapping(value = "/forgotpwd_mailsend", method = RequestMethod.POST)
+	public String forgotpwd_mailcheck(@RequestParam("email") String email, HttpSession session) {
+		// 난수(인증번호 )생성
+		String authCode = generateAuthCode();
+
+		// 세션에 인증번호 저장
+		session.setAttribute("authCode", authCode);
+
+		// 이메일 발송
+		String subject = "애니타임 비밀번호 찾기 본인 인증";
+		try {
+			sendMail.sendAuthEmail(email, subject, authCode);
+		} catch (Exception e) {
+			logger.error("메일 전송 실패", e);
+
+		}
+		return authCode;
+
+	}
+
 	// http://localhost:9700/anytime/member/forgotpwd_result
 	// 비밀번호 찾기 비번 변경폼 이동
 	@RequestMapping(value = "/forgotpwd_result", method = RequestMethod.POST)
@@ -335,51 +299,33 @@ public class MemberController {
 
 	// 비밀번호 찾기 비번 변경
 	@RequestMapping(value = "/forgotpwd_resultProcess", method = RequestMethod.POST)
-	public String forgotpwdresultProcess(@RequestParam("password") String password, 
-			                                                       Member member, 
-			                                                       RedirectAttributes rattr,
-			                                                       Model model,
-			                                                       HttpServletRequest request) {
+	public String forgotpwdresultProcess(@RequestParam("password") String password, Member member,
+			RedirectAttributes rattr, Model model, HttpServletRequest request) {
 		// 비밀번호 암호화 추가
-        String encPassword = passwordEncoder.encode(password);
-        logger.info(encPassword);
-        
+		String encPassword = passwordEncoder.encode(password);
+		logger.info(encPassword);
+
 		// HttpSession 객체 가져오기
 		HttpSession session = request.getSession();
-		
-		String id =(String) session.getAttribute("id");
-		
+
+		String id = (String) session.getAttribute("id");
+
 		// 비밀번호 변경 작업 수행
-	    memberservice.changePassword(id, encPassword);
-	   
-	    rattr.addFlashAttribute("changePassword", "Success");
+		memberservice.changePassword(id, encPassword);
+
+		rattr.addFlashAttribute("changePassword", "Success");
 		model.addAttribute("message", "비밀번호 수정이 완료되었습니다.");
-	    return "redirect:login";
-		
+		return "redirect:login";
+
 	}
 
-	
-	
-	    // http://localhost:9700/anytime/member/memberAuth
-		// 웹메일 인증 폼 이동
-		@RequestMapping(value = "/certificate", method = RequestMethod.GET)
-		public String certificate() {
-			return "member/memberAuth";// WEB-IF/views/member/memberAuth.jsp
-		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// http://localhost:9700/anytime/member/memberAuth
+	// 웹메일 인증 폼 이동
+	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
+	public String certificate() {
+		return "member/memberAuth";// WEB-IF/views/member/memberAuth.jsp
+	}
+
 	/*
 	 * 회원정보 수정폼1.(HttpSession 이용)
 	 * 
@@ -493,5 +439,4 @@ public class MemberController {
 		return "redirect:list";
 	}
 
-	
 }
