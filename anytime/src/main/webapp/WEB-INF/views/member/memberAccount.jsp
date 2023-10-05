@@ -28,7 +28,7 @@ nav {
 						<span>${member.nickname}</span>
 					</p>
 					<p>
-						<span>${school.school_name}</span> <span
+						<span>${school.name}</span> <span
 							>${member.admission_year}</span> <span>학번</span>
 					</p>
 				</div>
