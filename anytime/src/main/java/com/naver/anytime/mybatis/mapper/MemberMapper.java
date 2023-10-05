@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.naver.anytime.domain.Member;
 
@@ -33,6 +34,8 @@ public interface MemberMapper {
 	public Member findMemberByUserId(int user_id);
 
 	public String findIdByEmail(String email);
+
+	public void updatePassword(String login_id, String password);
 
 	// 윤희
 	public String getSchoolDomain(String id);

@@ -16,9 +16,9 @@ $(document).ready(function(){
 	$('form').on('submit', function(event){
 	  event.preventDefault();
 	  
-	  var userid = $('#userid').val();
+	  var id = $('#login_id').val();
 	  
-	  if(userid.trim()===""){
+	  if(id.trim()===""){
 		  alert("가입된 아이디를 입력해주세요.");
 	  }else{
 		  this.submit();
@@ -37,11 +37,12 @@ $(document).ready(function(){
 						data="">아이디 찾기</span></a> <a data=""
 						class="active"> <span data="">비밀번호 찾기</span></a>
 				</div>
-				<form data="" action="forgotpwd_mailcheck"
-					method="get">
-					<input data="" type="text" name="userid" id ="userid"
+				<form data="" action="forgotpwd_mailcheck" method="post">
+					<input data="" type="text" name="login_id" id ="login_id"
 						placeholder="가입된 아이디" autocomplete="off"> 
 						<input data="" type="submit" value="이메일 본인 인증하기">
+						<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}">
 				</form>
 			</section>
 		</div>

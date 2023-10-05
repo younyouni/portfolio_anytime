@@ -69,6 +69,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public void changePassword(String login_id, String password) {
+		dao.updatePassword(login_id, password);
+
+	}
+
+	@Override
 	public Member member_info(String id) {
 		return dao.isId(id);
 	}

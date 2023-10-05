@@ -53,13 +53,6 @@ public class MemberController {
 		this.sendMail = sendMail;
 	}
 
-	// http://localhost:9700/anytime/member/main
-	// 회원가입 폼 이동
-	// @RequestMapping(value = "/main", method = RequestMethod.GET)
-	// public String main() {
-	// return "member/anytimeMain";// WEB-IF/views/member/anytimeMain.jsp
-	// }
-
 	/*
 	 * @CookieValue(value="saveid", required=false) Cookie readCookie 이름이 saveid인
 	 * 쿠키를 Cookie 타입으로 전달받습니다. 지정한 이름의 쿠키가 존재하지 않을 수도 있기 때문에 required=false로 설정해야
@@ -200,16 +193,16 @@ public class MemberController {
 	public int idcheck(@RequestParam("login_id") String id) {
 		return memberservice.isId(id);// WEB-IF/views/member/oinForm.jsp
 	}
-
-	// 회원가입폼에서 닉네임 중복 검사
-	@ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
-	@RequestMapping(value = "/nicknamecheck", method = RequestMethod.GET)
-	public int nicknamecheck(@RequestParam("nickname") String nickname) {
-		return memberservice.isNickname(nickname);// WEB-IF/views/member/joinForm.jsp
-	}
-
+	
+	 // 회원가입폼에서 닉네임 중복 검사
+     @ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
+				   // HTTP Response BODY에 설정됩니다.
+	 @RequestMapping(value = "/nicknamecheck", method = RequestMethod.GET)
+	 public int nicknamecheck(@RequestParam("nickname") String nickname) {
+	     return memberservice.isNickname(nickname);// WEB-IF/views/member/joinForm.jsp
+		}
+	
 	// 회원가입 처리
-
 	@RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
 	public String joinProcess(Member member, RedirectAttributes rattr, Model model, HttpServletRequest request) {
 
@@ -218,20 +211,14 @@ public class MemberController {
 		logger.info(encPassword);
 		member.setPassword(encPassword);
 		// HttpSession 객체를 가져오기
-		HttpSession session = request.getSession();
-
-		String enterYear = (String) session.getAttribute("enter_year");
-		String campusName = (String) session.getAttribute("campus_name");
-
-		// 값이 제대로 들어있는지 확인
-		if (enterYear == null || campusName == null) {
-			model.addAttribute("url", request.getRequestURL());
-			model.addAttribute("message", "세션 값이 없습니다.");
-			return "error/error";
-		}
-
-		int admission_year = Integer.parseInt(enterYear);
-		member.setAdmission_year(admission_year);
+        HttpSession session = request.getSession();
+        
+        String enterYear = (String) session.getAttribute("enter_year");
+        String campusName = (String) session.getAttribute("campus_name");
+        
+        
+    	int admission_year = Integer.parseInt(enterYear);
+    	member.setAdmission_year(admission_year);
 
 		// MemberService를 사용하여 회원을 데이터베이스에 추가합니다.
 		int school_id = memberservice.getSchoolIdByName(campusName);
@@ -250,7 +237,6 @@ public class MemberController {
 		// 삽입이 된 경우
 		// 회원 가입 결과에 따라 리다이렉트할 페이지를 결정합니다.
 		if (result == 1) {
-
 			rattr.addFlashAttribute("result", "joinSuccess");
 			model.addAttribute("message", "회원가입 성공입니다.");
 			return "redirect:login"; // 로그인 페이지로 이동
@@ -302,24 +288,71 @@ public class MemberController {
 		return "member/forgotPwd";// WEB-IF/views/member/forgotpwd.jsp
 	}
 
+	
 	// http://localhost:9700/anytime/member/forgotpwd_mailcheck
-	// 비밀번호 찾기 본인인증 이동
-	@RequestMapping(value = "/forgotpwd_mailcheck", method = RequestMethod.GET)
-	public String forgotpwd_mailcheck() {
+	// 비밀번호 찾기 본인인증 jsp 이동
+	@RequestMapping(value = "/forgotpwd_mailcheck", method = RequestMethod.POST)
+	public String forgotpwd_mailcheck(HttpServletRequest request ) {
+		HttpSession session = request.getSession();
+		session.setAttribute("id", request.getParameter("login_id"));
+		
 		return "member/forgotPwd_mailcheck";// WEB-IF/views/member/forgotpwd_mailcheck.jsp
 	}
 
+	
+	
+	// 비밀번호 찾기 본인인증 진행
+	    @ResponseBody
+		@RequestMapping(value = "/forgotpwd_mailsend", method = RequestMethod.POST)
+		public String forgotpwd_mailcheck(@RequestParam("email") String email, HttpSession session) {
+			//난수(인증번호 )생성
+			String authCode = generateAuthCode();
+			
+			//세션에 인증번호 저장
+	        session.setAttribute("authCode", authCode);
+	        
+	        //이메일 발송
+	        String subject ="애니타임 비밀번호 찾기 본인 인증";
+	        try {
+	        	sendMail.sendAuthEmail(email, subject, authCode);
+	        }catch(Exception e) {
+	        	logger.error("메일 전송 실패", e);
+	        	
+	        }
+	        return authCode;
+	
+		}	
+	
 	// http://localhost:9700/anytime/member/forgotpwd_result
 	// 비밀번호 찾기 비번 변경폼 이동
-	@RequestMapping(value = "/forgotpwd_result", method = RequestMethod.GET)
+	@RequestMapping(value = "/forgotpwd_result", method = RequestMethod.POST)
 	public String forgotpwd_result() {
 		return "member/forgotPwd_result";// WEB-IF/views/member/forgotpwd_result.jsp
 	}
 
-	//
-	@RequestMapping(value = "/forgotpwd_resultProcess", method = RequestMethod.GET)
-	public String forgotpwdresultProcess() {
-		return "redirect:login";
+	// 비밀번호 찾기 비번 변경
+	@RequestMapping(value = "/forgotpwd_resultProcess", method = RequestMethod.POST)
+	public String forgotpwdresultProcess(@RequestParam("password") String password, 
+			                                                       Member member, 
+			                                                       RedirectAttributes rattr,
+			                                                       Model model,
+			                                                       HttpServletRequest request) {
+		// 비밀번호 암호화 추가
+        String encPassword = passwordEncoder.encode(password);
+        logger.info(encPassword);
+        
+		// HttpSession 객체 가져오기
+		HttpSession session = request.getSession();
+		
+		String id =(String) session.getAttribute("id");
+		
+		// 비밀번호 변경 작업 수행
+	    memberservice.changePassword(id, encPassword);
+	   
+	    rattr.addFlashAttribute("changePassword", "Success");
+		model.addAttribute("message", "비밀번호 수정이 완료되었습니다.");
+	    return "redirect:login";
+		
 	}
 
 	/*

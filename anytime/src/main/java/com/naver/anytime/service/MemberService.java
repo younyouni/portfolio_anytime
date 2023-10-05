@@ -30,9 +30,10 @@ public interface MemberService {
 
 	public String findIdByEmail(String email);
 
+	void changePassword(String login_id, String password);
+
 	// 윤희
 	public String getSchoolDomain(String id);
 
 	public Member getLoginMember(String login_id);
-
 }
