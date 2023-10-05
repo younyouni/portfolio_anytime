@@ -15,9 +15,9 @@
 <script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
 <script>
 
-//학교 도메인 일치 검사
+//학교 address 일치 검사
 function isValidDomain(webmail, schoolDomain) {
-    var emailDomain = webmail.split('@')[1];
+	var emailDomain = webmail.substring(webmail.lastIndexOf("@") + 1);
     return emailDomain === schoolDomain;
 }
 
@@ -29,7 +29,8 @@ function isValidDomain(webmail, schoolDomain) {
             event.preventDefault(); // 폼 제출 동작 차단
 
             const webmail = $('input[name="webemail"]').val();
-            const schoolDomain = '${school.address}'.split('@')[1];
+            const schoolDomain = '${school.address}';
+
             
             if(webmail.trim()===''){
             	alert('학교 이메일을 입력해주세요');
@@ -45,7 +46,7 @@ function isValidDomain(webmail, schoolDomain) {
             $.ajax({
                 url:   'certificate_mailsend', 
                 method:"post",            
-                data: {"webmail": webmail},
+                data: {"webemail": webmail},
                 dataType: 'json',
                 beforeSend: function(xhr)
                 { // 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
@@ -54,8 +55,17 @@ function isValidDomain(webmail, schoolDomain) {
                 success: function (data) {
                     if (data.verificationCode) {
                         alert('인증메일을 발송하였습니다. 이메일을 확인해주세요.');
-                        // redirect to another page
                         location.href = "certificate_mailcheck";
+                        // redirect to another page
+                        $.ajax({
+                            url:   'certificate_mailcheck', 
+                            method:"post",
+                            data: {verificationCode : data.verificationCode},
+                            beforeSend: function(xhr)
+                            { // 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+                              xhr.setRequestHeader(header, token);
+                            },
+                        });
                     } else {
                         alert('메일발송 실패, 학교 이메일이 아닙니다.');
                     }

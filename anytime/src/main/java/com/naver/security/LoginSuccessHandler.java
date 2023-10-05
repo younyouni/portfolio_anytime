@@ -32,5 +32,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		String url = request.getContextPath() + "/" + school.getDomain();
 		request.getSession().setAttribute("school", school);
 		response.sendRedirect(url);
+		
 	}
 }

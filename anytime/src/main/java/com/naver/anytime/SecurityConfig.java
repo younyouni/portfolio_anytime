@@ -58,6 +58,16 @@ public class SecurityConfig {
 				.antMatchers("/member/forgotpwd_result").permitAll()
 				.antMatchers("/member/forgotpwd_resultProcess").permitAll()
 				
+				
+
+				
+				.antMatchers("/certificate").permitAll()
+				.antMatchers("/certificate_mailsend").permitAll()
+				.antMatchers("/certificate_mailcheck").permitAll()
+				.antMatchers("/certificateProcess").permitAll()
+				
+				
+				
 				.antMatchers("/post/list").permitAll()
 				.antMatchers("/**/**").permitAll();
 				

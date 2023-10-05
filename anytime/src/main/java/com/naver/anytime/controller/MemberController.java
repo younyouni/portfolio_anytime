@@ -74,7 +74,6 @@ public class MemberController {
 
 			mv.setViewName("redirect:/" + schoolDomain);
 		} else {
-			logger.info("쿠키가없어!!!!");
 			mv.setViewName("member/loginForm");
 			mv.addObject("loginfail", session.getAttribute("loginfail"));// 세션에 저장된 값을 한 번만 실행될 수 있도록 mv에 저장합니다
 			session.removeAttribute("loginfail");// 세션의 값은 제거합니다.

@@ -1,26 +1,28 @@
 package com.naver.anytime.controller;
 
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Member;
-import com.naver.anytime.domain.School;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
@@ -98,7 +100,7 @@ public class MemberController2 {
 
 	@ResponseBody
 	@RequestMapping(value = "/certificate_mailsend", method = RequestMethod.POST)
-	public String certificate_mailsend(@RequestParam("webemail") String email, HttpSession session) {
+	public Map<String, Object> certificate_mailsend(@RequestParam("webemail") String email, HttpSession session) {
 		// 난수(인증번호) 생성 (예: 6자리 난수)
 		logger.info("email :" + email);
 		String authCode = generateAuthCode();
@@ -112,10 +114,17 @@ public class MemberController2 {
 
 		try {
 			sendMail.sendAuthEmail(email, subject, authCode);
+			 // 응답 데이터 생성
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("verificationCode", authCode);  // 클라이언트에서 기대하는 필드 이름으로 설정
+
+	        return response;
+	        
 		} catch (Exception e) {
 			logger.error("메일 전송 실패", e);
+			 return Collections.singletonMap("error", "메일 전송 실패");
 		}
-		return authCode;
+		
 	}
 
 	// 6자리 인증코드(난수) 생성 메서드
@@ -132,35 +141,36 @@ public class MemberController2 {
 		return Integer.toString(result);
 	}
 
-	@RequestMapping(value = "/certificate_mailcheck", method = RequestMethod.POST)
+	
+	
+	
+	@RequestMapping(value = "/certificate_mailcheck", method = {RequestMethod.GET, RequestMethod.POST})
 	public String certificate_mailcheck() {
 		return "/member/memberCertificate_mailcheck";
 	}
 
 	
-	@RequestMapping(value = "/certificateProcess", method = RequestMethod.POST)
-	public String certificateProcess(Member member, RedirectAttributes rattr, Model model, HttpServletRequest request) {
+	@RequestMapping(value = "/certificateProcess", method = RequestMethod.GET)
+	public String certificateProcess(Member member, RedirectAttributes rattr, Model model) {
 
-		// HttpSession 객체 가져오기
-		HttpSession session = request.getSession();
-
-		String id = (String) session.getAttribute("id");
-
+		// security에서 id값 불러오기 
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		 String id = auth.getName();
+		 logger.info(id);
+		
 		int result = memberservice.updateschoolcheck(id);
 
+		
 		// 업데이트 된 경우
 		if (result == 1) {
 			rattr.addFlashAttribute("result", "schoolcheckSuccess");
 			model.addAttribute("message", "학교 웹메일 인증 성공입니다.");
-			return "redirect:"; // 학교 메인페이지로 이동
+			return "redirect:/my"; // 학교 메인페이지로 이동
 		} else {
-			model.addAttribute("url", request.getRequestURL());
 			model.addAttribute("message", "학교 웹메일 인증 실패입니다.");
-			return "error/error"; //
+			return "error/error";
 		}
 	}
-	
-	
 	
 	
 	
