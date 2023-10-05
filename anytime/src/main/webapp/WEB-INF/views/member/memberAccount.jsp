@@ -19,7 +19,7 @@ nav {
 			<section>
 				<div class="title">
 					<h1>내 정보</h1>
-					<a href="logout.com" class="logout">로그아웃</a>
+					<a href="logout" class="logout">로그아웃</a>
 				</div>
 				<div class="profile">
 					<img src="https://cf-fpi.everytime.kr/0.png">
@@ -35,7 +35,7 @@ nav {
 			</section>
 			<section>
 				<h2>계정</h2>
-				<a href="certificate.com" class="item">학교 인증</a>
+				<a href="${pageContext.request.contextPath}/certificate" class="item">학교 인증</a>
 				<a href="${pageContext.request.contextPath}/password" class="item">비밀번호
 					변경</a> <a href="${pageContext.request.contextPath}/info" class="item">내정보
 					변경</a>

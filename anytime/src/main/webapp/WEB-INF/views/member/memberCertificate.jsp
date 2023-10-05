@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">		
+	
 <!DOCTYPE html>
 <html>
 <head>
 <title>재학생 인증 - 애니타임</title>
 <jsp:include page="../common/header.jsp" />
 
-<link data-vue-meta="ssr" rel="stylesheet"
-	href="/Anytime/css/myInfo/0a14fb2000808afce700.css">
-<link rel="stylesheet" type="text/css"
-	href="/Anytime/css/myInfo/ca8f749d88aa26acde16.css">
-<link rel="stylesheet" type="text/css"
-	href="/Anytime/css/myInfo/13659cd4ee3a59b7dba9.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/info/body.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/info/auth2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/info/auth.css">
 <script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
 <script>
 
@@ -22,11 +22,14 @@ function isValidDomain(webmail, schoolDomain) {
 }
 
  $(document).ready(function () {
+	   let token = $("meta[name='_csrf']").attr("content");
+	   let header = $("meta[name='_csrf_header']").attr("content");
+	 
         $('#submit-button').click(function (event) {
             event.preventDefault(); // 폼 제출 동작 차단
 
             const webmail = $('input[name="webemail"]').val();
-            const schoolDomain = '${school.school_email}'.split('@')[1];
+            const schoolDomain = '${school.address}'.split('@')[1];
             
             if(webmail.trim()===''){
             	alert('학교 이메일을 입력해주세요');
@@ -40,17 +43,19 @@ function isValidDomain(webmail, schoolDomain) {
             
             // 서버에 인증 메일 전송 요청 보내기
             $.ajax({
-                url:   'certificateEmailSend.com', 
+                url:   'certificate_mailsend', 
                 method:"post",            
                 data: {"webmail": webmail},
                 dataType: 'json',
+                beforeSend: function(xhr)
+                { // 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+                  xhr.setRequestHeader(header, token);
+                },
                 success: function (data) {
                     if (data.verificationCode) {
                         alert('인증메일을 발송하였습니다. 이메일을 확인해주세요.');
                         // redirect to another page
-                        window.location.href = 'certificate_email.com?email=' 
-                        		+ encodeURIComponent(webmail) + 
-                        		'&RandNum=' + encodeURIComponent(data.verificationCode);
+                        location.href = "certificate_mailcheck";
                     } else {
                         alert('메일발송 실패, 학교 이메일이 아닙니다.');
                     }
@@ -90,18 +95,19 @@ nav {
 				<div data-v-703578ac="" class="input">
 					<div data-v-703578ac="" class="label">
 						<label data-v-703578ac="">이메일</label>
-						<p data-v-703578ac="">${school.school_email}</p>
+						<p data-v-703578ac="">${school.address}</p>
 					</div>
 					<input data-v-703578ac="" type="email" name ="webemail" maxlength="255"
 						placeholder="이메일" autocomplete="off">
 				</div>
 				
 				<input data-v-703578ac=""  type="submit" value="인증 메일 발송하기" id="submit-button" >
-				
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			</section>
 		</form>
-		<jsp:include page="../common/footer2.jsp" />
+	
 	</div>
+</body>
 </body>
 
 </html>

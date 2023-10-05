@@ -42,7 +42,7 @@ nav {
 </style> 
 </head>
 <body style="">
-	<form name="emailform" action="certificate_process.com" method="get"
+	<form name="emailform" action="certificateProcess" method="post"
 		id="container" data-adagreement="1" data-redirecturl="/"
 		  onsubmit="event.preventDefault(); onSubmit();">
 
@@ -62,6 +62,7 @@ nav {
 		</div>
 		
 		<input type="submit" value="학교인증 완료" >
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</form>
 </body>
 </html>
