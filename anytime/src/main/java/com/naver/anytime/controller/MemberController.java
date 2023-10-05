@@ -81,41 +81,6 @@ public class MemberController {
 		return mv;
 	}
 
-	// 로그인 처리
-	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam("login_id") String id, @RequestParam("password") String password,
-			@RequestParam(value = "autologin", defaultValue = "", required = false) String autologin,
-			HttpServletResponse response, HttpSession session, RedirectAttributes rattr) {
-
-		int result = memberservice.isId(id, password);
-		logger.info("결과 :" + result);
-
-		if (result == 1) {
-			// 로그인 성공
-			String school_id = memberservice.getSchoolId(id);
-			School school = memberservice.getSchool(id);
-			session.setAttribute("login_id", id);
-			session.setAttribute("school_id", school_id);
-			Cookie savecookie = new Cookie("saveid", id);
-			if (!autologin.equals("")) {
-				savecookie.setMaxAge(60 * 60);
-				logger.info("쿠키저장 : 60*60");
-			} else {
-				logger.info("쿠키저장 : 0 ");
-				savecookie.setMaxAge(0);
-			}
-			response.addCookie(savecookie);
-			String schoolDomain = memberservice.getSchoolDomain(id);
-			// getschoolDomain : 데이터베이스 접근하여 로그인 유저의 학교 주소 호출
-			logger.info("학교 도메인 : " + schoolDomain);
-
-			return "redirect:/" + schoolDomain;
-		} else {// 로그인 실패
-			rattr.addFlashAttribute("result", result);
-			return "redirect:login"; // http://localhost:8088/myhome4/member/login
-		}
-	}
-
 	// http://localhost:9700/anytime/member/register
 	// 학교,학번등록 폼 이동
 	@RequestMapping(value = "/register", method = RequestMethod.GET)

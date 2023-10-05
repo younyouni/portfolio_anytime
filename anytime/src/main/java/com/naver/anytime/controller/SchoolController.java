@@ -65,11 +65,21 @@ public class SchoolController {
 				logger.info("다른학교 출입");
 			}
 			Member m = memberService.getLoginMember(id);
-			int[] board_ids = boardService.getBoardNums(id);
-			List<ArrayList<Post>> postTotalList = new ArrayList<ArrayList<Post>>();
-			postTotalList = postService.getPostTotalList(board_ids);
+			int[] board_ids = boardService.getBoardIds(id);
+			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
+
 			mv.addObject("member", m);
+			mv.addObject("list", commonPostsByBoard);
+
+//			for (List<Post> board : commonPostsByBoard) {
+//				for (Post post : board) {
+//					logger.info("게시판이름: " + post.getBOARDNAME());
+//					logger.info("게시글제목: " + post.getSUBJECT());
+//					logger.info("게시글작성일자: " + post.getPOST_DATE());
+//				}
+//			}
 		}
+
 		return mv;
 	}
 
