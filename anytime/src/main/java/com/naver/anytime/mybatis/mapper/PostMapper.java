@@ -78,7 +78,7 @@ public interface PostMapper {
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
 
-	// 검색용 
-	public int getListCount(int board_id, int search_field, String search_word);
+	// 검색용
+	public int getSearchListCount(int board_id, int search_field, String search_word);
 	
 }

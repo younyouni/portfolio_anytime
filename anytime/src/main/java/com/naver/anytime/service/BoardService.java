@@ -11,7 +11,7 @@ public interface BoardService {
 	public String getBoardName(int board_id);
 	
 	//보드 리스트
-	public List<Board> getBoardList();
+	public List<Board> getBoardList(int school_id);
 	
 	public Board getBoardDetail(int board_id);
 	

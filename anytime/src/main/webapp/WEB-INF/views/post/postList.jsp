@@ -205,7 +205,7 @@
 			<div class="clearBothOnly"></div>
 			<div class="center-block">
 				<c:choose>
-					<c:when test="${allsearchcheck == 0}">
+					<c:when test="${allsearchcheck == 0 && searchcheck != 1}">
 						<ul class="pagination justify-content-center">
 
 							<c:if test="${page <= 1 }">
@@ -254,7 +254,59 @@
 							</c:if>
 						</ul>
 					</c:when>
+		
+		<%-------------------------------- ▼페이지네이션▼ 포스트검색 일떄, --------------------------------%>
+					
+					<c:when test="${allsearchcheck == 0 && searchcheck == 1}">
+						<ul class="pagination justify-content-center">
 
+							<c:if test="${page <= 1 }">
+								<li class="page-item">
+								<li class="page-item hidden"><a class="page-link gray">이전&nbsp;&nbsp;</a>
+								</li>
+							</c:if>
+							<c:if test="${page > 1 }">
+								<li class="page-item"><a
+									href="search?board_id=${board_id}&page=${page-1}&search_field=${search_field}&search_word=${search_word}"
+									class="page-link">&nbsp;&nbsp;&nbsp;이전</a></li>
+							</c:if>
+
+
+							<c:forEach var="a" begin="${startpage}" end="${endpage}">
+								<c:if test="${a == page}">
+									<li class="page-item  active"><a class="page-link">${a}</a>
+									</li>
+								</c:if>
+								<c:if test="${a != page }">
+									<c:url var="go" value="search">
+										<c:param name="board_id" value="${board_id}" />
+										<c:param name="search_field" value="${search_field}" />
+										<c:param name="search_word" value="${search_word}" />
+										<c:param name="page" value="${a}" />
+									</c:url>
+									<li class="page-item"><a href="${go}" class="page-link">${a}</a>
+									</li>
+								</c:if>
+							</c:forEach>
+							
+							
+							<c:if test="${page >= maxpage }">
+								<li class="page-item hidden"><a class="page-link hidden">다음&nbsp;&nbsp;&nbsp;</a>
+								</li>
+							</c:if>
+							<c:if test="${page < maxpage }">
+								<c:url var="next" value="search">
+									<c:param name="board_id" value="${board_id}" />
+									<c:param name="search_field" value="${search_field}" />
+									<c:param name="search_word" value="${search_word}" />
+									<c:param name="page" value="${page+1}" />
+								</c:url>
+								<li class="page-item"><a href="${next}" class="page-link">다음&nbsp;&nbsp;&nbsp;</a>
+								</li>
+							</c:if>
+						</ul>
+					</c:when>		
+		
 		<%-------------------------------- ▼페이지네이션▼ 메인검색 일떄, --------------------------------%>
 		
 					<c:when test="${allsearchcheck == 1}">
