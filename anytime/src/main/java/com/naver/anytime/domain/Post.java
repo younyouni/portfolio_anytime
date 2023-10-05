@@ -40,14 +40,14 @@ public class Post {
 	public String getSUBJECT() {
 		return SUBJECT;
 	}
-	public void setSUBJECT(String sUBJECT) {
-		SUBJECT = sUBJECT;
+	public void setSUBJECT(String SUBJECT) {
+		this.SUBJECT = SUBJECT;
 	}
 	public String getCONTENT() {
 		return CONTENT;
 	}
-	public void setCONTENT(String cONTENT) {
-		CONTENT = cONTENT;
+	public void setCONTENT(String CONTENT) {
+		this.CONTENT = CONTENT;
 	}
 	public String getPOST_FILE() {
 		return POST_FILE;
@@ -105,21 +105,6 @@ public class Post {
 	}
 	
 	/* ---------- POST테이블 toString ---------- */
-	@Override
-	public String toString() {
-		return "Post [POST_ID=" + POST_ID + ", BOARD_ID=" + BOARD_ID + ", USER_ID=" + USER_ID + ", SUBJECT=" + SUBJECT
-				+ ", CONTENT=" + CONTENT + ", POST_FILE=" + POST_FILE + ", POST_DATE=" + POST_DATE + ", LIKE_COUNT="
-				+ LIKE_COUNT + ", SCRAP_COUNT=" + SCRAP_COUNT + ", REPORT_COUNT=" + REPORT_COUNT + ", STATUS=" + STATUS
-				+ ", COMMENT_COUNT=" + COMMENT_COUNT + ", NICKNAME=" + NICKNAME + ", BOARDNAME=" + BOARDNAME
-				+ ", getPOST_ID()=" + getPOST_ID() + ", getBOARD_ID()=" + getBOARD_ID() + ", getUSER_ID()="
-				+ getUSER_ID() + ", getSUBJECT()=" + getSUBJECT() + ", getCONTENT()=" + getCONTENT()
-				+ ", getPOST_FILE()=" + getPOST_FILE() + ", getPOST_DATE()=" + getPOST_DATE() + ", getLIKE_COUNT()="
-				+ getLIKE_COUNT() + ", getSCRAP_COUNT()=" + getSCRAP_COUNT() + ", getREPORT_COUNT()="
-				+ getREPORT_COUNT() + ", getSTATUS()=" + getSTATUS() + ", getCOMMENT_COUNT()=" + getCOMMENT_COUNT()
-				+ ", getNICKNAME()=" + getNICKNAME() + ", getBOARDNAME()=" + getBOARDNAME() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
-	}
-	
 	
 	
 	

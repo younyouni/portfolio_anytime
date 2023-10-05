@@ -44,10 +44,13 @@
     	FROM member
 	</select>
 	
-	<insert id="insertPost" parameterType="Post">
-	    INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE, POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT, STATUS)
-	    VALUES (#{POST_ID}, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, cat.png, sysdate, 0, 0, 0, 1)
-	</insert>
+	<insert id="insertPost" parameterType="com.naver.anytime.domain.Post">
+     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE,
+                        POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
+                        STATUS)
+     VALUES (#{POST_ID}, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT},
+             #{POST_FILE}, SYSDATE, 0, 0 , 0 ,1)
+  </insert>
 	
 	<select id="getPostListByBoard" parameterType="int" resultType="post">
 		SELECT * 

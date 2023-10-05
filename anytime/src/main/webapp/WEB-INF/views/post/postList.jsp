@@ -17,11 +17,12 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
 
 </head>
 
 <body>
-<script src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
+
 	<div id="container" class="article">
 <!-- 		<input type="hidden" id="isUser" value="1"> 
 		<input type="hidden" id="boardId" value="385967">
@@ -397,7 +398,7 @@
 
 	<jsp:include page="../common/footer.jsp" />
 	
-	 <script>
+	<script>
 	$(document).ready(function() {
 		$('#writeArticleButton').click(function() {
 			$(this).hide();	
@@ -433,5 +434,6 @@
 	});
 
 	</script> 
+	
 </body>
 </html>

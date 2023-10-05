@@ -1,6 +1,8 @@
 package com.naver.anytime.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,9 +10,11 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,20 +106,18 @@ public class PostController {
    /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
    @ResponseBody
    @RequestMapping(value = "/write", method = RequestMethod.POST)
-   public String insert( @RequestParam(value = "POST_ID", required = false) Integer post_id,
-		   @RequestParam(value="CONTENT", required=false) String content,
-		   @RequestParam(value="SUBJECT", required=false) String subject,
-		    HttpServletRequest request) {
-
-	  Post post = new Post();
-	  post.setPOST_ID(post_id);
-	  post.setCONTENT(content);
-	  post.setSUBJECT(subject);
-	   
-	  logger.info(post.toString());// selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
-	  postService.insertPost(post);// 저장메서드 호출
-      return "/post/list";
+   public ResponseEntity<Map<String, Object>> insert(@RequestBody Post post) {
+       Map<String, Object> result = new HashMap<>();
+       try {
+           postService.insertPost(post);
+           result.put("statusCode", 1);
+       } catch (Exception e) {
+           result.put("statusCode", -1);
+           result.put("errorMessage", e.getMessage());
+       }
+       return new ResponseEntity<>(result, HttpStatus.OK);
    }
+
    
    
    

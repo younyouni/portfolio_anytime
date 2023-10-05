@@ -77,30 +77,33 @@ $("#writeArticleButton").on("click", function(e) {
 	let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 	
+	console.log($("#title").val());
+	console.log($("#content").val()); 
+	
   	let data = {
-		title: $("#title").val(),
-		content: $("#content").val(),
+		SUBJECT: $("#title").val(),
+		CONTENT: $("#content").val(),
 	};
       
    	console.log(data);
+   	
       $.ajax({
 		type: "POST",
 		url:"write",
 		data: JSON.stringify(data),
-      	
+      	contentType:"application/json; charset=utf-8",
 		dataType:"json",
 		beforeSend: function(xhr) {
 				xhr.setRequestHeader(header, token);
       		},
-	}).done((res)=>{
-
-		if(res.statusCode == 1){
-			alert("게시글 작성에 성공하였습니다.");
-			location.reload();
-		}else{
-			alert("게시글 작성에 실패하였습니다.");
-		}
-	});
+	}).done(function(res) {
+    if(res.statusCode == 1){
+        alert("게시글 작성에 성공하였습니다.");
+        location.reload();
+    } else {
+        alert("게시글 작성에 실패하였습니다. 오류: " + res.errorMessage);
+    }
+});
       
 });
 
