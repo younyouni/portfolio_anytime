@@ -1,5 +1,7 @@
 package com.naver.anytime.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,7 @@ public class MemberController2 {
 	private SendMail sendMail;
 
 	@Autowired
-	public MemberController2(MemberService memberservice, PasswordEncoder passwordEncoder,
-			SendMail sendMail) {
+	public MemberController2(MemberService memberservice, PasswordEncoder passwordEncoder, SendMail sendMail) {
 		this.memberservice = memberservice;
 		this.passwordEncoder = passwordEncoder;
 		this.sendMail = sendMail;
@@ -49,7 +50,7 @@ public class MemberController2 {
 		// memberservice.delete(id);
 		return "/member/updateMember";
 	}
-	
+
 //	@RequestMapping(value = "/{schoolName}", method = RequestMethod.GET)
 //	public String getPage() {
 //		// memberservice.delete(id);
@@ -66,6 +67,15 @@ public class MemberController2 {
 	public String deleteMember() {
 		// memberservice.delete(id);
 		return "/member/deleteMember";
+	}
+
+	// --------------------------------지원-----------------------------------------
+
+	// 로그아웃
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String loginout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/member/login";
 	}
 
 }

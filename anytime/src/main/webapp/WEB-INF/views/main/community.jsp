@@ -72,8 +72,8 @@
 						<p class="nickname">${member.nickname}</p>
 						<p class="userid">${member.login_id}</p>
 						<ul class="buttons">
-							<li><a href="${schoolDomain}/my">내 정보</a></li>
-							<li><a href="logout.com">로그아웃</a></li>
+							<li><a href="${pageContext.request.contextPath}/my">내 정보</a></li>
+							<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
 						</ul>
 						<hr>
 					</form>
