@@ -35,7 +35,7 @@ nav {
 			</section>
 			<section>
 				<h2>계정</h2>
-				<a href="certificate.com" class="item">학교 인증</a>
+				<a href="certificate" class="item">학교 인증</a>
 				<a href="${pageContext.request.contextPath}/youn/password" class="item">비밀번호
 					변경</a> <a href="${pageContext.request.contextPath}/youn/info" class="item">내정보
 					변경</a>

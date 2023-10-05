@@ -113,6 +113,9 @@ public class MemberController {
 		}
 	}
 
+	
+	
+	
 	// http://localhost:9700/anytime/member/register
 	// 학교,학번등록 폼 이동
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -355,6 +358,28 @@ public class MemberController {
 		
 	}
 
+	
+	
+	    // http://localhost:9700/anytime/member/memberAuth
+		// 웹메일 인증 폼 이동
+		@RequestMapping(value = "/certificate", method = RequestMethod.GET)
+		public String certificate() {
+			return "member/memberAuth";// WEB-IF/views/member/memberAuth.jsp
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*
 	 * 회원정보 수정폼1.(HttpSession 이용)
 	 * 
@@ -468,10 +493,5 @@ public class MemberController {
 		return "redirect:list";
 	}
 
-	// 로그아웃
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String loginout(HttpSession session) {
-		session.invalidate();
-		return "redirect:login";
-	}
+	
 }
