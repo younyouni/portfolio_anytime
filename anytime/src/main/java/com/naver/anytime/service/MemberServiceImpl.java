@@ -73,9 +73,13 @@ public class MemberServiceImpl implements MemberService {
 		return dao.findIdByEmail(email);
 	}
 	
-	
-	
-	
+
+	@Override
+	public void changePassword(String login_id, String password) {
+		 dao.updatePassword(login_id, password);
+		
+	}
+
 	
 	
 	@Override
