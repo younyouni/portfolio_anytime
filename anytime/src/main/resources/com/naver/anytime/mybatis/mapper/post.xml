@@ -44,6 +44,11 @@
     	FROM member
 	</select>
 	
+	<insert id="insertPost" parameterType="map">
+      INSERT INTO POST (BOARD_ID, USER_ID, SUBJECT, CONTENT)
+      VALUES (#{type}, #{post.userId}, #{post.title}, #{post.content})
+  	</insert>
+	
 	
 	
 </mapper>

@@ -152,4 +152,10 @@ public class PostServiceImpl implements PostService {
 	public int postDelete(int post_num) {
 		return 0;
 	}
+
+	@Override
+	public boolean insertPost(String type, Post post) {
+		int result = PostMapper.insertPost(type, post);
+        return result > 0;
+	}
 }

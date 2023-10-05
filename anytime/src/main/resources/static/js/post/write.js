@@ -35,6 +35,7 @@ $(document).ready(function(){
 </ol>
 <div class="clearBothOnly"></div>
 <ul class="option">
+
 <!-- ▼해시태그 미사용 주석처리▼ 
 	<li title="해시태그" class="hashtag"></li> 
 -->
@@ -46,6 +47,7 @@ $(document).ready(function(){
  <label class="form-check-label" for="exampleCheck1"> 익명 </label>
 </li>
 -->
+
 </ul>
 <div class="clearBothOnly"></div>
 </form>
