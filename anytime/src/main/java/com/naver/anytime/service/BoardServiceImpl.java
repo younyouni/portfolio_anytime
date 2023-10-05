@@ -50,4 +50,9 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getBoardIds(id);
 	}
 
+	@Override
+	public int[] getBoardIdsByDomain(String schoolDomain) {
+		return dao.getBoardIdsByDomain(schoolDomain);
+	}
+
 }

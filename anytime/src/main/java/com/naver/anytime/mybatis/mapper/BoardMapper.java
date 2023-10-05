@@ -29,4 +29,6 @@ public interface BoardMapper {
 	// ********************************= 윤희 =********************************
 	public int[] getBoardIds(String id);
 
+	public int[] getBoardIdsByDomain(String schoolDomain);
+
 }

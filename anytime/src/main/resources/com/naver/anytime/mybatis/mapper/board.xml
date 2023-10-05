@@ -37,4 +37,16 @@
         AND NAME != '공지사항'
 	</select>
 	
+	<select id="getBoardIdsByDomain" parameterType="String" resultType="int">
+		SELECT BOARD_ID
+        FROM BOARD
+        WHERE TYPE = 1
+        AND SCHOOL_ID = (	select school_id 
+        					from school 
+        					where domain =#{school_domain}
+        				)
+        AND STATUS = 1
+        AND NAME != '공지사항'
+	</select>
+	
 </mapper>
