@@ -6,7 +6,6 @@ import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -65,6 +64,7 @@ public class MemberController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(ModelAndView mv, @CookieValue(value = "autologin", required = false) Cookie readCookie,
 			HttpSession session, Principal userPrincipal) {
+		logger.info("로그인전");// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 		if (readCookie != null) {
 			logger.info("저장된 아이디 :" + userPrincipal.getName());// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 
@@ -79,41 +79,6 @@ public class MemberController {
 			session.removeAttribute("loginfail");// 세션의 값은 제거합니다.
 		}
 		return mv;
-	}
-
-	// 로그인 처리
-	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam("login_id") String id, @RequestParam("password") String password,
-			@RequestParam(value = "autologin", defaultValue = "", required = false) String autologin,
-			HttpServletResponse response, HttpSession session, RedirectAttributes rattr) {
-
-		int result = memberservice.isId(id, password);
-		logger.info("결과 :" + result);
-
-		if (result == 1) {
-			// 로그인 성공
-			String school_id = memberservice.getSchoolId(id);
-			School school = memberservice.getSchool(id);
-			session.setAttribute("login_id", id);
-			session.setAttribute("school_id", school_id);
-			Cookie savecookie = new Cookie("saveid", id);
-			if (!autologin.equals("")) {
-				savecookie.setMaxAge(60 * 60);
-				logger.info("쿠키저장 : 60*60");
-			} else {
-				logger.info("쿠키저장 : 0 ");
-				savecookie.setMaxAge(0);
-			}
-			response.addCookie(savecookie);
-			String schoolDomain = memberservice.getSchoolDomain(id);
-			// getschoolDomain : 데이터베이스 접근하여 로그인 유저의 학교 주소 호출
-			logger.info("학교 도메인 : " + schoolDomain);
-
-			return "redirect:/" + schoolDomain;
-		} else {// 로그인 실패
-			rattr.addFlashAttribute("result", result);
-			return "redirect:login"; // http://localhost:8088/myhome4/member/login
-		}
 	}
 
 	// http://localhost:9700/anytime/member/register

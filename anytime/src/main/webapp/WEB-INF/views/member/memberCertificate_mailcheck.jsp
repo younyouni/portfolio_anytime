@@ -5,8 +5,7 @@
 <head>
 <title>애니타임_이메일 본인 인증</title>
 <script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
-<link type="text/css" href="/Anytime/css/mailcheck.css"
-	rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/info/mailcheck.css">
 	
 <script>
 var isVerified = false; //인증완료 확인
@@ -42,7 +41,7 @@ nav {
 </style> 
 </head>
 <body style="">
-	<form name="emailform" action="certificate_process.com" method="get"
+	<form name="emailform" action="certificateProcess" method="get"
 		id="container" data-adagreement="1" data-redirecturl="/"
 		  onsubmit="event.preventDefault(); onSubmit();">
 
@@ -57,11 +56,12 @@ nav {
 			<div class="caution"></div>
             
             <%-- 응답받은 난수를 받아오기 위해 생성한 히든 인풋 --%>
-            <input type="hidden" id = "RandNum" name = "RandNum" value="${param.RandNum}"/>
+            <input type="hidden" id = "RandNum" name = "RandNum" value="${authCode}"/>
 			
 		</div>
 		
 		<input type="submit" value="학교인증 완료" >
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</form>
 </body>
 </html>

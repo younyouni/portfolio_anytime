@@ -40,14 +40,18 @@
 	</select>
 
 
-	<update id="updatePassword" parameterType="map">
-		UPDATE member SET
-		password = #{password}
-		WHERE login_id = #{login_id}
-	</update>
+    <update id ="updateschoolcheck" parameterType ="String">
+    
+       update member set school_check = 1 where login_id = #{id}
+       
+    </update>
 
-
-
+  	<update id="updatePassword" parameterType="map">
+      UPDATE member SET 
+          password = #{password} 
+      WHERE login_id = #{login_id}
+ 	 </update>
+ 	 
 	<update id="update" parameterType="member">
 		update member
 		set name =
