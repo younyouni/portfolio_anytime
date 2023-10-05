@@ -391,6 +391,7 @@
 				<textarea name="message" class="text" placeholder="내용을 입력해주세요."></textarea>
 			</p>
 			<input type="submit" value="전송" class="button">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</form>
 	</div>
 

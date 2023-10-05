@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function(){
 
 	$("#writeBoardContainer").prepend(
 	`<form class="write" id ="writeBoard">
@@ -58,7 +58,7 @@ $(function() {
 $("#writeBoard").hide(); // Hide
 var toggle = false;
 
-$("#writeArticleButton").on("click",(e)=>{	
+$("#writeArticleButton").on("click", function(e) {	
 	
 	toggle = !toggle;
 	if(toggle == true){
@@ -71,32 +71,32 @@ $("#writeArticleButton").on("click",(e)=>{
 });
 
 /*글쓰기 완료*/
-  $("#writePost").on("click", (e)=>{
+  $("#writePost").on("click", function(e) {
 	e.preventDefault(); //form태그 action안타게 막아버리는것
 	
 	let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 	
-	
   	let data = {
-		CONTENT: $("#content").val(),
-		SUBJECT: $("#title").val(),
+		title: $("#title").val(),
+		content: $("#content").val(),
 	};
       
    	console.log(data);
       $.ajax({
 		type: "POST",
-		url: "write",
-		data: data,
-		beforeSend: function(xhr)
-      {   // 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
-         xhr.setRequestHeader(header, token);
-      },
+		url:"write",
+		data: JSON.stringify(data),
+      	
+		dataType:"json",
+		beforeSend: function(xhr) {
+				xhr.setRequestHeader(header, token);
+      		},
 	}).done((res)=>{
 
-		if(res.statusCode === 1){
+		if(res.statusCode == 1){
 			alert("게시글 작성에 성공하였습니다.");
-			 window.location.href = 'http://localhost:9700/anytime/post/list';
+			location.reload();
 		}else{
 			alert("게시글 작성에 실패하였습니다.");
 		}

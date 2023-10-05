@@ -101,18 +101,20 @@ public class PostController {
    
    /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
    @ResponseBody
-   @PostMapping(value = "/write")
-   // @RequestMapping(value = "/add", method = RequestMethod.POST)
-   public String insert(@RequestParam(value="CONTENT", required=false) String content,
+   @RequestMapping(value = "/write", method = RequestMethod.POST)
+   public String insert( @RequestParam(value = "POST_ID", required = false) Integer post_id,
+		   @RequestParam(value="CONTENT", required=false) String content,
 		   @RequestParam(value="SUBJECT", required=false) String subject,
-		    HttpServletRequest request) throws Exception {
+		    HttpServletRequest request) {
 
 	  Post post = new Post();
+	  post.setPOST_ID(post_id);
 	  post.setCONTENT(content);
 	  post.setSUBJECT(subject);
+	   
 	  logger.info(post.toString());// selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
 	  postService.insertPost(post);// 저장메서드 호출
-      return "redirect:list";
+      return "/post/list";
    }
    
    
