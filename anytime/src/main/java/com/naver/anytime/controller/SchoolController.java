@@ -1,8 +1,8 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Member;
+import com.naver.anytime.domain.Post;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
@@ -63,11 +64,8 @@ public class SchoolController {
 				mv.setViewName("redirect:/" + memberService.getSchoolDomain(id));
 				logger.info("다른학교 출입");
 			}
-			String schoolName = schoolService.getSchoolName(schoolDomain);
-			logger.info("학교 이름 : " + schoolName);
 			Member m = memberService.getLoginMember(id);
 			mv.addObject("member", m);
-			mv.addObject("schoolName", schoolName);
 		}
 		return mv;
 	}

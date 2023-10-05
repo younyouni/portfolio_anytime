@@ -82,7 +82,6 @@ public class MemberController {
 		return mv;
 	}
 
-	
 	// http://localhost:9700/anytime/member/register
 	// 학교,학번등록 폼 이동
 	@RequestMapping(value = "/register", method = RequestMethod.GET)

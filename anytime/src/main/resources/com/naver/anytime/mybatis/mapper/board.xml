@@ -24,5 +24,17 @@
 		from board
 		where board_id = #{board_id}
 	</select>
+	
+	<select id="getBoardNums" parameterType="String" resultType="int">
+		SELECT BOARD_ID
+        FROM BOARD
+        WHERE TYPE = 1
+        AND SCHOOL_ID = (	select school_id 
+        					from member 
+        					where login_id =#{member_id}
+        				)
+        AND STATUS = 1
+        AND NAME != '공지사항'
+	</select>
 
 </mapper>
