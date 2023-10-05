@@ -19,6 +19,6 @@ public interface BoardService {
 	public int getBoardAnonymous(int board_id);
 
 	// ********************************= 윤희 =********************************
-	public int[] getBoardNums(String id);
+	public int[] getBoardIds(String id);
 
 }

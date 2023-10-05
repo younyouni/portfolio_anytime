@@ -149,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String getSchoolId(String id) {
+	public int getSchoolId(String id) {
 		return dao.getSchoolId(id);
 	}
 

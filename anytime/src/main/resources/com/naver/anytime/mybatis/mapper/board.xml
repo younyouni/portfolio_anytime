@@ -25,7 +25,7 @@
 		where board_id = #{board_id}
 	</select>
 	
-	<select id="getBoardNums" parameterType="String" resultType="int">
+	<select id="getBoardIds" parameterType="String" resultType="int">
 		SELECT BOARD_ID
         FROM BOARD
         WHERE TYPE = 1
@@ -36,5 +36,5 @@
         AND STATUS = 1
         AND NAME != '공지사항'
 	</select>
-
+	
 </mapper>
