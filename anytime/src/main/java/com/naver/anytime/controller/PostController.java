@@ -47,7 +47,7 @@ public class PostController {
    }
    
 
-   
+   /* -------------------------------- ▼post/detail 상세페이지▼ -------------------------------- */ 
    @GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
    public ModelAndView postDetail( 
 	   @RequestParam(value = "post_id", required = false) int post_id,
@@ -95,6 +95,7 @@ public class PostController {
 	      return mv;
 	     
 	   }
+   
    
    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

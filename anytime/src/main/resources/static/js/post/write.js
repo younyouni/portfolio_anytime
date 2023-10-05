@@ -1,10 +1,10 @@
 $(document).ready(function(){
 
-      $("#writeBoardContainer").prepend(
+	$("#writeBoardContainer").prepend(
 	`<form class="write" id = "writeBoard">
 	<p><input id="title" placeholder="글 제목" class="title"></p>
 	<p style="margin-bottom: 0px !important;">
-	<textarea id="content" placeholder="에브리타임은 누구나 기분 좋게 참여할 수 있는 커뮤니티를 만들기 위해 커뮤니티 이용규칙을 제정하여 운영하고 있습니다. 
+	<textarea id="content" placeholder="애니타임은 누구나 기분 좋게 참여할 수 있는 커뮤니티를 만들기 위해 커뮤니티 이용규칙을 제정하여 운영하고 있습니다. 
 위반 시 게시물이 삭제되고 서비스 이용이 일정 기간 제한될 수 있습니다. 
 	
 아래는 이 게시판에 해당하는 핵심 내용에 대한 요약 사항이며, 게시물 작성 전 커뮤니티 이용규칙 전문을 반드시 확인하시기 바랍니다. 
@@ -35,13 +35,17 @@ $(document).ready(function(){
 </ol>
 <div class="clearBothOnly"></div>
 <ul class="option">
-<li title="해시태그" class="hashtag"></li>
+<!-- ▼해시태그 미사용 주석처리▼ 
+	<li title="해시태그" class="hashtag"></li> 
+-->
 <li title="첨부" class="attach"></li>
 <li title="완료" class="submit" id="writePost"></li>
+<!-- ▼익명체크박스 미사용 주석처리▼
 <li class="anonym">
 <input type="checkbox" class="form-check-input" id="isAnonymous" name="isAnonymous">
  <label class="form-check-label" for="exampleCheck1"> 익명 </label>
 </li>
+-->
 </ul>
 <div class="clearBothOnly"></div>
 </form>
