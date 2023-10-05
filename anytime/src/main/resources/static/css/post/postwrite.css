@@ -104,7 +104,7 @@ input:focus {
 	width: 40px;
 	cursor: pointer;
 	background-image:
-		url(/Anytime/image/new/container.articles.write.submit.png);
+		url(/anytime/resources/image/post/write.submit.png);
 	background-color: transparent; /* 배경색을 투명하게 설정 */
 	border: none;
 	padding: 0;
