@@ -34,7 +34,7 @@ public class MemberController2 {
 	}
 
 	@RequestMapping(value = "/my", method = RequestMethod.GET)
-	public String info(@PathVariable String schoolName) {
+	public String info(@PathVariable("schoolDomain") String schoolDomain) {
 		// memberservice.delete(id);
 		return "/member/memberAccount";
 	}
