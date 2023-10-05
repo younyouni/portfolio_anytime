@@ -60,6 +60,7 @@ $(document).ready(function () {
 						type="password" maxlength="20" name="password2" placeholder="새 비밀번호 확인"> 
 				
 						<input data="" type="submit" value="비밀번호 변경">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				</form>
 			</section>
 		</div>

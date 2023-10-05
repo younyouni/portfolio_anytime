@@ -53,14 +53,6 @@ public class MemberController {
 		this.sendMail = sendMail;
 	}
 
-	// http://localhost:9700/anytime/member/main
-	// 회원가입 폼 이동
-	//   @RequestMapping(value = "/main", method = RequestMethod.GET)
-	//   public String main() {
-	//      return "member/anytimeMain";// WEB-IF/views/member/anytimeMain.jsp
-	//   }
-
-
 	/*
 	 * @CookieValue(value="saveid", required=false) Cookie readCookie 이름이 saveid인
 	 * 쿠키를 Cookie 타입으로 전달받습니다. 지정한 이름의 쿠키가 존재하지 않을 수도 있기 때문에 required=false로 설정해야
@@ -203,7 +195,7 @@ public class MemberController {
 	
 	 // 회원가입폼에서 닉네임 중복 검사
      @ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
-					// HTTP Response BODY에 설정됩니다.
+				   // HTTP Response BODY에 설정됩니다.
 	 @RequestMapping(value = "/nicknamecheck", method = RequestMethod.GET)
 	 public int nicknamecheck(@RequestParam("nickname") String nickname) {
 	     return memberservice.isNickname(nickname);// WEB-IF/views/member/joinForm.jsp
@@ -229,12 +221,6 @@ public class MemberController {
         String enterYear = (String) session.getAttribute("enter_year");
         String campusName = (String) session.getAttribute("campus_name");
         
-        // 값이 제대로 들어있는지 확인
-    	if (enterYear == null || campusName == null) {
-    		model.addAttribute("url", request.getRequestURL());
-    		model.addAttribute("message", "세션 값이 없습니다.");
-    		return "error/error";
-    	} 
         
     	int admission_year = Integer.parseInt(enterYear);
     	member.setAdmission_year(admission_year);
@@ -257,7 +243,6 @@ public class MemberController {
 		// 삽입이 된 경우
 		// 회원 가입 결과에 따라 리다이렉트할 페이지를 결정합니다.
 		if (result == 1) {
-
 			rattr.addFlashAttribute("result", "joinSuccess");
 			model.addAttribute("message", "회원가입 성공입니다.");
 			return "redirect:login"; // 로그인 페이지로 이동
@@ -375,12 +360,11 @@ public class MemberController {
 		
 		// 비밀번호 변경 작업 수행
 	    memberservice.changePassword(id, encPassword);
+	   
+	    rattr.addFlashAttribute("changePassword", "Success");
+		model.addAttribute("message", "비밀번호 수정이 완료되었습니다.");
+	    return "redirect:login";
 		
-		
-		
-		
-		
-		return "redirect:login";
 	}
 
 	/*

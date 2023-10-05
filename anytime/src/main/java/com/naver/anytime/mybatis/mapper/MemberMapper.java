@@ -34,8 +34,7 @@ public interface MemberMapper {
 	
 	public String findIdByEmail(String email);
 
-	public void updatePassword(@Param("login_id") String login_id,
-            @Param("password") String password);
+	public void updatePassword(String login_id, String password);
 
 	
 }
