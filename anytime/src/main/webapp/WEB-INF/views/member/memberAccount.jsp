@@ -35,19 +35,19 @@ nav {
 			</section>
 			<section>
 				<h2>계정</h2>
-				<a href="certificate" class="item">학교 인증</a>
-				<a href="${pageContext.request.contextPath}/youn/password" class="item">비밀번호
-					변경</a> <a href="${pageContext.request.contextPath}/youn/info" class="item">내정보
+				<a href="certificate.com" class="item">학교 인증</a>
+				<a href="${pageContext.request.contextPath}/password" class="item">비밀번호
+					변경</a> <a href="${pageContext.request.contextPath}/info" class="item">내정보
 					변경</a>
 			</section>
 			<section>
 				<h2>커뮤니티</h2>
-				<a href="${pageContext.request.contextPath}/youn/boardlist" class="item">게시판 관리</a>
+				<a href="${pageContext.request.contextPath}/boardlist" class="item">게시판 관리</a>
 			</section>
 
 			<section>
 				<h2>기타</h2>
-				<a href="${pageContext.request.contextPath}/youn/delete" class="item">회원 탈퇴</a>
+				<a href="${pageContext.request.contextPath}/delete" class="item">회원 탈퇴</a>
 			</section>
 		</div>
 	</div>
