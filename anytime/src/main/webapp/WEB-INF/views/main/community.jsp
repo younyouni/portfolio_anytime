@@ -101,20 +101,20 @@
 		</div>
 		<jsp:include page="../common/rightside.jsp" />
 
-		<c:forEach var="outerList" items="${postTotalList}">
+		<c:forEach var="outerList" items="${list}">
 			<div class="main">
 				<div class="card">
 					<div class="board">
 						<h3>
 							<c:forEach var="board" items="${outerList}" begin="0" end="0">
-								<a href="PostList.bo?board_num=${board.board_num}">
-									${board.boardname}</a>
+								<a href="post/list?board_id=${board.BOARD_ID}">
+									${board.BOARDNAME}</a>
 							</c:forEach>
 						</h3>
 						<c:forEach var="post" items="${outerList}">
 							<a class="list"
-								href="PostDetailAction.bo?post_num=${post.post_num}"> <time>${post.post_date}</time>
-								<p>${post.subject}</p>
+								href="post/detail?post_id=${post.POST_ID}"> <time>${post.POST_DATE}</time>
+								<p>${post.SUBJECT}</p>
 								<hr>
 							</a>
 						</c:forEach>

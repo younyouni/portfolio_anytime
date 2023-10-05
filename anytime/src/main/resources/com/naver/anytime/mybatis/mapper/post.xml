@@ -44,6 +44,41 @@
     	FROM member
 	</select>
 	
-	
+	<select id="getPostListByBoard" parameterType="int" resultType="post">
+		SELECT * 
+		FROM (	
+				SELECT B.BOARD_ID, B.NAME AS BOARDNAME, 
+				P.SUBJECT, TO_CHAR(P.POST_DATE, 'MM-DD HH24:MI') POST_DATE, P.POST_ID
+				FROM BOARD B LEFT JOIN POST P 
+				ON B.BOARD_ID = P.BOARD_ID				
+				WHERE B.BOARD_ID = #{BOARD_ID}					
+				AND B.TYPE = 1 
+				AND B.STATUS = 1									
+				ORDER BY P.POST_DATE DESC										
+	 		 ) 																	
+		WHERE ROWNUM &lt;= 4
+	</select>
+
+	<!-- 사용X -->
+	<select id="getMainPostList" parameterType="int" resultType="post">
+    	SELECT *
+		FROM (
+		    	SELECT P.*,B.TYPE AS BOARD_TYPE,
+		        ROW_NUMBER() OVER (PARTITION BY B.BOARD_ID ORDER BY P.POST_DATE DESC) AS rn
+		    	FROM BOARD B
+		  		LEFT JOIN POST P ON B.BOARD_ID = P.BOARD_ID
+		    	WHERE B.SCHOOL_ID = #{school_id}
+		        AND B.BOARD_ID IN (
+		            				SELECT BOARD_ID
+		            				FROM BOARD
+						            WHERE TYPE = 1
+						            AND SCHOOL_ID = #{school_id}
+						            AND STATUS = 1
+						            AND NAME != '공지사항'
+		        					)
+		        AND P.STATUS = 1
+			 )
+		WHERE rn &lt;= 4;
+	</select>
 	
 </mapper>

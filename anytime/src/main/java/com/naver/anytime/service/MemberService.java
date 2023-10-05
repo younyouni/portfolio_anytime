@@ -40,7 +40,7 @@ public interface MemberService {
 
 	public Member getLoginMember(String id);
 
-	public String getSchoolId(String id);
+	public int getSchoolId(String id);
 
 	public School getSchool(String id);
 }
