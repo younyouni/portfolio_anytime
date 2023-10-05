@@ -9,4 +9,6 @@ public interface SchoolService {
 	List<School> getSchoolList();
 
 	public String getSchoolDomain(String SchoolName);
+
+	String getSchoolName(String schoolDomain);
 }

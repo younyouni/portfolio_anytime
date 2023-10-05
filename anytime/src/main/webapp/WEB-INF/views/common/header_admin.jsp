@@ -52,7 +52,7 @@
 			<a href="MainBoard.bo"><img
 				src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
 			<p>
-				<span class="name multiple">애니타임</span><span class="subname">Anytime</span>
+				<span class="name multiple">애니타임~~~</span><span class="subname">Anytime</span>
 			</p>
 		</div>
 		<div id="account">
