@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.naver.anytime.domain.School;
 import com.naver.anytime.service.MemberService;
 
 //AuthenticationSuccessHandler : 사용자 인증이 성공 후 처리할 작업을 직접 작성할 때 사용하는 인터페이스입니다.
@@ -27,8 +28,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			Authentication authentication) throws IOException, ServletException {
 		logger.info("로그인 성공 : LoginSuccessHandler");
 		String username = authentication.getName();
-		String schoolDomain = memberService.getSchoolDomain(username);
-		String url = request.getContextPath() + "/" + schoolDomain;
+		School school = memberService.getSchool(username);
+		String url = request.getContextPath() + "/" + school.getDomain();
+		request.getSession().setAttribute("school", school);
 		response.sendRedirect(url);
 	}
 }
