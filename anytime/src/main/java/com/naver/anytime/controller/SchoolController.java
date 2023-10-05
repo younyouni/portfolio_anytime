@@ -65,9 +65,6 @@ public class SchoolController {
 				logger.info("다른학교 출입");
 			}
 			Member m = memberService.getLoginMember(id);
-			int[] board_ids = boardService.getBoardNums(id);
-			List<ArrayList<Post>> postTotalList = new ArrayList<ArrayList<Post>>();
-			postTotalList = postService.getPostTotalList(board_ids);
 			mv.addObject("member", m);
 		}
 		return mv;

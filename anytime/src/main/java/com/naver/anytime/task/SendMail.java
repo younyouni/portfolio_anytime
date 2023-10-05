@@ -32,7 +32,7 @@ public class SendMail {
 				helper.setTo(to);
 				helper.setSubject(subject);
 
-				String content = "애니타임 가입 인증 코드: " + authCode;
+				String content = "애니타임 인증 코드: " + authCode;
 				helper.setText(content, true);
 
 			}
