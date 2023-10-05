@@ -58,6 +58,16 @@ public class SecurityConfig {
 				.antMatchers("/member/forgotpwd_result").permitAll()
 				.antMatchers("/member/forgotpwd_resultProcess").permitAll()
 				
+				
+
+				
+				.antMatchers("/certificate").permitAll()
+				.antMatchers("/certificate_mailsend").permitAll()
+				.antMatchers("/certificate_mailcheck").permitAll()
+				.antMatchers("/certificateProcess").permitAll()
+				
+				
+				
 				.antMatchers("/post/list").permitAll()
 				.antMatchers("/**/**").permitAll();
 				
@@ -82,12 +92,12 @@ public class SecurityConfig {
 		* (4) deleteCookies : 쿠키 제거
 		*/
 		http.logout().logoutSuccessUrl("/member/main")
-		.logoutUrl("/member/logout")
+		.logoutUrl("/member/login")
 		.invalidateHttpSession(true)
-		.deleteCookies("remember-me", "JSESSION_ID");
+		.deleteCookies("autologin", "JSESSION_ID");
 		
 		http.rememberMe()
-	      .rememberMeParameter("remember-me")
+	      .rememberMeParameter("autologin")
 	      .userDetailsService(customUserService())
 	      .tokenValiditySeconds(2419200)
 	      .tokenRepository(tokenRepository());
