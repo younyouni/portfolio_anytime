@@ -14,14 +14,17 @@ import com.naver.anytime.domain.Board;
 @Mapper
 public interface BoardMapper {
 
-	//보드 이름 구하기
+	// 보드 이름 구하기
 	public String getBoardName(int board_id);
-	
-	//보드 리스트
-	public List<Board> getBoardList (HashMap<String, Integer> map);
-	
+
+	// 보드 리스트
+	public List<Board> getBoardList(HashMap<String, Integer> map);
+
 	public Board getBoardDetail(int board_id);
-	
-	//보드 익명 체크
+
+	// 보드 익명 체크
 	public int getBoardAnonymous(int board_id);
+
+	// ********************************= 윤희 =********************************
+	public int[] getBoardNums(String id);
 }

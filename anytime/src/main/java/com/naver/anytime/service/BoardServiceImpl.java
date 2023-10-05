@@ -12,21 +12,20 @@ import com.naver.anytime.mybatis.mapper.BoardMapper;
 @Service
 public class BoardServiceImpl implements BoardService {
 
-   private BoardMapper dao;
+	private BoardMapper dao;
 
-   @Autowired
-   public BoardServiceImpl(BoardMapper boardDao) {
-      this.dao = boardDao;
-   }
-	
-	
-   @Override
+	@Autowired
+	public BoardServiceImpl(BoardMapper boardDao) {
+		this.dao = boardDao;
+	}
+
+	@Override
 	public String getBoardName(int board_id) {
 		return dao.getBoardName(board_id);
 	}
-	
-   @Override
-	public List<Board> getBoardList(){
+
+	@Override
+	public List<Board> getBoardList() {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		return dao.getBoardList(map);
 	}
@@ -36,12 +35,15 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getBoardDetail(board_id);
 	}
 
-
-	//보드 익명 체크
+	// 보드 익명 체크
 	public int getBoardAnonymous(int board_id) {
 		return dao.getBoardAnonymous(board_id);
 	}
-  
-	
+
+	// ********************************= 윤희 =********************************
+	@Override
+	public int[] getBoardNums(String id) {
+		return dao.getBoardNums(id);
+	}
 
 }

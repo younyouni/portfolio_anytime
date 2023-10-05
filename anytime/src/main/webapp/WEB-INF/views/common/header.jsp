@@ -57,7 +57,7 @@
 				src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
 			<p>
 				<span class="name multiple">애니타임</span><span class="subname">
-					${schoolName}</span>
+					${school.name}</span>
 			</p>
 		</div>
 		<sec:authorize access="isAuthenticated()">
