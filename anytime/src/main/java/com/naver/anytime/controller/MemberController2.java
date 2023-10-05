@@ -14,7 +14,6 @@ import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
 
 @Controller
-@RequestMapping(value = "/{schoolDomain}") // http://localhost:9700/anytime/{schoolName}/youn로 시작하는 주소 매핑
 public class MemberController2 {
 	// import org.slf4j.Logger;
 	// import org.slf4j.LoggerFactory;
@@ -34,37 +33,37 @@ public class MemberController2 {
 	}
 
 	@RequestMapping(value = "/my", method = RequestMethod.GET)
-	public String info(@PathVariable("schoolDomain") String schoolDomain) {
+	public String info() {
 		// memberservice.delete(id);
 		return "/member/memberAccount";
 	}
 
 	@RequestMapping(value = "/password", method = RequestMethod.GET)
-	public String updatePassword(@PathVariable String schoolName) {
+	public String updatePassword() {
 		// memberservice.delete(id);
 		return "/member/updatePwd";
 	}
 
 	@RequestMapping(value = "/info", method = RequestMethod.GET)
-	public String updateMember(@PathVariable String schoolName) {
+	public String updateMember() {
 		// memberservice.delete(id);
 		return "/member/updateMember";
 	}
 	
 //	@RequestMapping(value = "/{schoolName}", method = RequestMethod.GET)
-//	public String getPage(@PathVariable String schoolName) {
+//	public String getPage() {
 //		// memberservice.delete(id);
 //		return "/member/updateMember";
 //	}
 
 	@RequestMapping(value = "/boardlist", method = RequestMethod.GET)
-	public String getBoardlist(@PathVariable String schoolName) {
+	public String getBoardlist() {
 		// memberservice.delete(id);
 		return "/member/memberBoardlist";
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String deleteMember(@PathVariable String schoolName) {
+	public String deleteMember() {
 		// memberservice.delete(id);
 		return "/member/deleteMember";
 	}
