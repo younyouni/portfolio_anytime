@@ -25,7 +25,6 @@
 <script>
 	var school_check = "${member.school_check}";
 	console.log(school_check);
-
 </script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
@@ -79,24 +78,26 @@
 					</form>
 				</sec:authorize>
 			</div>
-			<div class="card">
-				<div class="menus">
-					<a href="/myarticle" class="myarticle">내가 쓴 글</a> <a
-						href="/mycommentarticle" class="mycommentarticle">댓글 단 글</a> <a
-						href="/myscrap" class="myscrap">내 스크랩</a>
-					<c:if test="${member.board_admin eq 1}">
-						<a href="${pageContext.request.contextPath}/youn/boardlist"
-							class="myboard">게시판 관리</a>
-					</c:if>
-					<c:if test="${member.board_admin eq 0}">
-						<p>
-							새로운 게시판을<br>생성할수 있어요! <a class="button createboard"
-								href="#createboard" data-toggle="modal">게시판 생성하기</a>
-						</p>
-					</c:if>
-					<hr>
+			<sec:authorize access="isAuthenticated()">
+				<div class="card">
+					<div class="menus">
+						<a href="/myarticle" class="myarticle">내가 쓴 글</a> <a
+							href="/mycommentarticle" class="mycommentarticle">댓글 단 글</a> <a
+							href="/myscrap" class="myscrap">내 스크랩</a>
+						<c:if test="${member.board_admin eq 1}">
+							<a href="${pageContext.request.contextPath}/youn/boardlist"
+								class="myboard">게시판 관리</a>
+						</c:if>
+						<c:if test="${member.board_admin eq 0}">
+							<p>
+								새로운 게시판을<br>생성할수 있어요! <a class="button createboard"
+									href="#createboard" data-toggle="modal">게시판 생성하기</a>
+							</p>
+						</c:if>
+						<hr>
+					</div>
 				</div>
-			</div>
+			</sec:authorize>
 		</div>
 		<jsp:include page="../common/rightside.jsp" />
 
