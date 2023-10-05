@@ -18,9 +18,9 @@ nav {
 }
 </style>
 <sec:authorize access="isAnonymous()">
-   <script>
-     location.href = "${pageContext.request.contextPath}/member/login";
-   </script>
+	<script>
+		location.href = "${pageContext.request.contextPath}/member/login";
+	</script>
 </sec:authorize>
 <jsp:include page="../common/header.jsp" />
 </head>
@@ -33,22 +33,24 @@ nav {
 					<a href="${pageContext.request.contextPath}/logout" class="logout">로그아웃</a>
 				</div>
 				<sec:authorize access="isAuthenticated()">
-				<div class="profile">
-					<img src="${pageContext.request.contextPath}/resources/image/common/profile.png">
-					<h3>${member.login_id}</h3>
-					<p>
-						<span>${member.nickname}</span>
-					</p>
-					<p>
-						<span>${school.name}</span> <span>${member.admission_year}</span>
-						<span>학번</span>
-					</p>
-				</div>
+					<div class="profile">
+						<img
+							src="${pageContext.request.contextPath}/resources/image/common/profile.png">
+						<h3>${member.login_id}</h3>
+						<p>
+							<span>${member.nickname}</span>
+						</p>
+						<p>
+							<span>${school.name}</span> <span>${member.admission_year}</span>
+							<span>학번</span>
+						</p>
+					</div>
 				</sec:authorize>
 			</section>
 			<section>
 				<h2>계정</h2>
-				<a href="${pageContext.request.contextPath}/certificate" class="item">학교 인증</a> <a
+				<a href="${pageContext.request.contextPath}/certificate"
+					class="item">학교 인증</a> <a
 					href="${pageContext.request.contextPath}/password" class="item">비밀번호
 					변경</a> <a href="${pageContext.request.contextPath}/info" class="item">내정보
 					변경</a>

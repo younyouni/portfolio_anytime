@@ -6,7 +6,6 @@ import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -65,6 +64,7 @@ public class MemberController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(ModelAndView mv, @CookieValue(value = "autologin", required = false) Cookie readCookie,
 			HttpSession session, Principal userPrincipal) {
+		logger.info("로그인전");// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 		if (readCookie != null) {
 			logger.info("저장된 아이디 :" + userPrincipal.getName());// principal.getName() : 로그인한 아이디 값을 알 수 있어요
 
