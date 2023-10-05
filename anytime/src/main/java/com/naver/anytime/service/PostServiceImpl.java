@@ -153,9 +153,10 @@ public class PostServiceImpl implements PostService {
 		return 0;
 	}
 
+	//글쓰기 실험용
 	@Override
-	public boolean insertPost(String type, Post post) {
-		int result = PostMapper.insertPost(type, post);
-        return result > 0;
+	public void insertPost(Post post) {
+		postDao.insertPost(post);
+		
 	}
 }

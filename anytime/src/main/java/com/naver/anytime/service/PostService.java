@@ -66,7 +66,8 @@ public interface PostService {
 	
 	//포스트 닉네임 확인용
 	public List<Post> getUserNickname();
-
-	public boolean insertPost(String type, Post post);
+	
+	//글쓰기 실험용
+	public void insertPost(Post post);
 
 }

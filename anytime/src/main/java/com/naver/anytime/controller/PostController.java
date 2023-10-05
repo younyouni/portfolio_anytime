@@ -8,15 +8,13 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
@@ -101,15 +99,20 @@ public class PostController {
 	   }
    
    
-   /* -------------------------------- ▼post/write 글 작성 Process▼ -------------------------------- */
-   @PostMapping("/write")
-   public ResponseEntity<?> createPost(@PathVariable String type, @RequestBody Post post) {
-	   boolean result = postService.insertPost(type, post);
-	   if (result) {
-	       return ResponseEntity.ok().body("게시글 작성에 성공하였습니다.");
-	   } else {
-	       return ResponseEntity.status(500).body("게시글 작성에 실패하였습니다.");
-	   }
+   /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
+   @ResponseBody
+   @PostMapping(value = "/write")
+   // @RequestMapping(value = "/add", method = RequestMethod.POST)
+   public String insert(@RequestParam(value="CONTENT", required=false) String content,
+		   @RequestParam(value="SUBJECT", required=false) String subject,
+		    HttpServletRequest request) throws Exception {
+
+	  Post post = new Post();
+	  post.setCONTENT(content);
+	  post.setSUBJECT(subject);
+	  logger.info(post.toString());// selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
+	  postService.insertPost(post);// 저장메서드 호출
+      return "redirect:list";
    }
    
    

@@ -58,7 +58,7 @@
 	/* �꽑�깮�옄�뒗 異뷀썑�뿉 蹂�寃� */
 	border: 1px solid #fff0;
 	background-image:
-		url(../../image/post/container.articles.pagination.before.png);
+		url(/anytime/resources/image/post/container.articles.pagination.before.png);
 	background-position: right 1px center;
 	margin-top: 5px;
 	margin-left: 5px;
@@ -80,7 +80,7 @@
 	/* �꽑�깮�옄�뒗 異뷀썑�뿉 蹂�寃� */
 	border: 1px solid #fff0;
 	background-image:
-		url(../../image/post/container.articles.pagination.next.png);
+		url(/anytime/resources/image/post/container.articles.pagination.next.png);
 	background-position: left 50px center !important;
 	margin-top: 5px;
 	margin-left: 5px;
