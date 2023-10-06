@@ -70,6 +70,9 @@ public interface PostMapper {
 	// 이름 확인용
 	public List<Post> getUserNickname(Map<String, String> map);
 	
+	//글쓰기 실험용
+	public void insertPost(Post post);
+	
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
 

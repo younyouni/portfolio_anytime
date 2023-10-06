@@ -158,4 +158,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getSchool(id);
 	}
 
+	@Override
+	public int getUserId(String login_id) {
+		return dao.getUserId(login_id);
+	}
+
 }

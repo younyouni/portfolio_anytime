@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.anytime.mybatis.mapper.BoardMapper">
+
+	<select id="getBoardName" resultType="String">
+		select name from board
+		where board_id = #{board_id}
+	</select>
+
+	<select id="getBoardList" resultType="board">
+		select * from board
+		where school_id = #{school_id}
+	</select>
+	
+	<select id="getBoardDetail" parameterType="int" resultType="board">
+		select *
+		from board
+		where BOARD_ID = #{board_id}
+	</select>
+	
+	<select id="getBoardAnonymous" resultType="int">
+		select anonymous
+		from board
+		where board_id = #{board_id}
+	</select>
+	
+	<select id="getBoardIds" parameterType="String" resultType="int">
+		SELECT BOARD_ID
+        FROM BOARD
+        WHERE TYPE = 1
+        AND SCHOOL_ID = (	select school_id 
+        					from member 
+        					where login_id =#{member_id}
+        				)
+        AND STATUS = 1
+        AND NAME != '공지사항'
+	</select>
+	
+	<select id="getBoardIdsByDomain" parameterType="String" resultType="int">
+		SELECT BOARD_ID
+        FROM BOARD
+        WHERE TYPE = 1
+        AND SCHOOL_ID = (	select school_id 
+        					from school 
+        					where domain =#{school_domain}
+        				)
+        AND STATUS = 1
+        AND NAME != '공지사항'
+	</select>
+	
+</mapper>
