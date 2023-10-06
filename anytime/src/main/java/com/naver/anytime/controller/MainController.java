@@ -3,6 +3,8 @@ package com.naver.anytime.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +35,10 @@ public class MainController {
 	   @RequestMapping(value = "/home", method = RequestMethod.GET)
 	   public ModelAndView main( 
 			   			  ModelAndView mv,
-			              Principal userPrincipal) {
+			              Principal userPrincipal,
+			              HttpSession session
+			              ) {
+		   session.setAttribute("school_id", 1);
 		   
 		   List<School> schools = schoolService.getSchoolList(); 
 		   mv.addObject("schoolList", schools);
