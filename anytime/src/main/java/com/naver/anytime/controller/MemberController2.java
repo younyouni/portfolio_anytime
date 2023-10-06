@@ -94,13 +94,8 @@ public class MemberController2 {
 
 	// --------------------------------지원-----------------------------------------
 
-	// 로그아웃
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String loginout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/member/login";
-	}
-
+	
+	
 	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
 	public String certificate() {
 		return "/member/memberCertificate";

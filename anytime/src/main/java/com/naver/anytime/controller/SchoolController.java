@@ -73,11 +73,11 @@ public class SchoolController {
 
 		}else {
 			int[] board_ids = boardService.getBoardIdsByDomain(schoolDomain);
-			School s = schoolService.getSchool(schoolDomain);
 			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
 			mv.addObject("list", commonPostsByBoard);
-			mv.addObject("school",s);
 		}
+		School s = schoolService.getSchool(schoolDomain);
+		mv.addObject("school", s);
 
 		return mv;
 	}
