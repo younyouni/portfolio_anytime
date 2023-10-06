@@ -4,6 +4,8 @@
 	height: 23px;
 	margin-left: 592px; /* �씠誘몄�瑜� �뀓�뒪�듃 �쁿�뿉 遺숈씠湲� �쐞�빐 醫뚯륫 留덉쭊�쓣 �꽕�젙�빀�땲�떎. */
 	margin-bottom: 3px;
+	cursor: pointer;
+	
 }
 
 /*-----------------------------------------------------------  �럹�씠吏��꽕�씠�뀡 諛� �옉�뾽 ----------------------------------------------------------- */
@@ -56,7 +58,7 @@
 	/* �꽑�깮�옄�뒗 異뷀썑�뿉 蹂�寃� */
 	border: 1px solid #fff0;
 	background-image:
-		url(../../image/post/container.articles.pagination.before.png);
+		url(/anytime/resources/image/post/container.articles.pagination.before.png);
 	background-position: right 1px center;
 	margin-top: 5px;
 	margin-left: 5px;
@@ -78,7 +80,7 @@
 	/* �꽑�깮�옄�뒗 異뷀썑�뿉 蹂�寃� */
 	border: 1px solid #fff0;
 	background-image:
-		url(../../image/post/container.articles.pagination.next.png);
+		url(/anytime/resources/image/post/container.articles.pagination.next.png);
 	background-position: left 50px center !important;
 	margin-top: 5px;
 	margin-left: 5px;

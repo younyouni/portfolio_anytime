@@ -49,4 +49,6 @@ public interface MemberMapper {
 	public int getSchoolId(String id);
 
 	public School getSchool(String id);
+
+	public int getUserId(String login_id);
 }

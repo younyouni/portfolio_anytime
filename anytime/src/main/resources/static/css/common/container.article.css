@@ -304,7 +304,13 @@ form.writecomment.clone.grandchild {
 #container>div.articles>form.write ul.option li.attach {
 	float: left;
 	background-image:
-		url('/Anytime/image/new/container.articles.write.attach.png');
+		url(/anytime/resources/image/post/addFile.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+    margin-top: 10px;
 		
 }
 
@@ -342,7 +348,7 @@ form.writecomment.clone.grandchild {
 #container>div.articles>form.write ul.option li.anonym {
 	float: right;
 	margin-right: 15px;
-	background-image: url('/images/container.articles.write.anonym.png');
+	background-image: url(/Anytime/resources/image/post/write.anonym.png);
 }
 
 #container>div.articles>form.write ul.option li.anonym.active {
@@ -354,7 +360,8 @@ form.writecomment.clone.grandchild {
 	float: right;
 	background-color: #c62917;
 	background-image:
-		url('/Anytime/image/new/container.articles.write.submit.png');
+		url(/anytime/resources/image/post/write.submit.png);
+	cursor: pointer;	
 }
 
 #container>div.articles>form.write ul.option div.attachedfile {

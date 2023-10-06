@@ -104,7 +104,7 @@ input:focus {
 	width: 40px;
 	cursor: pointer;
 	background-image:
-		url(/Anytime/image/new/container.articles.write.submit.png);
+		url(/anytime/resources/image/post/write.submit.png);
 	background-color: transparent; /* 배경색을 투명하게 설정 */
 	border: none;
 	padding: 0;
@@ -114,24 +114,11 @@ input:focus {
 /*등록 버튼 이미지*/
 #container>div.wrap.articles>label>form>ul>li {
 	float: left;
-	background-image: url(/Anytime/image/addFile.png);
+	background-image: url(/anytime/resources/image/post/addFile.png);
 	background-size: contain;
 	 background-repeat: no-repeat;
 	width: 20px;
 	height: 20px;
 	margin-left: 10px;
     margin-top: 10px;
-}
-/**/
-#container>div.wrap.articles>label>form>ul>input[type=file] {
-	background-image: url(/Anytime/image/addFile.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-color: transparent;
-	
-	border: none;
-	width: 40px;
-	height: 40px;
-	cursor: pointer;
-	padding-left: 40px; /* 이미지의 너비와 동일하게 설정 */
 }

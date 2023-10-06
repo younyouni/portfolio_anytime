@@ -17,6 +17,8 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
+
 </head>
 
 <body>
@@ -43,15 +45,16 @@
 		</div>
 		
 		<%-------------------------------- ▼글쓰기▼ --------------------------------%>
-			
-			<div class="wrap articles">
+			<div id="board_id" style="display: none;"><%= session.getAttribute("board_id") %></div>
+			<div id="user_id" style="display: none;"><%= session.getAttribute("user_id") %></div>
+			<div class="wrap articles" id="writeBoardContainer">
 			<c:if test="${allsearchcheck == 0}">	<!-- 천제 검색이 아닐 경우 -->
-			<label class="postwriteform" style="display: none;">
-				<jsp:include page="postlist_write.jsp" />
+			<label class="postwriteform"> <!-- style="display: none;" -->
+				 <%-- <jsp:include page="postlist_write.jsp" /> --%> 
 			</label>	
 			<a id="writeArticleButton">새 글을 작성해주세요! 
 			<img src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
-
+			
 			</a>
 			</c:if>
 		
@@ -471,6 +474,7 @@
 				<textarea name="message" class="text" placeholder="내용을 입력해주세요."></textarea>
 			</p>
 			<input type="submit" value="전송" class="button">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</form>
 	</div>
 
@@ -511,6 +515,7 @@
 
 	});
 
-	</script>
+	</script> 
+	
 </body>
 </html>

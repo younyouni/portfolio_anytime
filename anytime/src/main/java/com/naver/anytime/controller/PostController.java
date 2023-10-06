@@ -1,6 +1,8 @@
 package com.naver.anytime.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,8 +10,11 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,7 +54,7 @@ public class PostController {
    }
    
 
-   
+   /* -------------------------------- ▼post/detail 상세페이지▼ -------------------------------- */ 
    @GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
    public ModelAndView postDetail( 
 	   @RequestParam(value = "post_id", required = false) int post_id,
@@ -99,6 +104,39 @@ public class PostController {
 	   }
    
    
+   /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
+   @ResponseBody
+   @RequestMapping(value = "/write", method = RequestMethod.POST)
+   public ResponseEntity<Map<String, Object>> insert(@RequestParam(value = "LOGIN_ID") String USER_ID, 
+		   Post post, HttpServletRequest request) {
+       Map<String, Object> result = new HashMap<>();
+       
+       HttpSession session = request.getSession();
+       // 세션으로부터 BOARD_ID 및 USER_ID 값을 얻어옵니다.
+       // 여기서 "boardId" 와 "userId" 는 세션에 저장된 실제 키 이름에 따라 변경되어야 합니다.
+       int boardId = (Integer) session.getAttribute("board_id");
+       
+      String login_id =USER_ID;
+       
+      int user_id = memberService.getUserId(login_id);
+       post.setBOARD_ID(boardId);
+       post.setUSER_ID(user_id);
+       
+       try {
+           postService.insertPost(post);
+           result.put("statusCode", 1);
+       } catch (Exception e) {
+           result.put("statusCode", -1);
+           result.put("errorMessage", e.getMessage());
+       }
+       return new ResponseEntity<>(result, HttpStatus.OK);
+   }
+
+
+   
+   
+   
+   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
    
@@ -118,6 +156,7 @@ public class PostController {
    ModelAndView mv) {
 		
 	   session.setAttribute("board_id", board_id);
+	   session.setAttribute("user_id", 1);
 	   	int limit = 10;
 	   	
 		// 총 리스트 수
