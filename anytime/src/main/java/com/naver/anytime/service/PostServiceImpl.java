@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
 	}
 	
 	//검색용 게시물 리스트 총 수
-	public int getListCount(int board_id, int search_field, String search_word) {
+	public int getSearchListCount(int board_id, int search_field, String search_word) {
 		return postDao.getSearchListCount(board_id, search_field, search_word);
 	}
 	
@@ -72,6 +72,24 @@ public class PostServiceImpl implements PostService {
 	    map.put("search_word", search_word);
 	    
 		return postDao.getSearchPostList(map);
+	}
+	
+	//전체 검색용 리스트 총 수
+	public int getAllSearchListCount(int school_id, String search_word) {
+		return postDao.getAllSearchListCount(school_id, search_word);
+	}
+	
+	//전체 검색용 리스트 결과
+	public List<Post> getAllSearchPostList(int page, int limit, int school_id, String search_word){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+	    int endrow = startrow + limit - 1;
+	    map.put("start", startrow);
+	    map.put("end", endrow);
+	    map.put("school_id", school_id);
+	    map.put("search_word", search_word);
+	    
+		return postDao.getAllSearchPostList(map);
 	}
 
 	@Override

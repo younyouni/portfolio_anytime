@@ -43,7 +43,8 @@
     	SELECT user_id, nickname
     	FROM member
 	</select>
-
+	
+	<!-- 일반 검색 리스트 값 출력-->
 	<select id="getSearchPostList" parameterType="map" resultType="post">
 		SELECT * 
 		FROM (
@@ -58,12 +59,14 @@
 		        ) sub_C 
 		        ON post.post_id = sub_C.post_id 
 		        	WHERE post.board_id = #{board_id}
+		        	<include refid="search"/>
 				ORDER BY post.post_id DESC) j
 			         WHERE ROWNUM &lt;= #{end}
 				)
 			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
 	</select>
-	
+
+	<!-- 일반 검색 필터링 -->	
 	<sql id="search">
 		<if test='search_field == 0'>
     		AND (post.subject LIKE '%' || #{search_word} || '%' OR post.content LIKE '%' || #{search_word} || '%')
@@ -75,14 +78,16 @@
 		    AND post.content LIKE '%' || #{search_word} || '%'
 		</if>
 	</sql>
-	
+
+	<!-- 일반 검색 리스트 수 -->	
 	<select id="getSearchListCount" resultType="int">
 		select count(*)
 		from post
 		where board_id = #{board_id}
 		<include refid="search2"/>
 	</select>
-	
+
+	<!-- 일반 검색 필터링2 -->		
 	<sql id="search2">
 		<if test='search_field == 0'>
     		AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
@@ -95,41 +100,44 @@
 		</if>
 	</sql>
 	
-	<select id="getPostListtest" parameterType="map" resultType="post">
-   		SELECT * 
-    	FROM (
-      	  SELECT ROWNUM RNUM, j.*
-      	  FROM (
-        	    SELECT post.*, NVL(cnt, 0) AS comment_count
-        	    FROM post
-        	    LEFT OUTER JOIN (
-        	        SELECT post_id, COUNT(*) cnt
-        	        FROM comments
-        	        GROUP BY post_id
-       	     ) sub_C
-       	     ON post.post_id = sub_C.post_id
-					WHERE post.board_id IN
-						<foreach collection="board_id" item="board_Id" open="(" separator="," close=")">
-            				#{board_Id}
-            			</foreach>
-            	ORDER BY post.post_id DESC
-        	) j 
-        	WHERE ROWNUM &lt;= #{end} 
-    	) 
-    	WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	<!-- 전체 검색 리스트 값 출력 -->		
+	<select id="getAllSearchPostList" parameterType="map" resultType="post">
+   		SELECT *
+			FROM (
+			    SELECT ROWNUM RNUM, j.*, b.name AS boardname
+			    FROM (
+			        SELECT post.*, NVL(cnt, 0) AS comment_count
+			        FROM post
+			        LEFT OUTER JOIN (
+			            SELECT post_id, COUNT(*) cnt
+			            FROM comments
+			            GROUP BY post_id
+			        ) sub_C ON post.post_id = sub_C.post_id
+			        WHERE post.board_id IN (
+			            SELECT board_id
+			            FROM board
+			            WHERE school_id = #{school_id}
+			        )
+			        AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
+			        ORDER BY post.post_id DESC
+			    ) j
+			    LEFT OUTER JOIN board b ON j.board_id = b.board_id
+			    WHERE ROWNUM &lt;= #{end}
+			)
+			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
 	</select>
-	
-	<sql id="allsearchcheack">
-		<if test='board_id.length == 1'>
-			WHERE post.board_id = #{board_id}
-		</if>
-		<if test='board_id.length > 1'>
-			WHERE post.board_id IN
-			<foreach collection="board_id" item="board_Id" open="(" separator="," close=")">
-            		#{board_Id}
-            </foreach>
-		</if>
-	</sql>
+
+	<!-- 전체 검색 리스트 수 -->		
+	<select id="getAllSearchListCount" resultType="int">
+		SELECT COUNT(*) AS post_count
+			FROM post
+			WHERE board_id IN (
+			    SELECT board_id
+			    FROM board
+			    WHERE school_id = #{school_id}
+			)
+			AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
+	</select>
 
 	<select id="getPostListByBoard" parameterType="int" resultType="post">
 		SELECT * 

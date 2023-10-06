@@ -18,7 +18,7 @@ $(function() {
 		<div class="rightside2">
 		
 		 <form id="searchArticleForm" class="search" 
-                action="${pageContext.request.contextPath}/post/search" method="get">
+                action="${pageContext.request.contextPath}/post/search" method="get" accept-charset="UTF-8">
                 <input type="hidden" name="board_id" value="${board_id}">
                 <select name="search_field" id="search_field">
                     <option value="0">전체</option>

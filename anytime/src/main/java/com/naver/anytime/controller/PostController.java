@@ -117,6 +117,7 @@ public class PostController {
    HttpSession session,
    ModelAndView mv) {
 		
+	   session.setAttribute("board_id", board_id);
 	   	int limit = 10;
 	   	
 		// 총 리스트 수
@@ -191,38 +192,48 @@ public class PostController {
    //검색기능
    @RequestMapping(value = "/search")
    public ModelAndView postsearch(
-		   @RequestParam(value = "board_id") int board_id,
+	
 		   @RequestParam(value = "page", defaultValue = "1", required = false) int page,
 		   @RequestParam(value = "search_field", defaultValue = "0") int search_field,
 		   @RequestParam(value = "search_word", defaultValue = "") String search_word,
 		   HttpSession session,
 		   ModelAndView mv){
 	   
-	   session.setAttribute("board_id", board_id);
+//	   session.setAttribute("board_id", board_id);
 	   session.setAttribute("search_word", search_word);
-	   session.setAttribute("search_field", search_field);
-	   board_id = (int) session.getAttribute("board_id");
-	   search_field = (int) session.getAttribute("search_field");
+//	   session.setAttribute("search_field", search_field);
+	   int board_id = (int) session.getAttribute("board_id");
+//	   search_field = (int) session.getAttribute("search_field");
 	   search_word = (String) session.getAttribute("search_word");
 	   
+	   int school_id = (int) session.getAttribute("school_id");
 	   
 	   int limit = 10;
-	   int listcount;
-	   List<Post> postlist;
+	   int listcount = 0;
+	   List<Post> postlist = null;
 	   int searchcheck = 0;
+	   int allsearchcheck = 0;
 	   
-	   //일반 리스트 출력 or 검색 리스트 출력
+	   
+	   //일반 리스트 출력 or 검색 리스트 출력 or 전체 검색 리스트 출력
 	    if(search_word == null || search_word.equals("")) {
 			// 총 리스트 수
 			listcount = postService.getListCount(board_id);
 		    // 게시글 리스트
 		    postlist = postService.getPostList(page, limit, board_id);	    	
-	    } else {
+	    } else if(search_word != null && search_field < 4){
 	    	searchcheck = 1;
 	    	// 총 리스트 수
-	    	listcount = postService.getListCount(board_id, search_field, search_word);
+	    	listcount = postService.getSearchListCount(board_id, search_field, search_word);
 	    	// 게시글 리스트
 	    	postlist = postService.getSearchPostList(page, limit, board_id, search_field, search_word);	    	
+	    } else if(search_field == 4){
+	    	allsearchcheck = 1;
+	    	// 총 리스트 수
+	    	listcount = postService.getAllSearchListCount(school_id, search_word);
+	    	// 게시글 리스트
+	    	postlist = postService.getAllSearchPostList(page, limit, school_id, search_word);	
+	    	System.out.println("전체검색 테스트");
 	    }
 	    
 	    // 게시판 이름
@@ -273,7 +284,7 @@ public class PostController {
 	    mv.addObject("boardname", board);
 	    
 	    mv.addObject("un", username);
-	    mv.addObject("allsearchcheck", 0);
+	    mv.addObject("allsearchcheck", allsearchcheck);
 	    mv.addObject("emptycheck", 0);
 	    
 	    mv.addObject("searchcheck", searchcheck);
@@ -284,8 +295,8 @@ public class PostController {
 	    }
 	    
 	      
-	    System.out.println("보드넘테스트" + board_id);
-	    System.out.println("값테스트" + postlist);
+	    System.out.println("!======= 보드넘테스트[" + board_id + "] / 서치체크[" + searchcheck + "] / 올서치체크 [" + allsearchcheck + "]");
+	    System.out.println("!======= 값테스트" + postlist);
 		return mv;
    }
 }
