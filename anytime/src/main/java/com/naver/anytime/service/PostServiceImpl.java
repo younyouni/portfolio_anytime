@@ -29,12 +29,14 @@ public class PostServiceImpl implements PostService {
 	public String getPostlist(String SchoolName) {
 		return postDao.getPostlist(SchoolName);
 	}
-
+	
+	//게시물 리스트 총 수
 	@Override
 	public int getListCount(int board_id) {
 		return postDao.getListCount(board_id);
 	}
-
+	
+	//게시물 리스트 결과
 	@Override
 	public List<Post> getPostList(int page, int limit, int board_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -51,12 +53,50 @@ public class PostServiceImpl implements PostService {
 		Map<String, String> map = new HashMap<String, String>();
 		return postDao.getUserNickname(map);
 	}
+	
+	//검색용 게시물 리스트 총 수
+	public int getSearchListCount(int board_id, int search_field, String search_word) {
+		return postDao.getSearchListCount(board_id, search_field, search_word);
+	}
+	
+	//검색용 게시물 리스트 결과
+	@Override
+	public List<Post> getSearchPostList(int page, int limit, int board_id, int search_field, String search_word) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+	    int endrow = startrow + limit - 1;
+	    map.put("start", startrow);
+	    map.put("end", endrow);
+	    map.put("board_id", board_id);
+	    map.put("search_field", search_field);
+	    map.put("search_word", search_word);
+	    
+		return postDao.getSearchPostList(map);
+	}
+	
+	//전체 검색용 리스트 총 수
+	public int getAllSearchListCount(int school_id, String search_word) {
+		return postDao.getAllSearchListCount(school_id, search_word);
+	}
+	
+	//전체 검색용 리스트 결과
+	public List<Post> getAllSearchPostList(int page, int limit, int school_id, String search_word){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+	    int endrow = startrow + limit - 1;
+	    map.put("start", startrow);
+	    map.put("end", endrow);
+	    map.put("school_id", school_id);
+	    map.put("search_word", search_word);
+	    
+		return postDao.getAllSearchPostList(map);
+	}
 
 	@Override
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit) {
 		return null;
 	}
-
+	
 	@Override
 	public List<Post> findSchoolBoardlistcount(int school_num) {
 		return null;

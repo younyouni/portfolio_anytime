@@ -9,9 +9,9 @@ public interface BoardService {
 
 	// postlist.jsp 에서 post 테이블의 board_id 로 name 구하기
 	public String getBoardName(int board_id);
-
-	// 보드 리스트
-	public List<Board> getBoardList();
+	
+	//보드 리스트
+	public List<Board> getBoardList(int school_id);
 
 	public Board getBoardDetail(int board_id);
 

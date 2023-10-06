@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
@@ -102,23 +104,27 @@ public class PostController {
    
    //테스트 페이지
    @RequestMapping(value = "/test", method = RequestMethod.GET)
-   public String test() {
+   public String test(HttpSession session) {
+	   session.setAttribute("school_id", 1);										//테스트
 	   return "post/test";
    }
-   
-   
+      
    //게시물 리스트 출력
    @RequestMapping(value = "/list", method = RequestMethod.GET)
    public ModelAndView postlist(
    @RequestParam(value = "page", defaultValue = "1", required = false) int page, 
-   @RequestParam(value = "board_id", required = false) int b, 
+   @RequestParam(value = "board_id", required = false) int board_id,
+   HttpSession session,
    ModelAndView mv) {
 		
+	   session.setAttribute("board_id", board_id);
 	   	int limit = 10;
-		//
-		// 총 리스트 수를 받아옴
-		int listcount = postService.getListCount(b);
-		String board = boardService.getBoardName(b);
+	   	
+		// 총 리스트 수
+		int listcount = postService.getListCount(board_id);
+		
+		// 게시판 이름
+		String board = boardService.getBoardName(board_id);
 		
 		// 총 페이지 수
 	    int maxpage = (listcount + limit - 1) / limit;
@@ -132,11 +138,16 @@ public class PostController {
 	    if (endpage > maxpage)
 	       endpage = maxpage;
 
-	    // 리스트를 받아옴
-	    List<Post> postlist = postService.getPostList(page, limit, b);
-	    List<Post> username = postService.getUserNickname();
-	    int anonymous = boardService.getBoardAnonymous(b);
+	    // 게시글 리스트
+	    List<Post> postlist = postService.getPostList(page, limit, board_id);
 	    
+	    // 유저 닉네임
+	    List<Post> username = postService.getUserNickname();
+	    
+	    // 익명성
+	    int anonymous = boardService.getBoardAnonymous(board_id);
+	    
+	    // 익명성 체크
 	    if(anonymous == 1) {
 	    	for(Post post : postlist) {
 	    		post.setNICKNAME("익명");
@@ -165,15 +176,127 @@ public class PostController {
 	    mv.addObject("boardname", board);
 	    mv.addObject("allsearchcheck", 0);
 	    mv.addObject("emptycheck", 0);
-	    mv.addObject("board_id", b);
+	    mv.addObject("board_id", board_id);
 	    
+	    // 글이 없을때 체크 (1= 일반, 2= 검색)
 	    if(postlist != null) {
 	    	mv.addObject("emptycheck", 1);
 	    }
 	      
-	    System.out.println("보드넘테스트" + b);
+	    System.out.println("보드넘테스트" + board_id);
 	    System.out.println("값테스트" + postlist);
+	    System.out.println("학교번호" + session.getAttribute("school_id"));						//테스트
 		return mv;
 	}
+
+   //검색기능
+   @RequestMapping(value = "/search")
+   public ModelAndView postsearch(
 	
+		   @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+		   @RequestParam(value = "search_field", defaultValue = "0") int search_field,
+		   @RequestParam(value = "search_word", defaultValue = "") String search_word,
+		   HttpSession session,
+		   ModelAndView mv){
+	   
+//	   session.setAttribute("board_id", board_id);
+	   session.setAttribute("search_word", search_word);
+//	   session.setAttribute("search_field", search_field);
+	   int board_id = (int) session.getAttribute("board_id");
+//	   search_field = (int) session.getAttribute("search_field");
+	   search_word = (String) session.getAttribute("search_word");
+	   
+	   int school_id = (int) session.getAttribute("school_id");
+	   
+	   int limit = 10;
+	   int listcount = 0;
+	   List<Post> postlist = null;
+	   int searchcheck = 0;
+	   int allsearchcheck = 0;
+	   
+	   
+	   //일반 리스트 출력 or 검색 리스트 출력 or 전체 검색 리스트 출력
+	    if(search_word == null || search_word.equals("")) {
+			// 총 리스트 수
+			listcount = postService.getListCount(board_id);
+		    // 게시글 리스트
+		    postlist = postService.getPostList(page, limit, board_id);	    	
+	    } else if(search_word != null && search_field < 4){
+	    	searchcheck = 1;
+	    	// 총 리스트 수
+	    	listcount = postService.getSearchListCount(board_id, search_field, search_word);
+	    	// 게시글 리스트
+	    	postlist = postService.getSearchPostList(page, limit, board_id, search_field, search_word);	    	
+	    } else if(search_field == 4){
+	    	allsearchcheck = 1;
+	    	// 총 리스트 수
+	    	listcount = postService.getAllSearchListCount(school_id, search_word);
+	    	// 게시글 리스트
+	    	postlist = postService.getAllSearchPostList(page, limit, school_id, search_word);	
+	    	System.out.println("전체검색 테스트");
+	    }
+	    
+	    // 게시판 이름
+	    String board = boardService.getBoardName(board_id);
+	    
+	    // 총 페이지 수
+	    int maxpage = (listcount + limit - 1) / limit;
+	    
+	    // 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
+	    int startpage = ((page - 1) / 10) * 10 + 1;
+	    
+	    // 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
+	    int endpage = startpage + 10 - 1;
+	    
+	    if (endpage > maxpage)
+	    	endpage = maxpage;
+	    
+	    // 유저 닉네임
+	    List<Post> username = postService.getUserNickname();
+	    
+	    // 익명성
+	    int anonymous = boardService.getBoardAnonymous(board_id);
+	    
+	    // 익명성 체크
+	    if(anonymous == 1) {
+	    	for(Post post : postlist) {
+	    		post.setNICKNAME("익명");
+	    	}
+	    } else {
+	    	for(Post post : postlist) {
+	    		for(Post post2 : username) {
+	    			if(post.getUSER_ID() == post2.getUSER_ID()) {
+	    				post.setNICKNAME(post2.getNICKNAME());
+	    			}
+	    		}
+	    	} 	
+	    }
+
+
+	    mv.setViewName("post/postList");
+	    mv.addObject("page", page);
+	    mv.addObject("maxpage", maxpage);
+	    mv.addObject("startpage", startpage);
+	    mv.addObject("endpage", endpage);
+	    mv.addObject("listcount", listcount);
+	    mv.addObject("postlist", postlist);
+	    mv.addObject("limit", limit);
+	    mv.addObject("boardname", board);
+	    
+	    mv.addObject("un", username);
+	    mv.addObject("allsearchcheck", allsearchcheck);
+	    mv.addObject("emptycheck", 0);
+	    
+	    mv.addObject("searchcheck", searchcheck);
+	    
+	    // 글이 없을때 체크 (1= 일반, 2= 검색)
+	    if(postlist != null) {
+	    	mv.addObject("emptycheck", 2);
+	    }
+	    
+	      
+	    System.out.println("!======= 보드넘테스트[" + board_id + "] / 서치체크[" + searchcheck + "] / 올서치체크 [" + allsearchcheck + "]");
+	    System.out.println("!======= 값테스트" + postlist);
+		return mv;
+   }
 }

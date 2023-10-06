@@ -7,7 +7,7 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/submenu.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
-<body style="">
+<body>
 	<div id="submenu">
 		<div class="wrap">
 
@@ -32,7 +32,7 @@
 				<div class="group">
 					<ul>
 						</c:if>
-						<li><a href="post/list?board_id=${menu.board_id}">${menu.name}</a></li>
+						<li><a href="${pageContext.request.contextPath}/post/list?board_id=${menu.board_id}">${menu.name}</a></li>
 						<c:set var="itemCount" value="${itemCount + 1}" />
 						</c:if>
 			</c:forEach>
@@ -95,7 +95,7 @@ function sendAjaxRequest() {
 	                    submenu.find('.wrap').append('<div class="group"><ul>');                
 	    		}
 	    			// boardlist 출력
-	    			submenu.find('.group:last ul').append('<li><a href="list?board_id=' + menu.board_ID + '">' + menu.name + '</a></li>');
+	    			submenu.find('.group:last ul').append('<li><a href="${pageContext.request.contextPath}/post/list?board_id=' + menu.board_ID + '">' + menu.name + '</a></li>');
 	                itemCount++;
 	    	}	    
 	    		submenu.append('</ul></div>'); // 그룹 닫기
