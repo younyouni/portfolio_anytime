@@ -150,12 +150,6 @@ public class PostServiceImpl implements PostService {
 
 		for (int i = 0; i < board_ids.length; i++) {
 			List<Post> list = postDao.getPostListByBoard(board_ids[i]);
-			System.out.println("게시판 고유번호: " + board_ids[i]);
-			for (Post post : list) {
-				System.out.println("게시판이름: " + post.getBOARDNAME());
-				System.out.println("게시글제목: " + post.getSUBJECT());
-				System.out.println("게시글작성일자: " + post.getPOST_DATE());
-			}
 			result.add(new ArrayList<>(list));
 		}
 		return result;
