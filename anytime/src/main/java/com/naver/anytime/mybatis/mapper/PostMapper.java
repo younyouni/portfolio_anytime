@@ -13,12 +13,12 @@ import com.naver.anytime.domain.Post;
 
 @Mapper
 public interface PostMapper {
-	
-	public int getListCount(int board_id);										//수정
+
+	public int getListCount(int board_id); // 수정
 
 	public String getPostlist(String schoolName);
 
-	public List<Post> getPostList(int page, int limit, int board_id);			//수정 ?
+	public List<Post> getPostList(int page, int limit, int board_id); // 수정 ?
 
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit);
 
@@ -52,10 +52,6 @@ public interface PostMapper {
 
 	public boolean photoDataInsert(Connection con, int post_num, String filename);
 
-	public ArrayList<Post> getPostSimpleList(int school_num, int board_num);
-
-	public List<ArrayList<Post>> getPostTotalList(int school_num, int[] board_nums);
-
 	public boolean postModify(Post modifypost, String filename);
 
 	/*
@@ -68,17 +64,22 @@ public interface PostMapper {
 	 */
 
 	public int postDelete(int post_num);
-	
+
 	public List<Post> getPostList(HashMap<String, Integer> map);
-	
+
 	// 이름 확인용
 	public List<Post> getUserNickname(Map<String, String> map);
-	
 	
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
 
 	// 검색용
 	public int getSearchListCount(int board_id, int search_field, String search_word);
-	
+
+	// ********************************= 윤희 =********************************
+	// 메인 커뮤니티 페이지 게시물 리스트 출력 사용X
+	public List<Post> getMainPostList(int school_id);
+
+	public List<Post> getPostListByBoard(int board_id);
+
 }

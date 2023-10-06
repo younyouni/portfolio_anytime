@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.naver.anytime.domain.Member;
+import com.naver.anytime.domain.School;
 
 /*
  *  Mapper 인터페이스란 매퍼 파일에 기재된 SQL을 호출하기 위한 인터페이스입니다.
@@ -37,8 +38,15 @@ public interface MemberMapper {
 
 	public void updatePassword(String login_id, String password);
 
+	public int updateschoolcheck(String id);
+	
+	
 	// 윤희
 	public String getSchoolDomain(String id);
 
 	public Member getLoginMember(String id);
+
+	public int getSchoolId(String id);
+
+	public School getSchool(String id);
 }

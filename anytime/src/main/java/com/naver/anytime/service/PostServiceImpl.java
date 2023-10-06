@@ -41,15 +41,15 @@ public class PostServiceImpl implements PostService {
 	public List<Post> getPostList(int page, int limit, int board_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		int startrow = (page - 1) * limit + 1;
-	    int endrow = startrow + limit - 1;
-	    map.put("start", startrow);
-	    map.put("end", endrow);
-	    map.put("board_id", board_id);
+		int endrow = startrow + limit - 1;
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("board_id", board_id);
 		return postDao.getPostList(map);
 	}
-	
-	//포스트 닉네임 확인용
-	public List<Post> getUserNickname(){
+
+	// 포스트 닉네임 확인용
+	public List<Post> getUserNickname() {
 		Map<String, String> map = new HashMap<String, String>();
 		return postDao.getUserNickname(map);
 	}
@@ -155,16 +155,6 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public ArrayList<Post> getPostSimpleList(int school_num, int board_num) {
-		return null;
-	}
-
-	@Override
-	public List<ArrayList<Post>> getPostTotalList(int school_num, int[] board_nums) {
-		return null;
-	}
-
-	@Override
 	public boolean postModify(Post modifypost, String filename) {
 		return false;
 	}
@@ -172,6 +162,25 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public int postDelete(int post_num) {
 		return 0;
+	}
+
+	// ********************************= 윤희 =********************************
+	@Override
+	public List<List<Post>> getPostListByBoard(int[] board_ids) {
+
+		List<List<Post>> result = new ArrayList<List<Post>>();
+
+		for (int i = 0; i < board_ids.length; i++) {
+			List<Post> list = postDao.getPostListByBoard(board_ids[i]);
+			System.out.println("게시판 고유번호: " + board_ids[i]);
+			for (Post post : list) {
+				System.out.println("게시판이름: " + post.getBOARDNAME());
+				System.out.println("게시글제목: " + post.getSUBJECT());
+				System.out.println("게시글작성일자: " + post.getPOST_DATE());
+			}
+			result.add(new ArrayList<>(list));
+		}
+		return result;
 	}
 
 }

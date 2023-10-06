@@ -48,7 +48,7 @@
 		<div class="campuslist">
         <%-- 학교 리스트를 가져와서 출력 --%>
         <c:forEach var="school" items="${schoolList}">
-            <a href="">
+            <a href="${pageContext.request.contextPath}/${school.domain}">
                 <span class="name">${school.name}</span>
                 <span class="count">${school.total_count} 명</span>
             </a>

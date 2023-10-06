@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.naver.anytime.domain.Member;
+import com.naver.anytime.domain.School;
 import com.naver.anytime.mybatis.mapper.MemberMapper;
 
 @Service
@@ -126,6 +127,15 @@ public class MemberServiceImpl implements MemberService {
 		return dao.findMemberByUserId(user_id);
 	}
 
+	
+	@Override
+	public int updateschoolcheck(String id) {
+		
+		return dao.updateschoolcheck(id);
+	}
+	
+	
+	
 	// ----------------------------윤희----------------------------
 
 	@Override
@@ -136,6 +146,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member getLoginMember(String id) {
 		return dao.getLoginMember(id);
+	}
+
+	@Override
+	public int getSchoolId(String id) {
+		return dao.getSchoolId(id);
+	}
+
+	@Override
+	public School getSchool(String id) {
+		return dao.getSchool(id);
 	}
 
 }

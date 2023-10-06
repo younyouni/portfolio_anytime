@@ -47,10 +47,6 @@ public interface PostService {
 
 	public boolean photoDataInsert(Connection con, int post_num, String filename);
 
-	public ArrayList<Post> getPostSimpleList(int school_num, int board_num);
-
-	public List<ArrayList<Post>> getPostTotalList(int school_num, int[] board_nums);
-
 	public boolean postModify(Post modifypost, String filename);
 
 	/*
@@ -63,8 +59,8 @@ public interface PostService {
 	 */
 
 	public int postDelete(int post_num);
-	
-	//포스트 닉네임 확인용
+
+	// 포스트 닉네임 확인용
 	public List<Post> getUserNickname();
 	
 
@@ -73,5 +69,8 @@ public interface PostService {
 	
 	//검색용 리스트 결과
 	public List<Post> getSearchPostList(int page, int limit, int board_id, int search_field, String search_word);
+
+	// ********************************= 윤희 =********************************
+	public List<List<Post>> getPostListByBoard(int[] board_ids);
 
 }
