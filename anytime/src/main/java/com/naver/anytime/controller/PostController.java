@@ -106,8 +106,18 @@ public class PostController {
    /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
    @ResponseBody
    @RequestMapping(value = "/write", method = RequestMethod.POST)
-   public ResponseEntity<Map<String, Object>> insert(@RequestBody Post post) {
+   public ResponseEntity<Map<String, Object>> insert(Post post, HttpServletRequest request) {
        Map<String, Object> result = new HashMap<>();
+       
+       HttpSession session = request.getSession();
+       // 세션으로부터 BOARD_ID 및 USER_ID 값을 얻어옵니다.
+       // 여기서 "boardId" 와 "userId" 는 세션에 저장된 실제 키 이름에 따라 변경되어야 합니다.
+       int boardId = (Integer) session.getAttribute("boardId");
+       int userId = (Integer) session.getAttribute("userId");
+
+       post.setBOARD_ID(boardId);
+       post.setUSER_ID(userId);
+       
        try {
            postService.insertPost(post);
            result.put("statusCode", 1);

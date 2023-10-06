@@ -81,6 +81,8 @@ $("#writeArticleButton").on("click", function(e) {
 	console.log($("#content").val()); 
 	
   	let data = {
+		BOARD_ID: BOARD_ID,
+		USER_ID: USER_ID,
 		SUBJECT: $("#title").val(),
 		CONTENT: $("#content").val(),
 	};
@@ -90,9 +92,8 @@ $("#writeArticleButton").on("click", function(e) {
       $.ajax({
 		type: "POST",
 		url:"write",
-		data: JSON.stringify(data),
-      	contentType:"application/json; charset=utf-8",
-		dataType:"json",
+		data: data,
+		async: false,
 		beforeSend: function(xhr) {
 				xhr.setRequestHeader(header, token);
       		},

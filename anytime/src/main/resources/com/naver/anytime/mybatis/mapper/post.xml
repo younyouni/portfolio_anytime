@@ -45,12 +45,12 @@
 	</select>
 	
 	<insert id="insertPost" parameterType="com.naver.anytime.domain.Post">
-     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE,
+     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT,
                         POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
                         STATUS)
-     VALUES (#{POST_ID}, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT},
-             #{POST_FILE}, SYSDATE, 0, 0 , 0 ,1)
-  </insert>
+     VALUES (post_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, 
+              SYSDATE, 0, 0 , 0 ,1)
+  	</insert>
 	
 	<select id="getPostListByBoard" parameterType="int" resultType="post">
 		SELECT * 
