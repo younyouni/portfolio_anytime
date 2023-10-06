@@ -156,5 +156,12 @@
 		MEMBER.SCHOOL_ID
 		WHERE MEMBER.LOGIN_ID = #{login_id}
 	</select>
+	
+	<select id="getUserId" parameterType="String"
+		resultType="int">
+		SELECT USER_ID
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
+	</select>
 
 </mapper>

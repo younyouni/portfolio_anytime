@@ -17,8 +17,17 @@ public class Post {
 	private int    COMMENT_COUNT;	//코멘트 수
 	private String NICKNAME;		//유저 번호로 닉네임 매칭
 	private String BOARDNAME;		//게시판 번호로 게시판이름 매칭
+	private String LOGIN_ID;
 	
 	/* ---------- POST테이블 Getter/Setter ---------- */
+	
+	public String getLOGIN_ID() {
+		return LOGIN_ID;
+	}
+	public void setLOGIN_ID(String lOGIN_ID) {
+		LOGIN_ID = lOGIN_ID;
+	}
+	
 	public int getPOST_ID() {
 		return POST_ID;
 	}

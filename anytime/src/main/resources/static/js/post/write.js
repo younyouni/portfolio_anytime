@@ -77,12 +77,14 @@ $("#writeArticleButton").on("click", function(e) {
 	let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 	
+	var board_id = document.getElementById('board_id').textContent;
+	
 	console.log($("#title").val());
 	console.log($("#content").val()); 
 	
   	let data = {
-		BOARD_ID: BOARD_ID,
-		USER_ID: USER_ID,
+		BOARD_ID: board_id,
+		LOGIN_ID: $('#login_id').val(),
 		SUBJECT: $("#title").val(),
 		CONTENT: $("#content").val(),
 	};
