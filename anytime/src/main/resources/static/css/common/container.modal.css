@@ -13,7 +13,7 @@
 	width: 20px;
 	height: 20px;
 	background: transparent
-		url('/Anytime/image/new/container.modal.close.png') no-repeat center
+		url('../../image/common/container.modal.close.png') no-repeat center
 		center;
 	background-size: 15px 15px;
 	cursor: pointer;

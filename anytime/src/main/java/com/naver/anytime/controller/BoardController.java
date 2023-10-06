@@ -66,5 +66,15 @@ public class BoardController {
 	    // 생성된 JSON 데이터를 클라이언트에 응답으로 전송
 	    return responseData;
 	}
+	
+//	@PostMapping(value = "/create",produces = "application/json")
+//	@ResponseBody
+//	public List<Board> insertBoard(@RequestParam("NAME") String name) {
+//		
+//		// 여기에서 데이터베이스 조회 또는 다른 로직을 수행하여 JSON 형식의 응답 데이터를 생성
+//		//List<Board> responseData = boardService.getBoardList();
+//		// 생성된 JSON 데이터를 클라이언트에 응답으로 전송
+//		return responseData;
+//	}
 
 }

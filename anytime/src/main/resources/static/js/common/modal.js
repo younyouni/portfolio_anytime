@@ -2,32 +2,40 @@ function createBoard(anony) {//익명 or 닉네임 사용하는 게시판을 생
 	console.log("게시판 생성 익명 여부 0:닉네임, 1:익명" + anony);
 	option = anony;
 
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	
 	$.ajax({
 		type: "post",
-		url: "BoardCreate.bor",
+		url: "../board/create",
 		data: {
 			"board_type": $('input[type="radio"]:checked').val(),
 			"board_name": $('input[name="name"]').val(),
 			"board_content": $('input[name="content"]').val(),
 			"board_purpose": $('input[name="purpose"]').val(),
 			"board_anony": anony,
-			"userid": userid,
-			"school_num": school_num
+			"login_id": login_id,
+			"school_id": $('#school_id').val()
 		},
+		beforeSend: function(xhr)
+		{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+			xhr.setRequestHeader(header, token);
+		},
+		dataType:"json",
 		success: function(resp) {
 			if (resp == 0) { //게시판 생성이 실패한 경우
 				alert("게시판 생성이 실패했습니다.");
 			} else {
 				alert("게시판이 생성되었습니다. 단체/학과 게시판은, 승인 심사에 통과되면 바로 이용가능합니다.");
-				location.href = 'boardContol.com';
+				location.href = '/${schoolDomain}';
 			}
 		}
 	})
 }
 
 $(function() {
-	console.log("모달 js = userid : " + userid);
-	console.log("모달 js = school_num : " + school_num);
+	console.log("모달 js = login_id : " + $('#login_id').val());
+	console.log("모달 js = school_id : " + $('#school_id').val());
 	
 	$('a.createboard').click(function() {
 		$('form#createBoard').css('display', 'block');
