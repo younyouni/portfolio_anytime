@@ -1,0 +1,36 @@
+html {
+	position: relative;
+	min-height: 100%;
+	display: block;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	height: 100%;
+}
+
+#wrapper {
+	display: flex;
+}
+
+.left_admin .card {
+	background-color: #eeeef7;
+	width: 14rem;
+	min-height: 100vh;
+	flex-direction: column;
+	align-items: center;
+	display: flex !important;
+	padding: 110px 15px 15px 15px;
+}
+
+.card>.admin {
+	border: 1px solid #d6d6d6;
+	background-color: #f9f9f9;
+	width: 175px;
+	height: 300px;
+	align-items: center;
+}
