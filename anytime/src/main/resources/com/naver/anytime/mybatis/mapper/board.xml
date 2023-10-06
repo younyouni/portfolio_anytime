@@ -12,6 +12,7 @@
 
 	<select id="getBoardList" resultType="board">
 		select * from board
+		where school_id = #{school_id}
 	</select>
 	
 	<select id="getBoardDetail" parameterType="int" resultType="board">
@@ -19,6 +20,7 @@
 		from board
 		where BOARD_ID = #{board_id}
 	</select>
+	
 	<select id="getBoardAnonymous" resultType="int">
 		select anonymous
 		from board

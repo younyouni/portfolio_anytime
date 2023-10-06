@@ -59,7 +59,7 @@
 				<input type="submit" value="로그인" class="text">
 			</p>
 			<label class="autologin">
-			<input type="checkbox" name="autologin" id ="autologin" value="store"><span>로그인 유지</span></label>
+			<input type="checkbox" name="autologin" id ="autologin"><span>로그인 유지</span></label>
 			
 			<p class="find">
 				<a href="forgotid">아이디/비밀번호 찾기</a>

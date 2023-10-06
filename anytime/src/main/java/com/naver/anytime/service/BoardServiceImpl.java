@@ -28,9 +28,10 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getBoardName(board_id);
 	}
 
-	@Override
-	public List<Board> getBoardList() {
+   @Override
+	public List<Board> getBoardList(int school_id){
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("school_id", school_id);
 		return dao.getBoardList(map);
 	}
 

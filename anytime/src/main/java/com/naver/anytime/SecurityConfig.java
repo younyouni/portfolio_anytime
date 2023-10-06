@@ -77,7 +77,7 @@ public class SecurityConfig {
 //			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")
 //				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
 		
-		http.formLogin().loginPage("/main/home")
+		http.formLogin().loginPage("/member/login")
 				        .loginProcessingUrl("/member/loginProcess")
 				        .usernameParameter("login_id")
 				        .passwordParameter("password")
@@ -91,13 +91,14 @@ public class SecurityConfig {
 		* (3) invalidateHttpSession : 로그아웃시 세션 속성들 제거
 		* (4) deleteCookies : 쿠키 제거
 		*/
-		http.logout().logoutSuccessUrl("/member/main")
-		.logoutUrl("/member/login")
+		http.logout().logoutSuccessUrl("/member/login")
+		.logoutUrl("/member/logout")
 		.invalidateHttpSession(true)
 		.deleteCookies("autologin", "JSESSION_ID");
 		
 		http.rememberMe()
 	      .rememberMeParameter("autologin")
+	      .rememberMeCookieName("autologin")
 	      .userDetailsService(customUserService())
 	      .tokenValiditySeconds(2419200)
 	      .tokenRepository(tokenRepository());

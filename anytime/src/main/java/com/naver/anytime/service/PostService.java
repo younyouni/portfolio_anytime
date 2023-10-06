@@ -62,6 +62,19 @@ public interface PostService {
 
 	// 포스트 닉네임 확인용
 	public List<Post> getUserNickname();
+	
+
+	//검색용 리스트 총 수
+	public int getSearchListCount(int board_id, int search_field, String search_word);
+	
+	//검색용 리스트 결과
+	public List<Post> getSearchPostList(int page, int limit, int board_id, int search_field, String search_word);
+	
+	//전체 검색용 리스트 총 수
+	public int getAllSearchListCount(int school_id, String search_word);
+	
+	//전체 검색용 리스트 결과
+	public List<Post> getAllSearchPostList(int page, int limit, int school_id, String search_word);
 
 	// ********************************= 윤희 =********************************
 	public List<List<Post>> getPostListByBoard(int[] board_ids);

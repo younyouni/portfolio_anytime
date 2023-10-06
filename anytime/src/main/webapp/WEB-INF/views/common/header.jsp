@@ -82,7 +82,7 @@
 			<li class="board"><a
 				href="${pageContext.request.contextPath}/${school.domain}">게시판</a></li>
 			<li><a href="/timetable">시간표</a></li>
-			<li><a href="/calculator">학점계산기</a></li>
+			<li><a href="calculator">학점계산기</a></li>
 			<li><a href="/lecture">캘린더 </a></li>
 		</ul>
 	</div>

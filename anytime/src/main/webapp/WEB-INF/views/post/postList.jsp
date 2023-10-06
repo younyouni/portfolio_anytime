@@ -88,8 +88,36 @@
          	</article>
       	</c:forEach>
       	</c:when>
-      	</c:choose>
 
+
+
+
+		<c:when test="${allsearchcheck == 1}">
+      	<c:forEach var="post" items="${postlist}">
+			<article>
+				<a class="article" href="PostDetailAction.bo?post_num=${post.POST_ID}">
+				<img src="https://cf-fpi.everytime.kr/0.png" class="picture medium">
+				<h3 class="medium">${post.NICKNAME}</h3> 
+				<time class="medium">${post.POST_DATE}</time>
+				<hr>
+				<h2 class="medium bold">${post.SUBJECT}</h2>
+				<p class="medium">
+					${post.CONTENT}<br>
+				</p>
+				<a href="list?board_num=1" class="boardname" style="padding-left:15px; padding-bottom:10px;">${post.BOARDNAME}</a>
+				<ul class="status" style="padding-right:15px; padding-bottom:10px;">
+					<li class="attach">${fileCount}</li>
+					<li title="공감" class="vote">${post.LIKE_COUNT}</li>
+					<li title="댓글" class="comment">${post.COMMENT_COUNT}</li>
+				</ul>
+				
+				<hr> <input type="hidden" name="311145444_comment_anonym" value="0">
+				</a>
+				<div class="comments"></div>
+			</article>
+			</c:forEach>
+      	</c:when>
+      	</c:choose> 
 <%--  	
 		------------------------------ ▼제목▼ ------------------------------ 
 		
@@ -205,7 +233,7 @@
 			<div class="clearBothOnly"></div>
 			<div class="center-block">
 				<c:choose>
-					<c:when test="${allsearchcheck == 0}">
+					<c:when test="${allsearchcheck == 0 && searchcheck != 1}">
 						<ul class="pagination justify-content-center">
 
 							<c:if test="${page <= 1 }">
@@ -254,7 +282,59 @@
 							</c:if>
 						</ul>
 					</c:when>
+		
+		<%-------------------------------- ▼페이지네이션▼ 포스트검색 일떄, --------------------------------%>
+					
+					<c:when test="${allsearchcheck == 0 && searchcheck == 1}">
+						<ul class="pagination justify-content-center">
 
+							<c:if test="${page <= 1 }">
+								<li class="page-item">
+								<li class="page-item hidden"><a class="page-link gray">이전&nbsp;&nbsp;</a>
+								</li>
+							</c:if>
+							<c:if test="${page > 1 }">
+								<li class="page-item"><a
+									href="search?board_id=${board_id}&page=${page-1}&search_field=${search_field}&search_word=${search_word}"
+									class="page-link">&nbsp;&nbsp;&nbsp;이전</a></li>
+							</c:if>
+
+
+							<c:forEach var="a" begin="${startpage}" end="${endpage}">
+								<c:if test="${a == page}">
+									<li class="page-item  active"><a class="page-link">${a}</a>
+									</li>
+								</c:if>
+								<c:if test="${a != page }">
+									<c:url var="go" value="search">
+										<c:param name="board_id" value="${board_id}" />
+										<c:param name="search_field" value="${search_field}" />
+										<c:param name="search_word" value="${search_word}" />
+										<c:param name="page" value="${a}" />
+									</c:url>
+									<li class="page-item"><a href="${go}" class="page-link">${a}</a>
+									</li>
+								</c:if>
+							</c:forEach>
+							
+							
+							<c:if test="${page >= maxpage }">
+								<li class="page-item hidden"><a class="page-link hidden">다음&nbsp;&nbsp;&nbsp;</a>
+								</li>
+							</c:if>
+							<c:if test="${page < maxpage }">
+								<c:url var="next" value="search">
+									<c:param name="board_id" value="${board_id}" />
+									<c:param name="search_field" value="${search_field}" />
+									<c:param name="search_word" value="${search_word}" />
+									<c:param name="page" value="${page+1}" />
+								</c:url>
+								<li class="page-item"><a href="${next}" class="page-link">다음&nbsp;&nbsp;&nbsp;</a>
+								</li>
+							</c:if>
+						</ul>
+					</c:when>		
+		
 		<%-------------------------------- ▼페이지네이션▼ 메인검색 일떄, --------------------------------%>
 		
 					<c:when test="${allsearchcheck == 1}">
@@ -267,7 +347,7 @@
 							</c:if>
 							<c:if test="${page > 1 }">
 								<li class="page-item"><a
-									href="MainSearch.bo?&page=${page-1}&search_field=${search_field}&search_word=${search_word}"
+									href="search?&page=${page-1}&search_field=4&search_word=${search_word}"
 									class="page-link">&nbsp;&nbsp;이전</a></li>
 							</c:if>
 
@@ -277,10 +357,10 @@
 									</li>
 								</c:if>
 								<c:if test="${a != page }">
-									<c:url var="go" value="MainSearch.bo">
-										<c:param name="search_field" value="${search_field}" />
-										<c:param name="search_word" value="${search_word}" />
+									<c:url var="go" value="search">
 										<c:param name="page" value="${a}" />
+										<c:param name="search_field" value="4" />
+										<c:param name="search_word" value="${search_word}" />
 									</c:url>
 									<li class="page-item"><a href="${go}" class="page-link">${a}</a>
 									</li>
@@ -292,10 +372,10 @@
 								</li>
 							</c:if>
 							<c:if test="${page < maxpage }">
-								<c:url var="next" value="MainSearch.bo">
-									<c:param name="search_field" value="${search_field}" />
-									<c:param name="search_word" value="${search_word}" />
+								<c:url var="next" value="search">
 									<c:param name="page" value="${page+1}" />
+									<c:param name="search_field" value="4" />
+									<c:param name="search_word" value="${search_word}" />
 								</c:url>
 								<li class="page-item"><a href="${next}" class="page-link">다음&nbsp;&nbsp;</a>
 								</li>
@@ -320,6 +400,7 @@
 				<jsp:include page="../common/rightside.jsp" />
 			</c:when>
 		</c:choose>
+		
 
 
 		<%-------------------------------- ▼모달▼ --------------------------------%>

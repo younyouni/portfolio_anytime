@@ -15,7 +15,9 @@ $(function() {
 	<div class="rightside">
 	<!-- <div class="card"> -->
 		<div class="rightside1">
-		<form id="searchArticleForm" class="search" action="MainSearch.bo" method="post">
+		<form id="searchArticleForm" class="search" 
+				action="${pageContext.request.contextPath}/post/search" method="get">
+				<input type="hidden" name="search_field" value="4">
 				<input name="search_word" placeholder="전체 게시판의 글을 검색하세요." value="${search_word}" type="text">
 				<button type="button" id="searchButton">&nbsp;&nbsp;</button>
 		</form>
