@@ -435,5 +435,12 @@ public class MemberController {
 		memberservice.delete(id);
 		return "redirect:list";
 	}
+	
+	// 로그아웃
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/member/login";
+	}
 
 }
