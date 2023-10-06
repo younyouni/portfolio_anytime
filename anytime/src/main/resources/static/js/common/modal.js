@@ -5,16 +5,18 @@ function createBoard(anony) {//익명 or 닉네임 사용하는 게시판을 생
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
 	
+	const data ={limit:limit, state:"ajax", page:page}
+	
 	$.ajax({
 		type: "post",
 		url: "../board/create",
 		data: {
-			"board_type": $('input[type="radio"]:checked').val(),
-			"board_name": $('input[name="name"]').val(),
-			"board_content": $('input[name="content"]').val(),
-			"board_purpose": $('input[name="purpose"]').val(),
-			"board_anony": anony,
-			"login_id": login_id,
+			"type": $('input[type="radio"]:checked').val(),
+			"name": $('input[name="name"]').val(),
+			"content": $('input[name="content"]').val(),
+			"purpose": $('input[name="purpose"]').val(),
+			"anony": anony,
+			"login_id": $('#login_id').val(),
 			"school_id": $('#school_id').val()
 		},
 		beforeSend: function(xhr)

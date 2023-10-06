@@ -127,15 +127,12 @@ public class MemberServiceImpl implements MemberService {
 		return dao.findMemberByUserId(user_id);
 	}
 
-	
 	@Override
 	public int updateschoolcheck(String id) {
-		
+
 		return dao.updateschoolcheck(id);
 	}
-	
-	
-	
+
 	// ----------------------------윤희----------------------------
 
 	@Override
@@ -156,6 +153,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public School getSchool(String id) {
 		return dao.getSchool(id);
+	}
+
+	@Override
+	public int getMemberId(String login_id) {
+		return dao.getMemberId(login_id);
 	}
 
 }

@@ -142,6 +142,13 @@
 		WHERE LOGIN_ID = #{login_id}
 	</select>
 
+	<select id="getMemberId" parameterType="String"
+		resultType="int">
+		SELECT MEMBER_ID
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
+	</select>
+
 	<select id="getSchoolId" parameterType="String" resultType="int">
 		SELECT SCHOOL_ID
 		FROM MEMBER
