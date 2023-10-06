@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.anytime.mybatis.mapper.PostMapper">
+
+	<select id="getDetail" parameterType="int" resultType="post">
+		select POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE, 
+			   TO_CHAR(POST_DATE,'MM/DD HH24:MI') as POST_DATE,
+               LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT, STATUS
+        from post
+        where POST_ID = #{post_id}
+	</select>
+
+	<select id="getListCount" resultType="int">
+		select count(*) from post
+		where board_id = #{board_id}
+	</select>
+	
+	<select id="getPostList" parameterType="map" resultType="post">
+   		SELECT * 
+    	FROM (
+      	  SELECT ROWNUM RNUM, j.*
+      	  FROM (
+        	    SELECT post.*, NVL(cnt, 0) AS comment_count
+        	    FROM post
+        	    LEFT OUTER JOIN (
+        	        SELECT post_id, COUNT(*) cnt
+        	        FROM comments
+        	        GROUP BY post_id
+       	     ) sub_C
+       	     ON post.post_id = sub_C.post_id
+					WHERE post.board_id = #{board_id}
+            	ORDER BY post.post_id DESC
+        	) j 
+        	WHERE ROWNUM &lt;= #{end} 
+    	) 
+    	WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+	
+	<select id="getUserNickname" parameterType="int" resultType="post">
+    	SELECT user_id, nickname
+    	FROM member
+	</select>
+	
+	<insert id="insertPost" parameterType="com.naver.anytime.domain.Post">
+     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT,
+                        POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
+                        STATUS)
+     VALUES (post_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, 
+              SYSDATE, 0, 0 , 0 ,1)
+  	</insert>
+	
+	<!-- 일반 검색 리스트 값 출력-->
+	<select id="getSearchPostList" parameterType="map" resultType="post">
+		SELECT * 
+		FROM (
+		    SELECT ROWNUM RNUM, j.* 
+		    FROM (
+		        SELECT post.*, NVL(cnt, 0) AS COMMENT_COUNT 
+		        FROM post 
+		        LEFT OUTER JOIN (
+		            SELECT post_id, COUNT(*) cnt 
+		            FROM comments 
+		            GROUP BY post_id
+		        ) sub_C 
+		        ON post.post_id = sub_C.post_id 
+		        	WHERE post.board_id = #{board_id}
+		        	<include refid="search"/>
+				ORDER BY post.post_id DESC) j
+			         WHERE ROWNUM &lt;= #{end}
+				)
+			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+
+	<!-- 일반 검색 필터링 -->	
+	<sql id="search">
+		<if test='search_field == 0'>
+    		AND (post.subject LIKE '%' || #{search_word} || '%' OR post.content LIKE '%' || #{search_word} || '%')
+		</if>
+		<if test='search_field == 1'>
+		    AND post.subject LIKE '%' || #{search_word} || '%'
+		</if>
+		<if test='search_field == 2'>
+		    AND post.content LIKE '%' || #{search_word} || '%'
+		</if>
+	</sql>
+
+	<!-- 일반 검색 리스트 수 -->	
+	<select id="getSearchListCount" resultType="int">
+		select count(*)
+		from post
+		where board_id = #{board_id}
+		<include refid="search2"/>
+	</select>
+
+	<!-- 일반 검색 필터링2 -->		
+	<sql id="search2">
+		<if test='search_field == 0'>
+    		AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
+		</if>
+		<if test='search_field == 1'>
+		    AND subject LIKE '%' || #{search_word} || '%'
+		</if>
+		<if test='search_field == 2'>
+		    AND content LIKE '%' || #{search_word} || '%'
+		</if>
+	</sql>
+	
+	<!-- 전체 검색 리스트 값 출력 -->		
+	<select id="getAllSearchPostList" parameterType="map" resultType="post">
+   		SELECT *
+			FROM (
+			    SELECT ROWNUM RNUM, j.*, b.name AS boardname
+			    FROM (
+			        SELECT post.*, NVL(cnt, 0) AS comment_count
+			        FROM post
+			        LEFT OUTER JOIN (
+			            SELECT post_id, COUNT(*) cnt
+			            FROM comments
+			            GROUP BY post_id
+			        ) sub_C ON post.post_id = sub_C.post_id
+			        WHERE post.board_id IN (
+			            SELECT board_id
+			            FROM board
+			            WHERE school_id = #{school_id}
+			        )
+			        AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
+			        ORDER BY post.post_id DESC
+			    ) j
+			    LEFT OUTER JOIN board b ON j.board_id = b.board_id
+			    WHERE ROWNUM &lt;= #{end}
+			)
+			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+
+	<!-- 전체 검색 리스트 수 -->		
+	<select id="getAllSearchListCount" resultType="int">
+		SELECT COUNT(*) AS post_count
+			FROM post
+			WHERE board_id IN (
+			    SELECT board_id
+			    FROM board
+			    WHERE school_id = #{school_id}
+			)
+			AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
+	</select>
+
+	<select id="getPostListByBoard" parameterType="int" resultType="post">
+		SELECT * 
+		FROM (	
+				SELECT B.BOARD_ID, B.NAME AS BOARDNAME, 
+				P.SUBJECT, TO_CHAR(P.POST_DATE, 'MM-DD HH24:MI') POST_DATE, P.POST_ID
+				FROM BOARD B LEFT JOIN POST P 
+				ON B.BOARD_ID = P.BOARD_ID				
+				WHERE B.BOARD_ID = #{BOARD_ID}					
+				AND B.TYPE = 1 
+				AND B.STATUS = 1									
+				ORDER BY P.POST_DATE DESC										
+	 		 ) 																	
+		WHERE ROWNUM &lt;= 4
+	</select>
+	
+
+	<!-- 사용X -->
+	<select id="getMainPostList" parameterType="int" resultType="post">
+    	SELECT *
+		FROM (
+		    	SELECT P.*,B.TYPE AS BOARD_TYPE,
+		        ROW_NUMBER() OVER (PARTITION BY B.BOARD_ID ORDER BY P.POST_DATE DESC) AS rn
+		    	FROM BOARD B
+		  		LEFT JOIN POST P ON B.BOARD_ID = P.BOARD_ID
+		    	WHERE B.SCHOOL_ID = #{school_id}
+		        AND B.BOARD_ID IN (
+		            				SELECT BOARD_ID
+		            				FROM BOARD
+						            WHERE TYPE = 1
+						            AND SCHOOL_ID = #{school_id}
+						            AND STATUS = 1
+						            AND NAME != '공지사항'
+		        					)
+		        AND P.STATUS = 1
+			 )
+		WHERE rn &lt;= 4;
+	</select>
+	
+</mapper>

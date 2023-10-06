@@ -1,0 +1,44 @@
+#submenu>div.wrap>div.group>ul>li>a.more {
+	color: #7869e6;
+	font-weight: bold;
+	cursor: pointer;
+}
+/* 서브메뉴 게시판 선택시 변경 색상 */
+#submenu>div.wrap ul>li>a:hover {
+	color: #7869e6;
+	font-weight: bold;
+}
+
+/* 서브메뉴 type 구분선 */
+#submenu>div.wrap>div.divider {
+	display: inline-block;
+	width: 1px;
+	height: 100px;
+	background-color: #c6c6f3;
+	margin-top: 15px;
+}
+
+/* 서브메뉴 크기 */
+#submenu>div { 
+	padding: 28px 0px 10px 0px;
+}
+
+/* 서브메뉴 3줄 간격 조절 */
+#submenu>div>div>ul {
+	margin-bottom: 15px;
+}
+
+/* 서브메뉴 type 구분 상하좌우 간격 */
+#submenu>div.wrap>div.group {
+	margin-right: 15px;
+	width: 100px;
+	margin-top: 15px;
+}
+
+/* 서브메뉴 게시판 목록 상하 간격 */
+#submenu>div.wrap>div.group>ul>li>a {
+    font-size: 13px;
+    margin-bottom: 9px;
+    margin-left: 10px;
+}
+
