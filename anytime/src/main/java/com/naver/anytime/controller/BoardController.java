@@ -41,11 +41,7 @@ public class BoardController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Board> getBoardList(@RequestParam("NAME") String name, HttpSession session) {
-
-		int school_id = (int) session.getAttribute("school_id");
-
-		// 여기에서 데이터베이스 조회 또는 다른 로직을 수행하여 JSON 형식의 응답 데이터를 생성
+	public List<Board> getBoardList(@RequestParam("SCHOOL_ID") int school_id, HttpSession session) {
 
 		List<Board> responseData = boardService.getBoardList(school_id);
 		// 생성된 JSON 데이터를 클라이언트에 응답으로 전송
@@ -53,13 +49,14 @@ public class BoardController {
 	}
 
 	@PostMapping(value = "/create", produces = "application/json")
-	public String insertBoard(int school_id, String login_id, int type, String name, String content, String purpose, int anony) {
-		
+	public String insertBoard(int school_id, String login_id, int type, String name, String content, String purpose,
+			int anony) {
+
 		Board board = new Board();
 		int user_id = memberService.getUserId(login_id);
-		//board.get
+		// board.get
 
-		//int result = boardService.insertBoard()
+		// int result = boardService.insertBoard()
 		// 여기에서 데이터베이스 조회 또는 다른 로직을 수행하여 JSON 형식의 응답 데이터를 생성
 		// List<Board> responseData = boardService.getBoardList();
 		// 생성된 JSON 데이터를 클라이언트에 응답으로 전송
