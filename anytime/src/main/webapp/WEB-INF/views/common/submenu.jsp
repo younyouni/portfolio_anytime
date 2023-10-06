@@ -104,9 +104,6 @@ function sendAjaxRequest() {
 	    }
     	submenu.find('.wrap').append('<div class="divider"></div>');	// 마지막 닫기
 	    
-    },
-    error: function (error) {
-      alert("Ajax 요청 실패: " + error);
     }
   });
 }

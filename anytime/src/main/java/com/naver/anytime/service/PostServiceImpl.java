@@ -182,6 +182,17 @@ public class PostServiceImpl implements PostService {
 		return 0;
 	}
 
+	//글쓰기 실험용
+	@Override
+	public void insertPost(Post post) {
+		if (post.getSUBJECT() == null || post.getSUBJECT().isEmpty()) {
+            throw new IllegalArgumentException("Subject cannot be null or empty");
+        }
+		postDao.insertPost(post);
+		
+	}
+	
+
 	// ********************************= 윤희 =********************************
 	@Override
 	public List<List<Post>> getPostListByBoard(int[] board_ids) {

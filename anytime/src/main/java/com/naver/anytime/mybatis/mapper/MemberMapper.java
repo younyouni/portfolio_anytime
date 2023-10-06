@@ -50,5 +50,5 @@ public interface MemberMapper {
 
 	public School getSchool(String id);
 
-	public int getMemberId(String login_id);
+	public int getUserId(String login_id);
 }

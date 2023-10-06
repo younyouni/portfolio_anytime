@@ -156,8 +156,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int getMemberId(String login_id) {
-		return dao.getMemberId(login_id);
+	public int getUserId(String login_id) {
+		return dao.getUserId(login_id);
 	}
 
 }

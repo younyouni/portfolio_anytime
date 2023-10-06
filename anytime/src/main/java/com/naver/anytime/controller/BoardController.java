@@ -56,7 +56,7 @@ public class BoardController {
 	public String insertBoard(int school_id, String login_id, int type, String name, String content, String purpose, int anony) {
 		
 		Board board = new Board();
-		int user_id = memberService.getMemberId(login_id);
+		int user_id = memberService.getUserId(login_id);
 		//board.get
 
 		//int result = boardService.insertBoard()
