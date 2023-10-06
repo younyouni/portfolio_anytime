@@ -73,9 +73,24 @@ public interface PostMapper {
 	//글쓰기 실험용
 	public void insertPost(Post post);
 	
+	// 검색용
+	public List<Post> getSearchPostList(HashMap<String, Object> map);
+
+	// 검색용
+	public int getSearchListCount(int board_id, int search_field, String search_word);
+	
+	//전체 검색용 리스트 결과
+	public List<Post> getAllSearchPostList(HashMap<String, Object> map);
+	
+	//전체 검색용 리스트 총 수
+	public int getAllSearchListCount(int school_id, String search_word);
+
 	// ********************************= 윤희 =********************************
 	// 메인 커뮤니티 페이지 게시물 리스트 출력 사용X
 	public List<Post> getMainPostList(int school_id);
 
 	public List<Post> getPostListByBoard(int board_id);
+
+
+
 }

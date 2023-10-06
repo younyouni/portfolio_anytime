@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +27,17 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
 </head>
+
+<script>
+	$(function() {
+		$("#logout").click(function(event) {
+			event.preventDefault();
+			$("form[name=logout]").submit();
+		})
+	})
+</script>
+
+
 <body style="">
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/submenu.jsp" />
@@ -55,12 +68,16 @@
 						<h3>
 							커뮤니티 이용을 위해<br> <strong>로그인</strong>이 필요합니다!
 						</h3>
-						<a href="${pageContext.request.contextPath}/member/login" class="button login">로그인</a> <a
-							href="${pageContext.request.contextPath}/member/register" class="button register">애니타임 회원가입</a>
+						<a href="${pageContext.request.contextPath}/member/login"
+							class="button login">로그인</a> <a
+							href="${pageContext.request.contextPath}/member/register"
+							class="button register">애니타임 회원가입</a>
 					</form>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
-					<form class="logged">
+					<form class="logged"
+						action="${pageContext.request.contextPath}/member/logout"
+						method="post" name="logout">
 						<img
 							src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 							class="picture">
@@ -68,9 +85,11 @@
 						<p class="userid">${member.login_id}</p>
 						<ul class="buttons">
 							<li><a href="${pageContext.request.contextPath}/my">내 정보</a></li>
-							<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
+							<li><a class="nav-link" href="#" id="logout">로그아웃</a> </li>
 						</ul>
 						<hr>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}">
 					</form>
 				</sec:authorize>
 			</div>
@@ -113,7 +132,8 @@
 											<p>
 												로그인을 한 학생들만<br>이용할 수 있어요!
 											</p>
-											<a class="button" href="${pageContext.request.contextPath}/member/login">로그인</a>
+											<a class="button"
+												href="${pageContext.request.contextPath}/member/login">로그인</a>
 										</div>
 									</sec:authorize>
 									<sec:authorize access="isAuthenticated()">
@@ -123,7 +143,8 @@
 													<p>
 														학교 인증을 거친 학생들만<br>이용할 수 있어요!
 													</p>
-													<a class="button" href="${pageContext.request.contextPath}/my">학교 인증하기</a>
+													<a class="button"
+														href="${pageContext.request.contextPath}/my">학교 인증하기</a>
 												</div>
 											</c:when>
 											<c:otherwise>

@@ -25,14 +25,13 @@
 	rel="stylesheet">
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-
 <script>
 	$(function() {
 		var currentPage = location.pathname;
 		var newPath = currentPage.replace('/anytime/', ''); // 나중에 설정 바꾸고서 날리기
 		console.log("currentPage" + currentPage);
 		console.log("newPath" + newPath);
-
+	
 		if (newPath.includes("my")) {
 			$(".board").removeClass("active");
 		} else if (newPath.includes('post')
@@ -68,8 +67,7 @@
 					href="${pageContext.request.contextPath}/my" title="내 정보"
 					class="icon my">내 정보</a> <input type="hidden" id="login_id"
 					value="${pinfo.username}"> <input type="hidden"
-					id="userSchool" value="21"> <input type="hidden"
-					id="userCampus" value="37">
+					id="school_id" value="${school.school_id}"> 
 			</div>
 		</sec:authorize>
 		<sec:authorize access="isAnonymous()">
@@ -84,7 +82,7 @@
 			<li class="board"><a
 				href="${pageContext.request.contextPath}/${school.domain}">게시판</a></li>
 			<li><a href="/timetable">시간표</a></li>
-			<li><a href="/calculator">학점계산기</a></li>
+			<li><a href="calculator">학점계산기</a></li>
 			<li><a href="/lecture">캘린더 </a></li>
 		</ul>
 	</div>
