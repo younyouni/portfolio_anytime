@@ -3,32 +3,17 @@
 <head>
 <title>애니타임</title>
 <meta charset="utf-8">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css"
-	rel="stylesheet">
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/common.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.pie.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.resize.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/calculator.index.js"></script>
+<link type="text/css"href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/common.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.pie.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.resize.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/calculator.index.js"></script>
 </head>
 <body style="">
 
@@ -209,7 +194,7 @@
 				<tbody>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0" ></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -230,7 +215,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -251,7 +236,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -272,7 +257,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -293,7 +278,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -314,7 +299,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -335,7 +320,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -356,7 +341,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -377,7 +362,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -398,7 +383,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
