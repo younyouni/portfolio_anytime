@@ -14,6 +14,7 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.article.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.community.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/modal.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
@@ -31,6 +32,13 @@
 		<%-------------------------------- ▼제목▼ --------------------------------%> 
 		
 		 <div class="wrap title">
+
+		 		<ol class="buttons">
+		 			<li>
+		 				<a id="manageMoim">관리하기</a>
+		 			</li>
+		 		</ol>
+
 			<h1>
 				<c:choose>
 					<c:when test="${allsearchcheck == 0}">
@@ -422,7 +430,7 @@
 			</ul>
 		</form>
 
-		<form id="manageMoimForm" class="modal">
+		<form id="manageMoimForm" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
 			<a title="닫기" class="close"></a>
 			<h3>게시판 설정</h3>
 			<p>
@@ -481,40 +489,20 @@
 	<jsp:include page="../common/footer.jsp" />
 	
 	<script>
+
 	$(document).ready(function() {
-		$('#writeArticleButton').click(function() {
-			$(this).hide();	
-			$(".postwriteform").show();
-			
+		$('#manageMoim').click(function(){
+			$('form#manageMoimForm').css('display', 'block');
+			$('form#manageMoimForm').before('<div class="modalwrap"></div>');
+			$('#manageMoimForm').show();
+		});
+		
+		$('a.close').click(function() {
+			$('form#manageMoimForm').css('display', 'none');
+			$('div.modalwrap').remove();
 		});
 		
 	});
-
-	function validateForm() {
-	    var subject = document.querySelector('.write .title').value;
-	    var content = document.querySelector('.write .smallplaceholder').value;
-	    
-	    if (subject.trim() === '' || content.trim() === '') {
-	        alert('제목과 내용을 모두 입력해주세요.');
-	        return false;
-	    }
-	}
-
-	$(document).ready(function() {
-	const fileInput = document.getElementById('post_file');
-	const fileNameElement = document.getElementById('file-name');
-
-	fileInput.addEventListener('change', (event) => {
-	  const selectedFile = event.target.files[0];
-	  if (selectedFile) {
-	    fileNameElement.textContent = selectedFile.name;
-	  } else {
-	    fileNameElement.textContent = '';
-	  }
-		});
-
-	});
-
 	</script> 
 	
 </body>
