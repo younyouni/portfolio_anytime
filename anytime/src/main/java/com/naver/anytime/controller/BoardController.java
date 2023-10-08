@@ -72,5 +72,31 @@ public class BoardController {
 //		// 생성된 JSON 데이터를 클라이언트에 응답으로 전송
 //		return responseData;
 //	}
+	
+	@RequestMapping(value = "/getboardcontent", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Board> getBoardContent(@RequestParam("board_id") int board_id,
+			HttpSession session){
+		
+		System.out.println("이거 되는거 맞음?" + board_id);
+		List<Board> boardContentData = boardService.getBoardContent(board_id);
+		return boardContentData;
+	}
+	
+	@RequestMapping(value = "/updateboardcontent", method = RequestMethod.GET)
+	@ResponseBody
+	public int updateBoardSetting(
+			@RequestParam("board_id") int board_id,
+			@RequestParam("content") String content){
+		
+		// db 변경하기 귀찮아서 임시 설정 content 제약조건 notnull 변경해야함
+		if(content.equals("")) {
+			content = "없음";
+		}
+		
+		int updateData = boardService.updateBoardContent(board_id, content);
+		System.out.println("아니 업데이트 되면 이거 뭐임?" + updateData);
+		return updateData;
+	}
 
 }

@@ -24,7 +24,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public String getBoardName(int board_id) {
+	public List<Board> getBoardName(int board_id) {
 		return dao.getBoardName(board_id);
 	}
 
@@ -54,6 +54,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int[] getBoardIdsByDomain(String schoolDomain) {
 		return dao.getBoardIdsByDomain(schoolDomain);
+	}
+
+	@Override
+	public List<Board> getBoardContent(int board_id) {
+		return dao.getBoardContent(board_id);
+	}
+
+	@Override
+	public int updateBoardContent(int board_id, String content) {
+		return dao.updateBoardContent(board_id, content);
 	}
 
 }

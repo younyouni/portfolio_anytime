@@ -165,7 +165,7 @@ public class PostController {
 		int listcount = postService.getListCount(board_id);
 		
 		// 게시판 이름
-		String board = boardService.getBoardName(board_id);
+		List<Board> board = boardService.getBoardName(board_id);
 		
 		// 총 페이지 수
 	    int maxpage = (listcount + limit - 1) / limit;
@@ -212,7 +212,7 @@ public class PostController {
 	    mv.addObject("listcount", listcount);
 	    mv.addObject("postlist", postlist);
 	    mv.addObject("limit", limit);
-	    
+	    System.out.println("이거 뭐갖고가는거야" + board);
 	    mv.addObject("un", username);
 	    mv.addObject("boardname", board);
 	    mv.addObject("allsearchcheck", 0);
@@ -278,8 +278,8 @@ public class PostController {
 	    }
 	    
 	    // 게시판 이름
-	    String board = boardService.getBoardName(board_id);
-	    
+	    List<Board> board = boardService.getBoardName(board_id);
+
 	    // 총 페이지 수
 	    int maxpage = (listcount + limit - 1) / limit;
 	    
@@ -323,7 +323,7 @@ public class PostController {
 	    mv.addObject("postlist", postlist);
 	    mv.addObject("limit", limit);
 	    mv.addObject("boardname", board);
-	    
+
 	    mv.addObject("un", username);
 	    mv.addObject("allsearchcheck", allsearchcheck);
 	    mv.addObject("emptycheck", 0);

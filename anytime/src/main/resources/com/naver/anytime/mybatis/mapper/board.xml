@@ -5,8 +5,8 @@
 
 <mapper namespace="com.naver.anytime.mybatis.mapper.BoardMapper">
 
-	<select id="getBoardName" resultType="String">
-		select name from board
+	<select id="getBoardName" resultType="board">
+		select name,content from board
 		where board_id = #{board_id}
 	</select>
 
@@ -50,5 +50,17 @@
         AND STATUS = 1
         AND NAME != '공지사항'
 	</select>
+	
+	<select id="getBoardContent" resultType="String">
+		select content
+		from board
+		where board_id = #{board_id}
+	</select>
+	
+	<update id="updateBoardContent" parameterType="map">
+	    UPDATE board
+	    SET content = #{content}
+	    WHERE board_id = #{board_id}
+	</update>
 	
 </mapper>

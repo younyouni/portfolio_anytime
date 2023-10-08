@@ -16,7 +16,7 @@ import com.naver.anytime.domain.Post;
 public interface BoardMapper {
 
 	// 보드 이름 구하기
-	public String getBoardName(int board_id);
+	public List<Board> getBoardName(int board_id);
 
 	// 보드 리스트
 	public List<Board> getBoardList(HashMap<String, Integer> map);
@@ -30,5 +30,9 @@ public interface BoardMapper {
 	public int[] getBoardIds(String id);
 
 	public int[] getBoardIdsByDomain(String schoolDomain);
+
+	public List<Board> getBoardContent(int board_id);
+
+	public int updateBoardContent(int board_id, String content);
 
 }

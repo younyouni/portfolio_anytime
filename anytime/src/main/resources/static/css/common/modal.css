@@ -116,7 +116,33 @@
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * 게시판 모달 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#container form.modal a.close {
+	display: block;
+	float: right;
+	width: 20px;
+	height: 20px;
+	background: transparent
+		url('../../image/common/container.modal.close.png') no-repeat center
+		center;
+	background-size: 15px 15px;
+	cursor: pointer;
+}
+
 #manageMoimForm {
 	border-radius: 12px;
 	padding: 25px 25px 20px 25px !important;
 }
+
+#transferMoimForm {
+	border-radius: 12px;
+	padding: 25px 25px 20px 25px !important;	
+}
+
+#deleteCheckForm {
+	border-radius: 12px;
+	padding: 25px 25px 20px 25px !important;	
+}
+
+
