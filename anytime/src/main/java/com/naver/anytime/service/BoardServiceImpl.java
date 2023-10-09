@@ -80,8 +80,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int getboardManager(int board_id, int user_id) {
-		return dao.getboardManager(board_id, user_id);
+	public int getBoardManager(int board_id, int user_id) {
+		return dao.getBoardManager(board_id, user_id);
+	}
+
+	@Override
+	public Integer deleteBoard(String board_name, int user_id) {
+		return dao.deleteBoard(board_name, user_id);
 	}
 
 

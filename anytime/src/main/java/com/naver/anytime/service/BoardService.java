@@ -31,7 +31,9 @@ public interface BoardService {
 	
 	public int updateBoardContent(int board_id, String content);
 	
-	public int getboardManager(int board_id, int user_id);
+	public int getBoardManager(int board_id, int user_id);
+
+	public Integer deleteBoard(String board_name, int user_id);
 
 
 }

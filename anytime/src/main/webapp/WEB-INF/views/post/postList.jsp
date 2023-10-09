@@ -35,7 +35,7 @@
 		    <c:set var="boardContent" value="${b.CONTENT}" />
 		</c:forEach>
 		 <div class="wrap title">
-
+			
 		 		<ol class="buttons" id="boardmanager" style="display: none;">
 		 			<li>
 		 				<a id="manageMoim">관리하기</a>
@@ -115,7 +115,7 @@
 		<c:when test="${allsearchcheck == 1}">
       	<c:forEach var="post" items="${postlist}">
 			<article>
-				<a class="article" href="PostDetailAction.bo?post_num=${post.POST_ID}">
+				<a class="article" href="detail?post_id=${post.POST_ID}">
 				<img src="https://cf-fpi.everytime.kr/0.png" class="picture medium">
 				<h3 class="medium">${post.NICKNAME}</h3> 
 				<time class="medium">${post.POST_DATE}</time>
@@ -501,15 +501,14 @@
 				<textarea name="message" class="text" placeholder="내용을 입력해주세요."></textarea>
 			</p>
 			<input type="submit" value="전송" class="button">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</form>
 		
 		<form id="deleteCheckForm" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
 			<a title="닫기" class="close"></a>
 			<h3>게시판 삭제</h3>
 			<p>
-				<label>게시판을 삭제하려면 아래 문구를 입력하세요</label>
-				<input type="text" name="boardNameCheck" class="text" readonly>
+				<label>게시판을 삭제하려면 아래 해당 게시판의 이름을 똑같이 입력하세요</label>
+				<input type="text" name="boardNameCheck" class="text" value="${boardName}" readonly>
 				<label>입력</label>
 				<input type="text" name="TruedeleteCheck" class="text">
 			</p>
@@ -521,7 +520,6 @@
 	
 	<script>
 	$(document).ready(function() {
-		
 		boardManagerCheckAjax();
 		
 		$('#manageMoim').click(function(){
@@ -552,14 +550,19 @@
 			$('#deleteCheckForm').css('display', 'none');
 			$('div.modalwrap').remove();
 		});
-	
+		
+		$('#deleteCheckButton').click(function(){
+			boardDeleteAjax();
+		});
+		
+		
 	});		
 	function getBoardContentAjax(){
 		var infoInput = $("input[name='info']");
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
 		$.ajax({
-			url: "${pageContext.request.contextPath}/board/getboardcontent",
+			url: "${pageContext.request.contextPath}/getboardcontent",
 			data: {
 				"board_id": board_id,
 			},
@@ -576,7 +579,7 @@
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
 		$.ajax({
-			url: "${pageContext.request.contextPath}/board/updateboardcontent",
+			url: "${pageContext.request.contextPath}/updateboardcontent",
 			data: {
 				"board_id": board_id,
 				"content": contentvalue
@@ -597,25 +600,48 @@
 	}
 	
 	function boardManagerCheckAjax(){
-		var idcheck = ${}
-		
+		var urlParams = new URLSearchParams(window.location.search);
+		var board_id = urlParams.get('board_id');
 		$.ajax({
-			url: "${pageContext.request.contextpath/board/managercheck}",
+			url: "${pageContext.request.contextPath}/managercheck",
 			data: {
-				LOGIN_ID: $('#login_id').val(),			
+				"board_id": board_id,
+				LOGIN_ID: $('#login_id').val()
 			},
 			dataType: "json",
 			success: function (managerCheck){
 				if(managerCheck == 1){
-					$('#boardmanager').css('display', 'none');
+					$('#boardmanager').show();				
+				}else{
+					console.log("권한이 없습니다");
 				}
-			},
-			error: function(xhr, status, error){
-				console.error("에러 발생" + error);
 			}
 		})
 		
 	}
+	
+	function boardDeleteAjax(){
+		var board_name = $("input[name='boardNameCheck']").val();
+		var context = "${pageContext.request.contextPath}";
+		$.ajax({
+			url: "${pageContext.request.contextPath}/deleteboard",
+			data: {
+				board_name: board_name,
+				LOGIN_ID: $('#login_id').val()
+			},
+			dataType: "json",
+			success: function (deleteResult){
+				if(deleteResult == 1){
+					alert("게시판이 삭제되었습니다.");
+					window.location.href = context + "/member/login";
+				}else{
+					alert("게시판 삭제에 에러가 발생했습니다.");
+				}
+			}
+		})
+	}
+	
+	
 	
 	</script> 
 	

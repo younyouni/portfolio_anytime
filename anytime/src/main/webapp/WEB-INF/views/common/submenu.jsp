@@ -52,7 +52,7 @@ function sendAjaxRequest() {
   var school_id = $('#school_id').val();
 	
   $.ajax({
-    url: "${pageContext.request.contextPath}/board/list",
+    url: "${pageContext.request.contextPath}/list",
     data: {
       "SCHOOL_ID": school_id,
     },

@@ -63,7 +63,7 @@
 	    WHERE board_id = #{board_id}
 	</update>
 	
-	<select id="getboardManager" resultType="int">
+	<select id="getBoardManager" resultType="int">
 		select *
 		from board
 		where board_id = ${board_id} and user_id = ${user_id}
@@ -81,5 +81,10 @@
 				#{TYPE}, #{NAME}, #{CONTENT}, #{ANONYMOUS},
 				#{STATUS}, #{PURPOSE})
 	</insert>
+	
+	<delete id="deleteBoard">
+		delete from board
+		where name = '${board_name}' and user_id = ${user_id}
+	</delete>
 
 </mapper>

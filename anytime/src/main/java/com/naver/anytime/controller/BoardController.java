@@ -78,7 +78,7 @@ public class BoardController {
 			rattr.addFlashAttribute("result", "insertBoardSuccess");
 			url = "redirect:/member/info/boardlist";
 		} else {
-			logger.info("게시판 생성 실패");
+			logger.info("게시판 생성 실패");                  
 			mv.addAttribute("url", request.getRequestURL());
 			mv.addAttribute("message", "게시판 생성 실패");
 			url = "error/error";
@@ -107,7 +107,7 @@ public class BoardController {
 			@RequestParam("board_id") int board_id,
 			@RequestParam("content") String content){
 		
-		// db 변경하기 귀찮아서 임시 설정 content 제약조건 notnull 변경해야함
+		// db 변경하기 귀찮아서 임시 설정 content 제약조건 notnull 변경해야함 /////////////////////////////////////////////
 		if(content.equals("")) {
 			content = "없음";
 		}
@@ -120,14 +120,37 @@ public class BoardController {
 	@RequestMapping(value = "/managercheck", method = RequestMethod.GET)
 	@ResponseBody
 	public int boardManagerCheck(
-			@RequestParam("board_id") int board_id,
+			@RequestParam("board_id") Integer board_id,
 			@RequestParam("LOGIN_ID") String login_id) {
 		
 		int user_id = memberService.getUserId(login_id);
+		int managerCheck = 0;
+		Integer check = boardService.getBoardManager(board_id, user_id);
 		
-		int managerCheck = boardService.getboardManager(board_id, user_id);
+		if(check != null) {
+			managerCheck = 1;
+		}
+		
+		System.out.println("BoardController에서 보드 권한 체크 테스트 " + managerCheck);
 		
 		return managerCheck;
+	}
+	
+	@RequestMapping(value = "/deleteboard", method = RequestMethod.GET)
+	@ResponseBody
+	public int deleteBoard(
+			@RequestParam("board_name") String board_name,
+			@RequestParam("LOGIN_ID") String login_id) {
+		
+		int user_id = memberService.getUserId(login_id);
+		int deleteResult = 0;
+		Integer check = boardService.deleteBoard(board_name, user_id);
+		
+		if(check != null) {
+			deleteResult = 1;
+		}
+		System.out.println("이거 되는거 맞음?" + deleteResult);
+		return deleteResult;
 	}
 
 }
