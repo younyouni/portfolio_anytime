@@ -1,26 +1,30 @@
 package com.naver.anytime.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.naver.anytime.domain.Board;
-import com.naver.anytime.domain.Post;
+import com.naver.anytime.mybatis.mapper.BoardAuthMapper;
 import com.naver.anytime.mybatis.mapper.BoardMapper;
-import com.naver.anytime.mybatis.mapper.PostMapper;
+import com.naver.anytime.mybatis.mapper.MemberMapper;
 
 @Service
 public class BoardServiceImpl implements BoardService {
 
 	private BoardMapper dao;
-	private PostMapper postDao;
+	private MemberMapper memberDao;
+	private BoardAuthMapper boardAuthDao;
 
 	@Autowired
-	public BoardServiceImpl(BoardMapper boardDao) {
+	public BoardServiceImpl(BoardMapper boardDao, MemberMapper memberDao, BoardAuthMapper boardAuthDao) {
 		this.dao = boardDao;
+		this.memberDao = memberDao;
+		this.boardAuthDao = boardAuthDao;
 	}
 
 	@Override
@@ -28,8 +32,8 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getBoardName(board_id);
 	}
 
-   @Override
-	public List<Board> getBoardList(int school_id){
+	@Override
+	public List<Board> getBoardList(int school_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("school_id", school_id);
 		return dao.getBoardList(map);
@@ -54,6 +58,15 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int[] getBoardIdsByDomain(String schoolDomain) {
 		return dao.getBoardIdsByDomain(schoolDomain);
+	}
+
+	@Override
+	@Transactional
+	public int insertBoard(Board board) {
+		int result = dao.insertBoard(board);
+		memberDao.updateBoardAdmin(board.getUSER_ID());
+		boardAuthDao.insertBoardAuth(board.getNEW_BOARD_ID(), board.getUSER_ID());
+		return result;
 	}
 
 }
