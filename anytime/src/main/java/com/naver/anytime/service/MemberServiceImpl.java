@@ -159,5 +159,9 @@ public class MemberServiceImpl implements MemberService {
 	public int getUserId(String login_id) {
 		return dao.getUserId(login_id);
 	}
+	
+	public int updateBoardAdmin(int user_id) {
+		return dao.updateBoardAdmin(user_id);
+	}
 
 }

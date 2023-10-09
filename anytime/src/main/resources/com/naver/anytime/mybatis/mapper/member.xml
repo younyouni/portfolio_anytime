@@ -170,5 +170,11 @@
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
 	</select>
+	
+	<update id="updateBoardAdmin" parameterType="int">
+		UPDATE MEMBER 
+		SET BOARD_ADMIN = 1 
+		WHERE USER_ID = #{user_id}
+	</update>
 
 </mapper>
