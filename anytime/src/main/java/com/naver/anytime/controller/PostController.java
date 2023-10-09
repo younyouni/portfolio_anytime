@@ -212,7 +212,7 @@ public class PostController {
 	    mv.addObject("listcount", listcount);
 	    mv.addObject("postlist", postlist);
 	    mv.addObject("limit", limit);
-	    System.out.println("이거 뭐갖고가는거야" + board);
+
 	    mv.addObject("un", username);
 	    mv.addObject("boardname", board);
 	    mv.addObject("allsearchcheck", 0);

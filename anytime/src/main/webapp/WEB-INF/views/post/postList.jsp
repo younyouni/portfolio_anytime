@@ -36,7 +36,7 @@
 		</c:forEach>
 		 <div class="wrap title">
 
-		 		<ol class="buttons">
+		 		<ol class="buttons" id="boardmanager" style="display: none;">
 		 			<li>
 		 				<a id="manageMoim">관리하기</a>
 		 			</li>
@@ -522,6 +522,8 @@
 	<script>
 	$(document).ready(function() {
 		
+		boardManagerCheckAjax();
+		
 		$('#manageMoim').click(function(){
 			getBoardContentAjax();
 			$('form#manageMoimForm').css('display', 'block');
@@ -592,6 +594,27 @@
 				console.error("에러 발생" + error);
 			}
 		})
+	}
+	
+	function boardManagerCheckAjax(){
+		var idcheck = ${}
+		
+		$.ajax({
+			url: "${pageContext.request.contextpath/board/managercheck}",
+			data: {
+				LOGIN_ID: $('#login_id').val(),			
+			},
+			dataType: "json",
+			success: function (managerCheck){
+				if(managerCheck == 1){
+					$('#boardmanager').css('display', 'none');
+				}
+			},
+			error: function(xhr, status, error){
+				console.error("에러 발생" + error);
+			}
+		})
+		
 	}
 	
 	</script> 

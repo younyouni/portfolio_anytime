@@ -66,4 +66,9 @@ public class BoardServiceImpl implements BoardService {
 		return dao.updateBoardContent(board_id, content);
 	}
 
+	@Override
+	public int getboardManager(int board_id, int user_id) {
+		return dao.getboardManager(board_id, user_id);
+	}
+
 }

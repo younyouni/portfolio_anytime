@@ -35,4 +35,6 @@ public interface BoardMapper {
 
 	public int updateBoardContent(int board_id, String content);
 
+	public int getboardManager(int board_id, int user_id);
+
 }

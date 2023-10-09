@@ -63,4 +63,10 @@
 	    WHERE board_id = #{board_id}
 	</update>
 	
+	<select id="getboardManager" resultType="int">
+		select *
+		from board
+		where board_id = ${board_id} and user_id = ${user_id}
+	</select>
+	
 </mapper>

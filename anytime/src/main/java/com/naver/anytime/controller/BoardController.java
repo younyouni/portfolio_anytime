@@ -1,14 +1,7 @@
 package com.naver.anytime.controller;
 
-import java.io.File;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -16,22 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
+import com.naver.anytime.service.MemberService;
 
 @Controller
 @RequestMapping(value = "/board")
@@ -42,14 +28,17 @@ public class BoardController {
 	private BoardService boardService;
 
 	private CommentService commentService;
+	
+	private MemberService memberService;
 
 	@Value("${my.savefolder}")
 	private String saveFolder;
 
 	@Autowired
-	public BoardController(BoardService boardService, CommentService commentService) {
+	public BoardController(BoardService boardService, CommentService commentService, MemberService memberService) {
 		this.boardService = boardService;
 		this.commentService = commentService;
+		this.memberService = memberService;
 	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -75,10 +64,9 @@ public class BoardController {
 	
 	@RequestMapping(value = "/getboardcontent", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Board> getBoardContent(@RequestParam("board_id") int board_id,
-			HttpSession session){
+	public List<Board> getBoardContent(@RequestParam("board_id") int board_id){
 		
-		System.out.println("이거 되는거 맞음?" + board_id);
+		System.out.println("BoardController 에서 content 받아오는 메서드 보드넘 테스트 " + board_id);
 		List<Board> boardContentData = boardService.getBoardContent(board_id);
 		return boardContentData;
 	}
@@ -95,8 +83,22 @@ public class BoardController {
 		}
 		
 		int updateData = boardService.updateBoardContent(board_id, content);
-		System.out.println("아니 업데이트 되면 이거 뭐임?" + updateData);
+		System.out.println("BoardController에서 content 업데이트 성공 여부 테스트 " + updateData);
 		return updateData;
 	}
+	
+	@RequestMapping(value = "/managercheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int boardManagerCheck(
+			@RequestParam("board_id") int board_id,
+			@RequestParam("LOGIN_ID") String login_id) {
+		
+		int user_id = memberService.getUserId(login_id);
+		
+		int managerCheck = boardService.getboardManager(board_id, user_id);
+		
+		return managerCheck;
+	}
+	
 
 }
