@@ -31,10 +31,16 @@ public interface BoardMapper {
 
 	public int[] getBoardIdsByDomain(String schoolDomain);
 
+	public int insertBoard(Board board);
+	// ********************************= 윤희 =********************************	
+	
+
 	public List<Board> getBoardContent(int board_id);
 
 	public int updateBoardContent(int board_id, String content);
 
 	public int getboardManager(int board_id, int user_id);
+
+
 
 }

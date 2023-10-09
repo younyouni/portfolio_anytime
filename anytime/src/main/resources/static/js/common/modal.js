@@ -7,40 +7,37 @@ function createBoard(anony) {//익명 or 닉네임 사용하는 게시판을 생
 	
 	$.ajax({
 		type: "post",
-		url: "../board/create",
+		url: "create",
 		data: {
-			"board_type": $('input[type="radio"]:checked').val(),
-			"board_name": $('input[name="name"]').val(),
-			"board_content": $('input[name="content"]').val(),
-			"board_purpose": $('input[name="purpose"]').val(),
-			"board_anony": anony,
-			"login_id": login_id,
-			"school_id": $('#school_id').val()
+			"TYPE": $('input[type="radio"]:checked').val(),
+			"NAME": $('input[name="name"]').val(),
+			"CONTENT": $('input[name="content"]').val(),
+			"PURPOSE": $('input[name="purpose"]').val(),
+			"ANONY": anony,
+			"LOGIN_ID": $('#login_id').val(),
+			"SCHOOL_ID": $('#school_id').val()
 		},
 		beforeSend: function(xhr)
 		{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
 			xhr.setRequestHeader(header, token);
 		},
-		dataType:"json",
 		success: function(resp) {
 			if (resp == 0) { //게시판 생성이 실패한 경우
 				alert("게시판 생성이 실패했습니다.");
 			} else {
 				alert("게시판이 생성되었습니다. 단체/학과 게시판은, 승인 심사에 통과되면 바로 이용가능합니다.");
-				location.href = '/${schoolDomain}';
+				location.href = 'boardlist';
 			}
 		}
 	})
 }
 
 $(function() {
-	console.log("모달 js = login_id : " + $('#login_id').val());
-	console.log("모달 js = school_id : " + $('#school_id').val());
-	
-	$('a.createboard').click(function() {
-		$('form#createBoard').css('display', 'block');
-		$('form#createBoard').before('<div class="modalwrap"></div>');
-	});
+	// 모달 열기 버튼을 클릭할 때
+    $('a.createboard').click(function() {
+        $('form#createBoard').css('display', 'block');
+        $('form#createBoard').before('<div class="modalwrap"></div>');
+    });
 
 	$('input[name="boardtype"]').change(function() {
 		var selectedValue = $(this).val();
@@ -95,8 +92,9 @@ $(function() {
 		}
 	});
 
-	$('a.close').click(function() {
-		$('form#createBoard').css('display', 'none');
-		$('div.modalwrap').remove();
-	});
+	$ // 모달 닫기 버튼을 클릭할 때
+    $('a.close').click(function() {
+        $('form#createBoard').css('display', 'none');
+        $('div.modalwrap').remove();
+    });
 });

@@ -3,6 +3,8 @@ package com.naver.anytime.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,8 @@ public class SchoolController {
 //	}
 
 	@RequestMapping(value = "/{schoolDomain}", method = RequestMethod.GET)
-	public ModelAndView getLoginCommunityPage(@PathVariable("schoolDomain") String schoolDomain, ModelAndView mv,
-			Principal userPrincipal) {
+	public ModelAndView getLoginCommunityPage(@PathVariable("schoolDomain") String schoolDomain, HttpSession session,
+			ModelAndView mv, Principal userPrincipal) {
 
 		mv.setViewName("main/community");
 
@@ -67,17 +69,16 @@ public class SchoolController {
 			Member m = memberService.getLoginMember(id);
 			int[] board_ids = boardService.getBoardIds(id);
 			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
-
 			mv.addObject("member", m);
 			mv.addObject("list", commonPostsByBoard);
 
-		}else {
+		} else {
 			int[] board_ids = boardService.getBoardIdsByDomain(schoolDomain);
 			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
 			mv.addObject("list", commonPostsByBoard);
 		}
 		School s = schoolService.getSchool(schoolDomain);
-		mv.addObject("school", s);
+		session.setAttribute("school", s);
 
 		return mv;
 	}

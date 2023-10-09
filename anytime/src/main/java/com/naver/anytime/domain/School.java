@@ -9,10 +9,6 @@ public class School {
 	private int credit;
 	private int total_count;
 	
-	
-	
-	
-	
 	public int getSchool_id() {
 		return school_id;
 	}

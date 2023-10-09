@@ -3,8 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,13 +98,13 @@
 							href="/mycommentarticle" class="mycommentarticle">댓글 단 글</a> <a
 							href="/myscrap" class="myscrap">내 스크랩</a>
 						<c:if test="${member.board_admin eq 1}">
-							<a href="${pageContext.request.contextPath}/youn/boardlist"
+							<a href="${pageContext.request.contextPath}/boardlist"
 								class="myboard">게시판 관리</a>
 						</c:if>
 						<c:if test="${member.board_admin eq 0}">
 							<p>
 								새로운 게시판을<br>생성할수 있어요! <a class="button createboard"
-									href="#createboard" data-toggle="modal">게시판 생성하기</a>
+								 data-toggle="modal">게시판 생성하기</a>
 							</p>
 						</c:if>
 						<hr>

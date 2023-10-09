@@ -23,16 +23,29 @@ nav {
 	</script>
 </sec:authorize>
 <jsp:include page="../common/header.jsp" />
+<script>
+	$(function() {
+		$("#logout").click(function(event) {
+			event.preventDefault();
+			$("form[name=logout]").submit();
+		})
+	})
+</script>
 </head>
 <body id="my">
 	<div>
 		<div class="container">
 			<section>
-				<div class="title">
-					<h1>내 정보</h1>
-					<a href="${pageContext.request.contextPath}/logout" class="logout">로그아웃</a>
-				</div>
 				<sec:authorize access="isAuthenticated()">
+					<form action="${pageContext.request.contextPath}/member/logout"
+						method="post" name="logout">
+						<div class="title">
+							<h1>내 정보</h1>
+							<a href="" class="logout" id="logout">로그아웃</a> 
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}">
+					</form>
 					<div class="profile">
 						<img
 							src="${pageContext.request.contextPath}/resources/image/common/profile.png">

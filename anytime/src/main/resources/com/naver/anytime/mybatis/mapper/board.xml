@@ -68,5 +68,18 @@
 		from board
 		where board_id = ${board_id} and user_id = ${user_id}
 	</select>
-	
+
+	<insert id="insertBoard" parameterType="Board">
+	<selectKey keyProperty="NEW_BOARD_ID" resultType="int" order="AFTER">
+		SELECT BOARD_SEQ.CURRVAL FROM DUAL
+	</selectKey>
+		INSERT INTO BOARD
+				(BOARD_ID, SCHOOL_ID, USER_ID,
+				TYPE, NAME, CONTENT, ANONYMOUS,
+				STATUS, PURPOSE)
+		VALUES (BOARD_SEQ.NEXTVAL, #{SCHOOL_ID}, #{USER_ID},
+				#{TYPE}, #{NAME}, #{CONTENT}, #{ANONYMOUS},
+				#{STATUS}, #{PURPOSE})
+	</insert>
+
 </mapper>
