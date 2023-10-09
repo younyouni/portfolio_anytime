@@ -1,5 +1,6 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,24 +56,19 @@ public class PostController {
 
    /* -------------------------------- ▼post/detail 상세페이지▼ -------------------------------- */ 
    @GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
-   public ModelAndView postDetail( 
+   public ModelAndView postDetail(
 	   @RequestParam(value = "post_id", required = false) int post_id,
 	   ModelAndView mv,
-	   HttpServletRequest request) {
+	   HttpServletRequest request, Principal userPrincipal) {
 	   
-	   // 현재 사용자의 아이디 가져오기
-       HttpSession session = request.getSession();
-       int currentUserNum = 0; // 기본값 0으로 설정
-       Object userIdObject = session.getAttribute("userId");
-       
-       if (userIdObject != null) {
-           currentUserNum = Integer.parseInt(userIdObject.toString());
-       }
-	   
+	   HttpSession session = request.getSession(); 
+	   String id = userPrincipal.getName();
+	   Member member = memberService.getLoginMember(id);
+	   int memberId = member.getUser_id();
 	   Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
-	   
 	   Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
-
+	   
+	   
 	      // post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
 	      if (post == null) {
 	         logger.info("상세보기 실패");
@@ -85,7 +79,7 @@ public class PostController {
 	    	  logger.info("상세보기 성공");
 	    	  
 	    	  if (board.getANONYMOUS() == 0) {
-	              Member member = memberService.findMemberByUserId(post.getUSER_ID());
+	    		   member = memberService.findMemberByUserId(post.getUSER_ID());
 	              if (member != null){
 	                  String nickname = member.getNickname();
 	                  mv.addObject("nickname", nickname);
@@ -95,9 +89,8 @@ public class PostController {
 	    	  mv.setViewName("post/postDetail");
 	    	  mv.addObject("postdata", post);
 	    	  mv.addObject("boardtest", board);
+	    	  mv.addObject("currentUserNum", memberId);
 	    	  System.out.println("post테스트=>"+post);
-	    	  
-	    	
 	    	  
 	      }
 	      return mv;

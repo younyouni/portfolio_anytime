@@ -51,7 +51,7 @@
 					<ul class="status">
 					   <!-- 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 수정 버튼 표시 -->
 					   <c:choose>
-					       <c:when test="${currentUserNum eq postdata.POST_ID}">
+					       <c:when test="${currentUserNum eq postdata.USER_ID}">
 					           <li class="update" id="updateButton">수정</li>
 					           <li class="del">삭제</li>
 					       </c:when>
