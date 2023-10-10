@@ -194,7 +194,7 @@
 				<tbody>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0" ></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -215,7 +215,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -236,7 +236,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -257,7 +257,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -278,7 +278,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -299,7 +299,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -320,7 +320,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -341,7 +341,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -362,7 +362,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -383,7 +383,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
