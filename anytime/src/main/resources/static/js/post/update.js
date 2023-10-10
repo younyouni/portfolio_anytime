@@ -1,87 +1,107 @@
 $(document).ready(function(){
 
-	/*수정 기본 Form*/
-      $("#writeBoardContainer").prepend(
-	`<form class="write" id = "writeBoard">
-	<input type="hidden" id="boardId" >
-	<p><input id="title" placeholder="글 제목" class="title"></p>
-	<p style="margin-bottom: 0px !important;">
-	<textarea id="content" class="smallplaceholder large">
-</textarea></p>
-<input class="file" type="file" name="file" multiple="multiple">
-<ol class="thumbnails">
-<li class="new"></li>
-</ol>
-<div class="clearBothOnly"></div>
-<ul class="option">
-<li title="해시태그" class="hashtag"></li>
-<li title="첨부" class="attach"></li>
-<li title="완료" class="submit" id="writePut"></li>
-<li class="anonym">
-<input type="checkbox" class="form-check-input" id="isAnonymous" name="isAnonymous">
- <label class="form-check-label" for="exampleCheck1"> 익명 </label>
-</li>
-</ul>
-<div class="clearBothOnly"></div>
-</form>
-`);
-/*수정 기본 Form*/
+    $("#writeBoardContainer").prepend(
+    `<form class="write" id ="writeBoard">
+    
+    <p><input id="title" placeholder="글 제목" class="title"></p>
+    <p style="margin-bottom: 0px !important;">
+    <textarea id="content" placeholder="" class="smallplaceholder large">
+    </textarea></p>
+    
+     </form>`);
+
 
 $("#writeBoard").hide(); // Hide
 var toggle = false;
 
-/*기존 정보 뿌리기*/
-function updateBoard(id,content,title,isAnonymous){
+$("#writeArticleButton").on("click", function(e) {    
+    
 	toggle = !toggle;
 	if(toggle == true){
-		document.getElementById("boardId").value = `${id}`;
 		
-		document.getElementById("content").value = `${content}`;
-		document.getElementById("title").value = `${title}`;
-		$('input:checkbox[name=isAnonymous]').prop("checked",`${isAnonymous}`);
-		 
-	$("#goListButton").text("수정 취소");
-	$("#goListButton").attr('onClick','updateCancel()','');
-	
 		$("#writeBoard").show(); //Show
-		$("#boardInfo").hide(); //Show
-		
 	}else{		
 		
 		$("#writeBoard").hide(); // Hide
-			$("#boardInfo").show(); //Show
 	}
-}
-/*기존 정보 뿌리기*/
-
-/*글 수정 완료*/
-  $("#writePut").on("click", (e)=>{
-	e.preventDefault(); //form태그 action안타게 막아버리는것
-
-	let id = $("#boardId").val();
-  	let data = {
-		content: $("#content").val(),
-		title: $("#title").val(),
-		isAnonymous: $('input:checkbox[name=isAnonymous]').is(':checked')
-	};
-      
-      $.ajax({
-		type: "PUT",
-		url: "/board/post/"+id,
-		data: JSON.stringify(data),
-		contentType: "application/json; charset=utf-8",
-		dataType:"json"
-	}).done((res)=>{
-		
-		if(res.statusCode === 1){
-			alert("게시글 수정에  성공하였습니다.");
-			 location.reload();
-		}else{
-			alert("게시글 수정에 실패하였습니다.");
-		}
-	});
-      
 });
 
-/*글 수정 완료*/
-})
+/*글 수정 시작*/
+$("#updateButton").on("click", function(e) {
+	e.preventDefault();
+	
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+
+	var postId = e.target.getAttribute("post_id");
+    var boardId = e.target.getAttribute("board_id"); 
+
+	$.ajax({
+	type: "GET",
+	url: "detail",
+	data: { post_id: postId },
+	
+	beforeSend: function(xhr) {
+	xhr.setRequestHeader(header, token);
+		 },
+}).done(function(res) {
+if(res.statusCode == 1){
+let post=res.data;
+$("#title").val(post.SUBJECT);
+$("#content").val(pos.CONTENT);
+
+$("#writeBoard").show();
+} else {
+alert("게시글 불러오기에 실패하였습니다. 오류: " + res.errorMessage);
+}
+});
+
+});
+/*글 수정 종료*/
+
+/*글쓰기 완료*/
+  $("#submitPostButtonIdHere") .on("click", function(e) {
+	e.preventDefault();
+	
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	
+	var board_id = document.getElementById('board_id').textContent;
+	
+	console.log($("#title").val());
+	console.log($("#content").val()); 
+	
+  	let data = {
+	BOARD_ID: board_id,
+	LOGIN_ID: $('#login_id').val(),
+	SUBJECT: $("#title").val(),
+	CONTENT: $("#content").val(),
+};
+      
+console.log(data);
+   
+$.ajax({
+type: "POST",
+url:"/posts/write",
+data:data,
+beforeSend:function(xhr){
+xhr.setRequestHeader(header,token)
+},
+success:function(data){
+if(data.status == "success"){
+alert("게시글 작성에 성공하였습니다.");
+location.reload();
+} else {
+alert("게시글 작성에 실패하였습니다. 오류: " + data.errorMessage);
+}
+},
+error:function(e){
+console.log(e);
+}
+});
+
+});
+/*글쓰기 완료*/
+
+});
+``

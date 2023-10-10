@@ -36,8 +36,9 @@
 			<hr>
 			
 		</div>
-		<div class="wrap articles">
-			<article>
+		<div class="wrap articles" id="writeBoardContainer">
+		<a id="writeArticleButton" style="display: none;">새 글을 작성해주세요!</a>
+			<article id="boardInfo">
 				<a class="article"> <img src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 					class="picture large">
 					<div class="profile">
@@ -53,7 +54,7 @@
 					   <!-- 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 수정 버튼 표시 -->
 					   <c:choose>
 					       <c:when test="${currentUserId eq postdata.USER_ID}">
-					           <li class="update" id="updateButton">수정</li>
+					           <li class="update" id="updateButton" POST_ID="${postdata.POST_ID}" BOARD_ID="${postdata.BOARD_ID}">수정</li>
 					           <li class="del" POST_ID="${postdata.POST_ID}" BOARD_ID="${postdata.BOARD_ID}">삭제</li>
 					       </c:when>
 					       <c:otherwise>
@@ -118,17 +119,6 @@
 	--%>
 	<script>
      $(document).ready(function() { 
-        // "수정" 버튼을 클릭하면 동작하는 스크립트
-        $("#updateButton").click(function() {
-            // 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 페이지 이동
-            if (currentUserId == writerNum) {
-                // post_num 값 가져오기
-                var post_num = $("#post_num").val();
-                
-                // postModify.jsp 페이지로 이동
-                window.location.href = "PostModifyView.bo?post_num=" + post_num    
-            }
-        });
         
             var deleteButtons = document.getElementsByClassName('del');
 
