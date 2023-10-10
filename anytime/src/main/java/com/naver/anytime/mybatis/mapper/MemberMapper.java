@@ -57,4 +57,8 @@ public interface MemberMapper {
 	public String getNickname(String login_id);
 
 	public int updateMember(Member member);
+
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+	public Integer getSchoolId2(String id);
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 }

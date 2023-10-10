@@ -1,7 +1,7 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
@@ -32,16 +34,17 @@ public class BoardController {
 	private BoardService boardService;
 	private MemberService memberService;
 	private CommentService commentService;
-
+	private PasswordEncoder passwordEncoder;
 
 	@Value("${my.savefolder}")
 	private String saveFolder;
 
 	@Autowired
-	public BoardController(BoardService boardService, CommentService commentService, MemberService memberService) {
+	public BoardController(BoardService boardService, CommentService commentService, MemberService memberService, PasswordEncoder passwordEncoder) {
 		this.boardService = boardService;
 		this.commentService = commentService;
 		this.memberService = memberService;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -178,12 +181,57 @@ public class BoardController {
 	@RequestMapping(value = "/updatemanagerboard", method = RequestMethod.GET)
 	@ResponseBody
 	public int updateManagerBoard(
-			
+			@RequestParam(name = "board_id", defaultValue = "-1") int board_id,
+			@RequestParam("password") String password,
+			@RequestParam("userid") String userid,
+			Principal principal,
+			HttpSession session
 			) {
 		int updateManagerBoardResult = 0;
+		String loginid = principal.getName();			//양도인(로그인한) 유저 아이디 ex)uniuni
+		String dbPwd = memberService.getPwd(loginid);	//양도인(로그인한) 유저 db 보안 비밀번호 ex)$1b$592qa.Ql2 ...
+		Integer idcheck = memberService.isId(userid);		//피양도인 존재 유저 확인
+		int schooltest = 0;
 		
+		Integer am_school_num = memberService.getSchoolId2(loginid);		//양도인 유저의 스쿨 번호
+		Integer tf_school_num = memberService.getSchoolId2(userid);			//피양도인 유저의 스쿨 번호
+		if(am_school_num == null || tf_school_num == null) {
+			am_school_num = 0;
+			tf_school_num = 0;
+		}
 		
+		System.out.println("양도 유저 학교 번호 체크 / 양도인 [" + am_school_num + "] 피양도인 [" + tf_school_num + "]" );
+		if(am_school_num == tf_school_num) {	// 같은 학교 학생 확인
+			schooltest = 1;
+		}
 		
+		if(idcheck == 1) {
+			if(schooltest == 1) {
+				if(passwordEncoder.matches(password, dbPwd)) {
+					int am_user_id_num = memberService.getUserId(loginid);	//양도인 유저번호 구하기
+					int tf_user_id_num = memberService.getUserId(userid);	//피양도인 유저번호 구하기
+					int result1 = boardService.updateBoardAuth(am_user_id_num, tf_user_id_num, board_id);
+					
+					if(am_user_id_num != 0 && tf_user_id_num != 0 && result1 == 1) {
+						int result2 = boardService.updateBoardUserId(am_user_id_num ,tf_user_id_num, board_id);
+						if(result2 == 1) {
+							updateManagerBoardResult = 1;	//board 테이블 업데이트 성공
+						}
+					} else {
+						System.out.println("양도인 체크[" + am_user_id_num + "] 피양도인 체크 [" + tf_user_id_num + "] 권한업데이트 체크 [" + result1 + "]");
+						updateManagerBoardResult = 2;	//board_auth 테이블 업데이트 실패
+					}
+				} else {
+					updateManagerBoardResult = 3;	//db password 와 입력 password 매칭 실패
+				}
+			} else {
+				updateManagerBoardResult = 4; // 같은 학교 학생이 아님
+			}
+		} else {
+			updateManagerBoardResult = 5; // 존재 유저가 아님
+		}
+		
+		System.out.println("최종 승인 값 [" + updateManagerBoardResult + "]");
 		return updateManagerBoardResult;
 	}
 

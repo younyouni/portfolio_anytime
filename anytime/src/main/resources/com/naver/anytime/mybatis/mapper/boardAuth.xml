@@ -19,4 +19,10 @@
 		where board_id = ${board_id}
 	</delete>
 	
+	<update id="updateBoardAuth">
+		update board_auth
+		set user_id = #{tf_user_id_num}
+		where user_id = #{am_user_id_num} and board_id = #{board_id}
+	</update>
+	
 </mapper>
