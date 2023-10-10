@@ -11,6 +11,7 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
 <!-- <script src="js/comment.js"></script> -->
 
 <style>
@@ -69,7 +70,7 @@
 					<div class="attaches multiple">
 						<c:forEach var="b" items="${paths}">
 							<figure class="attach">
-								<img src="/Anytime/boardupload/${b}" alt="none">
+								<img src="/anytime/boardupload/${b}" alt="none">
 							</figure>
 						</c:forEach>
 					</div>

@@ -521,13 +521,50 @@
 	
 	<script>
 	$(document).ready(function() {
-		/* -------------------------------- ▼새글 작성칸 숨기기 임시작성용▼ -------------------------------- */
+		/* -------------------------------- ▼postDetail 임시작성용▼ -------------------------------- */
 		$('#writeArticleButton').click(function() {
 			$(this).hide();	
 			$(".postwriteform").show();
 			
 		});
-		/* -------------------------------- ▲새글 작성칸 숨기기 임시작성용▲ -------------------------------- */
+		
+		const fileInput = document.getElementById('post_file');
+		const fileNameElement = document.getElementById('file-name');
+		let fileList = []; // 첨부파일 목록을 저장할 배열
+
+		fileInput.addEventListener('change', (event) => {
+		  const selectedFile = event.target.files[0]; // 한 번에 하나의 파일만 선택
+
+		  if (selectedFile) {
+		    if (fileList.length >= 5 && !fileList.includes(selectedFile.name)) { 
+		      alert("최대 5개의 파일만 첨부할 수 있습니다.");
+		      fileInput.value = ''; // 입력값 초기화
+		      return;
+		    }
+
+		    if(fileList.includes(selectedFile.name)){
+		        const index = fileList.indexOf(selectedFile.name);
+		        fileList.splice(index,1);
+		    }else{
+		        fileList.push(selectedFile); // 선택된 파일을 목록에 추가
+		    }
+
+		    let fileNames = '';
+		    for(let i=0; i<fileList.length; i++){
+		      fileNames += fileList[i].name; // 실제 파일 이름 사용
+		      if(i < fileList.length - 1){
+		        fileNames += ', ';
+		      }
+		    }
+		    
+		    fileNameElement.textContent = fileNames;
+		    
+		  } else {
+		    fileNameElement.textContent = '';
+		  }
+		});
+			
+		/* -------------------------------- ▲postDetail 임시작성용▲ -------------------------------- */
 		
 		boardManagerCheckAjax();
 		
