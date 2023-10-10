@@ -144,6 +144,5 @@
 	border-radius: 12px;
 	padding: 25px 25px 20px 25px !important;	
 }
-#manageMoimForm input[name=info],#transferMoimForm input,#deleteCheckForm > p > input:nth-child(4) {
-	border: 1px solid #7869E6 !important;
-}
+
+

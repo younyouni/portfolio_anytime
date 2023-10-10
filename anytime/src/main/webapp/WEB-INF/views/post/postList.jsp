@@ -68,7 +68,7 @@
 			<div class="wrap articles" id="writeBoardContainer">
 			<c:if test="${allsearchcheck == 0}">	<!-- 천제 검색이 아닐 경우 -->
 			<label class="postwriteform"> <!-- style="display: none;" -->
-				     <%-- <jsp:include page="postlist_write.jsp" /> --%>  
+				 <%-- <jsp:include page="postlist_write.jsp" /> --%> 
 			</label>	
 			<a id="writeArticleButton">새 글을 작성해주세요! 
 			<img src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
@@ -475,7 +475,7 @@
 				<label>피양도인 아이디</label> <input type="text" name="transferee_userid"
 					class="text" data-gtm-form-interact-field-id="0">
 			</p>
-			<input type="submit" id="transferOfBoardButton" value="양도 요청" class="button">
+			<input type="submit" value="양도 요청" class="button">
 		</form>
 
 
@@ -508,10 +508,10 @@
 			<a title="닫기" class="close"></a>
 			<h3>게시판 삭제</h3>
 			<p>
-				<label>게시판을 삭제하려면 삭제하려는 해당 <strong style="color: #7869E6;">게시판의 이름</strong>을 입력하세요</label>
+				<label>게시판을 삭제하려면 삭제하려는 해당 게시판의 이름을 입력하세요</label>
 				<input type="text" name="boardNameCheck" class="text" value="${boardName}" readonly>
 				<label>입력</label>
-				<input type="text" name="TrueDeleteCheck" class="text">
+				<input type="text" name="TruedeleteCheck" class="text">
 			</p>
 			<input type="submit" id="deleteCheckButton" value="삭제" class="button">
 		</form>
@@ -521,51 +521,6 @@
 	
 	<script>
 	$(document).ready(function() {
-		/* -------------------------------- ▼postDetail 임시작성용▼ -------------------------------- */
-		$('#writeArticleButton').click(function() {
-			$(this).hide();	
-			$(".postwriteform").show();
-			
-		});
-		
-		const fileInput = document.getElementById('post_file');
-		const fileNameElement = document.getElementById('file-name');
-		let fileList = []; // 첨부파일 목록을 저장할 배열
-
-		fileInput.addEventListener('change', (event) => {
-		  const selectedFile = event.target.files[0]; // 한 번에 하나의 파일만 선택
-
-		  if (selectedFile) {
-		    if (fileList.length >= 5 && !fileList.includes(selectedFile.name)) { 
-		      alert("최대 5개의 파일만 첨부할 수 있습니다.");
-		      fileInput.value = ''; // 입력값 초기화
-		      return;
-		    }
-
-		    if(fileList.includes(selectedFile.name)){
-		        const index = fileList.indexOf(selectedFile.name);
-		        fileList.splice(index,1);
-		    }else{
-		        fileList.push(selectedFile); // 선택된 파일을 목록에 추가
-		    }
-
-		    let fileNames = '';
-		    for(let i=0; i<fileList.length; i++){
-		      fileNames += fileList[i].name; // 실제 파일 이름 사용
-		      if(i < fileList.length - 1){
-		        fileNames += ', ';
-		      }
-		    }
-		    
-		    fileNameElement.textContent = fileNames;
-		    
-		  } else {
-		    fileNameElement.textContent = '';
-		  }
-		});
-			
-		/* -------------------------------- ▲postDetail 임시작성용▲ -------------------------------- */
-		
 		boardManagerCheckAjax();
 		
 		$('#manageMoim').click(function(){
@@ -602,12 +557,6 @@
 			boardDeleteAjax();
 		});
 		
-		$('#transferOfBoardButton').click(function(){
-			event.preventDefault()
-			transferOfBoardAjax();
-		})
-		
-		
 	});		
 	function getBoardContentAjax(){
 		var infoInput = $("input[name='info']");
@@ -627,8 +576,8 @@
 	}
 	
 	function updateBoardContentAjax(){
-		var TrueDeleteCheck = $("input[name='info']");
-		var contentvalue = TrueDeleteCheck.val();
+		var TruedeleteCheck = $("input[name='info']");
+		var contentvalue = TruedeleteCheck.val();
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
 
@@ -678,13 +627,11 @@
 	}
 	
 	function boardDeleteAjax(){
-		var board_name = $("input[name='TrueDeleteCheck']").val();
+		var board_name = $("input[name='TruedeleteCheck']").val();
 		var context = "${pageContext.request.contextPath}";
 		
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
-		var school = "${school.domain}";
-		
 		if(board_name != ""){
 		$.ajax({
 			url: "${pageContext.request.contextPath}/deleteboard",
@@ -697,7 +644,7 @@
 			success: function (deleteResult){
 				if(deleteResult == 1){
 					alert("게시판이 삭제되었습니다.");
-					window.location.href = context + "/" + school;
+					window.location.href = context + "/member/login";
 				}else if(deleteResult == 2){
 					alert("게시판 이름이 다릅니다.");
 				}else {
@@ -713,45 +660,7 @@
 		}
 	}
 	
-	function transferOfBoardAjax(){
-		var inputpass = $("input[name='transferer_password']");
-		var inputid = $("input[name='transferee_userid']");
-		var pass = inputpass.val();
-		var id = inputid.val();
-		
-		var urlParams = new URLSearchParams(window.location.search);
-		var board_id = urlParams.get('board_id');
-		
-		$.ajax({
-			url: "${pageContext.request.contextPath}/updatemanagerboard",
-			data: {
-				password: pass,
-				userid: id,
-				board_id: board_id
-			},
-			dataType: "json",
-			success: function (updateManagerBoardResult){
-				if(updateManagerBoardResult == 1){
-					alert("게시판이 양도 되었습니다.");
-					location.reload();
-				}else if(updateManagerBoardResult == 2){
-					alert("게시판 양도에 실패했습니다.");
-				}else if(updateManagerBoardResult == 3){
-					alert("비밀번호가 맞지 않습니다.");
-				}else if(updateManagerBoardResult == 4){
-					alert("양도할 유저가 해당 학교 학생이 아닙니다.");
-				}else if(updateManagerBoardResult == 5){
-					alert("양도할 유저 존재하지 않습니다.");
-				}else{
-					alert("게시판 양도에 실패했습니다 관리자에게 문의 바랍니다.");
-				}
-			},
-			error: function(xhr, status, error){
-				console.error("에러 발생" + error);
-			}
-			
-		})
-	}
+	
 	
 	</script> 
 	
