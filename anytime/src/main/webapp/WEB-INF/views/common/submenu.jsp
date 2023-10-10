@@ -54,7 +54,7 @@ function sendAjaxRequest() {
   $.ajax({
     url: "${pageContext.request.contextPath}/list",
     data: {
-      "SCHOOL_ID": school_id,
+      "school_id": school_id,
     },
     dataType: "json", // JSON 데이터로 응답을 예상함
     success: function (responseData) {

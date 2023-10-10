@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.naver.anytime.domain.Board;
-import com.naver.anytime.domain.Post;
 
 /*
  *  Mapper 인터페이스란 매퍼 파일에 기재된 SQL을 호출하기 위한 인터페이스입니다.
@@ -40,9 +39,10 @@ public interface BoardMapper {
 	public int updateBoardContent(int board_id, String content);
 
 	public int getBoardManager(int board_id, int user_id);
-
-	public Integer deleteBoard(String board_name, int user_id);
-
+	
+	public int deleteBoard(String board_name, int user_id);
+	
+	public int getBoardName2(String board_name,int board_id);
 
 
 }

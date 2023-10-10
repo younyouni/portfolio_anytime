@@ -1,6 +1,7 @@
 package com.naver.anytime.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -44,7 +45,7 @@ public class BoardController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Board> getBoardList(@RequestParam("SCHOOL_ID") int school_id, HttpSession session) {
+	public List<Board> getBoardList(@RequestParam("school_id") int school_id) {
 
 		List<Board> responseData = boardService.getBoardList(school_id);
 		// 생성된 JSON 데이터를 클라이언트에 응답으로 전송
@@ -94,9 +95,10 @@ public class BoardController {
 
 	@RequestMapping(value = "/getboardcontent", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Board> getBoardContent(@RequestParam("board_id") int board_id){
-		
-		System.out.println("BoardController 에서 content 받아오는 메서드 보드넘 테스트 " + board_id);
+	public List<Board> getBoardContent(
+			@RequestParam("board_id") int board_id
+			) {
+		System.out.println("BoardController 에서 content 받아오는 메서드 테스트 [board_id] = " + board_id);
 		List<Board> boardContentData = boardService.getBoardContent(board_id);
 		return boardContentData;
 	}
@@ -105,33 +107,33 @@ public class BoardController {
 	@ResponseBody
 	public int updateBoardSetting(
 			@RequestParam("board_id") int board_id,
-			@RequestParam("content") String content){
-		
+			@RequestParam("content") String content
+			) {
 		// db 변경하기 귀찮아서 임시 설정 content 제약조건 notnull 변경해야함 /////////////////////////////////////////////
 		if(content.equals("")) {
 			content = "없음";
 		}
-		
+
 		int updateData = boardService.updateBoardContent(board_id, content);
-		System.out.println("BoardController에서 content 업데이트 성공 여부 테스트 " + updateData);
+		System.out.println("BoardController에서 content 업데이트 성공 여부 테스트 [0 / 1] = " + updateData);
 		return updateData;
 	}
 	
 	@RequestMapping(value = "/managercheck", method = RequestMethod.GET)
 	@ResponseBody
 	public int boardManagerCheck(
-			@RequestParam("board_id") Integer board_id,
-			@RequestParam("LOGIN_ID") String login_id) {
-		
-		int user_id = memberService.getUserId(login_id);
+			@RequestParam("board_id") int board_id,
+			@RequestParam("LOGIN_ID") String login_id
+			) {
 		int managerCheck = 0;
-		Integer check = boardService.getBoardManager(board_id, user_id);
-		
-		if(check != null) {
+		int user_id = memberService.getUserId(login_id);
+		int check = boardService.getBoardManager(board_id, user_id);
+
+		if(check != 0) {
 			managerCheck = 1;
 		}
 		
-		System.out.println("BoardController에서 보드 권한 체크 테스트 " + managerCheck);
+		System.out.println("BoardController에서 보드 권한 체크 테스트 [0 / 1] = " + managerCheck);
 		
 		return managerCheck;
 	}
@@ -139,18 +141,47 @@ public class BoardController {
 	@RequestMapping(value = "/deleteboard", method = RequestMethod.GET)
 	@ResponseBody
 	public int deleteBoard(
-			@RequestParam("board_name") String board_name,
-			@RequestParam("LOGIN_ID") String login_id) {
-		
-		int user_id = memberService.getUserId(login_id);
-		int deleteResult = 0;
-		Integer check = boardService.deleteBoard(board_name, user_id);
-		
-		if(check != null) {
-			deleteResult = 1;
-		}
-		System.out.println("이거 되는거 맞음?" + deleteResult);
-		return deleteResult;
+			@RequestParam(name = "board_id", defaultValue = "-1") int board_id,
+	        @RequestParam("board_name") String board_name,
+	        @RequestParam("LOGIN_ID") String login_id
+			) {
+	    int deleteResult = 0;
+	    int boardnamecheck = boardService.getBoardName2(board_name, board_id);
+
+	    if(board_id > 0) {
+		    if(boardnamecheck == 1) {
+		    	System.out.println("[1/3] board_id 체크" + board_id);
+		        int user_id = memberService.getUserId(login_id);
+		        int check_auth = boardService.deleteBoardAuth(board_id);
+
+		        System.out.println("[1/3] 유저 아이디 [" + user_id + "] 체크 권한 [" + check_auth + "]");
+		        	
+			        if(check_auth == 1) {
+				    	System.out.println("[2/3] board_auth 삭제 체크");
+				    	int check = boardService.deleteBoard(board_name, user_id);
+						System.out.println("[2/3] 보드 삭제 [" + check + "]");
+																					
+							if (check_auth == 1 && check == 1) {
+								System.out.println("[3/3] 최종 완료");
+								deleteResult = 1;
+							}
+									
+			        } else {
+			        	deleteResult = 3;	//권한 삭제 문제 생겼을때
+			        }
+		    } else {
+		    	deleteResult = 2;	//보드 이름이 다를때
+		    }
+	    }
+
+	    	
+	    System.out.println("보드네임 체크 [" + boardnamecheck + "]");
+	    System.out.println("보내는값 체크 [" + deleteResult + "]");
+	    System.out.println("BoardController 삭제 테스트에서 가져온 보드id [" + board_id + "] 가져온 보드name [" + board_name + "] 가져온 로그인id [" + login_id + "]");
+	    
+	    
+
+	    return deleteResult;
 	}
 
 }

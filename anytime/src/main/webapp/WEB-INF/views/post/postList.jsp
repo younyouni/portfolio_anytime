@@ -507,7 +507,7 @@
 			<a title="닫기" class="close"></a>
 			<h3>게시판 삭제</h3>
 			<p>
-				<label>게시판을 삭제하려면 아래 해당 게시판의 이름을 똑같이 입력하세요</label>
+				<label>게시판을 삭제하려면 삭제하려는 해당 게시판의 이름을 입력하세요</label>
 				<input type="text" name="boardNameCheck" class="text" value="${boardName}" readonly>
 				<label>입력</label>
 				<input type="text" name="TruedeleteCheck" class="text">
@@ -552,15 +552,16 @@
 		});
 		
 		$('#deleteCheckButton').click(function(){
+			event.preventDefault()
 			boardDeleteAjax();
 		});
-		
 		
 	});		
 	function getBoardContentAjax(){
 		var infoInput = $("input[name='info']");
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
+
 		$.ajax({
 			url: "${pageContext.request.contextPath}/getboardcontent",
 			data: {
@@ -574,10 +575,11 @@
 	}
 	
 	function updateBoardContentAjax(){
-		var infoInput = $("input[name='info']");
-		var contentvalue = infoInput.val();
+		var TruedeleteCheck = $("input[name='info']");
+		var contentvalue = TruedeleteCheck.val();
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
+
 		$.ajax({
 			url: "${pageContext.request.contextPath}/updateboardcontent",
 			data: {
@@ -597,11 +599,14 @@
 				console.error("에러 발생" + error);
 			}
 		})
+
+	    
 	}
 	
 	function boardManagerCheckAjax(){
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
+
 		$.ajax({
 			url: "${pageContext.request.contextPath}/managercheck",
 			data: {
@@ -621,11 +626,16 @@
 	}
 	
 	function boardDeleteAjax(){
-		var board_name = $("input[name='boardNameCheck']").val();
+		var board_name = $("input[name='TruedeleteCheck']").val();
 		var context = "${pageContext.request.contextPath}";
+		
+		var urlParams = new URLSearchParams(window.location.search);
+		var board_id = urlParams.get('board_id');
+		if(board_name != ""){
 		$.ajax({
 			url: "${pageContext.request.contextPath}/deleteboard",
 			data: {
+				"board_id": board_id,
 				board_name: board_name,
 				LOGIN_ID: $('#login_id').val()
 			},
@@ -634,11 +644,19 @@
 				if(deleteResult == 1){
 					alert("게시판이 삭제되었습니다.");
 					window.location.href = context + "/member/login";
-				}else{
+				}else if(deleteResult == 2){
+					alert("게시판 이름이 다릅니다.");
+				}else {
 					alert("게시판 삭제에 에러가 발생했습니다.");
 				}
+			},
+			error: function(xhr, status, error){
+				console.error("에러 발생" + error);
 			}
 		})
+		}else{
+			alert("빈칸을 입력하세요");
+		}
 	}
 	
 	

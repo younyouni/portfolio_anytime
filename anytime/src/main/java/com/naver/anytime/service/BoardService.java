@@ -3,7 +3,6 @@ package com.naver.anytime.service;
 import java.util.List;
 
 import com.naver.anytime.domain.Board;
-import com.naver.anytime.domain.Post;
 
 public interface BoardService {
 
@@ -33,7 +32,11 @@ public interface BoardService {
 	
 	public int getBoardManager(int board_id, int user_id);
 
-	public Integer deleteBoard(String board_name, int user_id);
+	public int deleteBoard(String board_name, int user_id);
+
+	public int deleteBoardAuth(int board_id);
+	
+	public int getBoardName2(String board_name, int board_id);
 
 
 }

@@ -158,7 +158,6 @@ public class PostController {
    ModelAndView mv) {
 		
 	   session.setAttribute("board_id", board_id);
-	   session.setAttribute("user_id", 1);
 	   	int limit = 10;
 	   	
 		// 총 리스트 수
