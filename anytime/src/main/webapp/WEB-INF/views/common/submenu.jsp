@@ -52,7 +52,7 @@ function sendAjaxRequest() {
   var NAME = "some_value"; // NAME 변수를 정의하고 값 할당
 	
   $.ajax({
-    url: "${pageContext.request.contextPath}/board/list",
+    url: "${pageContext.request.contextPath}/list",
     data: {
       "SCHOOL_ID": $('#school_id').val(),
     },

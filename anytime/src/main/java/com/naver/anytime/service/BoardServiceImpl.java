@@ -48,6 +48,8 @@ public class BoardServiceImpl implements BoardService {
 	public int getBoardAnonymous(int board_id) {
 		return dao.getBoardAnonymous(board_id);
 	}
+	
+	
 
 	// ********************************= 윤희 =********************************
 	@Override
@@ -68,5 +70,7 @@ public class BoardServiceImpl implements BoardService {
 		boardAuthDao.insertBoardAuth(board.getNEW_BOARD_ID(), board.getUSER_ID());
 		return result;
 	}
+
+	
 
 }

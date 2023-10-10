@@ -162,6 +162,9 @@
 		WHERE ROWNUM &lt;= 4
 	</select>
 	
+	<delete id="postDelete" parameterType="int">
+        DELETE FROM POST WHERE POST_ID = #{post_id}
+    </delete>
 
 	<!-- 사용X -->
 	<select id="getMainPostList" parameterType="int" resultType="post">

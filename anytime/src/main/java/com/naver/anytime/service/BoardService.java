@@ -17,6 +17,7 @@ public interface BoardService {
 
 	// 보드 익명 체크
 	public int getBoardAnonymous(int board_id);
+	
 
 	// ********************************= 윤희 =********************************
 	public int[] getBoardIds(String id);
@@ -24,5 +25,7 @@ public interface BoardService {
 	public int[] getBoardIdsByDomain(String schoolDomain);
 
 	public int insertBoard(Board board);
+
+	
 
 }
