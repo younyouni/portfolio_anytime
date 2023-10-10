@@ -83,7 +83,7 @@
 						<p class="userid">${member.login_id}</p>
 						<ul class="buttons">
 							<li><a href="${pageContext.request.contextPath}/my">내 정보</a></li>
-							<li><a class="nav-link" href="#" id="logout">로그아웃</a> </li>
+							<li><a class="nav-link" href="#" id="logout">로그아웃</a></li>
 						</ul>
 						<hr>
 						<input type="hidden" name="${_csrf.parameterName}"
@@ -104,7 +104,7 @@
 						<c:if test="${member.board_admin eq 0}">
 							<p>
 								새로운 게시판을<br>생성할수 있어요! <a class="button createboard"
-								 data-toggle="modal">게시판 생성하기</a>
+									data-toggle="modal">게시판 생성하기</a>
 							</p>
 						</c:if>
 						<hr>

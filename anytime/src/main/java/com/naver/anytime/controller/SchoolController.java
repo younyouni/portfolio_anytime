@@ -83,12 +83,4 @@ public class SchoolController {
 		return mv;
 	}
 
-//	@RequestMapping(value = "/{schoolName}", method = RequestMethod.GET)
-//	public ModelAndView getPage2(@PathVariable String schoolName, ModelAndView mv) {
-//
-//		//int commonBoardNums = boardService.getCommonBoardNums(schoolName);
-//		mv.setViewName("main/community");
-//
-//		return mv;
-//	}
 }
