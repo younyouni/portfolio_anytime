@@ -63,7 +63,7 @@ public interface PostMapper {
 	 * private boolean postDataUpdate(Connection con, PostBean modifypost);
 	 */
 
-	public int postDelete(int post_num);
+	public int postDelete(int POST_ID);
 
 	public List<Post> getPostList(HashMap<String, Integer> map);
 

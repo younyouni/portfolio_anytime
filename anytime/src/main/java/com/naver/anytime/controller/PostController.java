@@ -1,5 +1,6 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,14 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
@@ -29,7 +30,6 @@ import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
-
 
 @Controller
 @RequestMapping(value = "/post")
@@ -57,24 +57,24 @@ public class PostController {
 
    /* -------------------------------- ▼post/detail 상세페이지▼ -------------------------------- */ 
    @GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
-   public ModelAndView postDetail( 
+   public ModelAndView postDetail(
 	   @RequestParam(value = "post_id", required = false) int post_id,
 	   ModelAndView mv,
-	   HttpServletRequest request) {
+	   HttpServletRequest request, Principal userPrincipal) {
 	   
-	   // 현재 사용자의 아이디 가져오기
-       HttpSession session = request.getSession();
-       int currentUserNum = 0; // 기본값 0으로 설정
-       Object userIdObject = session.getAttribute("userId");
-       
-       if (userIdObject != null) {
-           currentUserNum = Integer.parseInt(userIdObject.toString());
-       }
+	   HttpSession session = request.getSession(); 
+	   
+	   //현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
+	   String id = userPrincipal.getName(); 
+	   Member member = memberService.getLoginMember(id);
+	   int currentUserId = member.getUser_id();
+	   
+	   
 	   
 	   Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
-	   
 	   Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
-
+	   
+	   
 	      // post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
 	      if (post == null) {
 	         logger.info("상세보기 실패");
@@ -82,10 +82,13 @@ public class PostController {
 	         mv.addObject("url", request.getRequestURL());
 	         mv.addObject("message", "상세보기 실패입니다.");
 	      }else {
-	    	  logger.info("상세보기 성공");
+	    	  logger.info("★ 상세보기 성공 ★");
+	    	  
+	    	  logger.info("현재로그인 유저아이디 => " + userPrincipal.getName());
+	   	   	  logger.info("유저학교(SCHOOL) 고유번호 => " + memberService.getSchoolId(id));
 	    	  
 	    	  if (board.getANONYMOUS() == 0) {
-	              Member member = memberService.findMemberByUserId(post.getUSER_ID());
+	    		   member = memberService.findMemberByUserId(post.getUSER_ID());
 	              if (member != null){
 	                  String nickname = member.getNickname();
 	                  mv.addObject("nickname", nickname);
@@ -95,9 +98,8 @@ public class PostController {
 	    	  mv.setViewName("post/postDetail");
 	    	  mv.addObject("postdata", post);
 	    	  mv.addObject("boardtest", board);
+	    	  mv.addObject("currentUserId", currentUserId);
 	    	  System.out.println("post테스트=>"+post);
-	    	  
-	    	
 	    	  
 	      }
 	      return mv;
@@ -108,8 +110,9 @@ public class PostController {
    /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
    @ResponseBody
    @RequestMapping(value = "/write", method = RequestMethod.POST)
-   public ResponseEntity<Map<String, Object>> insert(@RequestParam(value = "LOGIN_ID") String USER_ID, 
-		   Post post, HttpServletRequest request) {
+   public ResponseEntity<Map<String, Object>> insert(
+	   @RequestParam(value = "LOGIN_ID") String USER_ID, 
+	   Post post, HttpServletRequest request) {
        Map<String, Object> result = new HashMap<>();
        
        HttpSession session = request.getSession();
@@ -133,9 +136,40 @@ public class PostController {
        return new ResponseEntity<>(result, HttpStatus.OK);
    }
 
-
    
+   /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */
+   @ResponseBody
+   @RequestMapping(value = "/delete", method = RequestMethod.POST)
+   public ResponseEntity<Map<String, Object>> postDelete(
+       @RequestParam("post_id") int post_id,
+       Principal userPrincipal) {
 
+       Map<String, Object> result = new HashMap<>();
+
+       // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
+       String id = userPrincipal.getName(); 
+       Member member = memberService.getLoginMember(id);
+       int currentUserId = member.getUser_id();
+
+       Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
+
+       if (post == null || post.getUSER_ID() != currentUserId) {
+           result.put("statusCode", -1);
+           result.put("errorMessage", "게시글을 찾을 수 없거나 삭제 권한이 없습니다.");
+           return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+       }
+
+   	try {
+   		postService.postDelete(post_id);
+   		result.put("statusCode", 1);
+   	} catch (Exception e) {
+   		result.put("statusCode", -1);
+   		result.put("errorMessage", e.getMessage());
+   		return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+   	}
+
+   	return new ResponseEntity<>(result, HttpStatus.OK);
+   }
    
 /* -------------------------------------------------------------- ▲Created By UniUni▲ -------------------------------------------------------------- */
    
