@@ -30,13 +30,10 @@
 		<input type="hidden" id="board_id" value="2"> -->
 		
 		<%-------------------------------- ▼제목▼ --------------------------------%> 
-		<c:forEach items="${boardname}" var="b">
-		    <c:set var="boardName" value="${b.NAME}" />
-		    <c:set var="boardContent" value="${b.CONTENT}" />
-		</c:forEach>
+		
 		 <div class="wrap title">
-			
-		 		<ol class="buttons" id="boardmanager" style="display: none;">
+
+		 		<ol class="buttons">
 		 			<li>
 		 				<a id="manageMoim">관리하기</a>
 		 			</li>
@@ -45,19 +42,13 @@
 			<h1>
 				<c:choose>
 					<c:when test="${allsearchcheck == 0}">
-						<a href="list?board_id=${board_id}">${boardName}</a>
+						<a href="list?board_id=${board_id}">${boardname}</a>
 					</c:when>
 					<c:when test="${allsearchcheck == 1}">
 				'${search_word}'에 대한 검색 결과입니다.
 				</c:when>
 				</c:choose>
 			</h1>
-			
-			<!-- 보드 설명이 있을때 출력 -->
-			<c:if test="${boardContent != '없음'}">
-			<p id="boardcontent">${boardContent}</p>
-			</c:if>
-			
 			<hr>
 		</div>
 		
@@ -115,7 +106,7 @@
 		<c:when test="${allsearchcheck == 1}">
       	<c:forEach var="post" items="${postlist}">
 			<article>
-				<a class="article" href="detail?post_id=${post.POST_ID}">
+				<a class="article" href="PostDetailAction.bo?post_num=${post.POST_ID}">
 				<img src="https://cf-fpi.everytime.kr/0.png" class="picture medium">
 				<h3 class="medium">${post.NICKNAME}</h3> 
 				<time class="medium">${post.POST_DATE}</time>
@@ -439,8 +430,6 @@
 			</ul>
 		</form>
 
-
-
 		<form id="manageMoimForm" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
 			<a title="닫기" class="close"></a>
 			<h3>게시판 설정</h3>
@@ -454,15 +443,12 @@
 					for="manageMoimForm_is_not_selected_hot_article" class="checkbox">글이
 					공감을 받아도 인기 글 및 HOT 게시물에 선정되지 않음</label>
 			</p>
-			<input type="button" id="transferButton" value="게시판 양도" class="button light floatLeft">
-			<input type="button" id="deleteButton" value="게시판 삭제" class="button light floatLeft">
-			<input type="submit" id="updateButton" value="수정" class="button">
+			<input type="button" value="게시판 양도" class="button light floatLeft">
+			<input type="button" value="게시판 삭제" class="button light floatLeft">
+			<input type="submit" value="수정" class="button">
 		</form>
-		
-		
-		
 		<form id="transferMoimForm" class="modal"
-			data-gtm-form-interact-id="0" style="margin-left: -200px; margin-top: -92.5px; display: none;">
+			data-gtm-form-interact-id="0">
 			<a title="닫기" class="close"></a>
 			<h3>게시판 양도</h3>
 			<p>
@@ -477,8 +463,6 @@
 			<input type="submit" value="양도 요청" class="button">
 		</form>
 
-
-
 		<form id="attachThumbnailForm" class="modal">
 			<a title="닫기" class="close"></a>
 			<h3>첨부된 이미지</h3>
@@ -491,9 +475,6 @@
 			<input type="submit" value="설명 저장" class="button">
 		</form>
 
-
-
-
 		<form id="messageSend" class="modal">
 			<a title="닫기" class="close"></a>
 			<h3>쪽지 보내기</h3>
@@ -501,166 +482,27 @@
 				<textarea name="message" class="text" placeholder="내용을 입력해주세요."></textarea>
 			</p>
 			<input type="submit" value="전송" class="button">
-		</form>
-		
-		<form id="deleteCheckForm" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
-			<a title="닫기" class="close"></a>
-			<h3>게시판 삭제</h3>
-			<p>
-				<label>게시판을 삭제하려면 삭제하려는 해당 게시판의 이름을 입력하세요</label>
-				<input type="text" name="boardNameCheck" class="text" value="${boardName}" readonly>
-				<label>입력</label>
-				<input type="text" name="TruedeleteCheck" class="text">
-			</p>
-			<input type="submit" id="deleteCheckButton" value="삭제" class="button">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</form>
 	</div>
 
 	<jsp:include page="../common/footer.jsp" />
 	
 	<script>
+
 	$(document).ready(function() {
-		boardManagerCheckAjax();
-		
 		$('#manageMoim').click(function(){
-			getBoardContentAjax();
 			$('form#manageMoimForm').css('display', 'block');
 			$('form#manageMoimForm').before('<div class="modalwrap"></div>');
 			$('#manageMoimForm').show();
 		});
 		
-		$('#transferButton').click(function(){
-			$('form#manageMoimForm').css('display', 'none');
-			$('#transferMoimForm').show();
-		});
-		
-		$('#deleteButton').click(function(){
-			$('form#manageMoimForm').css('display', 'none');			
-			$('#deleteCheckForm').show();
-		});		
-		
-		$('#updateButton').click(function(){
-			event.preventDefault()
-			updateBoardContentAjax();
-		});
-		
 		$('a.close').click(function() {
-			$('#manageMoimForm').css('display', 'none');
-			$('#transferMoimForm').css('display', 'none');
-			$('#deleteCheckForm').css('display', 'none');
+			$('form#manageMoimForm').css('display', 'none');
 			$('div.modalwrap').remove();
 		});
 		
-		$('#deleteCheckButton').click(function(){
-			event.preventDefault()
-			boardDeleteAjax();
-		});
-		
-	});		
-	function getBoardContentAjax(){
-		var infoInput = $("input[name='info']");
-		var urlParams = new URLSearchParams(window.location.search);
-		var board_id = urlParams.get('board_id');
-
-		$.ajax({
-			url: "${pageContext.request.contextPath}/getboardcontent",
-			data: {
-				"board_id": board_id,
-			},
-			dataType: "json",
-			success: function (boardContentData){
-				infoInput.val(boardContentData);
-			}
-		});
-	}
-	
-	function updateBoardContentAjax(){
-		var TruedeleteCheck = $("input[name='info']");
-		var contentvalue = TruedeleteCheck.val();
-		var urlParams = new URLSearchParams(window.location.search);
-		var board_id = urlParams.get('board_id');
-
-		$.ajax({
-			url: "${pageContext.request.contextPath}/updateboardcontent",
-			data: {
-				"board_id": board_id,
-				"content": contentvalue
-			},
-			dataType: "json",
-			success: function (updateData){
-				if(updateData == 1){
-					
-				alert("게시판 설명이 수정되었습니다.");
-				location.reload();	
-				}
-				
-			},
-			error: function(xhr, status, error){
-				console.error("에러 발생" + error);
-			}
-		})
-
-	    
-	}
-	
-	function boardManagerCheckAjax(){
-		var urlParams = new URLSearchParams(window.location.search);
-		var board_id = urlParams.get('board_id');
-
-		$.ajax({
-			url: "${pageContext.request.contextPath}/managercheck",
-			data: {
-				"board_id": board_id,
-				LOGIN_ID: $('#login_id').val()
-			},
-			dataType: "json",
-			success: function (managerCheck){
-				if(managerCheck == 1){
-					$('#boardmanager').show();				
-				}else{
-					console.log("권한이 없습니다");
-				}
-			}
-		})
-		
-	}
-	
-	function boardDeleteAjax(){
-		var board_name = $("input[name='TruedeleteCheck']").val();
-		var context = "${pageContext.request.contextPath}";
-		
-		var urlParams = new URLSearchParams(window.location.search);
-		var board_id = urlParams.get('board_id');
-		if(board_name != ""){
-		$.ajax({
-			url: "${pageContext.request.contextPath}/deleteboard",
-			data: {
-				"board_id": board_id,
-				board_name: board_name,
-				LOGIN_ID: $('#login_id').val()
-			},
-			dataType: "json",
-			success: function (deleteResult){
-				if(deleteResult == 1){
-					alert("게시판이 삭제되었습니다.");
-					window.location.href = context + "/member/login";
-				}else if(deleteResult == 2){
-					alert("게시판 이름이 다릅니다.");
-				}else {
-					alert("게시판 삭제에 에러가 발생했습니다.");
-				}
-			},
-			error: function(xhr, status, error){
-				console.error("에러 발생" + error);
-			}
-		})
-		}else{
-			alert("빈칸을 입력하세요");
-		}
-	}
-	
-	
-	
+	});
 	</script> 
 	
 </body>
