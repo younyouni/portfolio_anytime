@@ -69,9 +69,8 @@ public class SecurityConfig {
 				
 				
 				.antMatchers("/post/list").permitAll()
-				.antMatchers("/**/**").permitAll();
-				
-				
+				.antMatchers("/**/**").permitAll()
+		        .antMatchers("/**").permitAll();
 //				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
 //				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
 //			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")

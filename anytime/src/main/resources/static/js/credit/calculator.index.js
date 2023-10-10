@@ -1,11 +1,9 @@
-/* global $, _, _apiServerUrl */
-/* eslint-disable strict */
-/* eslint indent: ["error", "tab"] */
+
 
 $().ready(function () {
 	var $container = $('#container');
 	var $menu;
-	var _set = {
+	var _set = { // _set이라는 객체를 생성하고, 그 안에 여러 속성과 값들을 초기화합니다. 
 		user: false,
 		requiredCredit: 0,
 		gradeType: '',
@@ -13,8 +11,8 @@ $().ready(function () {
 		grades: [],
 		gradeSelectTemplete: $('<select></select>'),
 		reports: [],
-		optionsForSemesterPlot: {
-			yaxis: {
+		optionsForSemesterPlot: { //왼쪽 차트
+			yaxis: { // y축 관련 설정
 				min: 0,
 				max: 4.5,
 				tickColor: '#e3e3e3',
@@ -27,14 +25,14 @@ $().ready(function () {
 					size: 12
 				}
 			},
-			xaxis: {
+			xaxis: { // x축 관련 설정
 				tickColor: 'transparent',
 				font: {
 					color: '#a6a6a6',
 					size: 10
 				}
 			},
-			legend: {
+			legend: { // 범례(legend) 관련 설정
 				labelBoxBorderColor: 'transparent',
 				noColumns: 2,
 				labelFormatter: function (label, series) {
@@ -43,7 +41,7 @@ $().ready(function () {
 				container: $('article.semester div.series div.legend'),
 				sorted: 'reverse'
 			},
-			series: {
+			series: { // 데이터 시리즈와 관련된 설정
 				lines: {
 					show: true,
 					lineWidth: 1
@@ -55,26 +53,27 @@ $().ready(function () {
 				},
 				shadowSize: 0
 			},
-			grid: {
+			grid: { 그리드(grid)와 관련된 설정
 				labelMargin: 15,
 				borderWidth: 0,
 				hoverable: true,
 				clickable: true
 			},
-			colors: ['#a6a6a6', '#c62917']
+			colors: ['#a6a6a6', '#c62917'] // 차트의 색상 배열을 지정
 		},
-		optionsForRatio: {
+		optionsForRatio: { // 오른쪽 차트
 			colors: ['#f28572', '#ecc55c', '#a0c661', '#82d1c2', '#7a9ee0']
 		}
 	};
 
+    // _fn 객체 내에 정의된 여러 함수들
 	var _fn = {
-		initiate: function () {
+		initiate: function () { // initiate: 초기화 함수로, 페이지가 로드되면 실행
 			$menu = $container.find('div.section > div.menu');
 			_set.user = Number($('#userId').val()) ? true : false;
 			_set.requiredCredit = Number($('#userRequiredCredit').val());
 			_set.gradeType = $('#userGradeType').val();
-			_fn.loadReports();
+			_fn.loadReports(); // 함수를 호출하여 보고서 데이터를 로드
 			$menu.on('click', 'ol > li', function () {
 				var $li = $(this);
 				if ($li.data('id')) {
@@ -83,53 +82,53 @@ $().ready(function () {
 				}
 				_fn.scrollToActiveMenu();
 			});
-			$container.find('table.subjects > caption > a.import').on('click', function () {
+			$container.find('table.subjects > caption > a.import').on('click', function () { //시간표에 저장되어있던 시간표 불러오기(모달)
 				_fn.loadPrimaryTableList();
 			});
-			$container.find('table.subjects > tbody').on('change', 'input, select', function () {
+			$container.find('table.subjects > tbody').on('change', 'input, select', function () { //tbody 바뀌면 보고서 및 과목 정보 업데이트
 				_fn.updateReports();
 				_fn.createSubjectsInformation();
 			});
-			$container.find('table.subjects > tfoot a.new').on('click', function () {
+			$container.find('table.subjects > tfoot a.new').on('click', function () { // 더 입력하기 누를때
 				_fn.insertSubject();
 			});
-			$container.find('table.subjects > tfoot a.reset').on('click', function () {
+			$container.find('table.subjects > tfoot a.reset').on('click', function () { //초기화 버튼 누를
 				_fn.resetSubjects();
 			});
 			$('#importForm').on('submit', function () {
 				var $importForm = $(this);
 				var id = $importForm.find('select[name="semester"]').val();
-				_fn.loadTableLoad(id);
-				$importForm.hide();
+				_fn.loadTableLoad(id); // 각 학기별 학점계산표 불러오기 
+				$importForm.hide(); //폼($importForm)을 숨김
 				return false;
 			});
-			$container.find('article.overview > div.gpa p.total').on('click', function () {
+			$container.find('article.overview > div.gpa p.total').on('click', function () { // 학점 타입 변경 작업을 수행
 				_fn.changeGradeType();
 			});
-			$container.find('article.overview > div.acquisition p.total').on('click', function () {
+			$container.find('article.overview > div.acquisition p.total').on('click', function () { //필요한 학점 양식 보여주기 작업을 수행
 				_fn.showRequiredCreditForm();
 			});
-			$('#requiredCreditForm').on('submit', function () {
+			$('#requiredCreditForm').on('submit', function () { // 본인 졸업에 필요한 학점 설정(모달)
 				_fn.saveRequiredCredit();
 				return false;
 			});
 		},
-		roundDown: function (number) {
+		roundDown: function (number) { // 소수점 아래 두 자리까지 내림한 값을 반환하는 함수
 			// return Math.floor(number * 100) / 100; -> 4.35 to 4.34
 			return Math.floor(Math.floor(number * 1000) / 10) / 100;
 		},
-		roundOff: function (number) {
+		roundOff: function (number) { // 소수점 아래 두 자리까지 반올림한 값을 반환하는 함수
 			// return Math.round(number * 100) / 100; -> 4.475 to 4.47
 			return Math.round(Math.floor(number * 1000) / 10) / 100;
 		},
-		loadReports: function () {
+		loadReports: function () { //보고서 데이터를 로드하기 위해 서버와 통신하는 AJAX 요청을 보내는 함수
 			_fn.ajaxReports(function (data) {
 				if (data) _fn.createReports(data);
 			});
 		},
 		ajaxReports: function (callback) {
 			var parameters = {};
-			if (_set.gradeType !== '') {
+			if (_set.gradeType !== '') { // _set.gradeType 값이 존재한다면 parameters.grade_type에 할당하여 서버로 전송
 				parameters.grade_type = _set.gradeType;
 			}
 			$.ajax({
@@ -137,17 +136,19 @@ $().ready(function () {
 				xhrFields: {withCredentials: true},
 				type: 'POST',
 				data: parameters,
-				success: function (data) {
+				success: function (data) { //  처리한 결과 데이터(data)를 AJAX 응답으로 받아와서 콜백 함수 내부에서 사용
 					callback(data);
 				}
 			});
 		},
+		 
+		//  주어진 데이터(data)를 바탕으로 보고서(_set.reports)를 생성하는 역할을 수행 
 		createReports: function (data) {
-			var $school_id = $(data).find('school').attr('id');
-			var $rounding_type = $(data).find('school').attr('roundingType');
-			var $grades = $(data).find('grades');
-			var $reports = $(data).find('reports');
-			_set.roundingType = $rounding_type;
+			var $school_id = $(data).find('school').attr('id'); // 데이터에서 'school' 요소를 찾아 그 'id' 속성 값을 $school_id에 저장합니다.
+			var $rounding_type = $(data).find('school').attr('roundingType'); //  데이터에서 'school' 요소를 찾아 그 'roundingType' 속성 값을 $rounding_type에 저장합니다.
+			var $grades = $(data).find('grades'); // 데이터에서 'grades' 요소를 찾아 $grades에 저장
+			var $reports = $(data).find('reports'); // 데이터에서 'reports' 요소를 찾아 $reports에 저장
+			_set.roundingType = $rounding_type; // _set.roundingType 변수에 앞서 추출한 반올림 타입($rounding_type)을 할당
 			$grades.find('grade').each(function () {
 				var $grade = $(this);
 				var value = $grade.attr('value');
@@ -168,7 +169,7 @@ $().ready(function () {
 						isMajor: $subject.attr('is_major') === 'true'
 					});
 				});
-				_set.reports.push({
+				_set.reports.push({ // _set.reports 배열에 새로운 보고서 객체를 추가하는 부분
 					id: $report.attr('id'),
 					semester: $report.attr('semester'),
 					credit_calc: Number($report.attr('credit_calc')), // 수강 학점 (평균 계산용, P/NP 제외)
@@ -183,11 +184,13 @@ $().ready(function () {
 			});
 			_fn.setGradeSelectTemplete();
 			_fn.createSemesterList();
-			setTimeout(function () {
+			setTimeout(function () { // 약간의 지연(100밀리초 = 0.1초) 후 개요 및 학기 정보 생성 함수 호출
 				_fn.createOverview();
 				_fn.createSemester();
 			}, 100);
 		},
+		
+		//  웹 페이지 상에서 사용자가 과목 정보(성적, 학점 등)를 수정했을 때 그 변경사항을 실제 보고서 데이터에 반영하고, 이에 따라 필요한 부분들(개요, 학기 정보 등)을 업데이트하는 역할을 수행
 		updateReports: function () {
 			var $subjects = $container.find('table.subjects');
 			var $tbody = $subjects.find('tbody');
@@ -209,22 +212,22 @@ $().ready(function () {
 				});
 			});
 			var majorSubjects = _.where(report.subjects, {isMajor: true});
-			var filterPassSubjects = function (subjects) {
+			var filterPassSubjects = function (subjects) { // 주어진 과목 리스트에서 성적이 F 또는 NP가 아닌 과목만 추출
 				return _.reject(subjects, function (subject) {
 					return _.contains(['F', 'NP'], subject.grade);
 				});
 			};
-			var filterCalcSubjects = function (subjects) {
+			var filterCalcSubjects = function (subjects) { // 주어진 과목 리스트에서 성적이 P 또는 NP가 아닌 과목만 추출  
 				return _.reject(subjects, function (subject) {
 					return _.contains(['P', 'NP'], subject.grade);
 				});
 			};
-			var sumCredits = function (subjects) {
+			var sumCredits = function (subjects) { // 주어진 과목 리스트에서 각각의 학점(credit) 값을 합산
 				return _.reduce(subjects, function (mem, subject) {
 					return mem + subject.credit;
 				}, 0);
 			};
-			var sumGrades = function (subjects) {
+			var sumGrades = function (subjects) { // 주어진 과목 리스트에서 각각의 (학점 x 해당 성적 점수) 값을 합산
 				return _.reduce(subjects, function (mem, subject) {
 					// eslint-disable-next-line object-curly-spacing
 					return mem + subject.credit * _.findWhere(_set.grades, { name: subject.grade }).value;
@@ -240,6 +243,8 @@ $().ready(function () {
 			_fn.createOverview();
 			_fn.createSemester();
 		},
+		
+		// 보고서(_set.reports)를 서버에 저장하는 역할을 수행
 		saveReports: function () {
 			if (!_set.user) {
 				return false;
@@ -269,11 +274,14 @@ $().ready(function () {
 				data: data
 			});
 		},
+		// 웹 페이지 상에서 사용자가 과목별 성적을 선택할 수 있는 드롭다운 메뉴(선택 박스; select box)의 옵션들(option elements)을 동적으로 생성하는 역할을 수행
 		setGradeSelectTemplete: function () {
 			_.each(_set.grades, function (grade) {
 				$('<option></option>').val(grade.name).text(grade.name).appendTo(_set.gradeSelectTemplete);
 			});
 		},
+		
+		// 학기 목록을 생성하는 역할을 수행
 		createSemesterList: function () {
 			var $ol = $('<ol></ol>');
 			_.each(_set.reports, function (report) {
@@ -297,6 +305,8 @@ $().ready(function () {
 				}).first().click();
 			}
 		},
+		
+		 // 이 함수는 웹 페이지 상에서 학기별 평균 점수(GPA), 전공 점수, 취득 학점 등 전반적인 개요 정보 및 점수 분포도(비율 그래프) 등을 동적으로 생성하고 업데이트하는 역할을 수행
 		createOverview: function () {
 			var $gpa = $container.find('article.overview div.gpa');
 			var $major = $container.find('article.overview div.major');
@@ -335,14 +345,16 @@ $().ready(function () {
 				});
 			}
 		},
+		
+		// 학점계산과 관련된 여러 값을 계산하고, 그 결과를 객체 형태로 반환하는 역할
 		calculateOverview: function () {
-			var acquiredCredit = _.reduce(_set.reports, function (memory, report) { // 취득 학점
+			var acquiredCredit = _.reduce(_set.reports, function (memory, report) { // 취득한 총 학점
 				return memory + report.credit;
 			}, 0);
-			var takenCredit = _.reduce(_set.reports, function (memory, report) { // 수강 학점
+			var takenCredit = _.reduce(_set.reports, function (memory, report) { // 수강한 총 학점
 				return memory + report.credit_calc;
 			}, 0);
-			var takenCreditMajor = _.reduce(_set.reports, function (memory, report) { // 전공 수강 학점
+			var takenCreditMajor = _.reduce(_set.reports, function (memory, report) { // 전공에서 수강한 총 학점을 의미
 				return memory + report.credit_major_calc;
 			}, 0);
 			// eslint-disable-next-line object-curly-spacing
@@ -581,6 +593,7 @@ $().ready(function () {
 				$caption.find('a.import').show();
 			}
 		},
+		
 		loadPrimaryTableList: function () {
 			var $importForm = $('#importForm');
 			var $select = $importForm.find('select[name="semester"]');

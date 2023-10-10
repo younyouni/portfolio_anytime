@@ -13,14 +13,14 @@
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.pie.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.resize.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/calculator.index.js"></script>
+ <script src="${pageContext.request.contextPath}/resources/js/credit/calculator.js"></script>  
 </head>
 <body style="">
 
 	<jsp:include page="../common/header.jsp" />
 
 	<div id="container" class="calculator">
-		<input type="hidden" id="userId" value="542509"> <input
+		<input type="hidden" id="userId" value=""> <input
 			type="hidden" id="userRequiredCredit" value="150"> <input
 			type="hidden" id="userGradeType" value="">
 		<aside class="none">
@@ -72,33 +72,19 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="plot" style="padding: 0px; position: relative;">
+						<div id="plot" class="plot" style="padding: 0px; position: relative;">
 							<canvas class="flot-base" width="328" height="116"
 								style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 365px; height: 129px;"></canvas>
 							<div class="flot-text"
 								style="position: absolute; inset: 0px; font-size: smaller; color: rgb(84, 84, 84);">
 								<div class="flot-x-axis flot-x1-axis xAxis x1Axis"
 									style="position: absolute; inset: 0px; display: block;">
-									<div
+								<!-- 
+								<div
 										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 19px; text-align: center;">
 										1학년<br>1학기
 									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 100px; text-align: center;">
-										1학년<br>2학기
-									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 180px; text-align: center;">
-										2학년<br>1학기
-									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 261px; text-align: center;">
-										2학년<br>2학기
-									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 341px; text-align: center;">
-										4학년<br>1학기
-									</div>
+								 -->	
 								</div>
 								<div class="flot-y-axis flot-y1-axis yAxis y1Axis"
 									style="position: absolute; inset: 0px; display: block;">
@@ -161,7 +147,7 @@
 					<li class=""><a>2학년 2학기</a></li>
 					<li class=""><a>3학년 1학기</a></li>
 					<li class=""><a>3학년 2학기</a></li>
-					<li class="active"><a>4학년 1학기</a></li>
+					<li class=""><a>4학년 1학기</a></li>
 					<li class=""><a>4학년 2학기</a></li>
 					<li class=""><a>5학년 1학기</a></li>
 					<li class=""><a>5학년 2학기</a></li>
@@ -175,11 +161,11 @@
 					<h3>4학년 1학기</h3>
 					<dl class="information">
 						<dt>평점</dt>
-						<dd class="gpa">4.5</dd>
+						<dd class="gpa"></dd>
 						<dt>전공</dt>
-						<dd class="major">4.5</dd>
+						<dd class="major"></dd>
 						<dt>취득</dt>
-						<dd class="acquisition">17</dd>
+						<dd class="acquisition"></dd>
 					</dl>
 					<a class="import" style="display: inline;">시간표 불러오기</a>
 				</caption>
@@ -194,7 +180,7 @@
 				<tbody>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0" ></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -215,7 +201,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -236,7 +222,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -257,7 +243,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -278,7 +264,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -299,7 +285,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -320,7 +306,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -341,7 +327,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -362,7 +348,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -383,7 +369,7 @@
 					</tr>
 					<tr>
 						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0"></td>
+						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
 						<td><select name="grade"><option value="A+"
 									selected="selected">A+</option>
 								<option value="A0">A0</option>
@@ -472,7 +458,7 @@
 		var _serverTime = 1696549810737;
 		var _clientTime = new Date().getTime();
 		var _diffTime = _clientTime - _serverTime;
-		var _apiServerUrl = 'https://api.everytime.kr';
+		//var _apiServerUrl = 'https://api.everytime.kr';
 		window._screenName = '시간표 - 학점계산기';
 	</script>
 	<script async=""
