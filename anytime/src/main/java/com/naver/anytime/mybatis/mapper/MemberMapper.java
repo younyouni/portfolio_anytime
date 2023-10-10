@@ -24,8 +24,6 @@ public interface MemberMapper {
 
 	public int insert(Member m);
 
-	public int update(Member m);
-
 	public void delete(String id);
 
 	public int getSearchListCount(Map<String, String> map);
@@ -57,4 +55,6 @@ public interface MemberMapper {
 	public String getPwd(String login_id);
 
 	public String getNickname(String login_id);
+
+	public int updateMember(Member member);
 }

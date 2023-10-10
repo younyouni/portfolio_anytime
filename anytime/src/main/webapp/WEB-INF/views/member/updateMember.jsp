@@ -4,7 +4,8 @@
 <html>
 <head>
 <title>회원 정보 변경 - 애니타임</title>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <jsp:include page="../common/header.jsp" />
 <style>
@@ -12,13 +13,22 @@ nav {
 	border-bottom: 0 !important;
 }
 </style>
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/member/info/info.css"
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/member/info/info.css"
 	rel="stylesheet">
 <!-- 
  <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/info/changePwd.css">
  -->
 <script>
+	if ("${result}" == "passwordFail") {
+		alert("현재 비밀번호와 일치하지 않습니다.");
+	} else if ("${result}" == "changeSuccess") {
+		alert("회원 정보가 수정되었습니다.");
+	} else if ("${result}" == "changeFail") {
+		alert("회원 정보 수정이 실패했습니다.");
+	}
+
 	function Postcode() {
 		new daum.Postcode({
 			oncomplete : function(data) {
@@ -89,49 +99,59 @@ nav {
 								return;
 							}
 
-							$.ajax({
-								url : "member/nicknamecheck",
-								data : {
-									"nickname" : nickname
-								},
-								success : function(resp) {
-									if (resp == -1) {
-										$("#nickname_message").css('color', '#624cff')
-												.html("&nbsp;&nbsp;&nbsp;사용 가능한 닉네임입니다.");
-										checknickname = true;
-									} else {
-										$("#nickname_message").css('color', '#e54787')
-												.html("&nbsp;&nbsp;&nbsp;사용중인 닉네임입니다.");
-										checknickname = false;
-									}
-								}
-							});
+							$
+									.ajax({
+										url : "member/nicknamecheck",
+										data : {
+											"nickname" : nickname
+										},
+										success : function(resp) {
+											if (resp == -1) {
+												$("#nickname_message")
+														.css('color', '#624cff')
+														.html(
+																"&nbsp;&nbsp;&nbsp;사용 가능한 닉네임입니다.");
+												checknickname = true;
+											} else {
+												$("#nickname_message")
+														.css('color', '#e54787')
+														.html(
+																"&nbsp;&nbsp;&nbsp;사용중인 닉네임입니다.");
+												checknickname = false;
+											}
+										}
+									});
 						});
 
 		//휴대전화 유효성 검사
-		$("input[name=phone_num]").on(
-				'keyup',
-				function() {
-					let phoneNumber = $(this).val().replace(/-/g, ''); // '-' 제거
+		$("input[name=phone_num]")
+				.on(
+						'keyup',
+						function() {
+							let phoneNumber = $(this).val().replace(/-/g, ''); // '-' 제거
 
-					// 맨 앞글자를 010으로 강제로 지정
-					if (phoneNumber.length >= 3) {
-						phoneNumber = "010" + phoneNumber.substring(3);
-					}
+							// 맨 앞글자를 010으로 강제로 지정
+							if (phoneNumber.length >= 3) {
+								phoneNumber = "010" + phoneNumber.substring(3);
+							}
 
-					// 휴대전화 형식 확인
-					const pattern = /^010\d{8}$/;
+							// 휴대전화 형식 확인
+							const pattern = /^010\d{8}$/;
 
-					if (!pattern.test(phoneNumber)) {
-						$("#phone_message").css('color', '#e54787').html(
-								"&nbsp;&nbsp;&nbsp;휴대전화 번호 형식이 맞지 않습니다. (010********)");
-						checkPhoneNumber = false;
-					} else {
-						$("#phone_message").css('color', '#624cff').html(
-								"&nbsp;&nbsp;&nbsp;유효한 휴대전화 번호입니다.");
-						checkPhoneNumber = true;
-					}
-				});
+							if (!pattern.test(phoneNumber)) {
+								$("#phone_message")
+										.css('color', '#e54787')
+										.html(
+												"&nbsp;&nbsp;&nbsp;휴대전화 번호 형식이 맞지 않습니다. (010********)");
+								checkPhoneNumber = false;
+							} else {
+								$("#phone_message")
+										.css('color', '#624cff')
+										.html(
+												"&nbsp;&nbsp;&nbsp;유효한 휴대전화 번호입니다.");
+								checkPhoneNumber = true;
+							}
+						});
 
 		$('form').submit(function() {
 
@@ -150,6 +170,12 @@ nav {
 			if (!checkPhoneNumber) {
 				alert("유효한 휴대전화 번호를 입력하세요. (010********)");
 				$("input[name=phone_num]").val('').focus();
+				return false;
+			}
+
+			if ($("input[name=password]").val() == '') {
+				alert("현재 비밀번호를 입력하세요.");
+				$("input[name=password]").focus();
 				return false;
 			}
 
@@ -226,8 +252,9 @@ nav {
 				</div>
 				<input type="submit" value="내 정보 변경">
 			</section>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}">
 		</form>
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		<jsp:include page="../common/footer.jsp" />
 	</div>
 </body>
