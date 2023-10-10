@@ -68,7 +68,7 @@
 			<div class="wrap articles" id="writeBoardContainer">
 			<c:if test="${allsearchcheck == 0}">	<!-- 천제 검색이 아닐 경우 -->
 			<label class="postwriteform"> <!-- style="display: none;" -->
-				 <%-- <jsp:include page="postlist_write.jsp" /> --%> 
+				     <%-- <jsp:include page="postlist_write.jsp" /> --%>  
 			</label>	
 			<a id="writeArticleButton">새 글을 작성해주세요! 
 			<img src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
@@ -521,6 +521,14 @@
 	
 	<script>
 	$(document).ready(function() {
+		/* -------------------------------- ▼새글 작성칸 숨기기 임시작성용▼ -------------------------------- */
+		$('#writeArticleButton').click(function() {
+			$(this).hide();	
+			$(".postwriteform").show();
+			
+		});
+		/* -------------------------------- ▲새글 작성칸 숨기기 임시작성용▲ -------------------------------- */
+		
 		boardManagerCheckAjax();
 		
 		$('#manageMoim').click(function(){
