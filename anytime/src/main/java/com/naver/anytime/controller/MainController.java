@@ -38,7 +38,7 @@ public class MainController {
 			              Principal userPrincipal,
 			              HttpSession session
 			              ) {
-		   session.setAttribute("school_id", 1);
+		   session.setAttribute("school_id", 1); //종옥이 체크
 		   
 		   List<School> schools = schoolService.getSchoolList(); 
 		   mv.addObject("schoolList", schools);

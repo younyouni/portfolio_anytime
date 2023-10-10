@@ -49,12 +49,12 @@
 </body>
 <script>
 function sendAjaxRequest() {
-  var school_id = $('#school_id').val();
+  var NAME = "some_value"; // NAME 변수를 정의하고 값 할당
 	
   $.ajax({
-    url: "${pageContext.request.contextPath}/list",
+    url: "${pageContext.request.contextPath}/board/list",
     data: {
-      "school_id": school_id,
+      "SCHOOL_ID": $('#school_id').val(),
     },
     dataType: "json", // JSON 데이터로 응답을 예상함
     success: function (responseData) {
@@ -68,6 +68,7 @@ function sendAjaxRequest() {
 	    var submenu = $("#submenu");
 	    var wrap = $("#wrap");
 	 
+	
 	    // submenu 초기화 (기존 내용 삭제)
 	    submenu.empty();
 	    submenu.append('<div class="wrap">');

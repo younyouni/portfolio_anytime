@@ -27,6 +27,7 @@ import com.naver.anytime.domain.School;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
+import com.naver.constants.AnytimeConstants;
 
 // 이 컨트롤러는 회원 가입시 비밀번호 암호화를 하는 컨트롤러입니다.
 
@@ -166,8 +167,18 @@ public class MemberController {
 	@ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
 					// HTTP Response BODY에 설정됩니다.
 	@RequestMapping(value = "/nicknamecheck", method = RequestMethod.GET)
-	public int nicknamecheck(@RequestParam("nickname") String nickname) {
-		return memberservice.isNickname(nickname);// WEB-IF/views/member/joinForm.jsp
+	public int nicknamecheck(@RequestParam("nickname") String nickname, Principal principal) {
+		int result = memberservice.isNickname(nickname);
+
+		if (principal != null) {
+			String login_id = principal.getName();
+			String oldNickname = memberservice.getNickname(login_id);
+
+			if (nickname.equals(oldNickname))
+				result = AnytimeConstants.NICKNAME_NOT_EXISTS;
+		}
+
+		return result;
 	}
 
 	// 회원가입 처리
@@ -203,7 +214,7 @@ public class MemberController {
 
 		// 삽입이 된 경우
 		// 회원 가입 결과에 따라 리다이렉트할 페이지를 결정합니다.
-		if (result == 1) {
+		if (result == AnytimeConstants.INSERT_COMPLETE) {
 			rattr.addFlashAttribute("result", "joinSuccess");
 			model.addAttribute("message", "회원가입 성공입니다.");
 			return "redirect:login"; // 로그인 페이지로 이동
@@ -323,119 +334,6 @@ public class MemberController {
 		return "member/memberAuth";// WEB-IF/views/member/memberAuth.jsp
 	}
 
-	/*
-	 * 회원정보 수정폼1.(HttpSession 이용)
-	 * 
-	 * @RequestMapping(value = "/update", method = RequestMethod.GET) public
-	 * ModelAndView member_update(HttpSession session, ModelAndView mv) {
-	 * 
-	 * String id = (String) session.getAttribute("id");
-	 * 
-	 * 
-	 * if(id == null) { mv.setViewName("redirect:login"); logger.info("id is null");
-	 * }else { Member m = memberservice.member_info(id);
-	 * mv.setViewName("member/member_updateForm"); mv.addObject("memberinfo", m); }
-	 * return mv; }
-	 */
-
-	// 회원 정보 수정폼2
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public ModelAndView member_update(Principal principal, ModelAndView mv) {
-		String id = principal.getName();
-
-		if (id == null) {
-			mv.setViewName("redirect:login");
-			logger.info("id is null");
-		} else {
-			Member m = memberservice.member_info(id);
-			mv.setViewName("member/member_updateForm");
-			mv.addObject("memberinfo", m);
-		}
-		return mv;
-	}
-
-	// 수정처리
-	@RequestMapping(value = "/updateProcess", method = RequestMethod.POST)
-	public String updateProcess(Member member, Model model, HttpServletRequest request, RedirectAttributes rattr) {
-
-		int result = memberservice.update(member);
-		if (result == 1) {
-			rattr.addFlashAttribute("result", "updateSuccess");
-			return "redirect:/board/list";
-		} else {
-			model.addAttribute("url", request.getRequestURL());
-			model.addAttribute("message", "정보 수정 실패");
-			return "error/error";
-
-		}
-
-	}
-	/*
-	 * 1.header.jsp에서 이동하는 경우 href="${pageContext.request.contextPath}/member/list"
-	 * 
-	 * 2. member_list.jsp에서 이동하는 경우 <a href
-	 * ="list?page=2&search_field=-1&search word=" class="page-lick">2</a>
-	 * 
-	 */
-
-	@RequestMapping(value = "/list")
-	public ModelAndView memberList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-			@RequestParam(value = "limit", defaultValue = "3", required = false) int limit, ModelAndView mv,
-			@RequestParam(value = "search_field", defaultValue = "1", required = false) int index,
-			@RequestParam(value = "search_word", defaultValue = "", required = false) String search_word) {
-
-		int listcount = memberservice.getSearchListCount(index, search_word);
-		List<Member> list = memberservice.getSearchList(index, search_word, page, limit);
-
-		// 총 페이지 수
-		int maxpage = (listcount + limit - 1) / limit;
-
-		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
-		int startpage = ((page - 1) / 10) * 10 + 1;
-
-		// 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
-		int endpage = startpage + 10 - 1;
-
-		if (endpage > maxpage)
-			endpage = maxpage;
-
-		mv.setViewName("member/member_list");
-		mv.addObject("page", page);
-		mv.addObject("maxpage", maxpage);
-		mv.addObject("startpage", startpage);
-		mv.addObject("endpage", endpage);
-		mv.addObject("listcount", listcount);
-		mv.addObject("memberlist", list);
-		mv.addObject("search_field", index);
-		mv.addObject("search_word", search_word);
-		return mv;
-
-	}
-
-	@RequestMapping(value = "/info", method = RequestMethod.GET)
-	public ModelAndView member_info(@RequestParam("id") String id, ModelAndView mv, HttpServletRequest request) {
-
-		Member m = memberservice.member_info(id);
-		// m=null;//오류 확인하는 값
-		if (m != null) {
-			mv.setViewName("member/member_info");
-			mv.addObject("memberinfo", m);
-		} else {
-			mv.addObject("url", request.getRequestURL());
-			mv.addObject("message", "해당 정보가 없습니다.");
-			mv.setViewName("error/error");
-
-		}
-		return mv;
-	}
-
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String member_delete(String id) {
-
-		memberservice.delete(id);
-		return "redirect:list";
-	}
-	
 	// 로그아웃
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String logout(HttpSession session) {

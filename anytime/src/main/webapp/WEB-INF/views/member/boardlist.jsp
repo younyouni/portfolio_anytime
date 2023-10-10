@@ -29,11 +29,9 @@
 	href="${pageContext.request.contextPath}/resources/css/member/info/boardlist.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script>
-	var school_num = $
-	{
-		school.school_num
-	};
-	var userid = "${userid}";
+	if ("${result}" == "insertBoardSuccess") {
+		alert("게시판이 생성되었습니다. 단체/학과 게시판은, 승인 심사에 통과되면 바로 이용가능합니다.");
+	}
 </script>
 <style>
 body {
