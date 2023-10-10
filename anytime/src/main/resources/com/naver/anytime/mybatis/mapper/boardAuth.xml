@@ -13,4 +13,10 @@
 		BOARD_ID)
 		VALUES (BOARD_AUTH_SEQ.NEXTVAL, #{user_id}, #{board_id})
 	</insert>
+	
+	<delete id="deleteBoardAuth">
+		delete from board_auth
+		where board_id = ${board_id}
+	</delete>
+	
 </mapper>

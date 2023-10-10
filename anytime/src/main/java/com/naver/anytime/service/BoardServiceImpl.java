@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.mybatis.mapper.BoardAuthMapper;
@@ -28,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public String getBoardName(int board_id) {
+	public List<Board> getBoardName(int board_id) {
 		return dao.getBoardName(board_id);
 	}
 
@@ -48,6 +47,8 @@ public class BoardServiceImpl implements BoardService {
 	public int getBoardAnonymous(int board_id) {
 		return dao.getBoardAnonymous(board_id);
 	}
+	
+	
 
 	// ********************************= 윤희 =********************************
 	@Override
@@ -59,8 +60,7 @@ public class BoardServiceImpl implements BoardService {
 	public int[] getBoardIdsByDomain(String schoolDomain) {
 		return dao.getBoardIdsByDomain(schoolDomain);
 	}
-
-	@Override
+	
 	@Transactional
 	public int insertBoard(Board board) {
 		int result = dao.insertBoard(board);
@@ -68,5 +68,41 @@ public class BoardServiceImpl implements BoardService {
 		boardAuthDao.insertBoardAuth(board.getNEW_BOARD_ID(), board.getUSER_ID());
 		return result;
 	}
+	// ********************************= 윤희 =********************************	
+
+	@Override
+	public List<Board> getBoardContent(int board_id) {
+		return dao.getBoardContent(board_id);
+	}
+
+	@Override
+	public int updateBoardContent(int board_id, String content) {
+		return dao.updateBoardContent(board_id, content);
+	}
+
+	@Override
+	public int getBoardManager(int board_id, int user_id) {
+		return dao.getBoardManager(board_id, user_id);
+	}
+
+	@Override
+	public int deleteBoard(String board_name, int user_id) {
+		return dao.deleteBoard(board_name, user_id);
+	}
+	
+	//권한
+	@Override
+	public int deleteBoardAuth(int board_id) {
+		return boardAuthDao.deleteBoardAuth(board_id);
+	}
+	
+	@Override
+	public int getBoardName2(String board_name, int board_id) {
+		Integer result = dao.getBoardName2(board_name, board_id);
+		return result;
+	}
+
+
+	
 
 }

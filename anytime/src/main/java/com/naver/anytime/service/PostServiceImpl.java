@@ -178,8 +178,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int postDelete(int post_num) {
-		return 0;
+	public int postDelete(int post_id) {
+		int result = 0;
+	      Post post = postDao.getDetail(post_id);
+	      if (post != null) {
+	         result = postDao.postDelete(post_id);
+	      }
+	      return result;
 	}
 
 	//글쓰기 실험용

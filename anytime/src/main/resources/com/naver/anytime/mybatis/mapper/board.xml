@@ -5,8 +5,8 @@
 
 <mapper namespace="com.naver.anytime.mybatis.mapper.BoardMapper">
 
-	<select id="getBoardName" resultType="String">
-		select name from board
+	<select id="getBoardName" resultType="board">
+		select name,content from board
 		where board_id = #{board_id}
 	</select>
 
@@ -51,6 +51,24 @@
         AND NAME != '공지사항'
 	</select>
 	
+	<select id="getBoardContent" resultType="String">
+		select content
+		from board
+		where board_id = #{board_id}
+	</select>
+	
+	<update id="updateBoardContent" parameterType="map">
+	    UPDATE board
+	    SET content = #{content}
+	    WHERE board_id = #{board_id}
+	</update>
+	
+	<select id="getBoardManager" resultType="int">
+		select *
+		from board
+		where board_id = ${board_id} and user_id = ${user_id}
+	</select>
+
 	<insert id="insertBoard" parameterType="Board">
 	<selectKey keyProperty="NEW_BOARD_ID" resultType="int" order="AFTER">
 		SELECT BOARD_SEQ.CURRVAL FROM DUAL
@@ -63,4 +81,16 @@
 				#{TYPE}, #{NAME}, #{CONTENT}, #{ANONYMOUS},
 				#{STATUS}, #{PURPOSE})
 	</insert>
+	
+	<delete id="deleteBoard">
+	    delete from board
+	    where name like '%' || #{board_name} || '%' and user_id = #{user_id}
+	</delete>
+	
+	<select id="getBoardName2" resultType="int">
+		select count(*)
+		from board
+		where name = '${board_name}' and board_id = #{board_id}
+	</select>
+
 </mapper>

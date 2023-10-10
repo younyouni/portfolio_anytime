@@ -58,7 +58,7 @@ public interface PostService {
 	 * private boolean postDataUpdate(Connection con, PostBean modifypost);
 	 */
 
-	public int postDelete(int post_num);
+	public int postDelete(int post_id);
 
 	// 포스트 닉네임 확인용
 	public List<Post> getUserNickname();

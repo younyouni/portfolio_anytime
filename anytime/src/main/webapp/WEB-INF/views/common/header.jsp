@@ -27,18 +27,27 @@
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script>
 	$(function() {
+
 		var currentPage = location.pathname;
 		var newPath = currentPage.replace('/anytime/', ''); // 나중에 설정 바꾸고서 날리기
 		console.log("currentPage" + currentPage);
-		console.log("newPath" + newPath);
-	
-		if (newPath.includes("my")) {
-			$(".board").removeClass("active");
-		} else if (newPath.includes('post')
-				|| newPath.includes("${schoolDomain}")) {
-			$("#menu li").removeClass("active");
-			$(".board").addClass("active");
-		}
+
+		$("#menu li a").each(function() {
+			var menuURL = $(this).attr("href");
+			if (currentPage === menuURL) {
+				$(this).parent().addClass("active");
+			} else {
+				$(this).parent().removeClass("active");
+			}
+		});
+		
+		$("li > a").on("click", function() {
+			$(this).parent().addClass("active");
+		})
+
+		$(".my").on("click", function() {
+			$("#menu > li").removeClass("active");
+		})
 		/*$("li").on("click", function() {
 			if (!userid) {
 				event.preventDefault();
@@ -67,7 +76,7 @@
 					href="${pageContext.request.contextPath}/my" title="내 정보"
 					class="icon my">내 정보</a> <input type="hidden" id="login_id"
 					value="${pinfo.username}"> <input type="hidden"
-					id="school_id" value="${school.school_id}"> 
+					id="school_id" value="${school.school_id}">
 			</div>
 		</sec:authorize>
 		<sec:authorize access="isAnonymous()">

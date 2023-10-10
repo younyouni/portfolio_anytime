@@ -51,13 +51,13 @@
 					<ul class="status">
 					   <!-- 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 수정 버튼 표시 -->
 					   <c:choose>
-					       <c:when test="${currentUserNum eq postdata.POST_ID}">
+					       <c:when test="${currentUserId eq postdata.USER_ID}">
 					           <li class="update" id="updateButton">수정</li>
-					           <li class="del">삭제</li>
+					           <li class="del" POST_ID="${postdata.POST_ID}" BOARD_ID="${postdata.BOARD_ID}">삭제</li>
 					       </c:when>
 					       <c:otherwise>
 					            <li class="messagesend" data-modal="messageSend"
-					               data-article-id="${postdata.POST_ID}" data-is-anonym="${boarddata.anonymous}">쪽지</li>
+					               data-article-id="${postdata.POST_ID}" data-is-anonym="${boardtest.ANONYMOUS}">쪽지</li>
 					           <li class="abuse">신고</li> 
 					       </c:otherwise>
 					   </c:choose>
@@ -116,11 +116,11 @@
 	<jsp:include page="../common/footer.jsp" /> 
 	--%>
 	<script>
-    $(document).ready(function() {
+     $(document).ready(function() { 
         // "수정" 버튼을 클릭하면 동작하는 스크립트
         $("#updateButton").click(function() {
             // 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 페이지 이동
-            if (currentUserNum == writerNum) {
+            if (currentUserId == writerNum) {
                 // post_num 값 가져오기
                 var post_num = $("#post_num").val();
                 
@@ -129,10 +129,43 @@
             }
         });
         
-     // "삭제" 버튼을 클릭하면 동작하는 스크립트
+            var deleteButtons = document.getElementsByClassName('del');
+
+            let token = $("meta[name='_csrf']").attr("content");
+            let header = $("meta[name='_csrf_header']").attr("content");
+
+            for (var i = 0; i < deleteButtons.length; i++) {
+                deleteButtons[i].addEventListener('click', function(event) {
+                    if(confirm("삭제하시겠습니까?")) {
+                        var postId = event.target.getAttribute("post_id");
+                        var boardId = event.target.getAttribute("board_id");
+                        $.ajax({
+                            url: 'delete',
+                            type: 'POST',
+                            data: { post_id: postId },
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success: function(data) {
+                                if(data.statusCode == 1) {
+                                    alert("게시글이 성공적으로 삭제되었습니다.");
+                                    location.href = "/anytime/post/list?board_id=" + boardId;
+                                } else {
+                                    alert(`게시글 삭제 실패: ${data.errorMessage}`);
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                    }
+                });
+            }
+        
+     /* // "삭제" 버튼을 클릭하면 동작하는 스크립트
         $(".del").click(function() {
             // 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 확인 창을 띄웁니다.
-            if (currentUserNum == writerNum) {
+            if (currentUserId == writerId) {
                 var confirmation = confirm("내용을 삭제하시겠습니까?");
                 if (confirmation) {
                     // 삭제 동작을 수행합니다.
@@ -161,9 +194,9 @@
         });
         $("#goListButton").click(function() {
         	window.location.href = "list?board_id=" + ${boardtest.BOARD_ID}
-        });
+        }); */
      	
-    });
+     }); 
 </script> 
 </body>
 </html>

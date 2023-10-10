@@ -4,7 +4,8 @@
 <html>
 <head>
 <title>회원 정보 변경 - 애니타임</title>
-<script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <jsp:include page="../common/header.jsp" />
 <style>
@@ -12,13 +13,22 @@ nav {
 	border-bottom: 0 !important;
 }
 </style>
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/member/info/info.css"
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/member/info/info.css"
 	rel="stylesheet">
 <!-- 
  <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/info/changePwd.css">
  -->
 <script>
+	if ("${result}" == "passwordFail") {
+		alert("현재 비밀번호와 일치하지 않습니다.");
+	} else if ("${result}" == "changeSuccess") {
+		alert("회원 정보가 수정되었습니다.");
+	} else if ("${result}" == "changeFail") {
+		alert("회원 정보 수정이 실패했습니다.");
+	}
+
 	function Postcode() {
 		new daum.Postcode({
 			oncomplete : function(data) {
@@ -91,13 +101,12 @@ nav {
 
 							$
 									.ajax({
-										url : "nicknamecheck.com",
+										url : "member/nicknamecheck",
 										data : {
 											"nickname" : nickname
 										},
 										success : function(resp) {
-											if (resp == -1
-													|| nickname === "${member.nickname}") {
+											if (resp == -1) {
 												$("#nickname_message")
 														.css('color', '#624cff')
 														.html(
@@ -164,20 +173,11 @@ nav {
 				return false;
 			}
 
-			const password = $("input[name='password']").val();
-
-			$.ajax({
-				url : "checkpassword.com",
-				data : {
-					"password" : password
-				},
-				success : function(resp) {
-					if (resp == 0) {
-						alert("현재 비밀번호와 일치하지 않습니다.");
-						event.preventDefault();
-					}
-				}
-			}); // ajax end
+			if ($("input[name=password]").val() == '') {
+				alert("현재 비밀번호를 입력하세요.");
+				$("input[name=password]").focus();
+				return false;
+			}
 
 		}); //submit end
 	}); //ready function() end
@@ -185,9 +185,8 @@ nav {
 </head>
 <body id="my">
 	<div>
-		<form id="container" action="updateProcess.com" method="post"
-			data-adagreement="1" data-redirecturl="/" action="updateProcess.com"
-			method="post">
+		<form id="container" action="updateProcess" method="post"
+			data-adagreement="1" data-redirecturl="/">
 			<section>
 				<h2>회원 정보</h2>
 				<div class="input">
@@ -245,7 +244,7 @@ nav {
 						<label>휴대전화<span>*</span></label>
 						<p>본인 인증시 필요</p>
 					</div>
-					<input type="text" name="phone_num" maxlength="10"
+					<input type="text" name="phone_num" maxlength="11"
 						placeholder="010-****-****" autocomplete="off"
 						value="${member.phone_num}">
 					<div class="caution"></div>
@@ -253,8 +252,9 @@ nav {
 				</div>
 				<input type="submit" value="내 정보 변경">
 			</section>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}">
 		</form>
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		<jsp:include page="../common/footer.jsp" />
 	</div>
 </body>
