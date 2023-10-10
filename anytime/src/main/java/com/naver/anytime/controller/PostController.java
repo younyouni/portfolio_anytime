@@ -259,7 +259,6 @@ public class PostController {
 	      
 	    System.out.println("보드넘테스트" + board_id);
 	    System.out.println("값테스트" + postlist);
-	    System.out.println("학교번호" + session.getAttribute("school_id"));						//테스트
 		return mv;
 	}
 

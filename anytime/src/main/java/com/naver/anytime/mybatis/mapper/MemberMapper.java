@@ -59,4 +59,8 @@ public interface MemberMapper {
 	public int updateMember(Member member);
 
 	public int updateStatusInactive(String login_id);
+	
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+	public Integer getSchoolId2(String id);
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 }

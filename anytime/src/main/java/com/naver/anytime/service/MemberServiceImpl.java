@@ -172,6 +172,13 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMember(Member member) {
 		return dao.updateMember(member);
 	}
+	
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+	@Override
+	public Integer getSchoolId2(String id) {
+		return dao.getSchoolId2(id);
+	}
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 	@Override
 	public int updateStatusInactive(String login_id) {

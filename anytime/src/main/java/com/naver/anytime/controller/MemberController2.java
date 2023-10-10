@@ -181,7 +181,7 @@ public class MemberController2 {
 			if (result == AnytimeConstants.DELETE_COMPLETE) {
 				logger.info("회원탈퇴 성공");
 				session.invalidate();
-				url = "redirect:member/logout";
+				url = "redirect:/";
 			} else {
 				rattr.addFlashAttribute("result", "deleteFail");
 				url = "redirect:delete";
