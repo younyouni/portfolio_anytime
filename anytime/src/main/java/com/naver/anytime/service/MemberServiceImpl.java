@@ -180,4 +180,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
+	@Override
+	public int updateStatusInactive(String login_id) {
+		return dao.updateStatusInactive(login_id);
+	}
+
 }
