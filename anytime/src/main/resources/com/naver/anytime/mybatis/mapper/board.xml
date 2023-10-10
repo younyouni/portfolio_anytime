@@ -64,7 +64,7 @@
 	</update>
 	
 	<select id="getBoardManager" resultType="int">
-		select *
+		select count(*)
 		from board
 		where board_id = ${board_id} and user_id = ${user_id}
 	</select>
@@ -92,5 +92,11 @@
 		from board
 		where name = '${board_name}' and board_id = #{board_id}
 	</select>
+	
+	<update id="updateBoardUserId">
+		update board
+		set user_id = #{tf_user_id_num}
+		where user_id = #{am_user_id_num} and board_id = #{board_id}
+	</update>
 
 </mapper>

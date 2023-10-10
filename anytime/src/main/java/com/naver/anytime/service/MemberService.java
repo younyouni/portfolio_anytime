@@ -49,4 +49,13 @@ public interface MemberService {
 	public String getNickname(String login_id);
 
 	public int updateMember(Member member);
+	
+	
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+	// 기존 getSchoolId 가 integer가 아니라 새로 생성
+	public Integer getSchoolId2(String id);
+
+	
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+	
 }
