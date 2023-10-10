@@ -21,8 +21,6 @@ public interface MemberService {
 
 	public void delete(String id);
 
-	public int update(Member m);
-
 	public List<Member> getSearchList(int index, String search_word, int page, int limit);
 
 	public int getSearchListCount(int index, String search_word);
@@ -47,4 +45,8 @@ public interface MemberService {
 	public int getUserId(String login_id);
 
 	public String getPwd(String login_id);
+
+	public String getNickname(String login_id);
+
+	public int updateMember(Member member);
 }

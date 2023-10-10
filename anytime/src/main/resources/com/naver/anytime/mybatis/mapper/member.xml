@@ -42,7 +42,8 @@
 
 	<update id="updateschoolcheck" parameterType="String">
 
-		update member set school_check = 1 where login_id = #{id}
+		update member set
+		school_check = 1 where login_id = #{id}
 
 	</update>
 
@@ -50,15 +51,6 @@
 		UPDATE member SET
 		password = #{password}
 		WHERE login_id = #{login_id}
-	</update>
-
-	<update id="update" parameterType="member">
-		update member
-		set name =
-		#{name}, age = #{age},
-		gender = #{gender}, email = #{email}
-		where id =
-		#{id}
 	</update>
 
 	<select id="findMemberByUserId" parameterType="int"
@@ -172,14 +164,35 @@
 
 	<update id="updateBoardAdmin" parameterType="int">
 		UPDATE MEMBER
-		SET BOARD_ADMIN = 1
+		SET
+		BOARD_ADMIN = 1
 		WHERE USER_ID = #{user_id}
 	</update>
 
 	<select id="getPwd" parameterType="String" resultType="String">
-		SELECT PASSWORD
+		SELECT
+		PASSWORD
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
 	</select>
+
+	<select id="getNickname" parameterType="String"
+		resultType="String">
+		SELECT NICKNAME
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
+	</select>
+
+	<update id="updateMember" parameterType="member">
+		UPDATE MEMBER
+		SET
+		NICKNAME = #{nickname},
+		EMAIL = #{email},
+		ADDRESS_NUM =#{address_num},
+		ADDRESS1=#{address1},
+		ADDRESS2=#{address2},
+		PHONE_NUM=#{phone_num}
+		where LOGIN_ID = #{login_id}
+	</update>
 
 </mapper>

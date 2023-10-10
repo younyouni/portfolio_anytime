@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +28,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.service.MemberService;
-import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
 import com.naver.constants.AnytimeConstants;
 
@@ -106,9 +104,52 @@ public class MemberController2 {
 		return url;
 	}
 
-	@RequestMapping(value = "/info", method = RequestMethod.GET)
-	public String updateMember() {
-		return "/member/updateMember";
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public ModelAndView updateMember(Principal principal, ModelAndView mv) {
+		String id = principal.getName();
+
+		if (id == null) {
+			mv.setViewName("redirect:/member/login");
+			logger.info("id is null");
+		} else {
+			Member m = memberservice.getLoginMember(id);
+			mv.setViewName("/member/updateMember");
+			mv.addObject("member", m);
+		}
+		return mv;
+	}
+
+	// 회원정보 변경 프로세스
+	@PostMapping(value = "/updateProcess")
+	public String updatePassword(Principal principal, Member member, Model model, HttpServletRequest request,
+			RedirectAttributes rattr) {
+
+		// login_id 설정
+		member.setLogin_id(principal.getName());
+
+		// 현재 로그인한 사용자의 비밀번호 가져오기
+		String password = member.getPassword();
+
+		// 데이터베이스에 저장된 비밀번호 가져오기
+		String dbPwd = memberservice.getPwd(member.getLogin_id());
+
+		// 입력받은 비밀번호가 현재 비밀번호와 일치하는지 체크
+		// 비밀번호가 일치하는 경우 비밀번호 변경 진행
+		if (passwordEncoder.matches(password, dbPwd)) {
+
+			// 비밀번호가 일치하는 경우
+			int result = memberservice.updateMember(member);
+
+			// 회원 정보 수정 실행
+			if (result == AnytimeConstants.UPDATE_COMPLETE) {
+				rattr.addFlashAttribute("result", "changeSuccess");
+			} else {
+				rattr.addFlashAttribute("result", "changeFail");
+			}
+		} else {
+			rattr.addFlashAttribute("result", "passwordFail");
+		}
+		return "redirect:update";
 	}
 
 	@RequestMapping(value = "/boardlist", method = RequestMethod.GET)

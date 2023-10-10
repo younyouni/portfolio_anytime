@@ -85,11 +85,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int update(Member m) {
-		return dao.update(m);
-	}
-
-	@Override
 	public List<Member> getSearchList(int index, String search_word, int page, int limit) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -166,6 +161,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String getPwd(String login_id) {
 		return dao.getPwd(login_id);
+	}
+
+	@Override
+	public String getNickname(String login_id) {
+		return dao.getNickname(login_id);
+	}
+
+	@Override
+	public int updateMember(Member member) {
+		return dao.updateMember(member);
 	}
 
 }
