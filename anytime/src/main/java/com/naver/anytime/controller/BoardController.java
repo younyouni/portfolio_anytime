@@ -195,8 +195,10 @@ public class BoardController {
 		
 		Integer am_school_num = memberService.getSchoolId2(loginid);		//양도인 유저의 스쿨 번호
 		Integer tf_school_num = memberService.getSchoolId2(userid);			//피양도인 유저의 스쿨 번호
-		if(am_school_num == null || tf_school_num == null) {
+		if(am_school_num == null) {
 			am_school_num = 0;
+		}
+		if(tf_school_num == null) {
 			tf_school_num = 0;
 		}
 		
