@@ -140,7 +140,7 @@ public class MemberController2 {
 			// 비밀번호가 일치하는 경우
 			int result = memberservice.updateMember(member);
 
-			// 정보 수정 실행
+			// 회원 정보 수정 실행
 			if (result == AnytimeConstants.UPDATE_COMPLETE) {
 				rattr.addFlashAttribute("result", "changeSuccess");
 			} else {
