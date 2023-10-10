@@ -4,7 +4,7 @@
 <html>
 <head>
 <title>회원 정보 변경 - 애니타임</title>
-<script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <jsp:include page="../common/header.jsp" />
 <style>
@@ -89,60 +89,49 @@ nav {
 								return;
 							}
 
-							$
-									.ajax({
-										url : "nicknamecheck.com",
-										data : {
-											"nickname" : nickname
-										},
-										success : function(resp) {
-											if (resp == -1
-													|| nickname === "${member.nickname}") {
-												$("#nickname_message")
-														.css('color', '#624cff')
-														.html(
-																"&nbsp;&nbsp;&nbsp;사용 가능한 닉네임입니다.");
-												checknickname = true;
-											} else {
-												$("#nickname_message")
-														.css('color', '#e54787')
-														.html(
-																"&nbsp;&nbsp;&nbsp;사용중인 닉네임입니다.");
-												checknickname = false;
-											}
-										}
-									});
+							$.ajax({
+								url : "member/nicknamecheck",
+								data : {
+									"nickname" : nickname
+								},
+								success : function(resp) {
+									if (resp == -1) {
+										$("#nickname_message").css('color', '#624cff')
+												.html("&nbsp;&nbsp;&nbsp;사용 가능한 닉네임입니다.");
+										checknickname = true;
+									} else {
+										$("#nickname_message").css('color', '#e54787')
+												.html("&nbsp;&nbsp;&nbsp;사용중인 닉네임입니다.");
+										checknickname = false;
+									}
+								}
+							});
 						});
 
 		//휴대전화 유효성 검사
-		$("input[name=phone_num]")
-				.on(
-						'keyup',
-						function() {
-							let phoneNumber = $(this).val().replace(/-/g, ''); // '-' 제거
+		$("input[name=phone_num]").on(
+				'keyup',
+				function() {
+					let phoneNumber = $(this).val().replace(/-/g, ''); // '-' 제거
 
-							// 맨 앞글자를 010으로 강제로 지정
-							if (phoneNumber.length >= 3) {
-								phoneNumber = "010" + phoneNumber.substring(3);
-							}
+					// 맨 앞글자를 010으로 강제로 지정
+					if (phoneNumber.length >= 3) {
+						phoneNumber = "010" + phoneNumber.substring(3);
+					}
 
-							// 휴대전화 형식 확인
-							const pattern = /^010\d{8}$/;
+					// 휴대전화 형식 확인
+					const pattern = /^010\d{8}$/;
 
-							if (!pattern.test(phoneNumber)) {
-								$("#phone_message")
-										.css('color', '#e54787')
-										.html(
-												"&nbsp;&nbsp;&nbsp;휴대전화 번호 형식이 맞지 않습니다. (010********)");
-								checkPhoneNumber = false;
-							} else {
-								$("#phone_message")
-										.css('color', '#624cff')
-										.html(
-												"&nbsp;&nbsp;&nbsp;유효한 휴대전화 번호입니다.");
-								checkPhoneNumber = true;
-							}
-						});
+					if (!pattern.test(phoneNumber)) {
+						$("#phone_message").css('color', '#e54787').html(
+								"&nbsp;&nbsp;&nbsp;휴대전화 번호 형식이 맞지 않습니다. (010********)");
+						checkPhoneNumber = false;
+					} else {
+						$("#phone_message").css('color', '#624cff').html(
+								"&nbsp;&nbsp;&nbsp;유효한 휴대전화 번호입니다.");
+						checkPhoneNumber = true;
+					}
+				});
 
 		$('form').submit(function() {
 
@@ -164,30 +153,14 @@ nav {
 				return false;
 			}
 
-			const password = $("input[name='password']").val();
-
-			$.ajax({
-				url : "checkpassword.com",
-				data : {
-					"password" : password
-				},
-				success : function(resp) {
-					if (resp == 0) {
-						alert("현재 비밀번호와 일치하지 않습니다.");
-						event.preventDefault();
-					}
-				}
-			}); // ajax end
-
 		}); //submit end
 	}); //ready function() end
 </script>
 </head>
 <body id="my">
 	<div>
-		<form id="container" action="updateProcess.com" method="post"
-			data-adagreement="1" data-redirecturl="/" action="updateProcess.com"
-			method="post">
+		<form id="container" action="updateProcess" method="post"
+			data-adagreement="1" data-redirecturl="/">
 			<section>
 				<h2>회원 정보</h2>
 				<div class="input">
@@ -245,7 +218,7 @@ nav {
 						<label>휴대전화<span>*</span></label>
 						<p>본인 인증시 필요</p>
 					</div>
-					<input type="text" name="phone_num" maxlength="10"
+					<input type="text" name="phone_num" maxlength="11"
 						placeholder="010-****-****" autocomplete="off"
 						value="${member.phone_num}">
 					<div class="caution"></div>

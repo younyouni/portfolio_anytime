@@ -168,4 +168,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getPwd(login_id);
 	}
 
+	@Override
+	public String getNickname(String login_id) {
+		return dao.getNickname(login_id);
+	}
+
 }

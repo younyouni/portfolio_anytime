@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +27,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.service.MemberService;
-import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
 import com.naver.constants.AnytimeConstants;
 
@@ -106,10 +103,52 @@ public class MemberController2 {
 		return url;
 	}
 
-	@RequestMapping(value = "/info", method = RequestMethod.GET)
-	public String updateMember() {
-		return "/member/updateMember";
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public ModelAndView updateMember(Principal principal, ModelAndView mv) {
+		String id = principal.getName();
+
+		if (id == null) {
+			mv.setViewName("redirect:/member/login");
+			logger.info("id is null");
+		} else {
+			Member m = memberservice.getLoginMember(id);
+			mv.setViewName("/member/updateMember");
+			mv.addObject("member", m);
+		}
+		return mv;
 	}
+
+//	// 회원정보 변경 프로세스
+//		@PostMapping(value = "/updateProcess")
+//		public String updatePassword(@RequestParam("password") String password,
+//				 Principal principal, RedirectAttributes rattr) {
+//			String url = "";
+//
+//			// 현재 로그인한 사용자의 정보 가져오기
+//			String login_id = principal.getName();
+//			// 데이터베이스에 저장된 비밀번호 가져오기
+//			String dbPwd = memberservice.getPwd(login_id);
+//
+//			// 입력받은 비밀번호가 현재 비밀번호와 일치하는지 체크
+//			// 비밀번호가 일치하는 경우 비밀번호 변경 진행
+//			if (passwordEncoder.matches(password, dbPwd)) {
+//
+//				// 비밀번호가 일치하는 경우
+//				
+//
+//				memberservice.changePassword(login_id, newEncPwd);
+//
+//				rattr.addFlashAttribute("changePassword", "Success");
+//				session.invalidate();
+//
+//				url = "redirect:/member/login";
+//			} else {
+//				rattr.addFlashAttribute("changePassword", "Fail");
+//				url = "redirect:password";
+//			}
+//
+//			return url;
+//		}
 
 	@RequestMapping(value = "/boardlist", method = RequestMethod.GET)
 	public String getBoardlist() {

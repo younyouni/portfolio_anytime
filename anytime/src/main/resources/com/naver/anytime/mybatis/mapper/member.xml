@@ -181,5 +181,11 @@
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
 	</select>
+	
+	<select id="getNickname" parameterType="String" resultType="String">
+		SELECT NICKNAME
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
+	</select>
 
 </mapper>

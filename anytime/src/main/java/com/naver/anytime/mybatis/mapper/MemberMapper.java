@@ -55,4 +55,6 @@ public interface MemberMapper {
 	public int updateBoardAdmin(int user_id);
 
 	public String getPwd(String login_id);
+
+	public String getNickname(String login_id);
 }

@@ -47,4 +47,6 @@ public interface MemberService {
 	public int getUserId(String login_id);
 
 	public String getPwd(String login_id);
+
+	public String getNickname(String login_id);
 }

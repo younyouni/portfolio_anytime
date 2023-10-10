@@ -65,7 +65,7 @@ nav {
 				<a href="${pageContext.request.contextPath}/certificate"
 					class="item">학교 인증</a> <a
 					href="${pageContext.request.contextPath}/password" class="item">비밀번호
-					변경</a> <a href="${pageContext.request.contextPath}/info" class="item">내정보
+					변경</a> <a href="${pageContext.request.contextPath}/update" class="item">내정보
 					변경</a>
 			</section>
 			<section>
