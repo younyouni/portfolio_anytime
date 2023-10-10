@@ -12,4 +12,6 @@ public interface BoardAuthMapper {
 	// ********************************= 윤희 =********************************
 	public void insertBoardAuth(int board_id, int user_id);
 
+	public int deleteBoardAuth(int board_id);
+
 }
