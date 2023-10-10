@@ -110,11 +110,6 @@
 		<!-- where rnum &gt;= #{start} and rnum &lt;= #{end} -->
 	</select>
 
-	<delete id="delete" parameterType="String">
-		delete from Member3
-		where id =
-		#{id}
-	</delete>
 
 	<!-- ===========윤희============ -->
 	<select id="getSchoolDomain" parameterType="String"
@@ -192,7 +187,14 @@
 		ADDRESS1=#{address1},
 		ADDRESS2=#{address2},
 		PHONE_NUM=#{phone_num}
-		where LOGIN_ID = #{login_id}
+		WHERE LOGIN_ID = #{login_id}
+	</update>
+
+	<update id="updateStatusInactive" parameterType="String">
+		UPDATE MEMBER
+		SET
+		ACCOUNT_STATUS = 0
+		WHERE LOGIN_ID = #{login_id}
 	</update>
 
 </mapper>
