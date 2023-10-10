@@ -173,4 +173,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateMember(member);
 	}
 
+	@Override
+	public int updateStatusInactive(String login_id) {
+		return dao.updateStatusInactive(login_id);
+	}
+
 }

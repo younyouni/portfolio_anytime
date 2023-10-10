@@ -104,7 +104,7 @@ public class MemberController2 {
 		return url;
 	}
 
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	@GetMapping(value = "/update")
 	public ModelAndView updateMember(Principal principal, ModelAndView mv) {
 		String id = principal.getName();
 
@@ -121,8 +121,7 @@ public class MemberController2 {
 
 	// 회원정보 변경 프로세스
 	@PostMapping(value = "/updateProcess")
-	public String updatePassword(Principal principal, Member member, Model model, HttpServletRequest request,
-			RedirectAttributes rattr) {
+	public String updateMemberProcess(Principal principal, Member member, RedirectAttributes rattr) {
 
 		// login_id 설정
 		member.setLogin_id(principal.getName());
@@ -152,14 +151,47 @@ public class MemberController2 {
 		return "redirect:update";
 	}
 
-	@RequestMapping(value = "/boardlist", method = RequestMethod.GET)
+	@GetMapping(value = "/boardlist")
 	public String getBoardlist() {
 		return "/member/boardlist";
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String deleteMember() {
+	@GetMapping(value = "/delete")
+	public String deleteMemberProcess() {
 		return "/member/deleteMember";
+	}
+
+	@PostMapping(value = "/deleteProcess")
+	public String deleteMember(@RequestParam("password") String password, Principal principal, RedirectAttributes rattr,
+			HttpSession session) {
+		String url = "";
+		String login_id = principal.getName();
+
+		// 데이터베이스에 저장된 비밀번호 가져오기
+		String dbPwd = memberservice.getPwd(login_id);
+
+		// 입력받은 비밀번호가 현재 비밀번호와 일치하는지 체크
+		// 비밀번호가 일치하는 경우 비밀번호 변경 진행
+		if (passwordEncoder.matches(password, dbPwd)) {
+
+			// 비밀번호가 일치하는 경우
+			int result = memberservice.updateStatusInactive(login_id);
+
+			// 회원 정보 수정 실행
+			if (result == AnytimeConstants.DELETE_COMPLETE) {
+				logger.info("회원탈퇴 성공");
+				session.invalidate();
+				url = "redirect:member/logout";
+			} else {
+				rattr.addFlashAttribute("result", "deleteFail");
+				url = "redirect:delete";
+			}
+		} else {
+			rattr.addFlashAttribute("result", "passwordFail");
+			url = "redirect:delete";
+		}
+
+		return url;
 	}
 
 	// --------------------------------지원-----------------------------------------

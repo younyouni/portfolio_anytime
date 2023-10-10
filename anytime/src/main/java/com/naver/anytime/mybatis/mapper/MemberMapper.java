@@ -57,4 +57,6 @@ public interface MemberMapper {
 	public String getNickname(String login_id);
 
 	public int updateMember(Member member);
+
+	public int updateStatusInactive(String login_id);
 }
