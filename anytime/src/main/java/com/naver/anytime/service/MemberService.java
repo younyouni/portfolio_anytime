@@ -45,4 +45,6 @@ public interface MemberService {
 	public School getSchool(String id);
 
 	public int getUserId(String login_id);
+
+	public String getPwd(String login_id);
 }

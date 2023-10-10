@@ -22,6 +22,7 @@ import com.naver.anytime.domain.Board;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
+import com.naver.constants.AnytimeConstants;
 
 @RestController
 public class BoardController {
@@ -58,25 +59,17 @@ public class BoardController {
 		int user_id = memberService.getUserId(LOGIN_ID);
 		board.setUSER_ID(user_id);
 
-		if (board.getTYPE() == 2 || board.getTYPE() == 3) {
-			board.setSTATUS(0);
+		if (board.getTYPE() == AnytimeConstants.GROUP_BOARD || board.getTYPE() == AnytimeConstants.DEPARTMENT_BOARD) {
+			board.setSTATUS(AnytimeConstants.STATUS_INACTIVE);
 		} else {
-			board.setSTATUS(1);
+			board.setSTATUS(AnytimeConstants.STATUS_ACTIVE);
 		}
-		logger.info("school_id: " + board.getSCHOOL_ID());
-		logger.info("user_id : " + user_id);
-		logger.info("type: " + board.getTYPE());
-		logger.info("name: " + board.getNAME());
-		logger.info("content: " + board.getCONTENT());
-		logger.info("anonymous: " + board.getANONYMOUS());
-		logger.info("status: " + board.getSTATUS());
-		logger.info("purpose: " + board.getPURPOSE());
 
 		int result = boardService.insertBoard(board);
-		if (result == 1) {
+		if (result == AnytimeConstants.INSERT_COMPLETE) {
 			logger.info("게시판 생성 완료");
 			rattr.addFlashAttribute("result", "insertBoardSuccess");
-			url = "redirect:/member/info/boardlist";
+			url = "redirect:/member/boardlist";
 		} else {
 			logger.info("게시판 생성 실패");
 			mv.addAttribute("url", request.getRequestURL());

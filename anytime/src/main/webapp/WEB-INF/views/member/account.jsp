@@ -41,7 +41,7 @@ nav {
 						method="post" name="logout">
 						<div class="title">
 							<h1>내 정보</h1>
-							<a href="" class="logout" id="logout">로그아웃</a> 
+							<a href="" class="logout" id="logout">로그아웃</a>
 						</div>
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}">

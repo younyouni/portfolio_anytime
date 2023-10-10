@@ -15,15 +15,22 @@
 body {
 	background-color: #EEEEF6 !important;
 }
+
 nav {
 	border-bottom: 0 !important;
 }
 </style>
 </head>
 <script>
+	if ("${changePassword}" == "Fail") {
+		alert("현재 비밀번호와 일치하지 않습니다.")
+	}
 	$(function() {
 		let checkpassword = false;
 		let checkpasswordmatch = false;
+
+		let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
 
 		//비밀번호 유효성 검사
 		$("input[name=password], input[name=password2]")
@@ -77,39 +84,22 @@ nav {
 
 		$("#updatepassword").on('click', function(event) {
 			if (!checkpassword) {
-				alert("&nbsp;&nbsp;&nbsp;비밀번호는 영문, 숫자, 특수문자를 2종류 이상 조합해주세요.");
+				alert("비밀번호는 영문, 숫자, 특수문자를 2종류 이상 조합해주세요.");
 				$("input[name='password']").val('').focus();
 				return false;
 			}
 
 			if (!checkpasswordmatch) {
-				alert("&nbsp;&nbsp;&nbsp;입력하신 두 비밀번호가 일치하지 않습니다.");
+				alert("입력하신 두 비밀번호가 일치하지 않습니다.");
 				$("input[name='password2']").val('').focus();
 				return false;
 			}
 
 			if ($("input[name='oldpassword']").val() == "") {
-				alert("&nbsp;&nbsp;&nbsp;현재 비밀번호를 입력하세요");
+				alert("현재 비밀번호를 입력하세요");
 				$("input[name='oldpassword']").focus();
 				return false;
 
-			} else {
-				const password = $("input[name='oldpassword']").val();
-				const newpassword = $("input[name='password']").val();
-
-				$.ajax({
-					url : "checkpassword.com",
-					data : {
-						"password" : password,
-						result : 0
-					},
-					success : function(resp) {
-						if (resp == 0) {
-							alert("현재 비밀번호와 일치하지 않습니다.");
-							event.preventDefault();
-						}
-					}
-				}); // ajax end
 			}
 		});
 	});
@@ -117,7 +107,7 @@ nav {
 <jsp:include page="../common/header.jsp" />
 <body id="my">
 	<div>
-		<form action="passwordUpdateProcess.com"
+		<form action="${pageContext.request.contextPath}/pwdProcess"
 			class="container" name="updatePassword" method="post">
 			<section>
 				<h1>비밀번호 변경</h1>
@@ -126,12 +116,12 @@ nav {
 						<label>새 비밀번호</label>
 						<p>영문, 숫자, 특문이 2종류 이상 조합된 8~20자</p>
 					</div>
-					<input type="password" maxlength="20"
-						placeholder="새 비밀번호" class="" name="password"> <span
-						id="password_message1" style="font-size: 12px; color: #e54787;"></span>
+					<input type="password" maxlength="20" placeholder="새 비밀번호" class=""
+						name="password"> <span id="password_message1"
+						style="font-size: 12px; color: #e54787;"></span>
 					<!---->
-					<input type="password" name="password2"
-						maxlength="20" placeholder="새 비밀번호 확인" class=""> <span
+					<input type="password" name="password2" maxlength="20"
+						placeholder="새 비밀번호 확인" class=""> <span
 						id="password_message2"
 						style="font-size: 12px; color: transparent;"></span>
 
@@ -141,23 +131,22 @@ nav {
 					<div class="label">
 						<label>현재 비밀번호</label>
 					</div>
-					<input type="password" name="oldpassword"
-						maxlength="20" placeholder="현재 비밀번호" class="">
+					<input type="password" name="oldpassword" maxlength="20"
+						placeholder="현재 비밀번호" class="">
 				</div>
 				<div class="rules">
 					<p>
-						<strong>※ 타인에 의한 계정 사용이 의심되시나요?</strong><br
-							> 개인정보 보호를 위해 비밀번호를 변경하여 주시기 바랍니다. 비밀번호를
-						변경하면 <span class="caution">모든 디바이스(앱,
-							브라우저 등)에서 즉시 로그아웃 처리됩니다.</span>
+						<strong>※ 타인에 의한 계정 사용이 의심되시나요?</strong><br> 개인정보 보호를 위해
+						비밀번호를 변경하여 주시기 바랍니다. 비밀번호를 변경하면 <span class="caution">모든
+							디바이스(앱, 브라우저 등)에서 즉시 로그아웃 처리됩니다.</span>
 					</p>
 				</div>
-				<input type="submit" value="비밀번호 변경"
-					id="updatepassword">
+				<input type="submit" value="비밀번호 변경" id="updatepassword">
 			</section>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}">
 		</form>
 	</div>
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	<jsp:include page="../common/footer2.jsp" />
 </body>
 </html>

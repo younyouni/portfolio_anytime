@@ -27,6 +27,7 @@ import com.naver.anytime.domain.School;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
+import com.naver.constants.AnytimeConstants;
 
 // 이 컨트롤러는 회원 가입시 비밀번호 암호화를 하는 컨트롤러입니다.
 
@@ -203,7 +204,7 @@ public class MemberController {
 
 		// 삽입이 된 경우
 		// 회원 가입 결과에 따라 리다이렉트할 페이지를 결정합니다.
-		if (result == 1) {
+		if (result == AnytimeConstants.INSERT_COMPLETE) {
 			rattr.addFlashAttribute("result", "joinSuccess");
 			model.addAttribute("message", "회원가입 성공입니다.");
 			return "redirect:login"; // 로그인 페이지로 이동
@@ -359,7 +360,7 @@ public class MemberController {
 	public String updateProcess(Member member, Model model, HttpServletRequest request, RedirectAttributes rattr) {
 
 		int result = memberservice.update(member);
-		if (result == 1) {
+		if (result == AnytimeConstants.UPDATE_COMPLETE) {
 			rattr.addFlashAttribute("result", "updateSuccess");
 			return "redirect:/board/list";
 		} else {
@@ -435,7 +436,7 @@ public class MemberController {
 		memberservice.delete(id);
 		return "redirect:list";
 	}
-	
+
 	// 로그아웃
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String logout(HttpSession session) {
