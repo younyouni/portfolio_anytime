@@ -31,4 +31,6 @@ public interface BoardMapper {
 
 	public int[] getBoardIdsByDomain(String schoolDomain);
 
+	public int insertBoard(Board board);
+
 }

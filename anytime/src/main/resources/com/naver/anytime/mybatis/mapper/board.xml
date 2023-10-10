@@ -51,4 +51,16 @@
         AND NAME != '공지사항'
 	</select>
 	
+	<insert id="insertBoard" parameterType="Board">
+	<selectKey keyProperty="NEW_BOARD_ID" resultType="int" order="AFTER">
+		SELECT BOARD_SEQ.CURRVAL FROM DUAL
+	</selectKey>
+		INSERT INTO BOARD
+				(BOARD_ID, SCHOOL_ID, USER_ID,
+				TYPE, NAME, CONTENT, ANONYMOUS,
+				STATUS, PURPOSE)
+		VALUES (BOARD_SEQ.NEXTVAL, #{SCHOOL_ID}, #{USER_ID},
+				#{TYPE}, #{NAME}, #{CONTENT}, #{ANONYMOUS},
+				#{STATUS}, #{PURPOSE})
+	</insert>
 </mapper>

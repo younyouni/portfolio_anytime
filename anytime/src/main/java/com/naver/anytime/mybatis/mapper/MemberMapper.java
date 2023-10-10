@@ -51,4 +51,6 @@ public interface MemberMapper {
 	public School getSchool(String id);
 
 	public int getUserId(String login_id);
+
+	public int updateBoardAdmin(int user_id);
 }
