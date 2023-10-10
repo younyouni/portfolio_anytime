@@ -507,7 +507,7 @@
 			<a title="닫기" class="close"></a>
 			<h3>게시판 삭제</h3>
 			<p>
-				<label>게시판을 삭제하려면 삭제하려는 해당 게시판의 이름을 입력하세요</label>
+				<label>게시판을 삭제하려면 삭제하려는 해당 <strong style="color: #7869E6;">게시판의 이름</strong>을 입력하세요</label>
 				<input type="text" name="boardNameCheck" class="text" value="${boardName}" readonly>
 				<label>입력</label>
 				<input type="text" name="TruedeleteCheck" class="text">
@@ -555,6 +555,9 @@
 			event.preventDefault()
 			boardDeleteAjax();
 		});
+		
+		$('#transferMoimForm')
+		
 		
 	});		
 	function getBoardContentAjax(){

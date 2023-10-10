@@ -108,7 +108,7 @@ public class BoardController {
 		}
 
 		int updateData = boardService.updateBoardContent(board_id, content);
-		System.out.println("BoardController에서 content 업데이트 성공 여부 테스트 [0 / 1] = " + updateData);
+		System.out.println("BoardController에서 content 업데이트 성공 여부 테스트 [0 or 1] = " + updateData);
 		return updateData;
 	}
 	
@@ -126,7 +126,7 @@ public class BoardController {
 			managerCheck = 1;
 		}
 		
-		System.out.println("BoardController에서 보드 권한 체크 테스트 [0 / 1] = " + managerCheck);
+		System.out.println("BoardController에서 보드 권한 체크 테스트 [0 or 1] = " + managerCheck);
 		
 		return managerCheck;
 	}
@@ -143,16 +143,16 @@ public class BoardController {
 
 	    if(board_id > 0) {
 		    if(boardnamecheck == 1) {
-		    	System.out.println("[1/3] board_id 체크" + board_id);
+		    	System.out.println("[1/3](1/2) board_id 체크 " + board_id);
 		        int user_id = memberService.getUserId(login_id);
 		        int check_auth = boardService.deleteBoardAuth(board_id);
 
-		        System.out.println("[1/3] 유저 아이디 [" + user_id + "] 체크 권한 [" + check_auth + "]");
+		        System.out.println("[1/3](2/2) 유저 아이디 [" + user_id + "] 체크 권한 [" + check_auth + "]");
 		        	
 			        if(check_auth == 1) {
-				    	System.out.println("[2/3] board_auth 삭제 체크");
+				    	System.out.println("[2/3](1/2) board_auth 삭제 체크");
 				    	int check = boardService.deleteBoard(board_name, user_id);
-						System.out.println("[2/3] 보드 삭제 [" + check + "]");
+						System.out.println("[2/3](2/2) 보드 삭제 [" + check + "]");
 																					
 							if (check_auth == 1 && check == 1) {
 								System.out.println("[3/3] 최종 완료");
@@ -172,9 +172,19 @@ public class BoardController {
 	    System.out.println("보내는값 체크 [" + deleteResult + "]");
 	    System.out.println("BoardController 삭제 테스트에서 가져온 보드id [" + board_id + "] 가져온 보드name [" + board_name + "] 가져온 로그인id [" + login_id + "]");
 	    
-	    
-
 	    return deleteResult;
+	}
+	
+	@RequestMapping(value = "/updatemanagerboard", method = RequestMethod.GET)
+	@ResponseBody
+	public int updateManagerBoard(
+			
+			) {
+		int updateManagerBoardResult = 0;
+		
+		
+		
+		return updateManagerBoardResult;
 	}
 
 }
