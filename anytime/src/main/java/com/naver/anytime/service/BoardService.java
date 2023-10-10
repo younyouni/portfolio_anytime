@@ -39,6 +39,10 @@ public interface BoardService {
 	
 	public int getBoardName2(String board_name, int board_id);
 
+	public int updateBoardUserId(int am_user_id_num, int tf_user_id_num, int board_id);
+	
+	public int updateBoardAuth(int am_user_id_num, int tf_user_id_num, int board_id);
+
 
 	
 

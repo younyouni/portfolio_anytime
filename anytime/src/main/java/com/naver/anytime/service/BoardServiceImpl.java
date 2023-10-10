@@ -82,7 +82,8 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int getBoardManager(int board_id, int user_id) {
-		return dao.getBoardManager(board_id, user_id);
+		Integer result = dao.getBoardManager(board_id, user_id);
+		return result;
 	}
 
 	@Override
@@ -101,6 +102,18 @@ public class BoardServiceImpl implements BoardService {
 		Integer result = dao.getBoardName2(board_name, board_id);
 		return result;
 	}
+
+	@Override
+	public int updateBoardUserId(int am_user_id_num, int tf_user_id_num, int board_id) {
+		return dao.updateBoardUserId(am_user_id_num, tf_user_id_num, board_id);
+	}
+
+	@Override
+	public int updateBoardAuth(int am_user_id_num, int tf_user_id_num, int board_id) {
+		return boardAuthDao.updateBoardAuth(am_user_id_num, tf_user_id_num, board_id);
+	}
+
+
 
 
 	

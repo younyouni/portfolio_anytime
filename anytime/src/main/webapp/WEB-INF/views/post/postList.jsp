@@ -475,7 +475,7 @@
 				<label>피양도인 아이디</label> <input type="text" name="transferee_userid"
 					class="text" data-gtm-form-interact-field-id="0">
 			</p>
-			<input type="submit" value="양도 요청" class="button">
+			<input type="submit" id="transferOfBoardButton" value="양도 요청" class="button">
 		</form>
 
 
@@ -508,10 +508,10 @@
 			<a title="닫기" class="close"></a>
 			<h3>게시판 삭제</h3>
 			<p>
-				<label>게시판을 삭제하려면 삭제하려는 해당 게시판의 이름을 입력하세요</label>
+				<label>게시판을 삭제하려면 삭제하려는 해당 <strong style="color: #7869E6;">게시판의 이름</strong>을 입력하세요</label>
 				<input type="text" name="boardNameCheck" class="text" value="${boardName}" readonly>
 				<label>입력</label>
-				<input type="text" name="TruedeleteCheck" class="text">
+				<input type="text" name="TrueDeleteCheck" class="text">
 			</p>
 			<input type="submit" id="deleteCheckButton" value="삭제" class="button">
 		</form>
@@ -602,6 +602,12 @@
 			boardDeleteAjax();
 		});
 		
+		$('#transferOfBoardButton').click(function(){
+			event.preventDefault()
+			transferOfBoardAjax();
+		})
+		
+		
 	});		
 	function getBoardContentAjax(){
 		var infoInput = $("input[name='info']");
@@ -621,8 +627,8 @@
 	}
 	
 	function updateBoardContentAjax(){
-		var TruedeleteCheck = $("input[name='info']");
-		var contentvalue = TruedeleteCheck.val();
+		var TrueDeleteCheck = $("input[name='info']");
+		var contentvalue = TrueDeleteCheck.val();
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
 
@@ -672,11 +678,13 @@
 	}
 	
 	function boardDeleteAjax(){
-		var board_name = $("input[name='TruedeleteCheck']").val();
+		var board_name = $("input[name='TrueDeleteCheck']").val();
 		var context = "${pageContext.request.contextPath}";
 		
 		var urlParams = new URLSearchParams(window.location.search);
 		var board_id = urlParams.get('board_id');
+		var school = "${school.domain}";
+		
 		if(board_name != ""){
 		$.ajax({
 			url: "${pageContext.request.contextPath}/deleteboard",
@@ -689,7 +697,7 @@
 			success: function (deleteResult){
 				if(deleteResult == 1){
 					alert("게시판이 삭제되었습니다.");
-					window.location.href = context + "/member/login";
+					window.location.href = context + "/" + school;
 				}else if(deleteResult == 2){
 					alert("게시판 이름이 다릅니다.");
 				}else {
@@ -705,7 +713,45 @@
 		}
 	}
 	
-	
+	function transferOfBoardAjax(){
+		var inputpass = $("input[name='transferer_password']");
+		var inputid = $("input[name='transferee_userid']");
+		var pass = inputpass.val();
+		var id = inputid.val();
+		
+		var urlParams = new URLSearchParams(window.location.search);
+		var board_id = urlParams.get('board_id');
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/updatemanagerboard",
+			data: {
+				password: pass,
+				userid: id,
+				board_id: board_id
+			},
+			dataType: "json",
+			success: function (updateManagerBoardResult){
+				if(updateManagerBoardResult == 1){
+					alert("게시판이 양도 되었습니다.");
+					location.reload();
+				}else if(updateManagerBoardResult == 2){
+					alert("게시판 양도에 실패했습니다.");
+				}else if(updateManagerBoardResult == 3){
+					alert("비밀번호가 맞지 않습니다.");
+				}else if(updateManagerBoardResult == 4){
+					alert("양도할 유저가 해당 학교 학생이 아닙니다.");
+				}else if(updateManagerBoardResult == 5){
+					alert("양도할 유저 존재하지 않습니다.");
+				}else{
+					alert("게시판 양도에 실패했습니다 관리자에게 문의 바랍니다.");
+				}
+			},
+			error: function(xhr, status, error){
+				console.error("에러 발생" + error);
+			}
+			
+		})
+	}
 	
 	</script> 
 	
