@@ -27,7 +27,7 @@ import com.naver.security.LoginSuccessHandler;
 
 @EnableWebSecurity //스프링과 시큐리티 결합
 @Configuration	
-public class SecurityConfig {
+public class SecurityConfig{
 	
 	@Autowired
 	private DataSource datasource;
