@@ -198,7 +198,7 @@
 		WHERE LOGIN_ID = #{login_id}
 	</update>
 
-	<select id="getBoardAdmin" parameterType="String">
+	<select id="getBoardAdmin" parameterType="String" resultType="int">
 		SELECT BOARD_ADMIN
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
@@ -224,6 +224,12 @@
 		board_admin = 1
 		where user_id = #{user_id}
 	</update>
+	
+	<select id="getBoardAdminCheck" resultType="int" >
+		select board_admin
+		from member
+		where user_id = #{user_id}
+	</select>
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
 
 </mapper>

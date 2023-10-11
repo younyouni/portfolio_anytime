@@ -64,6 +64,14 @@ form.modal .button {
 	cursor: pointer !important;
 }
 
+#boardSection>a>p {
+	color: #7869e6;
+}
+
+#boardSection > hr:last-of-type {
+    display: none;
+}
+
 body.appwebview div.container {
 	padding-top: 0
 }

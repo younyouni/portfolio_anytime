@@ -46,4 +46,8 @@ public interface BoardMapper {
 
 	public int updateBoardUserId(int am_user_id_num, int tf_user_id_num, int board_id);
 
+	public List<Board> getBoardlist(String login_id);
+
+	public int getBoardAdminCount(int user_id);
+
 }

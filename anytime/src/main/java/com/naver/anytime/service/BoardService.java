@@ -43,4 +43,6 @@ public interface BoardService {
 	
 	public int updateBoardAuth(int am_user_id_num, int tf_user_id_num, int board_id);
 
+	public int getBoardAdminCount(int user_id);
+
 }
