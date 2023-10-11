@@ -69,8 +69,9 @@ public interface MemberMapper {
 	
 	public int updateBoardAdminAdd(int user_id);
 	
-	public int getBoardAdminCheck(int user_id);
+	public Integer getStatusCheck(String login_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 	public Member isLoginId(String username);
+
 }

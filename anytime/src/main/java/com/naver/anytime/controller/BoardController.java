@@ -189,14 +189,14 @@ public class BoardController {
 	public int updateManagerBoard(
 			@RequestParam(name = "board_id", defaultValue = "-1") int board_id,
 			@RequestParam("password") String password,
-			@RequestParam("userid") String userid,
+			@RequestParam("userid") String userid,		//user_id 아님 login_id 임 
 			Principal principal,
 			HttpSession session
 			) {
 		int updateManagerBoardResult = 0;
 		String loginid = principal.getName();			//양도인(로그인한) 유저 아이디 ex)uniuni
 		String dbPwd = memberService.getPwd(loginid);	//양도인(로그인한) 유저 db 보안 비밀번호 ex)$1b$592qa.Ql2 ...
-		Integer idcheck = memberService.isId(userid);		//피양도인 존재 유저 확인													//스테이터스 체크 확인
+		Integer idcheck = memberService.getStatusCheck(userid);		//피양도인 존재 유저 확인													//스테이터스 체크 확인
 		int schooltest = 0;
 		
 		Integer am_school_num = memberService.getSchoolId2(loginid);		//양도인 유저의 스쿨 번호
@@ -231,7 +231,6 @@ public class BoardController {
 									System.out.println("양도인 board_admin 변경 체크" + am_board_admindelete);
 							}
 								updateManagerBoardResult = 1;	//board 테이블 업데이트 성공
-								System.out.println("============================================= 진짜 됬나? ");
 						}
 					} else {
 						System.out.println("양도인 체크[" + am_user_id_num + "] 피양도인 체크 [" + tf_user_id_num + "] 권한업데이트 체크 [" + result1 + "]");

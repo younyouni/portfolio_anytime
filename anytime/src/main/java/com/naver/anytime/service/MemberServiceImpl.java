@@ -229,10 +229,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public int getBoardAdminCheck(int user_id) {
-		return dao.getBoardAdminCheck(user_id);
+	public Integer getStatusCheck(String login_id) {
+		return dao.getStatusCheck(login_id);
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
 
 
 }

@@ -231,10 +231,10 @@
 		where user_id = #{user_id}
 	</update>
 	
-	<select id="getBoardAdminCheck" resultType="int" >
-		select board_admin
+	<select id="getStatusCheck" resultType="Integer">
+		select account_status
 		from member
-		where user_id = #{user_id}
+		where login_id = #{login_id}
 	</select>
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
 

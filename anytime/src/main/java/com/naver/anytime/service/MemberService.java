@@ -67,7 +67,9 @@ public interface MemberService {
 	
 	public int updateBoardAdminAdd(int user_id);
 	
-	public int getBoardAdminCheck(int user_id);
+	public Integer getStatusCheck(String userid);
+	
+	//public int getStatusCheck(int login_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 }
