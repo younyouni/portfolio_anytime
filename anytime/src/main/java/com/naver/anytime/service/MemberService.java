@@ -33,7 +33,9 @@ public interface MemberService {
 	void changePassword(String login_id, String password);
 
 	public int updateschoolcheck(String id);
-	
+
+	int isLoginId(String id, String password);
+
 	// 윤희
 	public String getSchoolDomain(String id);
 
@@ -52,9 +54,9 @@ public interface MemberService {
 	public int updateMember(Member member);
 
 	public int updateStatusInactive(String login_id);
-	
+
 	public int isBoardAdmin(String login_id);
-	
+
 	public List<Board> getBoardlist(String login_id);
 
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
