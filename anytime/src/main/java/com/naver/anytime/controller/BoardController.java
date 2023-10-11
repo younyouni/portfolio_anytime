@@ -73,7 +73,7 @@ public class BoardController {
 		if (result == AnytimeConstants.INSERT_COMPLETE) {
 			logger.info("게시판 생성 완료");
 			rattr.addFlashAttribute("result", "insertBoardSuccess");
-			url = "redirect:/member/boardlist";
+			url = "redirect:boardlist";
 		} else {
 			logger.info("게시판 생성 실패");                  
 			mv.addAttribute("url", request.getRequestURL());

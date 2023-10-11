@@ -40,6 +40,7 @@ body {
 nav {
 	border-bottom: 0 !important;
 }
+
 </style>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
 <style>
@@ -55,10 +56,10 @@ nav {
 			<section id="boardSection">
 				<h1>관리 중인 게시판</h1>
 				<c:choose>
-					<c:when test="${boardAdmin = 1 }">
+					<c:when test="${boardAdmin == 1 }">
 						<c:forEach var="b" items="${boardlist}">
-							<a href="/528552">${b.name } <c:if
-									test="${b.approval =='N' }">
+							<a href="post/list?board_id=${b.BOARD_ID}">${b.NAME } <c:if
+									test="${b.STATUS == 0 }">
 									<p>승인 심사 진행 중</p>
 								</c:if>
 							</a>
