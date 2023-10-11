@@ -33,30 +33,35 @@ $("#updateButton").on("click", function(e) {
 	let token = $("meta[name='_csrf']").attr("content"); 
 	let header = $("meta[name='_csrf_header']").attr("content"); 
  
-	var postId = e.target.getAttribute("post_id"); 
-    var boardId = e.target.getAttribute("board_id");  
- 
-	$.ajax({ 
-	type: "GET", 
-	url: "detail", 
-	data: { post_id: postId }, 
-	 
-	beforeSend: function(xhr) { 
-	xhr.setRequestHeader(header, token); 
-		 }, 
-}).done(function(res) { 
-if(res.statusCode == 1){ 
-let post=res.data; 
-$("#title").val(post.SUBJECT); 
-$("#content").val(pos.CONTENT); 
- 
-$("#writeBoard").show(); 
-} else { 
-alert("게시글 불러오기에 실패하였습니다. 오류: " + res.errorMessage); 
-} 
-}); 
- 
-}); 
+	let POST_ID = $(this).attr('POST_ID');
+	
+
+	$.ajax({
+	    url: 'detail', 
+	    type: 'GET',
+	    data: {
+	        post_id: POST_ID
+	    },
+		async: false,
+	    beforeSend:function(xhr){
+			xhr.setRequestHeader(header,token)
+	   },
+	   success:function(data){
+		
+	       $('#title').val(data.SUBJECT);
+	       $('#content').val(data.CONTENT);
+		   $("#writeBoard").show();  
+		   
+	   },
+	   error:function(e){
+			alert("게시글 불러오기에 실패하였습니다. 오류 : " + e.errorMessage);
+			console.log(e);	
+	   }
+	   
+	   
+	   
+	});
+});
 /*글 수정 종료*/ 
  
 /*글쓰기 완료*/ 
