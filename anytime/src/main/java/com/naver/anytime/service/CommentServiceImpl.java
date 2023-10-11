@@ -26,11 +26,6 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public int commentsInsert(Comments c) {
-		return dao.commentsInsert(c);
-	}
-
-	@Override
 	public int commentsUpdate(Comments co) {
 		return dao.commentsUpdate(co);
 	}
@@ -44,6 +39,25 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public List<Comments> getCommentList(int post_id) {
 		return dao.getCommentList(post_id);
+	}
+
+
+	@Override
+	public int insertComment(Comments co) {
+		return dao.insertComment(co);
+	}
+
+
+	@Override
+	public int replyComment(Comments co) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public int updateDepth(Map<String, Object> map) {
+		return dao.updateDepth(map);
 	}
 
 }

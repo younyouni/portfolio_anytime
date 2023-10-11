@@ -9,22 +9,26 @@ function getList() {
 	console.log("writerId : " + writerId);
 	$.ajax({
 		type: "post",
-		url: "commentlist",
+		url: "../comment/list",
 		data: {
 			"post_id": $("#post_id").val(),
 			"anonymous": anonymous,
 			"currentUserId": currentUserId,
 			"writerId": writerId,
 		},
+		beforeSend: function(xhr)
+		{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+			xhr.setRequestHeader(header, token);
+		},
 		dataType: "json",
 		success: function(rdata) {
 			let output = "";
 			let writername = "";
 
-			if (rdata.postlist.length > 0) {
-				$(rdata.postlist).each(function() {
+			if (rdata.commentlist.length > 0) {
+				$(rdata.commentlist).each(function() {
 					const lev = this.re_lev;
-					console.log("this.re_lev : " + this.re_lev);
+
 					let comment_reply = '';
 					if (lev == 0) {
 						comment_reply = 'parent';
@@ -70,7 +74,7 @@ function getList() {
 					output += '      </ul>                                                   '
 						+ '      <hr>                                                   '
 						+ '      <p class="large">' + this.content + '</p>                        '
-						+ '      <time class="medium">' + this.comments_date + '</time>               '
+						+ '      <time class="medium">' + this.comment_date + '</time>               '
 						+ '      <ul class="status commentvotestatus">                           '
 						+ '         <li class="vote commentvote" style="display: none;">            '
 						+ this.like_count + '</li>                              '
@@ -223,6 +227,8 @@ function updateForm(comment_id) { //comment_id : 수정할 댓글 글번호
 }//function(updateForm) end
 
 $(document).ready(function() {
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
 
 	getList();
 
@@ -236,11 +242,14 @@ $(document).ready(function() {
 		if (confirm("댓글을 등록하시겠습니까?")) {
 			$(this).off('click'); // 중복 클릭 방지
 			$.ajax({
-				url: 'commentadd',  //원문 등록
+				url: '../comment/add',  //원문 등록
 				data: {
-					"userid": userid,
 					"content": content,
 					"post_id": $("#post_id").val()
+				},
+				beforeSend: function(xhr)
+				{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+					xhr.setRequestHeader(header, token);
 				},
 				type: 'post',
 				success: function(rdata) {
@@ -272,7 +281,7 @@ $(document).ready(function() {
 		if (confirm("대댓글을 등록하시겠습니까?")) {
 			$(this).off('click'); // 중복 클릭 방지
 			$.ajax({
-				url: 'commentreply',
+				url: '../comment/reply',
 				data: {
 					content: content,
 					post_id: $("#post_id").val(),
@@ -281,6 +290,10 @@ $(document).ready(function() {
 					re_seq: re_seq
 				},
 				type: 'post',
+				beforeSend: function(xhr)
+				{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+					xhr.setRequestHeader(header, token);
+				},
 				success: function(rdata) {
 					if (rdata == 1) {
 						$('div.comments').children().not('form').remove();

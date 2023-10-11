@@ -8,9 +8,18 @@ public class Comments {
 	private int like_count;
 	private String comment_date; // 2020-12-24 16:08:35
 	private int re_ref;
-	private int re_lef;
+	private int re_lev;
 	private int re_seq;
 	private int report_count;
+	private String nickname;
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 	public int getComment_id() {
 		return comment_id;
@@ -68,12 +77,12 @@ public class Comments {
 		this.re_ref = re_ref;
 	}
 
-	public int getRe_lef() {
-		return re_lef;
+	public int getRe_lev() {
+		return re_lev;
 	}
 
-	public void setRe_lef(int re_lef) {
-		this.re_lef = re_lef;
+	public void setRe_lev(int re_lev) {
+		this.re_lev = re_lev;
 	}
 
 	public int getRe_seq() {

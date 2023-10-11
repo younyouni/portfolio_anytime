@@ -13,7 +13,12 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
-
+<script>
+	var userid = $('#login_id').val();
+	var anonymous = ${anonymous};
+	var currentUserId = ${currentUserId};  /* 현재 로그인한 유저의 고유번호*/
+	var writerId = ${postdata.USER_ID}; /* post(게시물) 작성한 유저의 고유번호 */
+</script>
 <style>
 .status.disabled {
   pointer-events: none; /* 클릭 및 이벤트 무시 */
@@ -38,7 +43,7 @@
 		</div>
 		<div class="wrap articles" id="writeBoardContainer">
 		<a id="writeArticleButton" style="display: none;">새 글을 작성해주세요!</a>
-			<article id="boardInfo">
+			<article id="boardInfo" class="item">
 				<a class="article"> <img src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 					class="picture large">
 					<div class="profile">
@@ -101,6 +106,7 @@
 					</form>
 				</div>
 			</article>
+			<%--------------------------------- comment 끝 ---------------------------------------------------%>
 			<div class="clearBothOnly"></div>
 			<div class="pagination">
 				<a id="goListButton" class="list">글 목록</a>
@@ -109,7 +115,6 @@
 					</ul>
 				</div> 
 			</div>
-			<%--------------------------------- comment 끝 ---------------------------------------------------%>
 		</div>
 		<hr>
 		<jsp:include page="../common/rightside3.jsp" />
