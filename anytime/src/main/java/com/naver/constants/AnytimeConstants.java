@@ -13,6 +13,7 @@ public class AnytimeConstants {
 
 	public static final int UPDATE_COMPLETE = 1;
 	public static final int INSERT_COMPLETE = 1;
+	public static final int DELETE_COMPLETE = 1;
 
 	public static final int COMMON_BOARD = 1;
 	public static final int GROUP_BOARD = 2;
