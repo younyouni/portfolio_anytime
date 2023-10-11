@@ -11,7 +11,7 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<!-- <script src="js/comment.js"></script> -->
+<script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
 
 <style>
 .status.disabled {
@@ -81,7 +81,7 @@
 					<hr>
 					<div class="buttons">
 						<span class="posvote">공감</span><span class="scrap">스크랩</span>
-					</div> <input type="hidden" id="comment_post_num"
+					</div> <input type="hidden" id="comment_post_id"
 					value="${postdata.POST_ID}">
 				</a>
 				<%--------------------------------- comment 시작 ---------------------------------------------------%>
@@ -120,12 +120,12 @@
         // "수정" 버튼을 클릭하면 동작하는 스크립트
         $("#updateButton").click(function() {
             // 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 페이지 이동
-            if (currentUserId == writerNum) {
-                // post_num 값 가져오기
-                var post_num = $("#post_num").val();
+            if (currentUserId == writerId) {
+                // post_id 값 가져오기
+                var post_id = $("#post_id").val();
                 
                 // postModify.jsp 페이지로 이동
-                window.location.href = "PostModifyView.bo?post_num=" + post_num    
+                window.location.href = "PostModifyView.bo?post_id=" + post_id    
             }
         });
         
@@ -169,19 +169,19 @@
                 var confirmation = confirm("내용을 삭제하시겠습니까?");
                 if (confirmation) {
                     // 삭제 동작을 수행합니다.
-                    var post_num = $("#post_num").val();
+                    var post_id = $("#post_id").val();
 
                     $.ajax({
                         type: "POST",
                         url: "PostDeleteAction.bo",  // 실제 삭제 처리를 담당하는 서버 측 URL
-                        data: { post_num: post_num },
+                        data: { post_id: post_id },
                         success: function(response) {
                             if (response == 0) {
                                 alert("삭제 실패했습니다.");
                             } else {
                                 // 삭제 성공 시, 해당 게시물을 화면에서 숨깁니다.
                                 alert("게시물이 삭제되었습니다.");
-                                window.location.href = "list?board_num=" + ${boarddata.board_num}
+                                window.location.href = "list?board_id=" + ${boarddata.board_id}
                                 $(".article").hide();  // 해당 게시물 영역을 숨깁니다.
                             }
                         },

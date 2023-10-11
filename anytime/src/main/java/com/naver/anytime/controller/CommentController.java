@@ -1,53 +1,53 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.naver.anytime.domain.Comment;
+import com.naver.anytime.domain.Comments;
 import com.naver.anytime.service.CommentService;
+import com.naver.anytime.service.MemberService;
 
-//@Controller
-//@RequestMapping(value="/comment")
+@RestController // @Controller + @ResponseBody
 public class CommentController {
 	private CommentService commentService;
+	private MemberService memberService;
 
 	@Autowired
-	public CommentController(CommentService commentService) {
+	public CommentController(CommentService commentService, MemberService memberService) {
 		this.commentService = commentService;
+		this.memberService = memberService;
 	}
 
-	@ResponseBody
-	@PostMapping(value = "/list")
-	public Map<String, Object> CommentList(int board_num, int page) {
-		List<Comment> list = commentService.getCommentList(board_num, page);
-		int listcount = commentService.getListCount(board_num);
+	private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
+
+	@PostMapping(value = "/commentlist")
+	public Map<String, Object> CommentList(int post_id) {
+		List<Comments> postlist = commentService.getCommentList(post_id);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
-		map.put("listcount", listcount);
+		map.put("postlist", postlist);
 		return map;
 	}
 
-	@ResponseBody
-	@PostMapping(value = "/add")
-	public int CommentAdd(Comment co) {
+	@PostMapping(value = "/commentadd")
+	public int CommentAdd(Comments co, Principal principal) {
+		co.setUser_id(memberService.getUserId(principal.getName()));
 		return commentService.commentsInsert(co);
 	}
 
-	@ResponseBody
-	@PostMapping(value = "/update")
-	public int CommentUpdate(Comment co) {
+	@PostMapping(value = "/commentupdate")
+	public int CommentUpdate(Comments co) {
 		return commentService.commentsUpdate(co);
 	}
 
-	@ResponseBody
-	@PostMapping(value = "/delete")
+	@PostMapping(value = "/commentdelete")
 	public int CommentDelete(int num) {
 		return commentService.commentsDelete(num);
 	}

@@ -10,19 +10,13 @@
 		where board_num = #{board_num}
 	</select>
 
-	<select id="getCommentList" resultType="comment" parameterType="map">
-	    SELECT *
-	    FROM (
-	        SELECT ROWNUM rnum, c.*
-	        FROM (
-	            SELECT num, id, content, reg_date, board_num
-	            FROM comments3
-	            WHERE board_num = #{board_num}
-	            ORDER BY reg_date desc
-	        ) c
-	        WHERE ROWNUM &lt;= #{end}
-	    )
-	    WHERE rnum between #{start} and #{end}
+	<select id="getCommentList" resultType="comment" parameterType="int">
+	    SELECT 	C.COMMENT_ID, C.USER_ID, C.CONTENT, C.LIKE_COUNT,	  			
+		C.COMMENT_DATE, C.RE_LEV, C.RE_SEQ, C.RE_REF, M.NICKNAME	
+		FROM COMMENTS C JOIN MEMBER M 
+		ON C.USER_ID = M.USER_ID 		
+		WHERE C.POST_NUM = #{post_id}
+		ORDER BY C.RE_REF ASC, C.RE_SEQ ASC
 	</select>
 	
 	<insert id="commentsInsert" parameterType="comment">

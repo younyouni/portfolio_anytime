@@ -3,22 +3,22 @@ package com.naver.anytime.service;
 
 import java.util.List;
 
-import com.naver.anytime.domain.Comment;
+import com.naver.anytime.domain.Comments;
 
 public interface CommentService {
 
 	// 글의 갯수 구하기
 	public int getListCount(int board_num);
 
-	// 댓글 목록 가져오기
-	public List<Comment> getCommentList(int board_num, int page);
-	
 	// 댓글 등록하기
-	public int commentsInsert(Comment c);
+	public int commentsInsert(Comments c);
 
 	// 댓글 삭제
 	public int commentsDelete(int num);
 
 	// 댓글 수정
-	public int commentsUpdate(Comment co);
+	public int commentsUpdate(Comments co);
+
+	// 댓글 목록 가져오기
+	public List<Comments> getCommentList(int post_id);
 }

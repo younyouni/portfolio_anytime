@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.naver.anytime.domain.Comment;
+import com.naver.anytime.domain.Comments;
 import com.naver.anytime.mybatis.mapper.CommentMapper;
 
 @Service
@@ -26,30 +26,24 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public List<Comment> getCommentList(int board_num, int page) {
-		int startrow=1;
-		int endrow=page*3;
-		
-		Map<String,Integer> map = new HashMap<String, Integer>();
-		map.put("board_num", board_num);
-		map.put("start", startrow);
-		map.put("end", endrow);
-		return dao.getCommentList(map);
-	}
-
-	@Override
-	public int commentsInsert(Comment c) {
+	public int commentsInsert(Comments c) {
 		return dao.commentsInsert(c);
 	}
 
 	@Override
-	public int commentsUpdate(Comment co) {
+	public int commentsUpdate(Comments co) {
 		return dao.commentsUpdate(co);
 	}
 	
 	@Override
 	public int commentsDelete(int num) {
 		return dao.commentsDelete(num);
+	}
+
+
+	@Override
+	public List<Comments> getCommentList(int post_id) {
+		return dao.getCommentList(post_id);
 	}
 
 }
