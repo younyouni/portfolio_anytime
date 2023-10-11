@@ -197,6 +197,12 @@
 		ACCOUNT_STATUS = 0
 		WHERE LOGIN_ID = #{login_id}
 	</update>
+	
+	<select id="getSchoolId2" parameterType="String" resultType="Integer">
+		SELECT SCHOOL_ID
+		FROM MEMBER
+		WHERE LOGIN_ID=#{login_id}
+	</select>
 
 	<select id="getBoardAdmin" parameterType="String">
 		SELECT BOARD_ADMIN
