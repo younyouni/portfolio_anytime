@@ -71,4 +71,6 @@ public interface MemberMapper {
 	
 	public int getBoardAdminCheck(int user_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
+	public Member isLoginId(String username);
 }

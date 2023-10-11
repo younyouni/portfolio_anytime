@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.info("username은 로그인시 입력한 값 : " + username);
-		Member users = dao.isId(username);
+		Member users = dao.isLoginId(username);
 		
 		if(users==null) {
 			logger.info("username" + username + " not found");
