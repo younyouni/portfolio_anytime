@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.School;
+import com.naver.anytime.mybatis.mapper.BoardMapper;
 import com.naver.anytime.mybatis.mapper.MemberMapper;
 import com.naver.constants.AnytimeConstants;
 
@@ -18,10 +20,14 @@ public class MemberServiceImpl implements MemberService {
 	private MemberMapper dao;
 	private PasswordEncoder passwordEncoder;
 
+	private BoardMapper boardDao;
+
 	@Autowired
-	public MemberServiceImpl(MemberMapper dao, PasswordEncoder passwordEncoder) {
+	public MemberServiceImpl(MemberMapper dao, BoardMapper boardDao, PasswordEncoder passwordEncoder) {
 		this.dao = dao;
 		this.passwordEncoder = passwordEncoder;
+
+		this.boardDao = boardDao;
 	}
 
 	@Override
@@ -189,17 +195,27 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMember(Member member) {
 		return dao.updateMember(member);
 	}
-	
+
+	@Override
+	public int updateStatusInactive(String login_id) {
+		return dao.updateStatusInactive(login_id);
+	}
+
+	@Override
+	public int isBoardAdmin(String login_id) {
+		return dao.getBoardAdmin(login_id);
+	}
+
+	@Override
+	public List<Board> getBoardlist(String login_id) {
+		return boardDao.getBoardlist(login_id);
+	}
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	@Override
 	public Integer getSchoolId2(String id) {
 		return dao.getSchoolId2(id);
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
-
-	@Override
-	public int updateStatusInactive(String login_id) {
-		return dao.updateStatusInactive(login_id);
-	}
 
 }

@@ -3,10 +3,10 @@ package com.naver.anytime.controller;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.task.SendMail;
@@ -152,8 +153,19 @@ public class MemberController2 {
 	}
 
 	@GetMapping(value = "/boardlist")
-	public String getBoardlist() {
-		return "/member/boardlist";
+	public ModelAndView getBoardlist(Principal principal, ModelAndView mv) {
+		String login_id = principal.getName();
+		int boardAdmin = memberservice.isBoardAdmin(login_id);
+		List<Board> boardlist = null;
+
+		if (boardAdmin == AnytimeConstants.BOARD_ADMIN) {
+			boardlist = memberservice.getBoardlist(login_id);
+		}
+		mv.setViewName("/member/boardlist");
+		mv.addObject("boardlist", boardlist);
+		mv.addObject("boardAdmin", boardAdmin);
+
+		return mv;
 	}
 
 	@GetMapping(value = "/delete")
