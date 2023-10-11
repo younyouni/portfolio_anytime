@@ -203,17 +203,39 @@
 		ACCOUNT_STATUS = 0
 		WHERE LOGIN_ID = #{login_id}
 	</update>
-	
-	<select id="getSchoolId2" parameterType="String" resultType="Integer">
-		SELECT SCHOOL_ID
-		FROM MEMBER
-		WHERE LOGIN_ID=#{login_id}
-	</select>
 
 	<select id="getBoardAdmin" parameterType="String" resultType="int">
 		SELECT BOARD_ADMIN
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
 	</select>
+	
+	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
+	<select id="getSchoolId2" parameterType="String" resultType="Integer">
+		SELECT SCHOOL_ID
+		FROM MEMBER
+		WHERE LOGIN_ID=#{login_id}
+	</select>
+	
+	<update id="updateBoardAdminDelete" parameterType="int">
+		update member
+		set
+		board_admin = 0
+		where user_id = #{user_id}
+	</update>
+	
+	<update id="updateBoardAdminAdd" parameterType="int">
+		update member
+		set
+		board_admin = 1
+		where user_id = #{user_id}
+	</update>
+	
+	<select id="getStatusCheck" resultType="Integer">
+		select account_status
+		from member
+		where login_id = #{login_id}
+	</select>
+	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
 
 </mapper>

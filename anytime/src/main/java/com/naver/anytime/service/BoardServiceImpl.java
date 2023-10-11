@@ -113,9 +113,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardAuthDao.updateBoardAuth(am_user_id_num, tf_user_id_num, board_id);
 	}
 
+	@Override
+	public int getBoardAdminCount(int user_id) {
+		return dao.getBoardAdminCount(user_id);
+	}
 
-
-
-	
 
 }
