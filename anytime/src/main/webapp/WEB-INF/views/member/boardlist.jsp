@@ -55,7 +55,7 @@ nav {
 			<section id="boardSection">
 				<h1>관리 중인 게시판</h1>
 				<c:choose>
-					<c:when test="${boardCount > 0 }">
+					<c:when test="${boardAdmin = 1 }">
 						<c:forEach var="b" items="${boardlist}">
 							<a href="/528552">${b.name } <c:if
 									test="${b.approval =='N' }">
