@@ -1,6 +1,7 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
@@ -105,6 +104,35 @@ public class PostController {
 	      return mv;
 	     
 	   }
+   
+   @GetMapping("/updatePost")
+   @ResponseBody
+   public Map<String, Object> postDetail(
+       @RequestParam(value = "post_id", required = false) int post_id,
+       HttpServletRequest request, Principal userPrincipal) {
+
+       // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
+       String id = userPrincipal.getName();
+       Member member = memberService.getLoginMember(id);
+       int currentUserId = member.getUser_id();
+
+       Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
+       
+       if (post == null) {
+           logger.info("상세보기 실패");
+           return Collections.singletonMap("error", "상세보기 실패입니다.");
+       } else {
+           logger.info("★ 상세보기 성공 ★");
+
+           Map<String, Object> responseMap = new HashMap<>();
+           responseMap.put("SUBJECT", post.getSUBJECT());
+           responseMap.put("CONTENT", post.getCONTENT());
+           
+           return responseMap;
+      }
+   }
+   
+   
    
    
    /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
@@ -252,6 +280,7 @@ public class PostController {
 	      
 	    System.out.println("보드넘테스트" + board_id);
 	    System.out.println("값테스트" + postlist);
+	    System.out.println("학교번호" + session.getAttribute("school_id"));						//테스트
 		return mv;
 	}
 
