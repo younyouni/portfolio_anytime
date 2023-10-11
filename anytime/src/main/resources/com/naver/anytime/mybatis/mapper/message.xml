@@ -18,19 +18,19 @@
 						)
 	</select>
 	
-	<select id="getMessageList" resultType="message">
+	<select id="getMessageList" parameterType="int" resultType="Message">
 		SELECT *
 		FROM message
 		WHERE sender = #{user_id} OR receiver = #{user_id}
-		ORDER BY MESSAGE_ID DESC;
+		ORDER BY MESSAGE_ID DESC
 	</select>
 	
-	<select id="getMessageListROWNUM" resultType="message">
+	<select id="getMessageListROWNUM" resultType="Message">
 		SELECT *
 		FROM (
 		    SELECT *
 		    FROM message
-		    WHERE sender = 62 OR receiver = 62
+		    WHERE sender = #{user_id} OR receiver = #{user_id}
 		    ORDER BY MESSAGE_ID DESC
 		)
 		WHERE ROWNUM = 1;

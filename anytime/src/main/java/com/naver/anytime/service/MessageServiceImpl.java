@@ -28,4 +28,9 @@ public class MessageServiceImpl implements MessageService{
 	public List<Message> getMessageList(int user_id) {
 		return dao.getMessageList(user_id);
 	}
+
+	@Override
+	public List<Message> getMessageListROWNUM(int user_id) {
+		return dao.getMessageListROWNUM(user_id);
+	}
 }

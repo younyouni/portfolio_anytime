@@ -46,7 +46,7 @@ public class MessageController {
 			Principal principal
 			) {
 		String login_id = principal.getName();						//로그인한 유저 login_id
-		int user_id = memberService.getUserId(login_id);		//로그인한 유저 user_id 구하기
+		int user_id = memberService.getUserId(login_id);		//로그인한 유저 user_id 구하기		
 		
 		System.out.println("로그인 한 유저 아이디 [" + login_id + "] 로그인 한 유저 번호 [" + user_id + "]");
 		
@@ -55,7 +55,7 @@ public class MessageController {
 		for(Message message : messageList) {
 			if(message.getSENDER() == user_id) {
 				message.setDIRECTION(2);
-			} else if (message.getSENDER() == user_id){
+			} else if (message.getRECEIVER() == user_id){
 				message.setDIRECTION(1);
 			}
 		}
@@ -66,8 +66,40 @@ public class MessageController {
 			System.out.println("==메시지 출력 실패==");
 		}
 		
+		System.out.println("값 =" + messageList);
 		return messageList;
 	}
+	
+	@RequestMapping(value = "/messagelastlist")
+	@ResponseBody
+	public List<Message> MessageLastList(
+			Principal principal
+			) {
+		String login_id = principal.getName();					//로그인한 유저 login_id
+		int user_id = memberService.getUserId(login_id);		//로그인한 유저 user_id 구하기		
+		
+		System.out.println("로그인 한 유저 아이디 [" + login_id + "] 로그인 한 유저 번호 [" + user_id + "]");
+		
+		List<Message> messageLastList = messageService.getMessageListROWNUM(user_id);
+		
+		for(Message message : messageLastList) {
+			if(message.getSENDER() == user_id) {
+				message.setDIRECTION(2);
+			} else if (message.getRECEIVER() == user_id){
+				message.setDIRECTION(1);
+			}
+		}
+		
+		if(messageLastList != null) {
+			System.out.println("==메시지 출력 성공==");
+		}else {
+			System.out.println("==메시지 출력 실패==");
+		}
+		
+		System.out.println("값 =" + messageLastList);
+		return messageLastList;
+	}	
+	
 	
 	@RequestMapping(value = "/sendmessage")
 	@ResponseBody

@@ -15,4 +15,6 @@ public interface MessageMapper {
 
 	public List<Message> getMessageList(int user_id);
 
+	public List<Message> getMessageListROWNUM(int user_id);
+
 }

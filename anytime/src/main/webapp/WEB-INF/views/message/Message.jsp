@@ -25,18 +25,18 @@
     </aside>
     <div class="messageboxes">
       <h2>쪽지함</h2>
-      <div class="items">
+      <div class="items" id="laft">
       			
       			   			
 		<a class="item active" href="/message/26589680">
         	<time>20/10/20 22:29</time>
         		<h3>익명</h3>
-        			<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
+        			<p class="text"> 이거에요!  감사해요정말ㅜㅜ</p>
         </a>
         <a class="item" href="/message/26588813">
         	<time>20/10/20 22:01</time>
         		<h3>익명</h3>
-        			<p class="text">그러니까요 누락된 손유진씨도 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
+        			<p class="text">그러니까요 누락된 qwe 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
         </a>
 		
 		
@@ -48,17 +48,17 @@
         <!-- <a class="item active" href="/message/26589680">
         	<time>20/10/20 22:29</time>
         		<h3>익명</h3>
-        			<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
+        			<p class="text">qwe 이거에요!  감사해요정말ㅜㅜ</p>
         </a>
         <a class="item" href="/message/26588813">
         	<time>20/10/20 22:01</time>
         		<h3>익명</h3>
-        			<p class="text">그러니까요 누락된 손유진씨도 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
+        			<p class="text">그러니까요 누락된 qwe씨도 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
         </a>
         <a class="item" href="/message/26586495">
         	<time>20/10/20 21:20</time>
         		<h3>익명</h3>	
-        			<p class="text">정말 정말 감사해요 ㅠㅠ 진짜 지금 너무 열받아서 머리가 아프고 ㅠㅠㅠ님 아녔으면 ㅠㅠ 계속 몰랐을거고 ㅠㅠ 저 손유진씨는 또 어떡해요 ㅠㅠ 하아... 진짜 이 교수님 너무 짜증나네요</p>
+        			<p class="text">정말 정말 감사해요 ㅠㅠ 진짜 지금 너무 열받아서 머리가 아프고 ㅠㅠㅠ님 아녔으면 ㅠㅠ 계속 몰랐을거고 ㅠㅠ 저 qwe 또 어떡해요 ㅠㅠ 하아... 진짜 이 교수님 너무 짜증나네요</p>
         </a>
         <a class="item" href="/message/20211474">
         	<time>20/03/31 14:35</time>
@@ -83,70 +83,7 @@
     				<a class="refresh">새로고침</a>
     				<a class="more">더보기</a>
     	</div>
-	    <div class="items">
-	    
-<%-- 	    	<div class="item">
-	    		<time>20/10/20 22:29</time>
-	    			<p class="type type1">받은 쪽지</p>
-	    				<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:26</time>
-	    			<p class="type type2">보낸 쪽지</p>
-	    				<p class="text">유진씨랑 저만 누락됐더라고요 ㅠㅠ 번호알려주시면 초대해드릴게요</p>
-	    	</div>
-	    	
-	    	<c:foreach items="${messageList}" var="ms">
-	    		<div class="item">
-	    		<time>${ms.MESSAGE_DATE}</time>
-	    			<c:if test="${ms.DIRECTION == 1}">
-		    			<p class="type type1">받은 쪽지</p>
-		    				<p class="text">${ms.CONTENT}</p>	    				
-	    			</c:if>
-	    			<c:if test="${ms.DIRECTION == 2}">
-		    			<p class="type type2">보낸 쪽지</p>
-		    				<p class="text">${ms.CONTENT}</p>		 		
-	    			</c:if>
-	    		</div>
-	    	</c:foreach> --%>
-	    
-
-		    	<c:forEach items="${messageList}" var="ms">
-		        	<a class="item" href="/message/${ms.MESSAGE_ID}">
-		            	<time>${ms.MESSAGE_DATE}</time>
-		            	<h3>${ms.SENDER_NAME}</h3>
-		            	<p class="text">${ms.CONTENT}</p>
-		        	</a>
-		    	</c:forEach>
-
-			    	
-	    
-	    
-<!-- 	    	<div class="item">
-	    		<time>20/10/20 22:29</time>
-	    			<p class="type type1">받은 쪽지</p>
-	    				<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:26</time>
-	    			<p class="type type2">보낸 쪽지</p>
-	    				<p class="text">유진씨랑 저만 누락됐더라고요 ㅠㅠ 번호알려주시면 초대해드릴게요</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:22</time>
-	    			<p class="type type1">받은 쪽지</p>
-	    				<p class="text">앗 네네</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:15</time>
-	    			<p class="type type2">보낸 쪽지</p>
-	    				<p class="text">혹시 손유진씨???</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:15</time>
-	    			<p class="type type0">안내</p>
-	    				<p class="text">자유게시판에 작성된 익명1의 댓글을 통해 시작된 쪽지입니다.<br>글 내용: 스포츠와 건강관리 ㅂㅅㅇ교수님</p>
-	    	</div> -->
+	    <div class="items" id="right">
 	    	
     	</div>
     </div>
@@ -184,44 +121,100 @@
     <span>직업정보제공사업 신고번호 : J1204020230008</span>
   </div>
   
-  
-  
-  
-  
-<!--   <script type="text/javascript">
-    var _serverTime = 1696983543459;
-    var _clientTime = new Date().getTime();
-    var _diffTime = _clientTime - _serverTime;
-    var _apiServerUrl = 'https://api.everytime.kr';
-    window._screenName = '알림/쪽지 - 알림 탭 (쪽지함 목록)';
-  </script>
-  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-85ZNEFVRGL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-85ZNEFVRGL', { 'send_page_view': false });
-    _gfn.logPageView();
-  </script> -->
-
 </body>
 
 <script>
-	$(document).ready(function() {
+$(document).ready(function() {
 		getMessageListAjax();
-	});
-	function getMessageListAjax(){
-		$.ajax({
-			url: "${pageContext.request.contextPath}/messagelist",
-			dataType: "json",
-			success: function (messageList){
-				
-				
-				
-				
-			}
-		})
-	}
+		getMessageLastListAjax();
+});
+
+function getMessageListAjax() {
+    $.ajax({
+        url: "${pageContext.request.contextPath}/messagelist",
+        dataType: "json",
+        success: function (messageList) {
+        	console.log("Ajax 요청 성공: ", messageList);
+        	
+            // 메시지 목록을 담을 HTML 요소를 선택합니다.
+            var messageListItems = $("#right");
+		
+            let messageItem = "";
+            
+            if(messageList != null){
+            
+            $.each(messageList, function (index, ms) {
+                // 각 메시지 항목을 동적으로 생성하고 추가합니다.
+                messageItem += '<div class="item">';
+                messageItem += '<time>' + ms.message_DATE + '</time>';
+                	if(ms.direction == 2){
+                		messageItem += '<p class="type type2">보낸 쪽지</p>';
+                	}else if(ms.direction == 1){
+                		messageItem += '<p class="type type1">받은 쪽지</p>';
+                	}else if(ms.direction == 3){
+                		messageItem += '<p class="type type0">안내</p>';
+                	}
+                messageItem += '<p class="text">' + ms.content + '</p>';
+                messageItem += '</div>';
+
+                // messageListItems에 메시지 아이템을 추가합니다.
+                messageListItems.append(messageItem);
+                
+                messageItem = "";
+            });
+            
+            } else {
+            	
+            	
+            }
+            
+        }
+    });
+}
+
+function getMessageLastListAjax() {
+    $.ajax({
+        url: "${pageContext.request.contextPath}/messagelastlist",
+        dataType: "json",
+        success: function (messageList) {
+        	console.log("Ajax 요청 성공: ", messageList);
+        	
+            // 메시지 목록을 담을 HTML 요소를 선택합니다.
+            var messageLastListItems = $("#left");
+		
+            let messageItem = "";
+            
+            if(messageList != null){
+            
+            $.each(messageList, function (index, ms) {
+                // 각 메시지 항목을 동적으로 생성하고 추가합니다.
+                messageItem += '<div class="item">';
+                messageItem += '<time>' + ms.message_DATE + '</time>';
+                	if(ms.direction == 2){
+                		messageItem += '<p class="type type2">보낸 쪽지</p>';
+                	}else if(ms.direction == 1){
+                		messageItem += '<p class="type type1">받은 쪽지</p>';
+                	}else if(ms.direction == 3){
+                		messageItem += '<p class="type type0">안내</p>';
+                	}
+                messageItem += '<p class="text">' + ms.content + '</p>';
+                messageItem += '</div>';
+
+                // messageListItems에 메시지 아이템을 추가합니다.
+                messageListItems.append(messageItem);
+                
+                messageItem = "";
+            });
+            
+            } else {
+            	
+            	
+            }
+            
+        }
+    });
+}
+
 </script>
 
 </html>
