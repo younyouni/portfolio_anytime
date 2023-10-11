@@ -47,4 +47,6 @@ public interface BoardMapper {
 
 	public List<Board> getBoardlist(String login_id);
 
+	public int getBoardAdminCount(int user_id);
+
 }

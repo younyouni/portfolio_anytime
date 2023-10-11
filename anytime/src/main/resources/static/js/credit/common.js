@@ -178,7 +178,7 @@ $().ready(function () {
 	}
 	if ($('#account').is(':has(a.icon.message)')) {
 		$.ajax({
-			url: _apiServerUrl + '/find/messageBox/unreadCount',
+			//url: _apiServerUrl + '/find/messageBox/unreadCount',
 			xhrFields: {withCredentials: true},
 			type: 'POST',
 			success: function (data) {

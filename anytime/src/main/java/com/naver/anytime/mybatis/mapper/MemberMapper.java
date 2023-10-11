@@ -64,5 +64,14 @@ public interface MemberMapper {
 	
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	public Integer getSchoolId2(String id);
+	
+	public int updateBoardAdminDelete(int user_id);
+	
+	public int updateBoardAdminAdd(int user_id);
+	
+	public Integer getStatusCheck(String login_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
+	public Member isLoginId(String username);
+
 }

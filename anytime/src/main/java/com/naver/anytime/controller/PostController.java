@@ -202,22 +202,15 @@ public class PostController {
 /* -------------------------------------------------------------- ▲Created By UniUni▲ -------------------------------------------------------------- */
    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   
-   
-   //테스트 페이지
-   @RequestMapping(value = "/test", method = RequestMethod.GET)
-   public String test(HttpSession session) {
-	   session.setAttribute("school_id", 1);										//테스트
-	   return "post/test";
-   }
       
    //게시물 리스트 출력
    @RequestMapping(value = "/list", method = RequestMethod.GET)
-   public ModelAndView postlist(
-   @RequestParam(value = "page", defaultValue = "1", required = false) int page, 
-   @RequestParam(value = "board_id", required = false) int board_id,
-   HttpSession session,
-   ModelAndView mv) {
+	   public ModelAndView postlist(
+	   @RequestParam(value = "page", defaultValue = "1", required = false) int page, 
+	   @RequestParam(value = "board_id", required = false) int board_id,
+	   HttpSession session,
+	   ModelAndView mv
+	   ) {
 		
 	   session.setAttribute("board_id", board_id);
 	   	int limit = 10;
@@ -294,12 +287,12 @@ public class PostController {
    //검색기능
    @RequestMapping(value = "/search")
    public ModelAndView postsearch(
-	
 		   @RequestParam(value = "page", defaultValue = "1", required = false) int page,
 		   @RequestParam(value = "search_field", defaultValue = "0") int search_field,
 		   @RequestParam(value = "search_word", defaultValue = "") String search_word,
 		   HttpSession session,
-		   ModelAndView mv){
+		   ModelAndView mv
+		   ) {
 	   
 //	   session.setAttribute("board_id", board_id);
 	   session.setAttribute("search_word", search_word);

@@ -33,7 +33,9 @@ public interface MemberService {
 	void changePassword(String login_id, String password);
 
 	public int updateschoolcheck(String id);
-	
+
+	int isLoginId(String id, String password);
+
 	// 윤희
 	public String getSchoolDomain(String id);
 
@@ -52,14 +54,22 @@ public interface MemberService {
 	public int updateMember(Member member);
 
 	public int updateStatusInactive(String login_id);
-	
+
 	public int isBoardAdmin(String login_id);
-	
+
 	public List<Board> getBoardlist(String login_id);
 
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	// 기존 getSchoolId 가 integer가 아니라 새로 생성
 	public Integer getSchoolId2(String id);
+	
+	public int updateBoardAdminDelete(int user_id);
+	
+	public int updateBoardAdminAdd(int user_id);
+	
+	public Integer getStatusCheck(String userid);
+	
+	//public int getStatusCheck(int login_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 }

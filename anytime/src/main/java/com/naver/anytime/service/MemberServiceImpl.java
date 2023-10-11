@@ -31,6 +31,23 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public int isLoginId(String id, String password) {
+		Member dbmember = dao.isLoginId(id);
+		int result = AnytimeConstants.ID_NOT_EXISTS; // 아이디가 존재하지 않는 경우 - rmember가 null인 경우
+		if (dbmember != null) {// 아이디가 존재하는 경우
+			// passwordEncoder.matches(rawPassword,encodedPassword)
+			// 사용자에게 입력받은 패스워드를 비교하고자 할 때 사용하는 메서드입니다.
+			// rawPassword : 사용자가 입력한 패스워드
+			// encodedPassword : DB에 저장된 패스워드
+			if (passwordEncoder.matches(password, dbmember.getPassword())) {
+				result = AnytimeConstants.ID_PASSWORD_MATCH;// 아이디와 비밀번호가 일치하는 경우
+			} else
+				result = AnytimeConstants.ID_PASSWORD_MISMATCH;// 아이디는 존재하지만 비밀번호가 일치하지 않는 경우
+		}
+		return result;
+	}
+	
+	@Override
 	public int isId(String id, String password) {
 		Member dbmember = dao.isId(id);
 		int result = AnytimeConstants.ID_NOT_EXISTS; // 아이디가 존재하지 않는 경우 - rmember가 null인 경우
@@ -164,6 +181,7 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateBoardAdmin(user_id);
 	}
 
+
 	@Override
 	public String getPwd(String login_id) {
 		return dao.getPwd(login_id);
@@ -198,6 +216,21 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Integer getSchoolId2(String id) {
 		return dao.getSchoolId2(id);
+	}
+	
+	@Override
+	public int updateBoardAdminDelete(int user_id) {
+		return dao.updateBoardAdminDelete(user_id);
+	}
+	
+	@Override
+	public int updateBoardAdminAdd(int user_id) {
+		return dao.updateBoardAdminAdd(user_id);
+	}
+	
+	@Override
+	public Integer getStatusCheck(String login_id) {
+		return dao.getStatusCheck(login_id);
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
