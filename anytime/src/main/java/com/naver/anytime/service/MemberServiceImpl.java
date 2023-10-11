@@ -178,4 +178,10 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateStatusInactive(login_id);
 	}
 
+	@Override
+	public Integer getSchoolId2(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
