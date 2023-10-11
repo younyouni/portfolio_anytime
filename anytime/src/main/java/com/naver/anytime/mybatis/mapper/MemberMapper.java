@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.School;
 
@@ -60,7 +61,7 @@ public interface MemberMapper {
 	public int updateStatusInactive(String login_id);
 
 	public int getBoardAdmin(String login_id);
-
+	
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	public Integer getSchoolId2(String id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
