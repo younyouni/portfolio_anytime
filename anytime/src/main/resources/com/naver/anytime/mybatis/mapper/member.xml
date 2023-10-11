@@ -187,7 +187,8 @@
 		ADDRESS1=#{address1},
 		ADDRESS2=#{address2},
 		PHONE_NUM=#{phone_num}
-		WHERE LOGIN_ID = #{login_id}
+		WHERE
+		LOGIN_ID = #{login_id}
 	</update>
 
 	<update id="updateStatusInactive" parameterType="String">
@@ -201,6 +202,12 @@
 		SELECT SCHOOL_ID
 		FROM MEMBER
 		WHERE LOGIN_ID=#{login_id}
+	</select>
+
+	<select id="getBoardAdmin" parameterType="String">
+		SELECT BOARD_ADMIN
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
 	</select>
 
 </mapper>

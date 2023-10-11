@@ -37,8 +37,7 @@ public interface MemberMapper {
 	public void updatePassword(String login_id, String password);
 
 	public int updateschoolcheck(String id);
-	
-	
+
 	// 윤희
 	public String getSchoolDomain(String id);
 
@@ -59,7 +58,9 @@ public interface MemberMapper {
 	public int updateMember(Member member);
 
 	public int updateStatusInactive(String login_id);
-	
+
+	public int getBoardAdmin(String login_id);
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	public Integer getSchoolId2(String id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
