@@ -45,4 +45,6 @@ public interface BoardMapper {
 	public int getBoardName2(String board_name,int board_id);
 
 
+	public List<Board> getBoardlist(String login_id);
+
 }

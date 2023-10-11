@@ -159,8 +159,7 @@ public class MemberController2 {
 		List<Board> boardlist = null;
 
 		if (boardAdmin == AnytimeConstants.BOARD_ADMIN) {
-			//boardlist = memberservice.getBoardlist(login_id);
-
+			boardlist = memberservice.getBoardlist(login_id);
 		}
 		mv.setViewName("/member/boardlist");
 		mv.addObject("boardlist", boardlist);

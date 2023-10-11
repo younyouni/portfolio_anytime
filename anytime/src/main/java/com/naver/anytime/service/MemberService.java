@@ -2,6 +2,7 @@ package com.naver.anytime.service;
 
 import java.util.List;
 
+import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.School;
 
@@ -53,6 +54,8 @@ public interface MemberService {
 	public int updateStatusInactive(String login_id);
 	
 	public int isBoardAdmin(String login_id);
+	
+	public List<Board> getBoardlist(String login_id);
 
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	// 기존 getSchoolId 가 integer가 아니라 새로 생성

@@ -204,7 +204,7 @@
 		WHERE LOGIN_ID=#{login_id}
 	</select>
 
-	<select id="getBoardAdmin" parameterType="String">
+	<select id="getBoardAdmin" parameterType="String" resultType="int">
 		SELECT BOARD_ADMIN
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
