@@ -57,6 +57,10 @@ public interface MemberService {
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	// 기존 getSchoolId 가 integer가 아니라 새로 생성
 	public Integer getSchoolId2(String id);
+	
+	public int updateBoardAdminDelete(int user_id);
+	
+	public int updateBoardAdminAdd(int user_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 }

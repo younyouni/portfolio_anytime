@@ -72,7 +72,7 @@
 		<sec:authorize access="isAuthenticated()">
 			<sec:authentication property="principal" var="pinfo" />
 			<div id="account">
-				<a href="/message" title="쪽지함" class="icon message">쪽지함</a> <a
+				<a href="${pageContext.request.contextPath}/message" title="쪽지함" class="icon message">쪽지함</a> <a
 					href="${pageContext.request.contextPath}/my" title="내 정보"
 					class="icon my">내 정보</a> <input type="hidden" id="login_id"
 					value="${pinfo.username}"> <input type="hidden"

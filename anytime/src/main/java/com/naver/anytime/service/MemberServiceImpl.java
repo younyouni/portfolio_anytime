@@ -158,6 +158,7 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateBoardAdmin(user_id);
 	}
 
+
 	@Override
 	public String getPwd(String login_id) {
 		return dao.getPwd(login_id);
@@ -187,6 +188,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Integer getSchoolId2(String id) {
 		return dao.getSchoolId2(id);
+	}
+	
+	@Override
+	public int updateBoardAdminDelete(int user_id) {
+		return dao.updateBoardAdminDelete(user_id);
+	}
+	
+	@Override
+	public int updateBoardAdminAdd(int user_id) {
+		return dao.updateBoardAdminAdd(user_id);
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 

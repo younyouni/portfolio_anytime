@@ -160,6 +160,12 @@ public class BoardController {
 							if (check_auth == 1 && check == 1) {
 								System.out.println("[3/3] 최종 완료");
 								deleteResult = 1;
+								
+//								int boardadmincheck = boardService.getBoardAdmin(user_id);
+//									if(boardadmincheck == 0) {
+//										memberService.updateBoardAdminDelete(user_id);
+//										System.out.println("해당 유저가 관리하는 보드가 없으므로 board_admin -> 0 으로 변경");
+//									}
 							}
 									
 			        } else {
@@ -218,6 +224,11 @@ public class BoardController {
 						int result2 = boardService.updateBoardUserId(am_user_id_num ,tf_user_id_num, board_id);
 						if(result2 == 1) {
 							updateManagerBoardResult = 1;	//board 테이블 업데이트 성공
+//								int boardadmincheck = boardService.getBoardAdmin(tf_user_id_num);
+//								if(boardadmincheck == 0) {
+//									memberService.updateBoardAdminAdd(tf_user_id_num);
+//									System.out.println("양도받은 유저의 board_admin이 0이므로 board_admin -> 1 으로 변경");
+//							}
 						}
 					} else {
 						System.out.println("양도인 체크[" + am_user_id_num + "] 피양도인 체크 [" + tf_user_id_num + "] 권한업데이트 체크 [" + result1 + "]");

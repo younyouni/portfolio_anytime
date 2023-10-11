@@ -98,5 +98,10 @@
 		set user_id = #{tf_user_id_num}
 		where user_id = #{am_user_id_num} and board_id = #{board_id}
 	</update>
-
+	
+	<select id="getBoardAdmin">
+		select count(*)
+		from board
+		where user_id = #{user_id}
+	</select>
 </mapper>
