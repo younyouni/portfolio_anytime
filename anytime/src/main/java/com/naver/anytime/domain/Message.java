@@ -4,11 +4,23 @@ public class Message {
     private int MESSAGE_ID;
     private int SENDER;
     private int RECEIVER;
-    private String SUBJECT;
     private String CONTENT;
     private String MESSAGE_DATE;
-    
-    
+    private String READ_DATE;
+    private int DIRECTION;
+       
+	public String getREAD_DATE() {
+		return READ_DATE;
+	}
+	public void setREAD_DATE(String rEAD_DATE) {
+		READ_DATE = rEAD_DATE;
+	}
+	public int getDIRECTION() {
+		return DIRECTION;
+	}
+	public void setDIRECTION(int dIRECTION) {
+		DIRECTION = dIRECTION;
+	}
 	public int getMESSAGE_ID() {
 		return MESSAGE_ID;
 	}
@@ -26,12 +38,6 @@ public class Message {
 	}
 	public void setRECEIVER(int rECEIVER) {
 		RECEIVER = rECEIVER;
-	}
-	public String getSUBJECT() {
-		return SUBJECT;
-	}
-	public void setSUBJECT(String sUBJECT) {
-		SUBJECT = sUBJECT;
 	}
 	public String getCONTENT() {
 		return CONTENT;

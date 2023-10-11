@@ -11,42 +11,10 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/container.modal.css"> --%>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message.css">
 <link href="/favicon.ico" rel="shortcut icon">
-
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-
-<!-- 					<script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script>
-					<script type="text/javascript" src="/js/extensions.underscore-min.js"></script>
-					<script type="text/javascript" src="/js/common.js"></script>
-					<script type="text/javascript" src="/js/message.index.js"></script>
-					<script type="text/javascript" src="/js/message.send.js"></script> -->
 </head>
 
 <body>
-
-<!-- <nav>
-    <div class="wrap">
-      <div id="logo">
-        <a href="/"><img src="/images/new/nav.logo.png"></a>
-        <p><span class="name multiple">에브리타임</span><span class="subname">숭실대</span></p>
-      </div>
-      <div id="account">
-        <a href="/message" title="쪽지함" class="icon message">쪽지함</a>
-        <a href="/my" title="내 정보" class="icon my">내 정보</a>
-        <input type="hidden" id="userUserid" value="rainbow281">
-        <input type="hidden" id="userSchool" value="21">
-        <input type="hidden" id="userCampus" value="37">
-      </div>
-      <ul id="menu">
-        <li><a href="/">게시판</a></li>
-        <li><a href="/timetable">시간표</a></li>
-        <li><a href="/lecture">강의실</a></li>
-        <li><a href="/calculator">학점계산기</a></li>
-        <li><a href="/friend">친구</a></li>
-        <li><a href="https://bookstore.everytime.kr/">책방</a></li>
-        <li><a href="https://www.campuspick.com/">캠퍼스픽</a></li>
-      </ul>
-    </div>
-  </nav> -->
   
 <div id="container" class="message" data-box-id="0">
     <aside class="none">
@@ -58,7 +26,26 @@
     <div class="messageboxes">
       <h2>쪽지함</h2>
       <div class="items">
-        <a class="item active" href="/message/26589680">
+      			
+      			   			
+		<a class="item active" href="/message/26589680">
+        	<time>20/10/20 22:29</time>
+        		<h3>익명</h3>
+        			<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
+        </a>
+        <a class="item" href="/message/26588813">
+        	<time>20/10/20 22:01</time>
+        		<h3>익명</h3>
+        			<p class="text">그러니까요 누락된 손유진씨도 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
+        </a>
+		
+		
+		
+		
+		
+        
+        
+        <!-- <a class="item active" href="/message/26589680">
         	<time>20/10/20 22:29</time>
         		<h3>익명</h3>
         			<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
@@ -82,7 +69,8 @@
         	<time>19/11/26 22:43</time>
         		<h3>익명</h3>
         			<p class="text">네 그럼 그렇게 할게요!!</p>
-        </a>
+        </a> -->
+
         <div class="loading" style="display: none;"></div>
       </div>
     </div>
@@ -95,12 +83,50 @@
     				<a class="refresh">새로고침</a>
     				<a class="more">더보기</a>
     	</div>
-	    	<div class="items">
+	    <div class="items">
+	    
+<%-- 	    	<div class="item">
+	    		<time>20/10/20 22:29</time>
+	    			<p class="type type1">받은 쪽지</p>
+	    				<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
+	    	</div>
+	    	<div class="item">
+	    		<time>20/10/20 22:26</time>
+	    			<p class="type type2">보낸 쪽지</p>
+	    				<p class="text">유진씨랑 저만 누락됐더라고요 ㅠㅠ 번호알려주시면 초대해드릴게요</p>
+	    	</div>
+	    	
+	    	<c:foreach items="${messageList}" var="ms">
 	    		<div class="item">
-	    			<time>20/10/20 22:29</time>
-	    				<p class="type type1">받은 쪽지</p>
-	    					<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
+	    		<time>${ms.MESSAGE_DATE}</time>
+	    			<c:if test="${ms.DIRECTION == 1}">
+		    			<p class="type type1">받은 쪽지</p>
+		    				<p class="text">${ms.CONTENT}</p>	    				
+	    			</c:if>
+	    			<c:if test="${ms.DIRECTION == 2}">
+		    			<p class="type type2">보낸 쪽지</p>
+		    				<p class="text">${ms.CONTENT}</p>		 		
+	    			</c:if>
 	    		</div>
+	    	</c:foreach> --%>
+	    
+
+		    	<c:forEach items="${messageList}" var="ms">
+		        	<a class="item" href="/message/${ms.MESSAGE_ID}">
+		            	<time>${ms.MESSAGE_DATE}</time>
+		            	<h3>${ms.SENDER_NAME}</h3>
+		            	<p class="text">${ms.CONTENT}</p>
+		        	</a>
+		    	</c:forEach>
+
+			    	
+	    
+	    
+<!-- 	    	<div class="item">
+	    		<time>20/10/20 22:29</time>
+	    			<p class="type type1">받은 쪽지</p>
+	    				<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
+	    	</div>
 	    	<div class="item">
 	    		<time>20/10/20 22:26</time>
 	    			<p class="type type2">보낸 쪽지</p>
@@ -120,7 +146,8 @@
 	    		<time>20/10/20 22:15</time>
 	    			<p class="type type0">안내</p>
 	    				<p class="text">자유게시판에 작성된 익명1의 댓글을 통해 시작된 쪽지입니다.<br>글 내용: 스포츠와 건강관리 ㅂㅅㅇ교수님</p>
-	    	</div>
+	    	</div> -->
+	    	
     	</div>
     </div>
     
@@ -178,5 +205,23 @@
   </script> -->
 
 </body>
+
+<script>
+	$(document).ready(function() {
+		getMessageListAjax();
+	});
+	function getMessageListAjax(){
+		$.ajax({
+			url: "${pageContext.request.contextPath}/messagelist",
+			dataType: "json",
+			success: function (messageList){
+				
+				
+				
+				
+			}
+		})
+	}
+</script>
 
 </html>

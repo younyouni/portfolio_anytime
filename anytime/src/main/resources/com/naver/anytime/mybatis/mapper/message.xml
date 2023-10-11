@@ -5,5 +5,47 @@
 
 <mapper namespace="com.naver.anytime.mybatis.mapper.MessageMapper">
 
+	<select id="getUserIdConversion">
+		select user_id
+		from member
+		where user_id = (	select user_id
+							from post
+							where post_id = #{num}
+						)
+		or user_id =	(	select user_id
+							from comments
+							where comment_id = #{num}
+						)
+	</select>
+	
+	<select id="getMessageList" resultType="message">
+		SELECT *
+		FROM message
+		WHERE sender = #{user_id} OR receiver = #{user_id}
+		ORDER BY MESSAGE_ID DESC;
+	</select>
+	
+	<select id="getMessageListROWNUM" resultType="message">
+		SELECT *
+		FROM (
+		    SELECT *
+		    FROM message
+		    WHERE sender = 62 OR receiver = 62
+		    ORDER BY MESSAGE_ID DESC
+		)
+		WHERE ROWNUM = 1;
+	</select>
+	
+	<insert id="messageinsert" parameterType="Message">
+		INSERT 
+		INTO Message (
+					MESSAGE_ID, 
+					SENDER, RECEIVER, 
+					CONTENT, MESSAGE_DATE)
+		VALUES (
+					message_seq.nextval, 
+					#{sender_user_id}, #{receiver_user_id}, 
+					#{content}, sysdate);
+	</insert>
 
 </mapper>
