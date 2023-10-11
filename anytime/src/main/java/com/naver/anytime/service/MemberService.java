@@ -56,4 +56,6 @@ public interface MemberService {
 	// 기존 getSchoolId 가 integer가 아니라 새로 생성
 	public Integer getSchoolId2(String id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
+	int isLoginId(String id, String password);
 }

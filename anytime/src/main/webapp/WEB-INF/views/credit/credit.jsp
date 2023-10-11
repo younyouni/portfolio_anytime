@@ -155,19 +155,23 @@
 			</div>
 			<div class="menu">
 				<ol>
-					<li class=""><a>1학년 1학기</a></li>
-					<li class=""><a>1학년 2학기</a></li>
-					<li class=""><a>2학년 1학기</a></li>
-					<li class=""><a>2학년 2학기</a></li>
-					<li class=""><a>3학년 1학기</a></li>
-					<li class=""><a>3학년 2학기</a></li>
-					<li class="active"><a>4학년 1학기</a></li>
-					<li class=""><a>4학년 2학기</a></li>
-					<li class=""><a>5학년 1학기</a></li>
-					<li class=""><a>5학년 2학기</a></li>
-					<li class=""><a>6학년 1학기</a></li>
-					<li class=""><a>6학년 2학기</a></li>
-					<li class=""><a>기타 학기</a></li>
+				<c:for each>
+				</c:for>
+					<li class="" data-id ="${credit_s.credit_s_id}"><a>${credit_s.name }</a></li>
+					
+					
+					<li class="" data-id ="${login_id}0102"><a>1학년 2학기</a></li>
+					<li class="" data-id ="${login_id}0201"><a>2학년 1학기</a></li>
+					<li class="" data-id ="${login_id}0202"><a>2학년 2학기</a></li>
+					<li class="" data-id ="${login_id}0301"><a>3학년 1학기</a></li>
+					<li class="" data-id ="${login_id}0302"><a>3학년 2학기</a></li>
+					<li class="active" data-id ="${login_id}0401"><a>4학년 1학기</a></li>
+					<li class="" data-id ="${login_id}0402"><a>4학년 2학기</a></li>
+					<li class="" data-id ="${login_id}0501"><a>5학년 1학기</a></li>
+					<li class="" data-id ="${login_id}0502"><a>5학년 2학기</a></li>
+					<li class="" data-id ="${login_id}0601"><a>6학년 1학기</a></li>
+					<li class="" data-id ="${login_id}0602"><a>6학년 2학기</a></li>
+					<li class="" data-id ="${login_id}0701"><a>기타 학기</a></li>
 				</ol>
 			</div>
 			<table class="subjects">

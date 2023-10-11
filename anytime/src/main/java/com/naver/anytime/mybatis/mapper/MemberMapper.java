@@ -63,4 +63,6 @@ public interface MemberMapper {
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	public Integer getSchoolId2(String id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
+	public Member isLoginId(String username);
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>data 예제</title>
+    <style>
+      input {
+        width: calc(100% - 10px);
+        margin: 5px;
+        display: block;
+      }
+      button {
+        margin: 5px;
+        font-size: 14px;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  </head>
+  <body>
+    <input id="text-input" type="text" data-test="Welcome" />
+    <button>data-test attribute 가져오기</button>
+    <button>messsage에 Hello 저장하기</button>
+    <button>messsage 지우기</button>
+
+    <script>
+      $('button').click(function () {
+        const input = $('#text-input');
+        var value;
+
+        switch ($('button').index(this)) {
+          case 0:
+            input.data('message', input.data('test'));
+            break;
+          case 1:
+            input.data('message', 'Hello');
+            break;
+          case 2:
+            input.removeData('message');
+            break;
+        }
+
+        input.val(input.data('message'));
+      });
+    </script>
+  </body>
+</html>

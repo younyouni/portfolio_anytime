@@ -10,6 +10,12 @@
 		from member where login_id = #{login_id}
 	</select>
 
+	<select id="isLoginId" resultType="member" parameterType="String">
+		select *
+		from member where login_id = #{login_id}
+		and account_status = 1
+	</select>
+
 	<!-- nickname 체크하기 위한 쿼리문 -->
 	<select id="isNickname" resultType="member"
 		parameterType="String">
