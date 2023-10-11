@@ -179,9 +179,17 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Integer getSchoolId2(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public int isBoardAdmin(String login_id) {
+		return dao.getBoardAdmin(login_id);
 	}
+
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+	@Override
+	public Integer getSchoolId2(String id) {
+		return dao.getSchoolId2(id);
+	}
+	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
+
 
 }

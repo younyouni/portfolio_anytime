@@ -22,6 +22,9 @@ public class AnytimeConstants {
 
 	public static final int STATUS_ACTIVE = 0;
 	public static final int STATUS_INACTIVE = 0;
+
+	public static final int BOARD_ADMIN = 1;
+	public static final int NOT_BOARD_ADMIN = 0;
 	
 	
 
