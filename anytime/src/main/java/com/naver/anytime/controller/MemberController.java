@@ -22,10 +22,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.naver.anytime.domain.Credit;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.School;
+import com.naver.anytime.domain.Semester;
+import com.naver.anytime.domain.Semester_detail;
+import com.naver.anytime.service.CreditService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
+import com.naver.anytime.service.SemesterService;
+import com.naver.anytime.service.Semester_detailService;
 import com.naver.anytime.task.SendMail;
 import com.naver.constants.AnytimeConstants;
 
@@ -41,14 +47,21 @@ public class MemberController {
 
 	private SchoolService schoolService;
 	private MemberService memberservice;
+	private CreditService creditservice;
+	private SemesterService semesterservice;
+	private Semester_detailService semester_detailservice;
 	private PasswordEncoder passwordEncoder;
 	private SendMail sendMail;
 
 	@Autowired
-	public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder, SendMail sendMail,
+	public MemberController(MemberService memberservice, CreditService creditservice, SemesterService semesterservice,
+			Semester_detailService semester_detailservice, PasswordEncoder passwordEncoder, SendMail sendMail,
 			SchoolService schoolService) {
 		this.memberservice = memberservice;
 		this.schoolService = schoolService;
+		this.creditservice = creditservice;
+		this.semesterservice = semesterservice;
+		this.semester_detailservice = semester_detailservice;
 		this.passwordEncoder = passwordEncoder;
 		this.sendMail = sendMail;
 	}
@@ -183,7 +196,8 @@ public class MemberController {
 
 	// 회원가입 처리
 	@RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
-	public String joinProcess(Member member, RedirectAttributes rattr, Model model, HttpServletRequest request) {
+	public String joinProcess(Member member, Credit credit, RedirectAttributes rattr,
+			Model model, HttpServletRequest request) {
 
 		// 비밀번호 암호화 추가
 		String encPassword = passwordEncoder.encode(member.getPassword());
@@ -202,7 +216,8 @@ public class MemberController {
 		int school_id = memberservice.getSchoolIdByName(campusName);
 		member.setSchool_id(school_id);
 
-		int result = memberservice.insert(member);
+		int result_member = memberservice.insert(member);
+
 		// result=0;
 
 		/*
@@ -212,17 +227,46 @@ public class MemberController {
 		 * rattr.addAttribute("result",1);
 		 */
 
-		// 삽입이 된 경우
+		// member삽입이 된 경우
 		// 회원 가입 결과에 따라 리다이렉트할 페이지를 결정합니다.
-		if (result == AnytimeConstants.INSERT_COMPLETE) {
-			rattr.addFlashAttribute("result", "joinSuccess");
-			model.addAttribute("message", "회원가입 성공입니다.");
-			return "redirect:login"; // 로그인 페이지로 이동
-		} else {
-			model.addAttribute("url", request.getRequestURL());
-			model.addAttribute("message", "회원가입 실패입니다.");
-			return "error/error"; // 회원 가입 폼 페이지로 이동
+		if (result_member == AnytimeConstants.INSERT_COMPLETE) {
+
+			// credit삽입
+			credit.setUser_id(member.getUser_id());
+			int result_credit = creditservice.insert(credit);
+			// credit삽입 성공시
+			if (result_credit == 1) {
+				String sem[] = { "1학년 1학기", "1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기", "3학년 2학기", 
+						"4학년 1학기", "4학년 2학기", "5학년 1학기", "5학년 2학기", "6학년 1학기", "6학년 2학기", "기타 학기" };
+				
+				for(int i=0; i<sem.length; i++) {
+				Semester semester = new Semester();
+				semester.setCredit_id(credit.getCredit_id());
+				semester.setSemester_name(sem[i]);
+			//semester삽입	
+			int result_semester	= semesterservice.insert(semester);
+			// semester삽입 성공시
+			if(result_semester ==1) {
+			     for(int j =0; j <10; j++ ) {
+			    	 Semester_detail semester_detail = new Semester_detail();
+			    	 semester_detail.setSemester_id(semester.getSemester_id());
+			    // semester_detail 삽입
+		          semester_detailservice.insert(semester_detail);    	 
+			  
+			     }
+				}
+			}
 		}
+		rattr.addFlashAttribute("result", "joinSuccess");
+		model.addAttribute("message", "회원가입 성공입니다.");
+		return "redirect:login"; // 로그인 페이지로 이동
+	}else
+
+	{
+		model.addAttribute("url", request.getRequestURL());
+		model.addAttribute("message", "회원가입 실패입니다.");
+		return "error/error"; // 회원 가입 폼 페이지로 이동
+	}
 	}
 
 	// http://localhost:9700/anytime/member/forgotid
