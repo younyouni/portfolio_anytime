@@ -5,7 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.naver.anytime.domain.Comment;
+import com.naver.anytime.domain.Comments;
+
 /*
  *  Mapper 인터페이스란 매퍼 파일에 기재된 SQL을 호출하기 위한 인터페이스입니다.
  *  MyBatis-Spring은 Mapper 인터페이스를 이용해서 실제 SQL 처리가 되는 클래스를 자동으로 생성합니다.
@@ -13,19 +14,22 @@ import com.naver.anytime.domain.Comment;
 @Mapper
 public interface CommentMapper {
 
-	// 글의 갯수 구하기
-	public int getListCount(int board_num);
-
 	// 댓글 목록 가져오기
-	public List<Comment> getCommentList(Map<String, Integer> map);
-	
-	// 댓글 등록하기
-	public int commentsInsert(Comment c);
+	public List<Comments> getCommentList(int post_id);
 
-	// 댓글 삭제
-	public int commentsDelete(int num);
+	// 댓글 등록하기
+	public int insertComment(Comments co);
+
+	// 대댓글 depth 업데이트
+	public int updateDepth(Map<String, Object> map);
+
+	// 대댓글 달기
+	public int insertReplyComment(Comments co);
 
 	// 댓글 수정
-	public int commentsUpdate(Comment co);
-	
+	public int updateComment(Comments co);
+
+	// 댓글 삭제
+	public int deleteComment(int comment_id);
+
 }

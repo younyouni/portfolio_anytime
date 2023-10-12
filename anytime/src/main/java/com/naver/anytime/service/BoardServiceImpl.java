@@ -91,7 +91,7 @@ public class BoardServiceImpl implements BoardService {
 		return dao.deleteBoard(board_name, user_id);
 	}
 	
-	//권한
+	// 권한
 	@Override
 	public int deleteBoardAuth(int board_id) {
 		return boardAuthDao.deleteBoardAuth(board_id);

@@ -29,9 +29,14 @@
 
 
 	<insert id="insert" parameterType="member">
+	<selectKey resultType="integer" keyProperty="user_id" order="BEFORE">
+        SELECT member_seq.NEXTVAL FROM dual        
+    </selectKey>    
+	
+	
 		INSERT INTO member
 		VALUES
-		(member_seq.NEXTVAL, #{school_id}, #{login_id}, #{nickname},
+		(#{user_id}, #{school_id}, #{login_id}, #{nickname},
 		#{password},
 		#{email}, #{school_check}, #{address_num}, #{address1},
 		#{address2}, #{phone_num}, #{board_admin},
