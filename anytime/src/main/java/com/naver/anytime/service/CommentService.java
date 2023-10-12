@@ -23,6 +23,6 @@ public interface CommentService {
 	// 댓글 수정
 	public int updateComment(Comments co);
 
-	// 댓글 삭제
-	public int deleteComment(int comment_id);
+	public int updateCommentStatus(int comment_id);
+
 }

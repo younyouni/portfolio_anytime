@@ -28,6 +28,7 @@ function getList() {
 			if (rdata.commentlist.length > 0) {
 				$(rdata.commentlist).each(function() {
 					const lev = this.re_lev;
+					const status = this.status;
 
 					let comment_reply = '';
 					if (lev == 0) {
@@ -45,6 +46,11 @@ function getList() {
 					} else {
 						writername = "익명";
 					}
+					
+					if(status == 0) {
+						writername ="(삭제)";
+						this.content="삭제된 댓글입니다.";
+					}
 					console.log("writername : " + writername);
 
 					$('div.comments').children().not('form').remove();
@@ -55,11 +61,12 @@ function getList() {
 						+ '       <ul class="status">                                          									'
 					if (lev < 2) {
 						output += '          <li class="childcomment">                           								'
-							+ '            <a href="javascript:replyform(' + this.comment_id + ',' + lev
-							+ '            ,' + this.re_seq + ',' + this.re_ref + ')" class="reply">   							'
+							+ '            <a href="javascript:replyform(' + this.comment_id + ',' + this.re_lev + 		  ',' 
+							+ 				this.re_seq + ',' + this.re_ref + ')" class="reply">   								'
 							+ '            대댓글</a></li>                                    										'
 					}
-					if (currentUserId == this.user_id) { // 작성자만 수정 삭제가 되도록 //admin도 접근 가능하게 하려면 변경해줘야함
+					if(status == 0) {
+					}else if (currentUserId == this.user_id) { // 작성자만 수정 삭제가 되도록 //admin도 접근 가능하게 하려면 변경해줘야함
 						output += '         <li class="modify">                                  								'
 
 							+ '            <a class="modify" href="javascript:updateForm(' + this.comment_id + ')">      		'
@@ -83,6 +90,7 @@ function getList() {
 
 				})//each end
 				$('.writecomment').before(output);
+				
 			}//if(rdata.postlist.length>0)
 			else { //댓글 1개가 있는 상태에서 삭제하는 경우 갯수는 0이라  if문을 수행하지 않고 이곳으로 옵니다.
 				//이곳에서 아래의 두 영역을 없앱니다.
@@ -111,9 +119,9 @@ function del(comment_id) {//comment_id : 댓글 번호
 function replyform(comment_id, lev, seq, ref) {
 	$(this).off('click'); // 중복 클릭 방지
 	$('.status').addClass('disabled');
-
+	
 	console.log($('.status').attr('class'))
-
+	
 	let comment_reply = '';
 	if (lev == 0) {
 		comment_reply = ' parent';
@@ -122,7 +130,6 @@ function replyform(comment_id, lev, seq, ref) {
 	} else if (lev == 2) {
 		comment_reply = ' grandchild';
 	}
-	console.log("대댓글 : " + comment_id + ' lev : ' + comment_reply + ' , ' + lev + ' seq : ' + seq + ' ref : ' + ref)
 
 	// 클릭된 a 요소의 상위에 위치한 article 엘리먼트를 찾음
 	const $comment_id = $('#' + comment_id); // 수정된 부분
@@ -153,7 +160,7 @@ function replyform(comment_id, lev, seq, ref) {
 	//답글 폼의 '.btn-register'에  클래스 'reply' 추가합니다.
 	//속성 'data-ref'에 ref, 'data-lev'에 lev, 'data-seq'에 seq값을 설정합니다.
 	//등록을 답글 완료로 변경합니다.
-	$comment_id_next.find('.submit').attr('data-ref', ref).attr('data-lev', lev).attr('data-seq', seq).attr('title', '대댓글 완료').removeClass('submit_origin').addClass('reply_submit');
+	$comment_id_next.find('.submit').attr('data-ref',ref).attr('data-lev', lev).attr('data-seq', seq).attr('title', '대댓글 완료').removeClass('submit_origin').addClass('reply_submit');
 
 	$('li.cancel').click(function() {
 		$(this).closest('.writecomment.clone').remove();
@@ -213,7 +220,6 @@ function updateForm(comment_id) { //comment_id : 수정할 댓글 글번호
 	
 	// 취소 버튼을 클릭할 때 실행될 함수
 	$('.comments form:not(.clone) .cancel').click(function() {
-		alert('a');
 	    // 취소 버튼이 속한 form을 찾아서, 그 안에 있는 input 요소를 찾아 값을 초기화합니다.
 	    $(this).closest('form').find('input[name="text"]').val('');
 	});
