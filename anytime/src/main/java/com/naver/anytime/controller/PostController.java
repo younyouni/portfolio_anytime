@@ -215,49 +215,36 @@ public class PostController {
    
    /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */
    @ResponseBody
-   @RequestMapping(value = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
+   @RequestMapping(value = "/delete", method = RequestMethod.POST)
    public ResponseEntity<Map<String, Object>> postDelete(
-       @RequestParam(value ="POST_ID", required=false) Integer post_id,
+       @RequestParam("post_id") int post_id,
        Principal userPrincipal) {
 
        Map<String, Object> result = new HashMap<>();
 
-       String id = userPrincipal.getName();
+       // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
+       String id = userPrincipal.getName(); 
        Member member = memberService.getLoginMember(id);
        int currentUserId = member.getUser_id();
 
-       Post post = postService.getDetail(post_id);
+       Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
 
-       if (post == null) {
+       if (post == null || post.getUSER_ID() != currentUserId) {
            result.put("statusCode", -1);
-           result.put("errorMessage", "게시글을 찾을 수 없습니다.");
+           result.put("errorMessage", "게시글을 찾을 수 없거나 삭제 권한이 없습니다.");
            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
        }
 
-       if (post.getUSER_ID() != currentUserId) {
-           result.put("statusCode", -1);
-           result.put("errorMessage", "삭제 권한이 없습니다.");
-           return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-       }
+   	try {
+   		postService.postDelete(post_id);
+   		result.put("statusCode", 1);
+   	} catch (Exception e) {
+   		result.put("statusCode", -1);
+   		result.put("errorMessage", e.getMessage());
+   		return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+   	}
 
-       try {
-           // 게시물 삭제
-           postService.postDelete(post_id);
-
-           // 게시물에 연결된 댓글 삭제
-           List<Comments> commentList = commentService.getCommentList(post_id);
-           for (Comments comment : commentList) {
-               commentService.deleteComment(comment.getComment_id());
-           }
-
-           result.put("statusCode", 1);
-       } catch (Exception e) {
-           result.put("statusCode", -1);
-           result.put("errorMessage", e.getMessage());
-           return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-       }
-
-       return new ResponseEntity<>(result, HttpStatus.OK);
+   	return new ResponseEntity<>(result, HttpStatus.OK);
    }
 
 
