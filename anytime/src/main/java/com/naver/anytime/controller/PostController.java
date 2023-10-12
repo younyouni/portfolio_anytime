@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.Comments;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.service.BoardService;
@@ -107,9 +108,10 @@ public class PostController {
 	     
 	   }
    
+   /* -------------------------------- ▼post/updateGet 상세페이지-수정_데이터값받기(GET방식)▼ -------------------------------- */
    @GetMapping("/updateGet")
    @ResponseBody
-   public Map<String, Object> postDetail2(
+   public Map<String, Object> updateGet(
        @RequestParam(value = "post_id", required = false) Integer post_id,
        HttpServletRequest request, Principal userPrincipal) {
 
@@ -165,7 +167,7 @@ public class PostController {
        return new ResponseEntity<>(result, HttpStatus.OK);
    }
    
-   
+   /* -------------------------------- ▼post/updatePost 상세페이지-수정_데이터값출력(POST방식)▼ -------------------------------- */
    @PostMapping("/updatePost")
    @ResponseBody
    public Map<String, Object> updatePost(
@@ -213,37 +215,52 @@ public class PostController {
    
    /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */
    @ResponseBody
-   @RequestMapping(value = "/delete", method = RequestMethod.POST)
+   @RequestMapping(value = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
    public ResponseEntity<Map<String, Object>> postDelete(
-       @RequestParam("post_id") int post_id,
+       @RequestParam(value ="POST_ID", required=false) Integer post_id,
        Principal userPrincipal) {
 
        Map<String, Object> result = new HashMap<>();
 
-       // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
-       String id = userPrincipal.getName(); 
+       String id = userPrincipal.getName();
        Member member = memberService.getLoginMember(id);
        int currentUserId = member.getUser_id();
 
-       Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
+       Post post = postService.getDetail(post_id);
 
-       if (post == null || post.getUSER_ID() != currentUserId) {
+       if (post == null) {
            result.put("statusCode", -1);
-           result.put("errorMessage", "게시글을 찾을 수 없거나 삭제 권한이 없습니다.");
+           result.put("errorMessage", "게시글을 찾을 수 없습니다.");
            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
        }
 
-   	try {
-   		postService.postDelete(post_id);
-   		result.put("statusCode", 1);
-   	} catch (Exception e) {
-   		result.put("statusCode", -1);
-   		result.put("errorMessage", e.getMessage());
-   		return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-   	}
+       if (post.getUSER_ID() != currentUserId) {
+           result.put("statusCode", -1);
+           result.put("errorMessage", "삭제 권한이 없습니다.");
+           return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+       }
 
-   	return new ResponseEntity<>(result, HttpStatus.OK);
+       try {
+           // 게시물 삭제
+           postService.postDelete(post_id);
+
+           // 게시물에 연결된 댓글 삭제
+           List<Comments> commentList = commentService.getCommentList(post_id);
+           for (Comments comment : commentList) {
+               commentService.deleteComment(comment.getComment_id());
+           }
+
+           result.put("statusCode", 1);
+       } catch (Exception e) {
+           result.put("statusCode", -1);
+           result.put("errorMessage", e.getMessage());
+           return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+
+       return new ResponseEntity<>(result, HttpStatus.OK);
    }
+
+
    
 /* -------------------------------------------------------------- ▲Created By UniUni▲ -------------------------------------------------------------- */
    

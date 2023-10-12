@@ -82,14 +82,15 @@
 					</div>
 					<ul class="status left">
 						<li title="공감" class="vote"> ${postdata.LIKE_COUNT} </li>
-						<li title="댓글" class="comment">0</li>
+						<li title="댓글" class="comment"> ${postdata.COMMENT_COUNT} </li>
 						<li title="스크랩" class="scrap"> ${postdata.SCRAP_COUNT} </li>
 					</ul>
 					<hr>
 					<div class="buttons">
-						<span class="posvote">공감</span><span class="scrap">스크랩</span>
-					</div> <input type="hidden" id="comment_post_id"
-					value="${postdata.POST_ID}">
+						<span class="posvote">공감</span>
+						<span class="scrap">스크랩</span>
+					</div> 
+					<input type="hidden" id="comment_post_id" value="${postdata.POST_ID}">
 				</a>
 				<%--------------------------------- comment 시작 ---------------------------------------------------%>
 				<div class="comments" style="display: block;">
@@ -123,39 +124,47 @@
 	<jsp:include page="../common/footer.jsp" /> 
 	--%>
 	<script>
-     $(document).ready(function() { 
-            var deleteButtons = document.getElementsByClassName('del');
-
-            let token = $("meta[name='_csrf']").attr("content");
-            let header = $("meta[name='_csrf_header']").attr("content");
-
-            for (var i = 0; i < deleteButtons.length; i++) {
-                deleteButtons[i].addEventListener('click', function(event) {
-                    if(confirm("삭제하시겠습니까?")) {
-                        var postId = event.target.getAttribute("post_id");
-                        var boardId = event.target.getAttribute("board_id");
-                        $.ajax({
-                            url: 'delete',
-                            type: 'POST',
-                            data: { post_id: postId },
-                            beforeSend: function(xhr) {
-                                xhr.setRequestHeader(header, token);
-                            },
-                            success: function(data) {
-                                if(data.statusCode == 1) {
-                                    alert("게시글이 성공적으로 삭제되었습니다.");
-                                    location.href = "/anytime/post/list?board_id=" + boardId;
-                                } else {
-                                    alert(`게시글 삭제 실패: ${data.errorMessage}`);
-                                }
-                            },
-                            error: function(error) {
-                                console.error('Error:', error);
-                            }
-                        });
+$(document).ready(function() {
+    var deleteButtons = document.getElementsByClassName('del');
+    
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    
+    for (var i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', function(event) {
+            if (confirm("삭제하시겠습니까?")) {
+                var post_id = event.target.getAttribute("POST_ID");
+                var board_id = event.target.getAttribute("BOARD_ID");
+                
+                console.log("POST_ID: " + post_id);
+                
+                let data = {
+            			POST_ID: post_id,
+            		};
+                
+                $.ajax({
+                    url: 'delete',
+                    type: 'POST',
+                    data: data,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function(data) {
+                        if (data.statusCode == 1) {
+                            alert("게시글이 성공적으로 삭제되었습니다.");
+                            location.href = "/anytime/post/list?board_id=" + board_id; // 수정된 부분
+                        } else {
+                            alert(`게시글 삭제 실패: ${data.errorMessage}`);
+                        }
+                    },
+                    error: function(error) {	
+                        console.error('Error:', error);
                     }
                 });
             }
+        });
+    }
+
         
      /* // "삭제" 버튼을 클릭하면 동작하는 스크립트
         $(".del").click(function() {
