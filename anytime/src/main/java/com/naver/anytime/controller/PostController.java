@@ -107,7 +107,7 @@ public class PostController {
    
    @GetMapping("/updateGet")
    @ResponseBody
-   public Map<String, Object> postDetail(
+   public Map<String, Object> postDetail2(
        @RequestParam(value = "post_id", required = false) Integer post_id,
        HttpServletRequest request, Principal userPrincipal) {
 
@@ -165,7 +165,7 @@ public class PostController {
    
    
    @ResponseBody
-   @RequestMapping(value = "/updatePost", method = RequestMethod.POST)
+   @RequestMapping(value = "/updatePost", method= {RequestMethod.GET, RequestMethod.POST})
    public ResponseEntity<Map<String, Object>> insert2(
 	   @RequestParam(value = "LOGIN_ID") String USER_ID, 
 	   Post post, HttpServletRequest request,

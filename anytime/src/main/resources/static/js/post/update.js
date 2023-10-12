@@ -79,12 +79,14 @@ $(document).ready(function () {
 		let SUBJECT = $(this).attr('SUBJECT');
 		let CONTENT = $(this).attr('CONTENT');
 
+		let data = {
+			post_id: POST_ID
+		};
+
 		$.ajax({
 			url: 'updateGet',
 			type: 'GET',
-			data: {
-				post_id: POST_ID,
-			},
+			data: data,
 			async: false,
 			beforeSend: function (xhr) {
 				xhr.setRequestHeader(header, token)
@@ -122,15 +124,15 @@ $(document).ready(function () {
 		let header = $("meta[name='_csrf_header']").attr("content");
 
 		var post_id = $('#updateButton').attr('POST_ID');
-		var login_id = $('#updateButton').attr('LOGIN_ID');
 
 		console.log($("#title").val());
 		console.log($("#content").val());
 		console.log($("#login_id").val());
+		console.log("POST_ID: " + post_id);
 		
 		let data = {
 			POST_ID: post_id,
-			LOGIN_ID: login_id,
+			LOGIN_ID: $('#login_id').val(),
 			SUBJECT: $("#title").val(),
 			CONTENT: $("#content").val(),
 		};
@@ -140,18 +142,16 @@ $(document).ready(function () {
 		$.ajax({
 			type: "POST",
 			url: "updatePost",
-			data: JSON.stringify(data),
-			contentType : 'application/json',
-			async:false,
+			data: data,
 			beforeSend: function (xhr) {
 				xhr.setRequestHeader(header, token);
 			},
 		}).done(function(res) {
 			if(res.statusCode == 1){
-				alert("게시글 작성에 성공하였습니다.");
+				alert("게시글 수정에 성공하였습니다.");
 				location.reload();
 			} else {
-				alert("게시글 작성에 실패하였습니다. 오류: " + res.errorMessage);
+				alert("게시글 수정에 실패하였습니다. 오류: " + res.errorMessage);
 			}
 		});
 
