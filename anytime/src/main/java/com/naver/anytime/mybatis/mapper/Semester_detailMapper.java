@@ -7,6 +7,6 @@ import com.naver.anytime.domain.Semester_detail;
 @Mapper
 public interface Semester_detailMapper {
 
-	int insert(Semester_detail semester_detail);
+	public int insert(Semester_detail semester_detail);
 
 }

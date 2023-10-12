@@ -5,7 +5,8 @@ CREATE TABLE CREDIT(
 );
 
 create sequence credit_seq; 
-
+drop table credit cascade constraints purge;
+drop sequence credit_seq; 
 
 INSERT INTO CREDIT(
  CREDIT_ID, USER_ID, GRADUATE_CREDIT 
