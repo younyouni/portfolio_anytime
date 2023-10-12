@@ -49,23 +49,23 @@ function getList() {
 
 					$('div.comments').children().not('form').remove();
 
-					output += '<article id="' + this.comment_id + '" class="' + comment_reply + '">   '
-						+ '  <img src="https://cf-fpi.everytime.kr/0.png" class="picture medium">      '
-						+ '  <h3 class="medium">' + writername + '</h3>                           '
-						+ '       <ul class="status">                                          '
+					output += '<article id="' + this.comment_id + '" class="' + comment_reply + '">   							'
+						+ '  <img src="https://cf-fpi.everytime.kr/0.png" class="picture medium">      							'
+						+ '  <h3 class="medium">' + writername + '</h3>                           								'
+						+ '       <ul class="status">                                          									'
 					if (lev < 2) {
-						output += '          <li class="childcomment">                           '
+						output += '          <li class="childcomment">                           								'
 							+ '            <a href="javascript:replyform(' + this.comment_id + ',' + lev
-							+ '            ,' + this.re_seq + ',' + this.re_ref + ')" class="reply">   '
-							+ '            대댓글</a></li>                                    '
+							+ '            ,' + this.re_seq + ',' + this.re_ref + ')" class="reply">   							'
+							+ '            대댓글</a></li>                                    										'
 					}
 					if (currentUserId == this.user_id) { // 작성자만 수정 삭제가 되도록 //admin도 접근 가능하게 하려면 변경해줘야함
-						output += '         <li class="modify">                                     '
+						output += '         <li class="modify">                                  								'
 
-							+ '            <a class="modify" href="javascript:updateForm(' + this.comment_id + ')">      '
+							+ '            <a class="modify" href="javascript:updateForm(' + this.comment_id + ')">      		'
 							+ '             수정</a></li>                                          '
-							+ '         <li class="del"><a class="del" href="javascript:del(' + this.comment_id + ')">'
-							+ '            삭제</a></li>                                                '
+							+ '         <li class="del"><a class="del" href="javascript:del(' + this.comment_id + ')">			'
+							+ '            삭제</a></li>                                                							'
 					} else {
 						output += '         <li class="commentvote">공감</li>                              '
 						output += '         <li class="messagesend" data-modal="messageSend" data-comment-id="1423439802" data-is-anonym="1">쪽지</li>'
@@ -96,8 +96,8 @@ function del(comment_id) {//comment_id : 댓글 번호
 	console.log("삭제할 코멘트 : " + comment_id);
 	if (confirm('정말 삭제하시겠습니까')) {
 		$.ajax({
-			url: 'commentdelete',
-			data: { comment_id: comments_currentUserId },
+			url: '../comment/delete',
+			data: { comment_id: comment_id },
 			success: function(rdata) {
 				if (rdata == 1) {
 					getList();
@@ -111,6 +111,7 @@ function del(comment_id) {//comment_id : 댓글 번호
 function replyform(comment_id, lev, seq, ref) {
 	$(this).off('click'); // 중복 클릭 방지
 	$('.status').addClass('disabled');
+
 	console.log($('.status').attr('class'))
 
 	let comment_reply = '';
@@ -129,6 +130,8 @@ function replyform(comment_id, lev, seq, ref) {
 	// article 엘리먼트의 id 속성 값을 가져와서 출력
 	console.log($comment_id.attr('id'));
 
+	$('.writecomment input').val('');
+
 	//글쓰기 영역 복사합니다.
 	const output = $('.writecomment').clone().addClass(comment_reply).addClass('clone');
 
@@ -144,6 +147,7 @@ function replyform(comment_id, lev, seq, ref) {
 
 	//답글 폼의  '.btn-cancel'을 보여주고 클래스 'reply-cancel'를 추가합니다.
 	$comment_id_next.find('.cancel').addClass('reply-cancel').attr('title', '대댓글 취소');
+	$('.reply-cancel').css('display','');
 	console.log($comment_id_next.find('.cancel').attr('class'));
 
 	//답글 폼의 '.btn-register'에  클래스 'reply' 추가합니다.
@@ -167,17 +171,14 @@ function updateForm(comment_id) { //comment_id : 수정할 댓글 글번호
 	let lev_class = $comment_id.attr('class');
 
 	//선택한 내용을 구합니다.
-	const content = $comment_id.find('p.large').text();
-	console.log("수정할 content : " + content);
-
-	//$comment_id.css('display', 'none'); //수정하려는 댓글 영역 숨겨요
+	let content = $comment_id.find('p.large').text();
 
 	//$('.writecomment').clone() : 기본 글쓰기 영역 복사합니다.
 	//글이 있던 영역에 글을 수정할 수 있는 폼으로 바꿉니다.
 	$comment_id.after($('.writecomment').clone().addClass('clone').addClass(lev_class).attr('data-id', comment_id));
-
+	$('.clone .cancel').css('display','');
 	//수정 폼의 <textarea>에 내용을 나타냅니다.
-	$('.writecomment.clone .text').attr('value', content);
+	$('.clone .text').val(content);
 	$('.writecomment.clone li.submit').attr('title', '수정완료');
 
 	//'.modify' 영역에 수정할 글 번호를 속성 'data-id'에 나타내고 클래스 'update'를 추가합니다.
@@ -196,7 +197,7 @@ function updateForm(comment_id) { //comment_id : 수정할 댓글 글번호
 
 		if (confirm("댓글을 수정하시겠습니까?")) {
 			$.ajax({
-				url: 'commentupdate',
+				url: '../comment/update',
 				data: { comment_id: comment_id, content: content },
 				success: function(rdata) {
 					if (rdata == 1) {
@@ -209,9 +210,16 @@ function updateForm(comment_id) { //comment_id : 수정할 댓글 글번호
 			});//ajax
 		}
 	});//수정 후 수정완료를 클릭한 경우
+	
+	// 취소 버튼을 클릭할 때 실행될 함수
+	$('.comments form:not(.clone) .cancel').click(function() {
+		alert('a');
+	    // 취소 버튼이 속한 form을 찾아서, 그 안에 있는 input 요소를 찾아 값을 초기화합니다.
+	    $(this).closest('form').find('input[name="text"]').val('');
+	});
 
 	//수정 후 취소 버튼을 클릭한 경우
-	$('li.cancel').click(function() {
+	$('.clone li.cancel').click(function() {
 		//댓글 번호를 구합니다.
 		const comment_id = $(this).next().attr('data-id');
 		const selector = '#' + comment_id;
@@ -254,6 +262,7 @@ $(document).ready(function() {
 				type: 'post',
 				success: function(rdata) {
 					if (rdata == 1) {
+						location.reload(); 
 						getList();
 					}
 				}
@@ -264,7 +273,7 @@ $(document).ready(function() {
 
 
 	//답글쓰기 후 취소 버튼을 클릭한 경우
-	$('li.cancel').click(function() {
+	$('.clone > li.cancel').click(function() {
 		$(this).parent().parent().remove();
 		$(".status").removeClass('disabled'); //더 보기 영역 보이도록 합니다.
 	})//답글쓰기  후 취소 버튼을 클릭한 경우

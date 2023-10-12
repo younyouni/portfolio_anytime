@@ -99,7 +99,7 @@
 							placeholder="댓글을 입력하세요." class="text">
 						<ul class="option">
 							<li title="취소" class="cancel"
-								style="margin-right: 5px; background-image: url('${pageContext.request.contextPath}/resources/image/common/cancel.png') !important; background-size: 12px;"></li>
+								style="display:none; margin-right: 5px; background-image: url('${pageContext.request.contextPath}/resources/image/common/cancel.png') !important; background-size: 12px;"></li>
 							<li title="완료" class="submit submit_origin"></li>
 						</ul>
 						<div class="clearBothOnly"></div>

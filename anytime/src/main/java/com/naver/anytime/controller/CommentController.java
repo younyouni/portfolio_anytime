@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,14 +46,14 @@ public class CommentController {
 		return commentService.insertComment(co);
 	}
 
-	@PostMapping(value = "/commentupdate")
+	@GetMapping(value = "/update")
 	public int CommentUpdate(Comments co) {
-		return commentService.commentsUpdate(co);
+		return commentService.updateComment(co);
 	}
 
-	@PostMapping(value = "/commentdelete")
-	public int CommentDelete(int num) {
-		return commentService.commentsDelete(num);
+	@GetMapping(value = "/delete")
+	public int CommentDelete(int comment_id) {
+		return commentService.deleteComment(comment_id);
 	}
 
 	@PostMapping(value = "/reply")

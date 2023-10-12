@@ -45,15 +45,15 @@
 	
 	</insert>
 
-	<update id="commentsUpdate" parameterType="comments">
-		update comments3
-		set content=#{content}
-		where num=#{num}
+	<update id="updateComment" parameterType="comments">
+		UPDATE COMMENTS
+		SET CONTENT = #{content}
+		WHERE COMMENT_ID = #{comment_id}
 	</update>
 
-	<delete id="commentsDelete" parameterType="int">
-		delete comments3
-		where num=#{num}
+	<delete id="deleteComment" parameterType="int">
+		delete comments
+		where comment_id=#{comment_id}
 	</delete>
 
 
