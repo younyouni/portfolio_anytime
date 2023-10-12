@@ -2,13 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.naver.anytine.mybatis.mapper.Semester_detailMapper">
+<mapper namespace="com.naver.anytime.mybatis.mapper.Semester_detailMapper">
 
    <insert id = "insert" parameterType ="semester_detail">
-   <selectKey resultType="integer" keyProperty="credit_id" order="BEFORE">
-        SELECT credit_seq.NEXTVAL FROM dual        
-    </selectKey>    
-    
+   
      insert into semester_detail
      values
      (#{semester_id}, #{subject}, #{credit}, #{grade}, #{is_major})

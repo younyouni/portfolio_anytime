@@ -1,5 +1,6 @@
 package com.naver.anytime.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.naver.anytime.domain.Semester_detail;
@@ -9,6 +10,7 @@ import com.naver.anytime.mybatis.mapper.Semester_detailMapper;
 public class Semester_detailServiceImpl implements Semester_detailService {
 	private Semester_detailMapper dao;
 	
+	@Autowired
 	public Semester_detailServiceImpl(Semester_detailMapper dao) {
 		this.dao  = dao;
 	}

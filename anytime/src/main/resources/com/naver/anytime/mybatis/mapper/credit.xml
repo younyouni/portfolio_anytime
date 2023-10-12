@@ -17,4 +17,22 @@
 	</insert>
 
 
+     <select id="getSemesterDetailsByUserId" resultType="com.naver.anytime.domain.Semester_detail">
+    SELECT sd.*
+    FROM member m
+    JOIN credit c ON m.user_id = c.user_id
+    JOIN semester s ON c.credit_id = s.credit_id
+    JOIN semester_detail sd ON s.semester_id = sd.semester_id
+    WHERE m.user_id = #{user_id}
+</select>
+
+     <select id="getSemesterDetailsBySemesterId" resultType="com.naver.anytime.domain.Semester_detail">
+    SELECT s.semester_name semester_name, sd.*
+    FROM semester s 
+    JOIN semester_detail sd ON s.semester_id = sd.semester_id
+    WHERE s.semester_id = #{semester_id}
+</select>
+
+
+
 </mapper>
