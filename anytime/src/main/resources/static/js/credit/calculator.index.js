@@ -77,9 +77,9 @@ $().ready(function () {
 			_fn.loadReports();
 			$menu.on('click', 'ol > li', function () {
 				var $li = $(this);
-				console.log("80라인"+ $li.data('id'))
+				//console.log("80라인"+ $li.data('id'))
 				if ($li.data('id')) {
-				console.log("  if 안 ")
+				//console.log("  if 안 ")
 					$li.addClass('active').siblings().removeClass('active');
 					//_fn.showSubjects($li.data('id'));
 				}
