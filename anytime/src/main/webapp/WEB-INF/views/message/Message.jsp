@@ -72,13 +72,28 @@
 
 <script>
 $(document).ready(function() {
-		getMessageListAjax();
 		getMessageLastListAjax();
 });
 
-function getMessageListAjax() {
+$(document).on("click", "a.item", function (event) {
+	
+	$("a.item.active").removeClass("active");
+	
+	var id = $(this).data("id");
+	
+	$(this).removeClass("item").addClass("item active");
+	
+	getMessageListAjax(id);
+	console.log("이거 가져온거 맞어?" + id);
+});
+
+function getMessageListAjax(id) {
+	
     $.ajax({
         url: "${pageContext.request.contextPath}/messagelist",
+        data: {
+        	messageallid: id
+        },
         dataType: "json",
         success: function (messageList) {
         	console.log("Ajax 요청 성공: ", messageList);
@@ -90,6 +105,8 @@ function getMessageListAjax() {
             
             if(messageList != null){
             
+            $("#right").empty();
+            	
             $.each(messageList, function (index, ms) {
                 // 각 메시지 항목을 동적으로 생성하고 추가합니다.
                 messageItem += '<div class="item">';
@@ -128,7 +145,7 @@ function getMessageLastListAjax() {
         	
             // 메시지 목록을 담을 HTML 요소를 선택합니다.
             var messageLastListItems = $("#laft");
-		
+			var context = "${pageContext.request.contextPath}"
             let messageItem = "";
             
             if(messageLastList != null){
@@ -136,7 +153,8 @@ function getMessageLastListAjax() {
             $.each(messageLastList, function (index, ms) {
                   	
                 // 각 메시지 항목을 동적으로 생성하고 추가합니다.
-                messageItem += '<a class="item" href="/message/고유값들가야함">';
+                //messageItem += '<a class="item" href="' + context + '/message/' + ms.messageall_ID + '">';
+				messageItem += '<a class="item" data-id="' + ms.messageall_ID + '">';
                 messageItem += '<time>' + ms.message_DATE + '</time>';
                 messageItem += '<h3>' + '익명' + '</h3>';
                 messageItem += '<p class="text">' + ms.content + '</p>';

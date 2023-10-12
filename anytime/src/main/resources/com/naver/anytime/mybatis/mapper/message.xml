@@ -21,7 +21,7 @@
 	<select id="getMessageList" parameterType="int" resultType="Message">
 		SELECT *
 		FROM message
-		WHERE sender = #{user_id} OR receiver = #{user_id}
+		WHERE (sender = #{user_id} OR receiver = #{user_id}) AND messageall_id = #{messageall_id}
 		ORDER BY MESSAGE_ID DESC
 	</select>
 	

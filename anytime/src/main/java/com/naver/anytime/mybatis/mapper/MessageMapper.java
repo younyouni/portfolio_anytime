@@ -13,7 +13,7 @@ public interface MessageMapper {
 
 	public int insertMessage(int receiver_user_id);
 
-	public List<Message> getMessageList(int user_id);
+	public List<Message> getMessageList(int user_id, int messageall_id);
 
 	public List<Message> getMessageListROWNUM(int user_id);
 

@@ -43,6 +43,7 @@ public class MessageController {
 	@RequestMapping(value = "/messagelist")
 	@ResponseBody
 	public List<Message> MessageList(
+			@RequestParam("messageallid") int messageall_id,
 			Principal principal
 			) {
 		String login_id = principal.getName();						//로그인한 유저 login_id
@@ -50,10 +51,10 @@ public class MessageController {
 		
 		System.out.println("로그인 한 유저 아이디 [" + login_id + "] 로그인 한 유저 번호 [" + user_id + "]");
 		
-		List<Message> messageList = messageService.getMessageList(user_id);
+		List<Message> messageList = messageService.getMessageList(user_id,messageall_id);
 		
 		for(Message message : messageList) {
-			if(message.getRECEIVER() == user_id) {
+			if(message.getSENDER() == user_id) {
 				message.setDIRECTION(2);
 			} else if (message.getRECEIVER() == user_id){
 				message.setDIRECTION(1);
