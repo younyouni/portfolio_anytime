@@ -40,10 +40,12 @@ $(document).ready(function(){
 <!-- ▼해시태그 미사용 주석처리▼ 
 	<li title="해시태그" class="hashtag"></li> 
 -->
-<li title="첨부" class="attach"><label class="file-label">
-							<span class="file-name" id="file-name"></span> 파일 선택 <input
-							type="file" id="post_file" name="post_file" class="file-input">
-					</label></li>
+<li title="첨부" class="attach">
+  <label class="file-label">
+    <span class="file-name" id="file-name"></span> 파일 선택
+    <input type="file" id="post_file" name="post_file" class="file-input">
+  </label>
+</li>
 <li title="완료" class="submit" id="writePost"></li>
 <!-- ▼익명체크박스 미사용 주석처리▼
 <li class="anonym">
