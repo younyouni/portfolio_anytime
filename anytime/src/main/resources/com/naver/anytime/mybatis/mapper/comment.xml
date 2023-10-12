@@ -23,15 +23,27 @@
 		VALUES
 		(POST_COMMENT_SEQ.NEXTVAL, #{post_id}, #{user_id},
 		#{content}, 0, SYSDATE,
-		#{re_ref}, #{re_lev}, #{re_seq}, 0)
+		POST_COMMENT_SEQ.NEXTVAL, #{re_lev}, #{re_seq}, 0)
 	</insert>
 
 	<update id="updateDepth" parameterType="map">
 		UPDATE COMMENTS 		
 		SET RE_SEQ = RE_SEQ + 1 
 		WHERE RE_REF = #{re_ref} 								
-		AND RE_SEQ > #{re_seq}
+		AND RE_SEQ &gt; #{re_seq}
 	</update>
+	
+	<insert id="insertReplyComment" parameterType="comments">
+		INSERT INTO COMMENTS
+		(COMMENT_ID, POST_ID, USER_ID,
+		CONTENT, LIKE_COUNT, COMMENT_DATE,
+		RE_REF, RE_LEV, RE_SEQ, REPORT_COUNT)
+		VALUES
+		(POST_COMMENT_SEQ.NEXTVAL, #{post_id}, #{user_id},
+		#{content}, 0, SYSDATE,
+		POST_COMMENT_SEQ.NEXTVAL, #{re_lev}+1, #{re_seq}+1, 0)
+	
+	</insert>
 
 	<update id="commentsUpdate" parameterType="comments">
 		update comments3

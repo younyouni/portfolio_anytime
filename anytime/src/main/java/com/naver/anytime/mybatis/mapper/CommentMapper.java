@@ -29,5 +29,7 @@ public interface CommentMapper {
 	public int insertComment(Comments co);
 
 	public int updateDepth(Map<String, Object> map);
+
+	public int insertReplyComment(Comments co);
 	
 }

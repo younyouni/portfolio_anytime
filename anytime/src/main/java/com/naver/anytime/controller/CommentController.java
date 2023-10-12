@@ -58,17 +58,15 @@ public class CommentController {
 	@PostMapping(value = "/reply")
 	public int CommentReply(Principal principal, Comments co) {
 		int result = 0;
+		co.setUser_id(memberService.getUserId(principal.getName()));
 		Map<String, Object> map = new HashMap<>();
 		map.put("re_ref", co.getRe_ref());
 		map.put("re_seq", co.getRe_seq());
-		logger.info("대댓글 진입");
+		logger.info("re_ref : " + map.get("re_ref"));
+		logger.info("re_seq : " + map.get("re_seq"));
 		int updateResult = commentService.updateDepth(map);
-		if (updateResult == AnytimeConstants.UPDATE_COMPLETE) {
-			co.setUser_id(memberService.getUserId(principal.getName()));
-			result = commentService.replyComment(co);
-		}else {
-			logger.info("depth 변경 실패");
-		}
+		logger.info("update : "+String.valueOf(updateResult));
+		result = commentService.insertReplyComment(co);
 		return result;
 	}
 

@@ -28,4 +28,6 @@ public interface CommentService {
 
 	// 대댓글 시퀀스, 리퍼런스로 접근
 	public int updateDepth(Map<String, Object> map);
+
+	public int insertReplyComment(Comments co);
 }

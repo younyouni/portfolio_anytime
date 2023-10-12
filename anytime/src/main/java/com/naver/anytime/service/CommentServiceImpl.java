@@ -60,4 +60,11 @@ public class CommentServiceImpl implements CommentService{
 		return dao.updateDepth(map);
 	}
 
+
+	@Override
+	public int insertReplyComment(Comments co) {
+		// TODO Auto-generated method stub
+		return dao.insertReplyComment(co);
+	}
+
 }
