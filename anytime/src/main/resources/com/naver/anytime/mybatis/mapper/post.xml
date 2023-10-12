@@ -45,12 +45,21 @@
 	</select>
 	
 	<insert id="insertPost" parameterType="com.naver.anytime.domain.Post">
-     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT,
-                        POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
-                        STATUS)
-     VALUES (post_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, 
-              SYSDATE, 0, 0 , 0 ,1)
+	     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT,
+	                        POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
+	                        STATUS)
+	     VALUES (post_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, 
+	              SYSDATE, 0, 0 , 0 ,1)
   	</insert>
+  	
+  	<update id="updatePost" parameterType="com.naver.anytime.domain.Post">
+	    UPDATE POST 
+	    SET 
+		    SUBJECT = #{SUBJECT},
+		    CONTENT = #{CONTENT},
+		    POST_FILE = #{POST_FILE}
+	    WHERE POST_ID = #{POST_ID} 
+	</update>
 	
 	<!-- 일반 검색 리스트 값 출력-->
 	<select id="getSearchPostList" parameterType="map" resultType="post">
