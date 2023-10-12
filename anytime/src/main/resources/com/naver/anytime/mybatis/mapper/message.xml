@@ -40,16 +40,44 @@
 		)
 	</select>
 	
-	<insert id="messageinsert" parameterType="Message">
+	<insert id="insertMessage" parameterType="Message">
 		INSERT 
 		INTO Message (
-					MESSAGE_ID, 
+					MESSAGE_ID, MESSAGEALL_ID,
 					SENDER, RECEIVER, 
-					CONTENT, MESSAGE_DATE)
-		VALUES (
-					message_seq.nextval, 
-					#{sender_user_id}, #{receiver_user_id}, 
-					#{content}, sysdate)
+					CONTENT, MESSAGE_DATE
+		)
+		<include refid="check"/>
 	</insert>
+	
+	<sql id="check">
+		<if test='check > 0'>
+		 VALUES (
+					message_seq.nextval, #{messageall_id},
+					#{sender_user_id}, #{receiver_user_id}, 
+					#{content}, sysdate
+		)		
+		</if>
+		<if test='check == 0'>
+		 VALUES (
+					message_seq.nextval, messageall_seq.nextval,
+					#{sender_user_id}, #{receiver_user_id}, 
+					#{content}, sysdate
+		)
+		</if>
+	</sql>
+	
+	<select id="getUserIdConversion2" resultType="Integer">
+		select user_id
+		from messageall
+		where messageall_id = #{messageall_id}
+	</select>
+	
+	<select id="isMessageAllIdPresent" resultType="int">
+		SELECT count(*)
+		FROM message
+		WHERE (sender = #{sender_user_id} AND receiver = #{receiver_user_id})
+		   OR (sender = #{receiver_user_id} AND receiver = #{sender_user_id})
+	</select>
 
 </mapper>

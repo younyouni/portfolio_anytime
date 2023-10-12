@@ -73,6 +73,26 @@
 <script>
 $(document).ready(function() {
 		getMessageLastListAjax();
+		
+		
+		//쪽지폼
+		$("a.send").click(function(){
+			$('form#messageSend').css('display', 'block');
+			$('form#messageSend').before('<div class="modalwrap"></div>');
+			var messageall_id = $("#laft > a.active").data("id");
+		})
+		
+		//쪽지보내기
+		$("#messageSend").submit(function(){
+			sendMessage();
+		})
+		
+		//모달 닫기
+		$('a.close').click(function() {
+			$('#messageSend').css('display', 'none');
+			$('div.modalwrap').remove();
+		});
+		
 });
 
 $(document).on("click", "a.item", function (event) {
@@ -84,11 +104,9 @@ $(document).on("click", "a.item", function (event) {
 	$(this).removeClass("item").addClass("item active");
 	
 	getMessageListAjax(id);
-	console.log("이거 가져온거 맞어?" + id);
 });
 
 function getMessageListAjax(id) {
-	
     $.ajax({
         url: "${pageContext.request.contextPath}/messagelist",
         data: {
@@ -97,8 +115,8 @@ function getMessageListAjax(id) {
         dataType: "json",
         success: function (messageList) {
         	console.log("Ajax 요청 성공: ", messageList);
-        	
-            // 메시지 목록을 담을 HTML 요소를 선택합니다.
+			
+        	//사용자와 주고받은 쪽지 리스트 출력 칸
             var messageListItems = $("#right");
 		
             let messageItem = "";
@@ -108,7 +126,6 @@ function getMessageListAjax(id) {
             $("#right").empty();
             	
             $.each(messageList, function (index, ms) {
-                // 각 메시지 항목을 동적으로 생성하고 추가합니다.
                 messageItem += '<div class="item">';
                 messageItem += '<time>' + ms.message_DATE + '</time>';
                 	if(ms.direction == 2){
@@ -121,7 +138,6 @@ function getMessageListAjax(id) {
                 messageItem += '<p class="text">' + ms.content + '</p>';
                 messageItem += '</div>';
 
-                // messageListItems에 메시지 아이템을 추가합니다.
                 messageListItems.append(messageItem);
                 
                 messageItem = "";
@@ -143,7 +159,7 @@ function getMessageLastListAjax() {
         success: function (messageLastList) {
         	console.log("Ajax 요청 성공: ", messageLastList);
         	
-            // 메시지 목록을 담을 HTML 요소를 선택합니다.
+            //쪽지 리스트 선택
             var messageLastListItems = $("#laft");
 			var context = "${pageContext.request.contextPath}"
             let messageItem = "";
@@ -152,15 +168,12 @@ function getMessageLastListAjax() {
             
             $.each(messageLastList, function (index, ms) {
                   	
-                // 각 메시지 항목을 동적으로 생성하고 추가합니다.
-                //messageItem += '<a class="item" href="' + context + '/message/' + ms.messageall_ID + '">';
 				messageItem += '<a class="item" data-id="' + ms.messageall_ID + '">';
                 messageItem += '<time>' + ms.message_DATE + '</time>';
                 messageItem += '<h3>' + '익명' + '</h3>';
                 messageItem += '<p class="text">' + ms.content + '</p>';
                 messageItem += '</a>';
 
-                // messageListItems에 메시지 아이템을 추가합니다.
                 messageLastListItems.append(messageItem);
                 
                 messageItem = "";
@@ -175,6 +188,30 @@ function getMessageLastListAjax() {
     });
 }
 
+function sendMessage(){
+	var messageall_id = $("#laft > a.active").data("id");
+	console.log("ㅋㅋ");
+	var content = document.querySelector('#messageSend textarea').value;
+	/* var text = $("textarea[name='message']").val(); */
+	$.ajax({
+		url: "${pageContext.request.contextPath}/sendmessage",
+		data: {
+			"messageall_id": messageall_id,
+			"content": content,
+		},
+		dataType: "json",
+		success: function (sendResult){
+			if(sendResult == 1){
+				alert("쪽지가 송신되었습니다.");
+				//location.reload();
+			}else{
+				alert("쪽지 송신에 실패했습니다.")
+			}
+		}
+	})
+	
+	
+}
 </script>
 
 </html>

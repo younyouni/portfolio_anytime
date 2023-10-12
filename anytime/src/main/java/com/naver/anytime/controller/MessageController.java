@@ -66,8 +66,6 @@ public class MessageController {
 		}else {
 			System.out.println("==메시지 출력 실패==");
 		}
-		
-		System.out.println("값 =" + messageList);
 		return messageList;
 	}
 	
@@ -97,18 +95,34 @@ public class MessageController {
 	@RequestMapping(value = "/sendmessage")
 	@ResponseBody
 	public int sendMessage(
-			@RequestParam("standard_nume") int num,
+			@RequestParam(value = "post_id", required = false) Integer post_id,
+			@RequestParam(value = "comment_id", required = false) Integer comment_id,
+			@RequestParam(value = "messageall_id", required = false) Integer messageall_id,
 			@RequestParam("content") String content,
 			Principal principal
 			) {
-		int result = 0;
+		int sendResult = 0;
 		String login_id = principal.getName();						//로그인한 유저 login_id
 		int sender_user_id = memberService.getUserId(login_id);		//로그인한 유저 user_id 구하기
-		int receiver_user_id = messageService.getUserIdConversion(num);	//고유 번호에 해당하는 user_id 찾기
-		int messageinsert = messageService.insertMessage(receiver_user_id);
 		
+		if(post_id != null) {
+			int receiver_user_id = messageService.getUserIdConversion(post_id);
+		}
 		
+		if(comment_id != null) {
+			int receiver_user_id = messageService.getUserIdConversion(comment_id);
+		}
 		
-		return result;
+		if(messageall_id != null) {
+			int receiver_user_id = messageService.getUserIdConversion2(messageall_id);
+			int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
+			int messageinsert = messageService.insertMessage(check, messageall_id, sender_user_id, receiver_user_id, content);
+			if(messageinsert == 1) {
+				sendResult = 1;
+			}
+		}
+
+		System.out.println("메시지 보냈어? " + sendResult);
+		return sendResult;
 	}
 }

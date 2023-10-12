@@ -20,10 +20,6 @@ public class MessageServiceImpl implements MessageService{
 		return dao.getUserIdConversion(num);
 	}
 
-	public int insertMessage(int receiver_user_id) {
-		return dao.insertMessage(receiver_user_id);
-	}
-
 	@Override
 	public List<Message> getMessageList(int user_id, int messageall_id) {
 		return dao.getMessageList(user_id, messageall_id);
@@ -32,5 +28,20 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public List<Message> getMessageListROWNUM(int user_id) {
 		return dao.getMessageListROWNUM(user_id);
+	}
+
+	@Override
+	public int getUserIdConversion2(int messageall_id) {
+		return dao.getUserIdConversion2(messageall_id);
+	}
+
+	@Override
+	public int insertMessage(int check, int messageall_id, int sender_user_id, int receiver_user_id, String content) {
+		return dao.insertMessage(check, messageall_id, sender_user_id, receiver_user_id, content);
+	}
+
+	@Override
+	public int isMessageAllIdPresent(int sender_user_id, int receiver_user_id) {
+		return dao.isMessageAllIdPresent(sender_user_id, receiver_user_id);
 	}
 }
