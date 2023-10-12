@@ -53,7 +53,7 @@ public class MessageController {
 		List<Message> messageList = messageService.getMessageList(user_id);
 		
 		for(Message message : messageList) {
-			if(message.getSENDER() == user_id) {
+			if(message.getRECEIVER() == user_id) {
 				message.setDIRECTION(2);
 			} else if (message.getRECEIVER() == user_id){
 				message.setDIRECTION(1);
@@ -81,14 +81,6 @@ public class MessageController {
 		System.out.println("로그인 한 유저 아이디 [" + login_id + "] 로그인 한 유저 번호 [" + user_id + "]");
 		
 		List<Message> messageLastList = messageService.getMessageListROWNUM(user_id);
-		
-		for(Message message : messageLastList) {
-			if(message.getSENDER() == user_id) {
-				message.setDIRECTION(2);
-			} else if (message.getRECEIVER() == user_id){
-				message.setDIRECTION(1);
-			}
-		}
 		
 		if(messageLastList != null) {
 			System.out.println("==메시지 출력 성공==");

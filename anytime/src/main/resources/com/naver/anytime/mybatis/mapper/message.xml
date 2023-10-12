@@ -25,15 +25,19 @@
 		ORDER BY MESSAGE_ID DESC
 	</select>
 	
-	<select id="getMessageListROWNUM" resultType="Message">
-		SELECT *
-		FROM (
-		    SELECT *
-		    FROM message
-		    WHERE sender = #{user_id} OR receiver = #{user_id}
-		    ORDER BY MESSAGE_ID DESC
+	<select id="getMessageListROWNUM" parameterType="int" resultType="Message">
+		SELECT M.*
+		FROM Message M
+		WHERE M.MESSAGE_ID IN (
+		    SELECT MAX(MESSAGE_ID)
+		    FROM Message
+		    WHERE SENDER = #{user_id} OR RECEIVER = #{user_id}
+		    GROUP BY
+		        CASE
+		            WHEN SENDER = #{user_id} THEN RECEIVER
+		            ELSE SENDER
+		        END
 		)
-		WHERE ROWNUM = 1;
 	</select>
 	
 	<insert id="messageinsert" parameterType="Message">
@@ -45,7 +49,7 @@
 		VALUES (
 					message_seq.nextval, 
 					#{sender_user_id}, #{receiver_user_id}, 
-					#{content}, sysdate);
+					#{content}, sysdate)
 	</insert>
 
 </mapper>

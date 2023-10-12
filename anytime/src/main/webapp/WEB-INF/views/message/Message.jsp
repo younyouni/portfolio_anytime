@@ -27,49 +27,6 @@
       <h2>쪽지함</h2>
       <div class="items" id="laft">
       			
-      			   			
-		<a class="item active" href="/message/26589680">
-        	<time>20/10/20 22:29</time>
-        		<h3>익명</h3>
-        			<p class="text"> 이거에요!  감사해요정말ㅜㅜ</p>
-        </a>
-        <a class="item" href="/message/26588813">
-        	<time>20/10/20 22:01</time>
-        		<h3>익명</h3>
-        			<p class="text">그러니까요 누락된 qwe 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
-        </a>
-		
-		
-		
-		
-		
-        
-        
-        <!-- <a class="item active" href="/message/26589680">
-        	<time>20/10/20 22:29</time>
-        		<h3>익명</h3>
-        			<p class="text">qwe 이거에요!  감사해요정말ㅜㅜ</p>
-        </a>
-        <a class="item" href="/message/26588813">
-        	<time>20/10/20 22:01</time>
-        		<h3>익명</h3>
-        			<p class="text">그러니까요 누락된 qwe씨도 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
-        </a>
-        <a class="item" href="/message/26586495">
-        	<time>20/10/20 21:20</time>
-        		<h3>익명</h3>	
-        			<p class="text">정말 정말 감사해요 ㅠㅠ 진짜 지금 너무 열받아서 머리가 아프고 ㅠㅠㅠ님 아녔으면 ㅠㅠ 계속 몰랐을거고 ㅠㅠ 저 qwe 또 어떡해요 ㅠㅠ 하아... 진짜 이 교수님 너무 짜증나네요</p>
-        </a>
-        <a class="item" href="/message/20211474">
-        	<time>20/03/31 14:35</time>
-        		<h3>익명</h3>
-        			<p class="text">저도 놀행초대해주세요 ㅠㅠ</p>
-        </a>
-        <a class="item" href="/message/16812901">
-        	<time>19/11/26 22:43</time>
-        		<h3>익명</h3>
-        			<p class="text">네 그럼 그렇게 할게요!!</p>
-        </a> -->
 
         <div class="loading" style="display: none;"></div>
       </div>
@@ -84,6 +41,7 @@
     				<a class="more">더보기</a>
     	</div>
 	    <div class="items" id="right">
+	    	
 	    	
     	</div>
     </div>
@@ -108,18 +66,7 @@
     </form>
     
   </div>
-<div id="bottom">
-    <ul class="links">
-      <li><a href="/page/serviceagreement">이용약관</a></li>
-      <li class="privacy"><a href="/page/privacy">개인정보처리방침</a></li>
-      <li><a href="/page/youthpolicy">청소년보호정책</a></li>
-      <li><a href="/page/rules">커뮤니티이용규칙</a></li>
-      <li><a href="/notice">공지사항</a></li>
-      <li><a href="/page/faq">문의하기</a></li>
-      <li class="copyright"><a href="/">© 에브리타임</a></li>
-    </ul>
-    <span>직업정보제공사업 신고번호 : J1204020230008</span>
-  </div>
+
   
 </body>
 
@@ -176,32 +123,27 @@ function getMessageLastListAjax() {
     $.ajax({
         url: "${pageContext.request.contextPath}/messagelastlist",
         dataType: "json",
-        success: function (messageList) {
-        	console.log("Ajax 요청 성공: ", messageList);
+        success: function (messageLastList) {
+        	console.log("Ajax 요청 성공: ", messageLastList);
         	
             // 메시지 목록을 담을 HTML 요소를 선택합니다.
-            var messageLastListItems = $("#left");
+            var messageLastListItems = $("#laft");
 		
             let messageItem = "";
             
-            if(messageList != null){
+            if(messageLastList != null){
             
-            $.each(messageList, function (index, ms) {
+            $.each(messageLastList, function (index, ms) {
+                  	
                 // 각 메시지 항목을 동적으로 생성하고 추가합니다.
-                messageItem += '<div class="item">';
+                messageItem += '<a class="item" href="/message/고유값들가야함">';
                 messageItem += '<time>' + ms.message_DATE + '</time>';
-                	if(ms.direction == 2){
-                		messageItem += '<p class="type type2">보낸 쪽지</p>';
-                	}else if(ms.direction == 1){
-                		messageItem += '<p class="type type1">받은 쪽지</p>';
-                	}else if(ms.direction == 3){
-                		messageItem += '<p class="type type0">안내</p>';
-                	}
+                messageItem += '<h3>' + '익명' + '</h3>';
                 messageItem += '<p class="text">' + ms.content + '</p>';
-                messageItem += '</div>';
+                messageItem += '</a>';
 
                 // messageListItems에 메시지 아이템을 추가합니다.
-                messageListItems.append(messageItem);
+                messageLastListItems.append(messageItem);
                 
                 messageItem = "";
             });
