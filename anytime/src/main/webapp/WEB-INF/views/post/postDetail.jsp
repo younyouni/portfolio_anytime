@@ -11,9 +11,14 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
-<!-- <script src="js/comment.js"></script> -->
-
+<script>
+	var userid = $('#login_id').val();
+	var anonymous = ${anonymous};
+	var currentUserId = ${currentUserId};  /* 현재 로그인한 유저의 고유번호*/
+	var writerId = ${postdata.USER_ID}; /* post(게시물) 작성한 유저의 고유번호 */
+</script>
 <style>
 .status.disabled {
   pointer-events: none; /* 클릭 및 이벤트 무시 */
@@ -38,7 +43,7 @@
 		</div>
 		<div class="wrap articles" id="writeBoardContainer">
 		<a id="writeArticleButton" style="display: none;">새 글을 작성해주세요!</a>
-			<article id="boardInfo">
+			<article id="boardInfo" class="item">
 				<a class="article"> <img src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 					class="picture large">
 					<div class="profile">
@@ -83,7 +88,7 @@
 					<hr>
 					<div class="buttons">
 						<span class="posvote">공감</span><span class="scrap">스크랩</span>
-					</div> <input type="hidden" id="comment_post_num"
+					</div> <input type="hidden" id="comment_post_id"
 					value="${postdata.POST_ID}">
 				</a>
 				<%--------------------------------- comment 시작 ---------------------------------------------------%>
@@ -94,13 +99,14 @@
 							placeholder="댓글을 입력하세요." class="text">
 						<ul class="option">
 							<li title="취소" class="cancel"
-								style="margin-right: 5px; background-image: url('${pageContext.request.contextPath}/resources/image/common/cancel.png') !important; background-size: 12px;"></li>
+								style="display:none; margin-right: 5px; background-image: url('${pageContext.request.contextPath}/resources/image/common/cancel.png') !important; background-size: 12px;"></li>
 							<li title="완료" class="submit submit_origin"></li>
 						</ul>
 						<div class="clearBothOnly"></div>
 					</form>
 				</div>
 			</article>
+			<%--------------------------------- comment 끝 ---------------------------------------------------%>
 			<div class="clearBothOnly"></div>
 			<div class="pagination">
 				<a id="goListButton" class="list">글 목록</a>
@@ -109,7 +115,6 @@
 					</ul>
 				</div> 
 			</div>
-			<%--------------------------------- comment 끝 ---------------------------------------------------%>
 		</div>
 		<hr>
 		<jsp:include page="../common/rightside3.jsp" />
@@ -119,7 +124,6 @@
 	--%>
 	<script>
      $(document).ready(function() { 
-        
             var deleteButtons = document.getElementsByClassName('del');
 
             let token = $("meta[name='_csrf']").attr("content");
@@ -160,19 +164,19 @@
                 var confirmation = confirm("내용을 삭제하시겠습니까?");
                 if (confirmation) {
                     // 삭제 동작을 수행합니다.
-                    var post_num = $("#post_num").val();
+                    var post_id = $("#post_id").val();
 
                     $.ajax({
                         type: "POST",
                         url: "PostDeleteAction.bo",  // 실제 삭제 처리를 담당하는 서버 측 URL
-                        data: { post_num: post_num },
+                        data: { post_id: post_id },
                         success: function(response) {
                             if (response == 0) {
                                 alert("삭제 실패했습니다.");
                             } else {
                                 // 삭제 성공 시, 해당 게시물을 화면에서 숨깁니다.
                                 alert("게시물이 삭제되었습니다.");
-                                window.location.href = "list?board_num=" + ${boarddata.board_num}
+                                window.location.href = "list?board_id=" + ${boarddata.board_id}
                                 $(".article").hide();  // 해당 게시물 영역을 숨깁니다.
                             }
                         },

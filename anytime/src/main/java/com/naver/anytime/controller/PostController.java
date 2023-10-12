@@ -98,6 +98,7 @@ public class PostController {
 	    	  mv.addObject("postdata", post);
 	    	  mv.addObject("boardtest", board);
 	    	  mv.addObject("currentUserId", currentUserId);
+	    	  mv.addObject("anonymous", board.getANONYMOUS());
 	    	  System.out.println("post테스트=>"+post);
 	    	  
 	      }
