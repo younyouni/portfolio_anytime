@@ -104,12 +104,22 @@ $(document).ready(function () {
 
 				$("#writeBoard").show();
 				$("#boardInfo").hide();
+				$("#goListButton").text("글 수정 취소");
+				$("#goListButton").attr('onClick','updateCancel()','');
+				$("#container>div.articles>div.pagination>a.list").css({
+					"float": "left",
+					"background-image": 'url(/anytime/resources/image/post/container.articles.pagination.before.png)'
+				});
 
 			},
 			error: function (e) {
 				alert("게시글 불러오기에 실패하였습니다. 오류 : " + e.errorMessage);
 				console.log(e);
 			}
+		});
+		$("#goListButton").on("click", function() {
+			
+			location.reload();
 		});
 	});
 
