@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.anytine.mybatis.mapper.SemesterMapper">
+
+   <insert id = "insert" parameterType ="semester">
+   <selectKey resultType="integer" keyProperty="semester_id" order="BEFORE">
+        SELECT semester_seq.NEXTVAL FROM dual        
+    </selectKey>    
+    
+     insert into semester
+     values
+     (#{semester_id}, #{credit_id}, #{semester_name})
+   
+   </insert>
+
+
+
+</mapper>
