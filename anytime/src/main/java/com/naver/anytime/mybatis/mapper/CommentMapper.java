@@ -32,4 +32,10 @@ public interface CommentMapper {
 	// 댓글 삭제
 	public int deleteComment(int comment_id);
 
+	public int selectReply(int comment_id);
+
+	public int updateCommentStatus(int comment_id);
+
+	public int selectReportCount(int comment_id);
+
 }

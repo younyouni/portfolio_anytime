@@ -11,6 +11,8 @@ public class Comments {
 	private int re_lev;
 	private int re_seq;
 	private int report_count;
+	private int status;
+	
 	private String nickname;
 
 	public String getNickname() {
@@ -99,6 +101,14 @@ public class Comments {
 
 	public void setReport_count(int report_count) {
 		this.report_count = report_count;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

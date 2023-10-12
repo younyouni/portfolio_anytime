@@ -53,20 +53,20 @@ public class CommentController {
 
 	@GetMapping(value = "/delete")
 	public int CommentDelete(int comment_id) {
-		return commentService.deleteComment(comment_id);
+		return commentService.updateCommentStatus(comment_id);
 	}
 
 	@PostMapping(value = "/reply")
 	public int CommentReply(Principal principal, Comments co) {
 		int result = 0;
 		co.setUser_id(memberService.getUserId(principal.getName()));
+
 		Map<String, Object> map = new HashMap<>();
+
 		map.put("re_ref", co.getRe_ref());
 		map.put("re_seq", co.getRe_seq());
-		logger.info("re_ref : " + map.get("re_ref"));
-		logger.info("re_seq : " + map.get("re_seq"));
 		int updateResult = commentService.updateDepth(map);
-		logger.info("update : "+String.valueOf(updateResult));
+		logger.info("update : " + String.valueOf(updateResult));
 		result = commentService.insertReplyComment(co);
 		return result;
 	}
