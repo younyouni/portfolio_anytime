@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -215,36 +216,14 @@ public class PostController {
    
    /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */
    @ResponseBody
-   @RequestMapping(value = "/delete", method = RequestMethod.POST)
-   public ResponseEntity<Map<String, Object>> postDelete(
-       @RequestParam("post_id") int post_id,
-       Principal userPrincipal) {
-
-       Map<String, Object> result = new HashMap<>();
-
-       // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
-       String id = userPrincipal.getName(); 
-       Member member = memberService.getLoginMember(id);
-       int currentUserId = member.getUser_id();
-
-       Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
-
-       if (post == null || post.getUSER_ID() != currentUserId) {
-           result.put("statusCode", -1);
-           result.put("errorMessage", "게시글을 찾을 수 없거나 삭제 권한이 없습니다.");
-           return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+   @GetMapping("/delete")
+   public ResponseEntity<?> deletePost(@RequestParam("post_id") int post_id) {
+       int result = postService.updatePostStatus(post_id);
+       if (result > 0) {
+           return new ResponseEntity<>("게시글이 성공적으로 삭제되었습니다.", HttpStatus.OK);
+       } else {
+           return new ResponseEntity<>("게시글 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
        }
-
-   	try {
-   		postService.postDelete(post_id);
-   		result.put("statusCode", 1);
-   	} catch (Exception e) {
-   		result.put("statusCode", -1);
-   		result.put("errorMessage", e.getMessage());
-   		return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-   	}
-
-   	return new ResponseEntity<>(result, HttpStatus.OK);
    }
 
 
