@@ -31,8 +31,8 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public int getUserIdConversion2(int messageall_id) {
-		return dao.getUserIdConversion2(messageall_id);
+	public int getUserIdConversion2(int sender_user_id, int messageall_id) {
+		return dao.getUserIdConversion2(sender_user_id, messageall_id);
 	}
 
 	@Override

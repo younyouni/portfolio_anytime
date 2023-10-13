@@ -95,52 +95,46 @@ public class MessageController {
 	@RequestMapping(value = "/sendmessage")
 	@ResponseBody
 	public int sendMessage(
-			@RequestParam(value = "post_id", required = false) Integer post_id,
-			@RequestParam(value = "comment_id", required = false) Integer comment_id,
-			@RequestParam(value = "messageall_id", required = false) Integer messageall_id,
+			@RequestParam(value = "post_id", required = false, defaultValue = "0") int post_id,
+			@RequestParam(value = "comment_id", required = false, defaultValue = "0") int comment_id,
+			@RequestParam(value = "messageall_id", required = false, defaultValue = "0") int messageall_id,
 			@RequestParam("content") String content,
 			Principal principal
 			) {
 		int sendResult = 0;
+		int messageinsert = 0;
 		String login_id = principal.getName();						//로그인한 유저 login_id
 		int sender_user_id = memberService.getUserId(login_id);		//로그인한 유저 user_id 구하기
 		
 		
-		if(post_id != null) {
+		if(post_id > 0) {
 			int receiver_user_id = messageService.getUserIdConversion(post_id);
 			int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
 			
 			System.out.println("(1) - 체크 [" + check + "]");
 			if(check == 0) {
-				messageall_id = messageService.insertMessageAllId(sender_user_id, receiver_user_id);
-				System.out.println("(2) - 쪽지 관리번호 insert 체크 [" + messageall_id + "]");
+				int messageall = messageService.insertMessageAllId(sender_user_id, receiver_user_id);
+				System.out.println("(2) - 쪽지 관리번호 insert 체크 [" + messageall + "]");
 			}
 			messageall_id = messageService.isMessageAllIdPresent2(sender_user_id,receiver_user_id);
 			System.out.println("(3) - 쪽지 관리번호 체크 [" + messageall_id + "]");
-			int messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
-			if(messageinsert == 1) {
-				sendResult = 1;
-			}
+			messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
 			System.out.println("들어갔냐?" + messageinsert);
-			System.out.println("됐냐?" + sendResult);
-		}
-		
-		if(comment_id != null) {
+		} else if (comment_id > 0) {
 			int receiver_user_id = messageService.getUserIdConversion(comment_id);
 			int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
-			int messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
-			if(messageinsert == 1) {
-				sendResult = 1;
-			}
+			messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
+
+		} else if (messageall_id > 0) {
+			int receiver_user_id = messageService.getUserIdConversion2(sender_user_id,messageall_id);
+		//	int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
+			messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
+
 		}
+
 		
-		if(messageall_id != null) {
-			int receiver_user_id = messageService.getUserIdConversion2(messageall_id);
-			int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
-			int messageinsert = messageService.insertMessage(check, messageall_id, sender_user_id, receiver_user_id, content);
-			if(messageinsert == 1) {
-				sendResult = 1;
-			}
+		if(messageinsert == 1) {
+			sendResult = 1;
 		}
 		
 		System.out.println("메시지 보냈어? " + sendResult);

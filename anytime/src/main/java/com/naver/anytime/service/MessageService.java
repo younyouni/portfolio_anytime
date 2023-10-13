@@ -8,7 +8,7 @@ public interface MessageService {
 	
 	public int getUserIdConversion(int num);
 	
-	public int getUserIdConversion2(int messageall_id);
+	public int getUserIdConversion2(int sender_user_id, int messageall_id);
 
 	public List<Message> getMessageList(int user_id, int messageall_id);
 

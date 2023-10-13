@@ -142,13 +142,10 @@
 	<jsp:include page="../common/footer.jsp" /> 
 	--%>
 	<script>
-	
-	// * * * * * * * * * * * * * * * * * * * * * * 쪽지 기능 * * * * * * * * * * * * * * * * * * * * * * 
-
 	$("li.messagesend").click(function(){
 		$('form#messageSend').css('display', 'block');
 		$('form#messageSend').before('<div class="modalwrap"></div>');
-		})
+	});
 
 	$('a.close').click(function() {
 		$('#messageSend').css('display', 'none');
@@ -158,13 +155,15 @@
 	$("#messageSend").submit(function(e) {
 	    e.preventDefault();
 	    sendMessageAjax();
-	});
+	    console.log("실행1");
+	}); 
 
      function sendMessageAjax(){
 		    var urlParams = new URLSearchParams(window.location.search);
 		    var post_id = urlParams.get('post_id');
     		var content = document.querySelector('#messageSend textarea').value;
     		console.log("여기까진 오냐?" + post_id + "/" + content);
+    		 console.log("실행2");
     		$.ajax({
     			url: "${pageContext.request.contextPath}/sendmessage",
     			data: {
@@ -173,6 +172,7 @@
     			},
     			success: function (sendResult){
     				if(sendResult == 1){
+    					console.log("실행3");
     					alert("쪽지가 송신되었습니다.");
     					location.reload();	
     				}else{
@@ -182,9 +182,7 @@
     			}
     		})
 
-    	}
-	// * * * * * * * * * * * * * * * * * * * * * * 쪽지 기능 * * * * * * * * * * * * * * * * * * * * * * 
-	
+    	};
 </script> 
 </body>
 </html>

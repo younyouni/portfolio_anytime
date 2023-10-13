@@ -8,10 +8,19 @@
    
      insert into semester_detail
      values
-     (#{semester_id}, #{subject}, #{credit}, #{grade}, #{is_major})
+     (semester_detail_seq.NEXTVAL, #{semester_id}, #{subject}, #{credit}, #{grade}, #{major})
    
    </insert>
 
+
+    <update id = "update" parameterType ="semester_detail">
+    update semester_detail 
+    set subject = #{subject},
+        credit = #{credit},
+        grade = #{grade},
+        major = #{major}
+    where semester_detail_id =#{semester_detail_id}     
+</update>
 
 
 </mapper>

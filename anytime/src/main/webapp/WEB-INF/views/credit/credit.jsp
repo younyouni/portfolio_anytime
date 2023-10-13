@@ -1,35 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">		
 <head>
 <title>애니타임</title>
 <meta charset="utf-8">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css"
-	rel="stylesheet">
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
-<!-- <script src="${pageContext.request.contextPath}/resources/js/credit/common.js"></script> -->
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.pie.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.resize.min.js"></script>
-<!--  <script src="${pageContext.request.contextPath}/resources/js/credit/calculator.index.js"></script> -->
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
 <script>
 $(document).ready(function(){
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	
+	
+	// 메뉴 선택시 기본 semester_detail이랑 semester_id 불러오기
 	var semester_id
 	$(".menu li").click(function(){
 			var $li = $(this);
@@ -44,33 +33,90 @@ $(document).ready(function(){
 	type: 'GET',
 	data: {semester_id: semester_id},
 	success: function(data) {
-        // Update table with received data
-
+		
+        // 받아온 데이터로 subject테이블 만들기 
         var tbody = $('.subjects tbody');
-        tbody.empty();  // Clear existing rows
+        tbody.empty();  // 기존 행들 삭제
         
         var grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "D+", "D0", "D-", "F", "P", "NP"];
         
         $.each(data, function(i, detail) {
-        $('h3').text(detail.semester_name);  // Update the semester name
+        $('h3').text(detail.semester_name);  
         	var gradeOptions = '';
             $.each(grades, function(i, grade) {
                 gradeOptions += '<option value="' + grade + '"' + (grade === detail.grade ? ' selected' : '') + '>' + grade + '</option>';
             });
-        	
-            var row = '<tr>' +
+            var row = '<tr data-id="' + detail.semester_detail_id + '">' +
                 '<td><input name="name" maxlength="50" value="' + detail.subject + '"></td>' +
                 '<td><input name="credit" type="number" maxlength="4" min="0" value ="' + detail.credit + '" ></td>' +
                 '<td><select name="grade"><option value="' + detail.grade + '" selected="selected">'+ gradeOptions + '</select></td>' +
-                '<td><label><input name="major" type="checkbox"' +(detail.is_major ? ' checked' : '')+'><span></span></label></td>' +
+                '<td><label><input name="major" type="checkbox"' +(detail.major ? ' checked' : '')+'><span></span></label></td>' +
             '</tr>';
             tbody.append(row);
-	})
-}
-});
-	});
-	$(".menu li").first().trigger('click');
+	         });
+            }
+         });
+	   });
 	
+  $(".menu li").first().trigger('click');
+	
+  // 더 입력하기 클릭
+  $(".new").click(function() {
+	    var tbody = $('.subjects tbody');
+	    var grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", 
+	                  "D+", "D0",  "D-", "F", "P", "NP"];
+	    
+	    var gradeOptions = '';
+	    $.each(grades, function(i, grade) {
+	        gradeOptions += '<option value="' + grade + '">' + grade + '</option>';
+	    });
+	    
+	    var row = '<tr>' +
+	        '<td><input name="name" maxlength="50"></td>' +
+	        '<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>' +
+	        '<td><select name="grade">' + gradeOptions + '</select></td>' +
+	        '<td><label><input name="major" type ="checkbox"><span></span></label></td>' +
+	    '</tr>';
+	    
+	    tbody.append(row);
+	});	
+	
+   
+  // subject 항목 변경될때 
+  function updateField(e) {
+      var $target = $(e.target);
+      var $row = $target.closest('tr');
+      
+      var semester_detail_id = $row.data('id');
+      
+      var subject = $row.find('input[name="name"]').val();
+      var credit = $row.find('input[name="credit"]').val();
+      var grade = $row.find('select[name="grade"]').val();
+      var major = $row.find('input[name="major"]').prop('checked');
+      
+      $.ajax({
+          url: 'updatesemester_detail',
+          type: 'POST',
+          data: {
+        	  semester_detail_id: semester_detail_id,
+              semester_id: semester_id,
+              subject: subject,
+              credit: credit,
+              grade: grade,
+              major: major
+          },
+          beforeSend: function(xhr)
+          { // 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+            xhr.setRequestHeader(header, token);
+          },
+          success: function(data) {
+              console.log(data);
+          }
+     });
+  }
+  // 각 입력 필드에 change 이벤트 핸들러 추가
+  $('.subjects').on('change', 'input, select', updateField);
+
 });
 	
 	function scrollToActiveMenu() {
@@ -181,15 +227,6 @@ $(document).ready(function(){
 					<option value="24372243">2021년 1학기 (시간표)</option>
 					<option value="24372222">2020년 겨울학기 (시간표)</option>
 					<option value="22897232">2020년 2학기 (플랜B)</option>
-					<option value="21323777">2020년 여름학기 (시간표)</option>
-					<option value="17984283">2020년 1학기 (시간표)</option>
-					<option value="17563162">2019년 겨울학기 (시간표)</option>
-					<option value="16278583">2019년 2학기 (2019년2학기 시간표)</option>
-					<option value="42743667">2018년 2학기 (시간표 1)</option>
-					<option value="42644988">2017년 2학기 (시간표 1)</option>
-					<option value="42730422">2017년 1학기 (시간표 1)</option>
-					<option value="3533599">2016년 2학기 (시간표)</option>
-					<option value="40567616">2016년 1학기 (시간표 1)</option>
 					<option value="42743666">2015년 여름학기 (시간표 1)</option>
 					<option value="42785680">2015년 1학기 (시간표 1)</option>
 					<option value="42644986">2013년 여름학기 (시간표 1)</option>
@@ -220,32 +257,6 @@ $(document).ready(function(){
 		</ul>
 		<span>직업정보제공사업 신고번호 : J1204020230008</span>
 	</div>
-	<!-- 
-	<script type="text/javascript">
-		var _serverTime = 1696549810737;
-		var _clientTime = new Date().getTime();
-		var _diffTime = _clientTime - _serverTime;
-		var _apiServerUrl = 'https://api.everytime.kr';
-		window._screenName = '시간표 - 학점계산기';
-	</script>
-	<script async=""
-		src="https://www.googletagmanager.com/gtag/js?id=G-85ZNEFVRGL"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() {
-			dataLayer.push(arguments);
-		}
-		gtag('js', new Date());
-		gtag('config', 'G-85ZNEFVRGL', {
-			'send_page_view' : false
-		});
-		_gfn.logPageView();
-	</script>
-	<iframe allow="join-ad-interest-group" data-tagging-id="G-85ZNEFVRGL"
-		data-load-time="1696552191914" height="0" width="0"
-		style="display: none; visibility: hidden;"
-		src="https://td.doubleclick.net/td/ga/rul?tid=G-85ZNEFVRGL&amp;gacid=2075506928.1696405846&amp;gtm=45je3a40&amp;aip=1&amp;fledge=1&amp;z=533221291"></iframe>
-	 -->
 
 </body>
 </html>

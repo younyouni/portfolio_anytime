@@ -202,7 +202,7 @@ function sendMessage(){
 		success: function (sendResult){
 			if(sendResult == 1){
 				alert("쪽지가 송신되었습니다.");
-				//location.reload();
+				location.reload();
 			}else{
 				alert("쪽지 송신에 실패했습니다.")
 			}
