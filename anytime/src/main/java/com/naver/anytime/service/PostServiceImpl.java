@@ -200,8 +200,8 @@ public class PostServiceImpl implements PostService {
 	}
 	
 	@Override
-	public int increaseLike(int post_id, int user_id) {
-		return postDao.increaseLike(post_id, user_id);
+	public int increaseLike(Integer post_id, int currentUserId) {
+		return postDao.increaseLike(post_id, currentUserId);
 	}
 
 	

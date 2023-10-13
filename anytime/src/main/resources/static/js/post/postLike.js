@@ -1,12 +1,14 @@
 $(document).ready(function () {
-    $(".posvote").on('click', function(e) {
+    $(".posvote").one('click', function(e) { // one() 함수 사용
+        e.preventDefault();
+
         var confirmResult = confirm('이 글에 공감하십니까?');
         
         if(confirmResult){
             let token = $("meta[name='_csrf']").attr("content");
             let header = $("meta[name='_csrf_header']").attr("content");
             
-            let postId= $(this).data('post_id'); // 게시글의 ID를 얻습니다. 이 값은 HTML에서 data-postId 속성으로 설정되어야 합니다.
+            var post_id= $(this).data('post_id');
 
             $.ajax({
                 url: 'likePost',
@@ -18,10 +20,12 @@ $(document).ready(function () {
                 success:function(data){
                     if(data.statusCode == 1){
                         alert('공감 완료!');
-                        $('.vote').text(data.like_count); // Update Like Count on Page.
+                        $('.vote').text(data.like_count); 
                     } else if(data.statusCode == 2){
                         alert('공감 취소!');
-                        $('.vote').text(data.like_count); // Update Like Count on Page.
+                        $('.vote').text(data.like_count); 
+                    } else if(data.statusCode == 3){ // 이미 공감한 경우
+                        alert('이미 공감하셨습니다.');
                     } else{
                         alert('오류 발생 : ' + data.errorMessage);
                     }

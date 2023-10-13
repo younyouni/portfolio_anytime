@@ -7,7 +7,7 @@
 
   <insert id="addLike" parameterType="com.naver.anytime.domain.PostLike">
      INSERT INTO POST_LIKE (POST_ID, USER_ID)
-     VALUES (#{POST_ID}, #{USER_ID})
+     VALUES (#{post_id}, #{user_id})
   </insert>
 
   <delete id="removeLike" parameterType="int">

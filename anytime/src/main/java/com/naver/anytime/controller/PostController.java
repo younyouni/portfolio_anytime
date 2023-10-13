@@ -239,36 +239,33 @@ public class PostController {
 
        Map<String, Object> result = new HashMap<>();
        
-   	// Check if the user has already liked the post
-   	PostLike existingLike = postLikeService.findExistingLike(post_id, currentUserId);
+       PostLike existingLike = postLikeService.findExistingLike(post_id, currentUserId);
 
-   	if(existingLike == null) {
-   		try {
-   			int like_count = postService.increaseLike(post_id, currentUserId); 
-   			result.put("statusCode", 1);
-   			result.put("like_count", like_count); 
-   		} catch(Exception e) {
-   			result.put("statusCode", -1);
-   			result.put("errorMessage", e.getMessage());
-   		}
-   	} else { // If the user has already liked the post
-   		try {
-   			postLikeService.removeLike(existingLike.getPOST_LIKE_ID());
-   			
-               // After removing a like from a post we should get an updated count of likes.
-               Post post= postService.getDetail(post_id);
-               int like_count = post.getLIKE_COUNT();
-               
-               result.put("statusCode", 2);
+       if(existingLike == null) {
+           try {
+               postService.increaseLike(post_id, currentUserId); 
+
+               Post post= postService.getDetail(post_id); // 게시글 상세 정보 다시 조회
+               int like_count = post.getLIKE_COUNT(); // 최신의 공감 수 가져오기
+
+               result.put("statusCode", 1);
                result.put("like_count", like_count); 
            } catch(Exception e) {
-              result.put("statusCode", -1);
-              result.put("errorMessage", e.getMessage());
-          }
+               result.put("statusCode", -1);
+               result.put("errorMessage", e.getMessage());
+           }
+      } else { 
+          // 이미 공감한 경우
+          result.put("statusCode", 3);
+          return new ResponseEntity<>(result, HttpStatus.OK);
       }
 
-     return new ResponseEntity<>(result, HttpStatus.OK);
+      return new ResponseEntity<>(result, HttpStatus.OK);
    }
+
+
+
+
 
 
 

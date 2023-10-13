@@ -70,7 +70,7 @@ public interface PostService {
 	//글수정 실험용
 	public void updatePost(Post post);
 	
-	int increaseLike(int post_id, int user_id);
+	int increaseLike(Integer post_id, int currentUserId);
 
 	//검색용 리스트 총 수
 	public int getSearchListCount(int board_id, int search_field, String search_word);
@@ -86,5 +86,6 @@ public interface PostService {
 
 	// ********************************= 윤희 =********************************
 	public List<List<Post>> getPostListByBoard(int[] board_ids);
+
 
 }
