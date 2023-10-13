@@ -124,38 +124,24 @@
 	--%>
 	<script>
      $(document).ready(function() { 
-            var deleteButtons = document.getElementsByClassName('del');
-
-            let token = $("meta[name='_csrf']").attr("content");
-            let header = $("meta[name='_csrf_header']").attr("content");
-
-            for (var i = 0; i < deleteButtons.length; i++) {
-                deleteButtons[i].addEventListener('click', function(event) {
-                    if(confirm("삭제하시겠습니까?")) {
-                        var postId = event.target.getAttribute("post_id");
-                        var boardId = event.target.getAttribute("board_id");
-                        $.ajax({
-                            url: 'delete',
-                            type: 'POST',
-                            data: { post_id: postId },
-                            beforeSend: function(xhr) {
-                                xhr.setRequestHeader(header, token);
-                            },
-                            success: function(data) {
-                                if(data.statusCode == 1) {
-                                    alert("게시글이 성공적으로 삭제되었습니다.");
-                                    location.href = "/anytime/post/list?board_id=" + boardId;
-                                } else {
-                                    alert(`게시글 삭제 실패: ${data.errorMessage}`);
-                                }
-                            },
-                            error: function(error) {
-                                console.error('Error:', error);
-                            }
-                        });
-                    }
-                });
-            }
+    	 $(".del").click(function() {
+    	     var confirmation = confirm("내용을 삭제하시겠습니까?");
+    	     if (confirmation) {
+    	         var post_id = $("#post_id").val();
+    	         $.ajax({
+    	             type: "GET",
+    	             url: "delete",
+    	             data: { post_id: post_id },
+    	             success: function(response) {
+    	                 alert(response);
+    	                 location.href = "list?board_id=" + ${postdata.BOARD_ID};
+    	             },
+    	             error: function() {
+    	                 alert("삭제 요청 실패했습니다.");
+    	             }
+    	         });
+    	     }
+    	});
         
      /* // "삭제" 버튼을 클릭하면 동작하는 스크립트
         $(".del").click(function() {

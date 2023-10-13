@@ -62,8 +62,9 @@ public interface PostMapper {
 	 * 
 	 * private boolean postDataUpdate(Connection con, PostBean modifypost);
 	 */
-
-	public int postDelete(int POST_ID);
+	
+	//글삭제 => STATUS로 접근불가
+	public int updatePostStatus(int post_id);
 
 	public List<Post> getPostList(HashMap<String, Integer> map);
 
