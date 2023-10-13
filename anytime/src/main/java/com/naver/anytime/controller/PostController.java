@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -106,10 +107,10 @@ public class PostController {
 	     
 	   }
    
-   @GetMapping("/updatePost")
+   @GetMapping("/updateGet")
    @ResponseBody
-   public Map<String, Object> postDetail(
-       @RequestParam(value = "post_id", required = false) int post_id,
+   public Map<String, Object> postDetail2(
+       @RequestParam(value = "post_id", required = false) Integer post_id,
        HttpServletRequest request, Principal userPrincipal) {
 
        // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
@@ -140,7 +141,7 @@ public class PostController {
    @ResponseBody
    @RequestMapping(value = "/write", method = RequestMethod.POST)
    public ResponseEntity<Map<String, Object>> insert(
-	   @RequestParam(value = "LOGIN_ID") String USER_ID, 
+	   @RequestParam(value = "LOGIN_ID", required=false) String USER_ID, 
 	   Post post, HttpServletRequest request) {
        Map<String, Object> result = new HashMap<>();
        
@@ -148,7 +149,6 @@ public class PostController {
        // 세션으로부터 BOARD_ID 및 USER_ID 값을 얻어옵니다.
        // 여기서 "boardId" 와 "userId" 는 세션에 저장된 실제 키 이름에 따라 변경되어야 합니다.
        int boardId = (Integer) session.getAttribute("board_id");
-       
       String login_id =USER_ID;
        
       int user_id = memberService.getUserId(login_id);
@@ -164,6 +164,51 @@ public class PostController {
        }
        return new ResponseEntity<>(result, HttpStatus.OK);
    }
+   
+   
+   @PostMapping("/updatePost")
+   @ResponseBody
+   public Map<String, Object> updatePost(
+       @RequestParam(value = "LOGIN_ID", required=false) String USER_ID,
+       @RequestParam(value = "POST_ID") Integer post_id,
+       @RequestParam(value = "SUBJECT") String subject,
+       @RequestParam(value = "CONTENT") String content,
+       HttpServletRequest request, Principal userPrincipal) {
+
+      // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
+      String id = userPrincipal.getName();
+      Member member = memberService.getLoginMember(id);
+      int currentUserId = member.getUser_id();
+
+      Post post = new Post();
+      
+      // 요청으로 받은 파라미터로 post 객체 설정
+      post.setPOST_ID(post_id);
+      
+      if (USER_ID != null) {
+          int userId = memberService.getUserId(USER_ID);
+          post.setUSER_ID(userId);
+      } else {
+          post.setUSER_ID(currentUserId);  // USER_ID가 없다면 현재 사용자 ID 사용
+      }
+      
+      post.setSUBJECT(subject);
+      post.setCONTENT(content);
+
+     Map<String, Object> result = new HashMap<>();
+     
+     try {
+         postService.updatePost(post);
+         result.put("statusCode", 1);
+     } catch (Exception e) {
+         result.put("statusCode", -1);
+         result.put("errorMessage", e.getMessage());
+     }
+     
+     return result;
+   }
+   
+   
 
    
    /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */

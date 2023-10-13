@@ -66,7 +66,7 @@ public class SecurityConfig{
 				.antMatchers("/certificate_mailcheck").permitAll()
 				.antMatchers("/certificateProcess").permitAll()
 				
-				
+				.antMatchers("/calculator").permitAll()
 				
 				.antMatchers("/post/list").permitAll()
 				.antMatchers("/**/**").permitAll()

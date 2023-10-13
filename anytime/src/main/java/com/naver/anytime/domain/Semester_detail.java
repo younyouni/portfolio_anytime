@@ -4,12 +4,12 @@ public class Semester_detail {
 
 	private int semester_id;
 	
-	private String subject;
+	private String subject="";
 	private int credit = 0;
 	private String grade = "A+";
 	private boolean is_major = false;
 	
-	
+	private String semester_name;
 	
 	public boolean isIs_major() {
 		return is_major;
@@ -40,6 +40,12 @@ public class Semester_detail {
 	}
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+	public String getSemester_name() {
+		return semester_name;
+	}
+	public void setSemester_name(String semester_name) {
+		this.semester_name = semester_name;
 	}
 	
 	

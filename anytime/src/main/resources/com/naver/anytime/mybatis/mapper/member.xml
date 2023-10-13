@@ -28,11 +28,12 @@
 	</select>
 
 
+
 	<insert id="insert" parameterType="member">
+	
 	<selectKey resultType="integer" keyProperty="user_id" order="BEFORE">
         SELECT member_seq.NEXTVAL FROM dual        
     </selectKey>    
-	
 	
 		INSERT INTO member
 		VALUES
@@ -43,6 +44,7 @@
 		#{account_status},
 		#{admission_year}, #{auth})
 	</insert>
+
 
 
 	<select id="findIdByEmail" resultType="String">
@@ -70,18 +72,7 @@
 		WHERE USER_ID = #{USER_ID}
 	</select>
 
-	<!-- <select id="searchCount" resultType="int" parameterType="map"> select 
-		count(*) from member where id != 'admin' <if test="search_field != null"> 
-		and <choose> <when test='search_field=="id"'>id</when> <when test='search_field=="name"'>name</when> 
-		<when test='search_field=="age"'>age</when> <when test='search_field=="gender"'>gender</when> 
-		</choose> like #{search_word} </if> </select> <select id="getSearchList" 
-		resultType="member" parameterType="map"> SELECT * FROM ( SELECT ROWNUM rnum, 
-		b.* FROM ( SELECT * FROM member WHERE id != 'admin' <if test="search_field 
-		!= null"> AND <choose> <when test='search_field=="id"'>id</when> <when test='search_field=="name"'>name</when> 
-		<when test='search_field=="age"'>age</when> <when test='search_field=="gender"'>gender</when> 
-		</choose> LIKE #{search_word} </if> ORDER BY id ) b WHERE ROWNUM &lt;= #{end} 
-		) WHERE rnum &gt;= #{start} AND rnum &lt;= #{end} </select> -->
-
+	
 	<sql id="search_">
 		<if test="search_field != null">
 			and

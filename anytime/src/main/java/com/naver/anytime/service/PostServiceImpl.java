@@ -197,6 +197,12 @@ public class PostServiceImpl implements PostService {
 		
 	}
 	
+	//글수정 실험용
+	@Override
+	public void updatePost(Post post) {
+		postDao.updatePost(post);
+	}
+	
 
 	// ********************************= 윤희 =********************************
 	@Override
@@ -210,5 +216,7 @@ public class PostServiceImpl implements PostService {
 		}
 		return result;
 	}
+
+	
 
 }

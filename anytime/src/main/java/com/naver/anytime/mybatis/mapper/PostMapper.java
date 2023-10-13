@@ -73,6 +73,9 @@ public interface PostMapper {
 	//글쓰기 실험용
 	public void insertPost(Post post);
 	
+	//글수정 실험용
+	public void updatePost(Post post);
+	
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
 

@@ -142,7 +142,7 @@
 			<div class="menu">
 				<ol>
 					<li class=""><a>1학년 1학기</a></li>
-					<li class=""><a>1학년 2학기</a></li>
+					<li class="" ><a>1학년 2학기</a></li>
 					<li class=""><a>2학년 1학기</a></li>
 					<li class=""><a>2학년 2학기</a></li>
 					<li class=""><a>3학년 1학기</a></li>

@@ -1,19 +1,93 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
 <title>애니타임</title>
 <meta charset="utf-8">
-<link type="text/css"href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/common.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.pie.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.resize.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/calculator.index.js"></script>
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/common.css"
+	rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
+	rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
+	rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css"
+	rel="stylesheet">
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
+<!-- <script src="${pageContext.request.contextPath}/resources/js/credit/common.js"></script> -->
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.pie.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.resize.min.js"></script>
+<!--  <script src="${pageContext.request.contextPath}/resources/js/credit/calculator.index.js"></script> -->
+<script>
+$(document).ready(function(){
+	var semester_id
+	$(".menu li").click(function(){
+			var $li = $(this);
+			if ($li.data('id')) {
+				$li.addClass('active').siblings().removeClass('active');
+			scrollToActiveMenu();
+			}
+			
+		semester_id = $(this).data('id');
+	$.ajax({
+	url: 'getsemester_detail',
+	type: 'GET',
+	data: {semester_id: semester_id},
+	success: function(data) {
+        // Update table with received data
+
+        var tbody = $('.subjects tbody');
+        tbody.empty();  // Clear existing rows
+        
+        var grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "D+", "D0", "D-", "F", "P", "NP"];
+        
+        $.each(data, function(i, detail) {
+        $('h3').text(detail.semester_name);  // Update the semester name
+        	var gradeOptions = '';
+            $.each(grades, function(i, grade) {
+                gradeOptions += '<option value="' + grade + '"' + (grade === detail.grade ? ' selected' : '') + '>' + grade + '</option>';
+            });
+        	
+            var row = '<tr>' +
+                '<td><input name="name" maxlength="50" value="' + detail.subject + '"></td>' +
+                '<td><input name="credit" type="number" maxlength="4" min="0" value ="' + detail.credit + '" ></td>' +
+                '<td><select name="grade"><option value="' + detail.grade + '" selected="selected">'+ gradeOptions + '</select></td>' +
+                '<td><label><input name="major" type="checkbox"' +(detail.is_major ? ' checked' : '')+'><span></span></label></td>' +
+            '</tr>';
+            tbody.append(row);
+	})
+}
+});
+	});
+	$(".menu li").first().trigger('click');
+	
+});
+	
+	function scrollToActiveMenu() {
+        console.log("scrollTo");
+        var $menu = $('.menu');
+        if (!$menu.is(':has(li.active)')) {
+            return false;
+        }
+        $menu.scrollLeft(0);
+       var left = Math.floor($menu.find('li.active').position().left) - 50;
+       $menu.scrollLeft(left);
+   }
+
+	
+</script>
+
+
 </head>
 <body style="">
 
@@ -48,135 +122,18 @@
 						<p class="total" title="졸업 학점 설정">/ 150</p>
 					</div>
 				</article>
-				<article class="semester">
-					<div class="series">
-						<div class="legend">
-							<table style="font-size: smaller; color: #545454">
-								<tbody>
-									<tr>
-										<td class="legendColorBox"><div
-												style="border: 1px solid transparent; padding: 1px">
-												<div
-													style="width: 4px; height: 0; border: 5px solid rgb(198, 41, 23); overflow: hidden"></div>
-											</div></td>
-										<td class="legendLabel"><span
-											style="color: rgb(198, 41, 23)">전체</span></td>
-										<td class="legendColorBox"><div
-												style="border: 1px solid transparent; padding: 1px">
-												<div
-													style="width: 4px; height: 0; border: 5px solid rgb(166, 166, 166); overflow: hidden"></div>
-											</div></td>
-										<td class="legendLabel"><span
-											style="color: rgb(166, 166, 166)">전공</span></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="plot" style="padding: 0px; position: relative;">
-							<canvas class="flot-base" width="328" height="116"
-								style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 365px; height: 129px;"></canvas>
-							<div class="flot-text"
-								style="position: absolute; inset: 0px; font-size: smaller; color: rgb(84, 84, 84);">
-								<div class="flot-x-axis flot-x1-axis xAxis x1Axis"
-									style="position: absolute; inset: 0px; display: block;">
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 19px; text-align: center;">
-										1학년<br>1학기
-									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 100px; text-align: center;">
-										1학년<br>2학기
-									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 180px; text-align: center;">
-										2학년<br>1학기
-									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 261px; text-align: center;">
-										2학년<br>2학기
-									</div>
-									<div
-										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 341px; text-align: center;">
-										4학년<br>1학기
-									</div>
-								</div>
-								<div class="flot-y-axis flot-y1-axis yAxis y1Axis"
-									style="position: absolute; inset: 0px; display: block;">
-									<div
-										style="position: absolute; top: 70px; font: 400 12px/14px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 0px; text-align: right;">2.0</div>
-									<div
-										style="position: absolute; top: 43px; font: 400 12px/14px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 0px; text-align: right;">3.0</div>
-									<div
-										style="position: absolute; top: 16px; font: 400 12px/14px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 0px; text-align: right;">4.0</div>
-								</div>
-							</div>
-							<canvas class="flot-overlay" width="328" height="116"
-								style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 365px; height: 129px;"></canvas>
-						</div>
-					</div>
-					<ul class="ratioplot">
-						<li><span class="grade">A+</span>
-						<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(68.4211%); height: 4px; background-color: rgb(242, 133, 114);"></div>
-								<span class="ratiotext"
-									style="left: calc(68.4211%); color: rgb(242, 133, 114);">34%</span>
-							</div></li>
-						<li><span class="grade">B+</span>
-						<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(52.6316%); height: 4px; background-color: rgb(236, 197, 92);"></div>
-								<span class="ratiotext"
-									style="left: calc(52.6316%); color: rgb(236, 197, 92);">26%</span>
-							</div></li>
-						<li><span class="grade">P</span>
-						<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(26.3158%); height: 4px; background-color: rgb(160, 198, 97);"></div>
-								<span class="ratiotext"
-									style="left: calc(26.3158%); color: rgb(160, 198, 97);">13%</span>
-							</div></li>
-						<li><span class="grade">A-</span>
-						<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(15.7895%); height: 4px; background-color: rgb(130, 209, 194);"></div>
-								<span class="ratiotext"
-									style="left: calc(15.7895%); color: rgb(130, 209, 194);">8%</span>
-							</div></li>
-						<li><span class="grade">B0</span>
-						<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(10.5263%); height: 4px; background-color: rgb(122, 158, 224);"></div>
-								<span class="ratiotext"
-									style="left: calc(10.5263%); color: rgb(122, 158, 224);">5%</span>
-							</div></li>
-					</ul>
-				</article>
+
 			</div>
 			<div class="menu">
 				<ol>
-				<c:for each>
-				</c:for>
-					<li class="" data-id ="${credit_s.credit_s_id}"><a>${credit_s.name }</a></li>
-					
-					
-					<li class="" data-id ="${login_id}0102"><a>1학년 2학기</a></li>
-					<li class="" data-id ="${login_id}0201"><a>2학년 1학기</a></li>
-					<li class="" data-id ="${login_id}0202"><a>2학년 2학기</a></li>
-					<li class="" data-id ="${login_id}0301"><a>3학년 1학기</a></li>
-					<li class="" data-id ="${login_id}0302"><a>3학년 2학기</a></li>
-					<li class="active" data-id ="${login_id}0401"><a>4학년 1학기</a></li>
-					<li class="" data-id ="${login_id}0402"><a>4학년 2학기</a></li>
-					<li class="" data-id ="${login_id}0501"><a>5학년 1학기</a></li>
-					<li class="" data-id ="${login_id}0502"><a>5학년 2학기</a></li>
-					<li class="" data-id ="${login_id}0601"><a>6학년 1학기</a></li>
-					<li class="" data-id ="${login_id}0602"><a>6학년 2학기</a></li>
-					<li class="" data-id ="${login_id}0701"><a>기타 학기</a></li>
+					<c:forEach var="semester" items="${semesters}">
+						<li class="" data-id="${semester.semester_id}"><a>${semester.semester_name}</a></li>
+					</c:forEach>
 				</ol>
 			</div>
 			<table class="subjects">
 				<caption>
-					<h3>4학년 1학기</h3>
+					<h3></h3>
 					<dl class="information">
 						<dt>평점</dt>
 						<dd class="gpa">4.5</dd>
@@ -196,216 +153,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0" ></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
-					<tr>
-						<td><input name="name" maxlength="50"></td>
-						<td><input name="credit" type="number" maxlength="4" min="0" value ="0"></td>
-						<td><select name="grade"><option value="A+"
-									selected="selected">A+</option>
-								<option value="A0">A0</option>
-								<option value="A-">A-</option>
-								<option value="B+">B+</option>
-								<option value="B0">B0</option>
-								<option value="B-">B-</option>
-								<option value="C+">C+</option>
-								<option value="C0">C0</option>
-								<option value="C-">C-</option>
-								<option value="D+">D+</option>
-								<option value="D0">D0</option>
-								<option value="D-">D-</option>
-								<option value="F">F</option>
-								<option value="P">P</option>
-								<option value="NP">NP</option></select></td>
-						<td><label><input name="major" type="checkbox"><span></span></label></td>
-					</tr>
+
 				</tbody>
 				<tfoot>
 					<tr>
@@ -472,6 +220,7 @@
 		</ul>
 		<span>직업정보제공사업 신고번호 : J1204020230008</span>
 	</div>
+	<!-- 
 	<script type="text/javascript">
 		var _serverTime = 1696549810737;
 		var _clientTime = new Date().getTime();
@@ -496,6 +245,7 @@
 		data-load-time="1696552191914" height="0" width="0"
 		style="display: none; visibility: hidden;"
 		src="https://td.doubleclick.net/td/ga/rul?tid=G-85ZNEFVRGL&amp;gacid=2075506928.1696405846&amp;gtm=45je3a40&amp;aip=1&amp;fledge=1&amp;z=533221291"></iframe>
+	 -->
 
 </body>
 </html>

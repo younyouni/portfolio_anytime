@@ -59,7 +59,7 @@
 					   <!-- 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 수정 버튼 표시 -->
 					   <c:choose>
 					       <c:when test="${currentUserId eq postdata.USER_ID}">
-					           <li class="update" id="updateButton" POST_ID="${postdata.POST_ID}">수정</li>
+					           <li class="update" id="updateButton" POST_ID="${postdata.POST_ID}" LOGIN_ID="${currentUserId}">수정</li>
 					           <li class="del" POST_ID="${postdata.POST_ID}" BOARD_ID="${postdata.BOARD_ID}">삭제</li>
 					       </c:when>
 					       <c:otherwise>
