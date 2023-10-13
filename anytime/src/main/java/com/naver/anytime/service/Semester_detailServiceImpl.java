@@ -18,4 +18,9 @@ public class Semester_detailServiceImpl implements Semester_detailService {
 	public int insert(Semester_detail semester_detail) {
 		return dao.insert(semester_detail);
 	}
+
+	@Override
+	public int update(Semester_detail semester_detail) {
+		return dao.update(semester_detail);
+	}
 }
