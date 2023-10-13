@@ -176,15 +176,11 @@ public class PostServiceImpl implements PostService {
 	public boolean postModify(Post modifypost, String filename) {
 		return false;
 	}
-
+	
+	//글삭제 => STATUS로 접근불가
 	@Override
-	public int postDelete(int post_id) {
-		int result = 0;
-	      Post post = postDao.getDetail(post_id);
-	      if (post != null) {
-	         result = postDao.postDelete(post_id);
-	      }
-	      return result;
+	public int updatePostStatus(int post_id) {
+		return postDao.updatePostStatus(post_id);
 	}
 
 	//글쓰기 실험용
@@ -216,6 +212,8 @@ public class PostServiceImpl implements PostService {
 		}
 		return result;
 	}
+
+	
 
 	
 

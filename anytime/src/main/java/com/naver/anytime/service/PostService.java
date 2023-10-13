@@ -57,8 +57,9 @@ public interface PostService {
 	 * 
 	 * private boolean postDataUpdate(Connection con, PostBean modifypost);
 	 */
-
-	public int postDelete(int post_id);
+	
+	//글삭제 => STATUS로 접근불가
+	public int updatePostStatus(int post_id);
 
 	// 포스트 닉네임 확인용
 	public List<Post> getUserNickname();
