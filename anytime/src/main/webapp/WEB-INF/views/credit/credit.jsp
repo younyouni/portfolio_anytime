@@ -34,6 +34,46 @@ $(document).ready(function(){
 	data: {semester_id: semester_id},
 	success: function(data) {
 		
+		var totalCredit = 0;
+        var totalMajorCredit = 0;
+        var weightedSum = 0;
+        var weightedMajorSum = 0;
+
+     // 성적에 대응하는 숫자 값 맵
+        var gradeValuesMap = {
+            "A+":4.5, "A0":4.3, "A-":4,
+            "B+":3.5, "B0":3.3, "B-":3,
+            "C+":2.5, "C0":2.3, "C-":2,
+            "D+":1.5, "D0":1.3, "D-":1,
+            "F": 0, "P": 0, "NP": 0
+        };
+
+        $.each(data, function(i, detail) {
+    		var credit = detail.credit;
+    		
+    		// 해당 성적에 대응하는 숫자 값 가져오기
+    		var gradeValue = gradeValuesMap[detail.grade];
+
+    		totalCredit += credit;
+    		weightedSum += gradeValue * credit;
+
+    		if (detail.major) {
+    			totalMajorCredit += credit;
+    			weightedMajorSum += gradeValue * credit;
+    		}
+    	});
+
+    	var gpa = (totalCredit > 0) ? (weightedSum / totalCredit).toFixed(2) : "-";
+    	
+        var majorGpa = (totalMajorCredit > 0) ? (weightedMajorSum / totalMajorCredit).toFixed(2) : "-";
+
+        $('dd.gpa').text(gpa);
+        $('dd.major').text(majorGpa);
+        $('dd.acquisition').text(totalCredit);
+		
+		
+		
+		
         // 받아온 데이터로 subject테이블 만들기 
         var tbody = $('.subjects tbody');
         tbody.empty();  // 기존 행들 삭제
@@ -182,11 +222,11 @@ $(document).ready(function(){
 					<h3></h3>
 					<dl class="information">
 						<dt>평점</dt>
-						<dd class="gpa">4.5</dd>
+						<dd class="gpa"></dd>
 						<dt>전공</dt>
-						<dd class="major">4.5</dd>
+						<dd class="major"></dd>
 						<dt>취득</dt>
-						<dd class="acquisition">17</dd>
+						<dd class="acquisition"></dd>
 					</dl>
 					<a class="import" style="display: inline;">시간표 불러오기</a>
 				</caption>
