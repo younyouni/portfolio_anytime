@@ -6,4 +6,6 @@ public interface Semester_detailService {
 
 	public int insert(Semester_detail semester_detail);
 
+	public int update(Semester_detail semester_detail);
+
 }

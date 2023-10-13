@@ -2,20 +2,28 @@ package com.naver.anytime.domain;
 
 public class Semester_detail {
 
+	private int semester_detail_id;
 	private int semester_id;
-	
 	private String subject="";
 	private int credit = 0;
 	private String grade = "A+";
-	private boolean is_major = false;
+	private boolean major = false;
 	
 	private String semester_name;
 	
-	public boolean isIs_major() {
-		return is_major;
+	
+	public int getSemester_detail_id() {
+		return semester_detail_id;
 	}
-	public void setIs_major(boolean is_major) {
-		this.is_major = is_major;
+	public void setSemester_detail_id(int semester_detail_id) {
+		this.semester_detail_id = semester_detail_id;
+	}
+	
+	public boolean isMajor() {
+		return major;
+	}
+	public void setMajor(boolean major) {
+		this.major = major;
 	}
 	public int getSemester_id() {
 		return semester_id;
