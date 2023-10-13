@@ -10,6 +10,8 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.article.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/modal.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
@@ -118,81 +120,71 @@
 		</div>
 		<hr>
 		<jsp:include page="../common/rightside3.jsp" />
+		
+		
+		<%------------------------------------------------ 쪽지모달 ------------------------------------------------%>
+		<form id="messageSend" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
+			<a title="닫기" class="close"></a>
+			<h3>쪽지 보내기</h3>
+			<p>
+				<textarea name="message" class="text" placeholder="내용을 입력해주세요."></textarea>
+			</p>
+			<input type="submit" value="전송" class="button">
+		</form>
+		<%------------------------------------------------ 쪽지모달 ------------------------------------------------%>
 	</div>
+	
+	
+	
+	
+	
 	<%-- -------------------------------- ▼footer CSS수정 전이라 임시주석처리중입니다.▼ --------------------------------
 	<jsp:include page="../common/footer.jsp" /> 
 	--%>
 	<script>
-     $(document).ready(function() { 
-            var deleteButtons = document.getElementsByClassName('del');
+	
+	// * * * * * * * * * * * * * * * * * * * * * * 쪽지 기능 * * * * * * * * * * * * * * * * * * * * * * 
 
-            let token = $("meta[name='_csrf']").attr("content");
-            let header = $("meta[name='_csrf_header']").attr("content");
+	$("li.messagesend").click(function(){
+		$('form#messageSend').css('display', 'block');
+		$('form#messageSend').before('<div class="modalwrap"></div>');
+		})
 
-            for (var i = 0; i < deleteButtons.length; i++) {
-                deleteButtons[i].addEventListener('click', function(event) {
-                    if(confirm("삭제하시겠습니까?")) {
-                        var postId = event.target.getAttribute("post_id");
-                        var boardId = event.target.getAttribute("board_id");
-                        $.ajax({
-                            url: 'delete',
-                            type: 'POST',
-                            data: { post_id: postId },
-                            beforeSend: function(xhr) {
-                                xhr.setRequestHeader(header, token);
-                            },
-                            success: function(data) {
-                                if(data.statusCode == 1) {
-                                    alert("게시글이 성공적으로 삭제되었습니다.");
-                                    location.href = "/anytime/post/list?board_id=" + boardId;
-                                } else {
-                                    alert(`게시글 삭제 실패: ${data.errorMessage}`);
-                                }
-                            },
-                            error: function(error) {
-                                console.error('Error:', error);
-                            }
-                        });
-                    }
-                });
-            }
-        
-     /* // "삭제" 버튼을 클릭하면 동작하는 스크립트
-        $(".del").click(function() {
-            // 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 확인 창을 띄웁니다.
-            if (currentUserId == writerId) {
-                var confirmation = confirm("내용을 삭제하시겠습니까?");
-                if (confirmation) {
-                    // 삭제 동작을 수행합니다.
-                    var post_id = $("#post_id").val();
+	$('a.close').click(function() {
+		$('#messageSend').css('display', 'none');
+		$('div.modalwrap').remove();
+	});
+		
+	$("#messageSend").submit(function(e) {
+	    e.preventDefault();
+	    sendMessageAjax();
+	});
 
-                    $.ajax({
-                        type: "POST",
-                        url: "PostDeleteAction.bo",  // 실제 삭제 처리를 담당하는 서버 측 URL
-                        data: { post_id: post_id },
-                        success: function(response) {
-                            if (response == 0) {
-                                alert("삭제 실패했습니다.");
-                            } else {
-                                // 삭제 성공 시, 해당 게시물을 화면에서 숨깁니다.
-                                alert("게시물이 삭제되었습니다.");
-                                window.location.href = "list?board_id=" + ${boarddata.board_id}
-                                $(".article").hide();  // 해당 게시물 영역을 숨깁니다.
-                            }
-                        },
-                        error: function() {
-                            alert("삭제 요청 실패했습니다.");
-                        }
-                    });
-                }
-            }
-        });
-     */
-        $("#goListButton").click(function() {
-        	window.location.href = "list?board_id=" + ${boardtest.BOARD_ID}
-        }); 
-     	
-     }); 
+     function sendMessageAjax(){
+		    var urlParams = new URLSearchParams(window.location.search);
+		    var post_id = urlParams.get('post_id');
+    		var content = document.querySelector('#messageSend textarea').value;
+    		console.log("여기까진 오냐?" + post_id + "/" + content);
+    		$.ajax({
+    			url: "${pageContext.request.contextPath}/sendmessage",
+    			data: {
+    				"post_id": post_id,
+    				"content": content,
+    			},
+    			success: function (sendResult){
+    				if(sendResult == 1){
+    					alert("쪽지가 송신되었습니다.");
+    					location.reload();	
+    				}else{
+    					alert("쪽지 송신에 실패했습니다.")
+    				}
+   					console.log(post_id + "/" + content + "/" + sendResult);
+    			}
+    		})
+
+    	}
+	// * * * * * * * * * * * * * * * * * * * * * * 쪽지 기능 * * * * * * * * * * * * * * * * * * * * * * 
+	
 </script> 
 </body>
 </html>

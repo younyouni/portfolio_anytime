@@ -5,7 +5,7 @@
 
 <mapper namespace="com.naver.anytime.mybatis.mapper.MessageMapper">
 
-	<select id="getUserIdConversion">
+	<select id="getUserIdConversion" resultType="Integer">
 		select user_id
 		from member
 		where user_id = (	select user_id
@@ -47,28 +47,16 @@
 					SENDER, RECEIVER, 
 					CONTENT, MESSAGE_DATE
 		)
-		<include refid="check"/>
-	</insert>
-	
-	<sql id="check">
-		<if test='check > 0'>
-		 VALUES (
+		VALUES (
 					message_seq.nextval, #{messageall_id},
 					#{sender_user_id}, #{receiver_user_id}, 
 					#{content}, sysdate
-		)		
-		</if>
-		<if test='check == 0'>
-		 VALUES (
-					message_seq.nextval, messageall_seq.nextval,
-					#{sender_user_id}, #{receiver_user_id}, 
-					#{content}, sysdate
 		)
-		</if>
-	</sql>
+
+	</insert>
 	
 	<select id="getUserIdConversion2" resultType="Integer">
-		select user_id
+		select receiver
 		from messageall
 		where messageall_id = #{messageall_id}
 	</select>
@@ -80,4 +68,29 @@
 		   OR (sender = #{receiver_user_id} AND receiver = #{sender_user_id})
 	</select>
 
+	<insert id="insertMessageAllId">
+		insert into messageall(messageall_id, read, sender, receiver)
+		values(messageall_seq.nextval, 0, #{sender_user_id}, #{receiver_user_id})
+	</insert>
+	
+		<insert id="insertMessage2" parameterType="Message">
+		INSERT 
+		INTO Message (
+					MESSAGE_ID, MESSAGEALL_ID,
+					SENDER, RECEIVER, 
+					CONTENT, MESSAGE_DATE
+		)
+		VALUES (
+					message_seq.nextval, #{messageall_id},
+					#{sender_user_id}, #{receiver_user_id}, 
+					#{content}, sysdate
+		)
+		</insert>
+		
+	<select id="isMessageAllIdPresent2" resultType="int">
+		SELECT messageall_id
+		FROM messageall
+		WHERE (sender = #{sender_user_id} AND receiver = #{receiver_user_id})
+		   OR (sender = #{receiver_user_id} AND receiver = #{sender_user_id})
+	</select>
 </mapper>

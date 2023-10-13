@@ -46,7 +46,7 @@
     	</div>
     </div>
     
-    <form id="messageSend" class="modal">
+    <form id="messageSend" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
       <a title="닫기" class="close"></a>
       <h3>쪽지 보내기</h3>
       <p>
@@ -190,7 +190,6 @@ function getMessageLastListAjax() {
 
 function sendMessage(){
 	var messageall_id = $("#laft > a.active").data("id");
-	console.log("ㅋㅋ");
 	var content = document.querySelector('#messageSend textarea').value;
 	/* var text = $("textarea[name='message']").val(); */
 	$.ajax({

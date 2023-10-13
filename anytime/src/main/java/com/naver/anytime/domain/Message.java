@@ -11,7 +11,6 @@ public class Message {
     
     private int DIRECTION;
 
-
 	public int getMESSAGE_ID() {
 		return MESSAGE_ID;
 	}

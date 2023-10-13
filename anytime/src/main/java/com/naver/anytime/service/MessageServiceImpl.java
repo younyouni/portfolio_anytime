@@ -44,4 +44,19 @@ public class MessageServiceImpl implements MessageService{
 	public int isMessageAllIdPresent(int sender_user_id, int receiver_user_id) {
 		return dao.isMessageAllIdPresent(sender_user_id, receiver_user_id);
 	}
+
+	@Override
+	public int insertMessageAllId(int sender_user_id, int receiver_user_id) {
+		return dao.insertMessageAllId(sender_user_id, receiver_user_id);
+	}
+
+	@Override
+	public int insertMessage2(int messageall_id, int sender_user_id, int receiver_user_id, String content) {
+		return dao.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
+	}
+
+	@Override
+	public int isMessageAllIdPresent2(int sender_user_id, int receiver_user_id) {
+		return dao.isMessageAllIdPresent2(sender_user_id, receiver_user_id);
+	}
 }
