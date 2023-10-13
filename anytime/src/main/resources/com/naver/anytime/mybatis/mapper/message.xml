@@ -82,7 +82,7 @@
 		)
 		VALUES (
 					message_seq.nextval, #{messageall_id},
-					#{sender_user_id}, #{receiver_user_id}, 
+					#{sender_user_id}, #{receiver_user_id},
 					#{content}, sysdate
 		)
 		</insert>
