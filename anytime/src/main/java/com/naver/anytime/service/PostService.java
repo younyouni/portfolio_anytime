@@ -69,6 +69,8 @@ public interface PostService {
 	
 	//글수정 실험용
 	public void updatePost(Post post);
+	
+	int increaseLike(int post_id, int user_id);
 
 	//검색용 리스트 총 수
 	public int getSearchListCount(int board_id, int search_field, String search_word);

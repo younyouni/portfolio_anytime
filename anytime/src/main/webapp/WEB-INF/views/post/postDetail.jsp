@@ -12,7 +12,10 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postGoList.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postDelete.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postLike.js"></script>
 <script>
 	var userid = $('#login_id').val();
 	var anonymous = ${anonymous};
@@ -60,7 +63,7 @@
 					   <c:choose>
 					       <c:when test="${currentUserId eq postdata.USER_ID}">
 					           <li class="update" id="updateButton" POST_ID="${postdata.POST_ID}" LOGIN_ID="${currentUserId}">수정</li>
-					           <li class="del" POST_ID="${postdata.POST_ID}" BOARD_ID="${postdata.BOARD_ID}">삭제</li>
+					           <li class="del" data-POST_ID="${postdata.POST_ID}" data-BOARD_ID="${postdata.BOARD_ID}">삭제</li>
 					       </c:when>
 					       <c:otherwise>
 					            <li class="messagesend" data-modal="messageSend"
@@ -110,7 +113,7 @@
 			<%--------------------------------- comment 끝 ---------------------------------------------------%>
 			<div class="clearBothOnly"></div>
 			<div class="pagination">
-				<a id="goListButton" class="list">글 목록</a>
+				<a id="goListButton" class="list" data-board_id="${boardtest.BOARD_ID}">글 목록</a>
 				<div class="center-block">
 					<ul class="pagination justify-content-center">
 					</ul>
@@ -123,63 +126,5 @@
 	<%-- -------------------------------- ▼footer CSS수정 전이라 임시주석처리중입니다.▼ --------------------------------
 	<jsp:include page="../common/footer.jsp" /> 
 	--%>
-	<script>
-     $(document).ready(function() { 
-    	 $(".del").click(function() {
-    	     var confirmation = confirm("내용을 삭제하시겠습니까?");
-    	     if (confirmation) {
-    	         var post_id = $("#post_id").val();
-    	         $.ajax({
-    	             type: "GET",
-    	             url: "delete",
-    	             data: { post_id: post_id },
-    	             success: function(response) {
-    	                 alert(response);
-    	                 location.href = "list?board_id=" + ${postdata.BOARD_ID};
-    	             },
-    	             error: function() {
-    	                 alert("삭제 요청 실패했습니다.");
-    	             }
-    	         });
-    	     }
-    	});
-        
-     /* // "삭제" 버튼을 클릭하면 동작하는 스크립트
-        $(".del").click(function() {
-            // 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 확인 창을 띄웁니다.
-            if (currentUserId == writerId) {
-                var confirmation = confirm("내용을 삭제하시겠습니까?");
-                if (confirmation) {
-                    // 삭제 동작을 수행합니다.
-                    var post_id = $("#post_id").val();
-
-                    $.ajax({
-                        type: "POST",
-                        url: "PostDeleteAction.bo",  // 실제 삭제 처리를 담당하는 서버 측 URL
-                        data: { post_id: post_id },
-                        success: function(response) {
-                            if (response == 0) {
-                                alert("삭제 실패했습니다.");
-                            } else {
-                                // 삭제 성공 시, 해당 게시물을 화면에서 숨깁니다.
-                                alert("게시물이 삭제되었습니다.");
-                                window.location.href = "list?board_id=" + ${boarddata.board_id}
-                                $(".article").hide();  // 해당 게시물 영역을 숨깁니다.
-                            }
-                        },
-                        error: function() {
-                            alert("삭제 요청 실패했습니다.");
-                        }
-                    });
-                }
-            }
-        });
-     */
-        $("#goListButton").click(function() {
-        	window.location.href = "list?board_id=" + ${boardtest.BOARD_ID}
-        }); 
-     	
-     }); 
-</script> 
 </body>
 </html>

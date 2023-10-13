@@ -77,6 +77,8 @@ public interface PostMapper {
 	//글수정 실험용
 	public void updatePost(Post post);
 	
+	int increaseLike(int post_id, int user_id);
+	
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
 

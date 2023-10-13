@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,12 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
-import com.naver.anytime.domain.Comments;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
+import com.naver.anytime.domain.PostLike;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
+import com.naver.anytime.service.PostLikeService;
 import com.naver.anytime.service.PostService;
 
 @Controller
@@ -47,12 +47,15 @@ public class PostController {
    
    private MemberService memberService;
    
+   private PostLikeService postLikeService;
+   
    @Autowired
-   public PostController(PostService postService, BoardService boardService, CommentService commentService, MemberService memberService) {
+   public PostController(PostService postService, BoardService boardService, CommentService commentService, MemberService memberService, PostLikeService postLikeService) {
 	  this.postService = postService;
       this.boardService = boardService;
       this.commentService = commentService;
       this.memberService = memberService;
+      this.postLikeService = postLikeService;
    }
    
 /* -------------------------------------------------------------- ▼Created By UniUni▼ -------------------------------------------------------------- */
@@ -211,9 +214,6 @@ public class PostController {
      return result;
    }
    
-   
-
-   
    /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */
    @ResponseBody
    @GetMapping("/delete")
@@ -225,6 +225,51 @@ public class PostController {
            return new ResponseEntity<>("게시글 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
        }
    }
+   
+   /* -------------------------------- ▼post/postLike 글 공감 액션▼ -------------------------------- */
+   @ResponseBody
+   @PostMapping("/likePost")
+   public ResponseEntity<Map<String, Object>> likePost(
+       @RequestParam(value = "post_id") Integer post_id,
+       HttpServletRequest request, Principal userPrincipal) {
+
+       String id = userPrincipal.getName();
+       Member member = memberService.getLoginMember(id);
+       int currentUserId = member.getUser_id();
+
+       Map<String, Object> result = new HashMap<>();
+       
+   	// Check if the user has already liked the post
+   	PostLike existingLike = postLikeService.findExistingLike(post_id, currentUserId);
+
+   	if(existingLike == null) {
+   		try {
+   			int like_count = postService.increaseLike(post_id, currentUserId); 
+   			result.put("statusCode", 1);
+   			result.put("like_count", like_count); 
+   		} catch(Exception e) {
+   			result.put("statusCode", -1);
+   			result.put("errorMessage", e.getMessage());
+   		}
+   	} else { // If the user has already liked the post
+   		try {
+   			postLikeService.removeLike(existingLike.getPOST_LIKE_ID());
+   			
+               // After removing a like from a post we should get an updated count of likes.
+               Post post= postService.getDetail(post_id);
+               int like_count = post.getLIKE_COUNT();
+               
+               result.put("statusCode", 2);
+               result.put("like_count", like_count); 
+           } catch(Exception e) {
+              result.put("statusCode", -1);
+              result.put("errorMessage", e.getMessage());
+          }
+      }
+
+     return new ResponseEntity<>(result, HttpStatus.OK);
+   }
+
 
 
    

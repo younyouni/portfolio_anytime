@@ -1,36 +1,34 @@
 $(document).ready(function () {
-    // 공감 버튼 클릭 이벤트
-    $(".posvote").on("click", function() {
-        var result = confirm("이 글에 공감하십니까?");
+    $(".posvote").on('click', function(e) {
+        var confirmResult = confirm('이 글에 공감하십니까?');
         
-        if (result) { // 확인 버튼 클릭 시
+        if(confirmResult){
             let token = $("meta[name='_csrf']").attr("content");
-			let header = $("meta[name='_csrf_header']").attr("content");
-
-            let POST_ID = $(this).attr('POST_ID');
-
-            let data = {
-                post_id: POST_ID
-            };
+            let header = $("meta[name='_csrf_header']").attr("content");
+            
+            let postId= $(this).data('post_id'); // 게시글의 ID를 얻습니다. 이 값은 HTML에서 data-postId 속성으로 설정되어야 합니다.
 
             $.ajax({
                 url: 'likePost',
                 type: 'POST',
-                data: data,
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
-				},
-                success: function(data) {
+                data: {post_id: post_id},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token)
+                },
+                success:function(data){
                     if(data.statusCode == 1){
-                        alert('공감이 추가되었습니다.');
-                        $('.vote').text(data.likeCount); // 변경된 공감 수 반영
-                    } else {
-                        alert('공감 추가에 실패하였습니다.');
+                        alert('공감 완료!');
+                        $('.vote').text(data.like_count); // Update Like Count on Page.
+                    } else if(data.statusCode == 2){
+                        alert('공감 취소!');
+                        $('.vote').text(data.like_count); // Update Like Count on Page.
+                    } else{
+                        alert('오류 발생 : ' + data.errorMessage);
                     }
                 },
-                error: function(err) {
-                    console.log(err);
-                    alert('오류가 발생했습니다.');
+                error:function(e){
+                    console.log(e);
+                    alert('오류 발생!');
                 }
             });
         }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.anytime.mybatis.mapper.PostLikeMapper">
+
+  <insert id="addLike" parameterType="com.naver.anytime.domain.PostLike">
+     INSERT INTO POST_LIKE (POST_ID, USER_ID)
+     VALUES (#{POST_ID}, #{USER_ID})
+  </insert>
+
+  <delete id="removeLike" parameterType="int">
+     DELETE FROM POST_LIKE 
+     WHERE POST_LIKE_ID = #{post_like_id}
+  </delete>
+  
+  <select id="findExistingLike" resultType="com.naver.anytime.domain.PostLike">
+      SELECT * FROM POST_LIKE 
+      WHERE POST_ID = #{post_id} AND USER_ID = #{user_id}
+  </select>
+  
+</mapper>

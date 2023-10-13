@@ -199,7 +199,12 @@ public class PostServiceImpl implements PostService {
 		postDao.updatePost(post);
 	}
 	
+	@Override
+	public int increaseLike(int post_id, int user_id) {
+		return postDao.increaseLike(post_id, user_id);
+	}
 
+	
 	// ********************************= 윤희 =********************************
 	@Override
 	public List<List<Post>> getPostListByBoard(int[] board_ids) {
@@ -212,6 +217,7 @@ public class PostServiceImpl implements PostService {
 		}
 		return result;
 	}
+
 
 	
 
