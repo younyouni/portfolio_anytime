@@ -1,3 +1,5 @@
+---------------------------------------------------------CREDIT TABLE------------------------------------------------------------
+
 CREATE TABLE CREDIT(
  CREDIT_ID NUMBER NOT NULL PRIMARY KEY,
  USER_ID NUMBER NOT NULL REFERENCES MEMBER(USER_ID),
@@ -15,9 +17,9 @@ VALUES(
  credit_seq.NEXTVAL, 0, 150
 );
 
+---------------------------------------------------------SEMESTER TABLE------------------------------------------------------------
 
-
-drop table credit_semester cascade constraints purge; 
+drop table semester cascade constraints purge; 
 drop sequence credit_semester_seq;
 
 
@@ -38,9 +40,15 @@ VALUES(
  semester_seq.NEXTVAL, 1, '0101'
 );
 
+---------------------------------------------------------SEMESTER_DETAIL TABLE------------------------------------------------------------
 
+drop table semester_detail cascade constraints purge; 
+drop sequence semester_detail_seq;
+
+create sequence semester_detail_seq;
 
 CREATE TABLE SEMESTER_DETAIL(
+ SEMESTER_DETAIL_ID NUMBER NOT NULL PRIMARY KEY,
  SEMESTER_ID NUMBER NOT NULL REFERENCES SEMESTER(SEMESTER_ID),
  SUBJECT VARCHAR2(100) NOT NULL,
  CREDIT NUMBER NOT NULL,
