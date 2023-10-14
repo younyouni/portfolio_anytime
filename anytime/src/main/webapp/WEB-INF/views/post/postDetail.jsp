@@ -15,7 +15,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/post/postGoList.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/postDelete.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/post/postLike.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postLike2.js"></script>
 <script>
 	var userid = $('#login_id').val();
 	var anonymous = ${anonymous};

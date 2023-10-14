@@ -1,13 +1,16 @@
 package com.naver.anytime.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.naver.anytime.domain.PostLike;
 
 public interface PostLikeService {
-	
-	int addLike(PostLike postlike);
-	
-    int removeLike(int post_like_id);
     
-    PostLike findExistingLike(int post_id, int user_id);
+	@Transactional
+    public void addNewlike(PostLike postLike);
+	
+    public void removeExistinglike(PostLike postLike);
+    public int checkIfUserAlreadyLiked(PostLike postLike);
+    
     
 }

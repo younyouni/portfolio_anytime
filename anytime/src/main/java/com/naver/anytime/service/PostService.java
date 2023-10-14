@@ -1,11 +1,12 @@
 package com.naver.anytime.service;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.naver.anytime.domain.Member;
+import org.apache.ibatis.annotations.Update;
+
 import com.naver.anytime.domain.Post;
+import com.naver.anytime.domain.PostLike;
 
 public interface PostService {
 
@@ -70,7 +71,15 @@ public interface PostService {
 	//글수정 실험용
 	public void updatePost(Post post);
 	
-	int increaseLike(Integer post_id, int currentUserId);
+//	int increaseLike(Integer post_id, int currentUserId);
+	
+	public int getPostLikes(int post_id);
+	
+	@Update("UPDATE POST SET LIKE_COUNT = LIKE_COUNT + 1 WHERE POST_ID = #{POST_ID}")
+    public void incrementLikes(int post_id);
+
+    @Update("UPDATE POST SET LIKE_COUNT = LIKE_COUNT - 1 WHERE POST_ID = #{POST_ID}")
+    public void decrementLikes(int post_id);
 
 	//검색용 리스트 총 수
 	public int getSearchListCount(int board_id, int search_field, String search_word);

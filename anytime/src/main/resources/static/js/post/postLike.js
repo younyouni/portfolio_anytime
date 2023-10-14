@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".posvote").one('click', function(e) { // one() 함수 사용
+    $(".posvote").on('click', function(e) { 
         e.preventDefault();
 
         var confirmResult = confirm('이 글에 공감하십니까?');
@@ -38,3 +38,4 @@ $(document).ready(function () {
         }
     });
 });
+

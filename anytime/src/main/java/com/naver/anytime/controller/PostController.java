@@ -226,44 +226,90 @@ public class PostController {
        }
    }
    
-   /* -------------------------------- ▼post/postLike 글 공감 액션▼ -------------------------------- */
-   @ResponseBody
+//   /* -------------------------------- ▼post/postLike 글 공감 액션▼ -------------------------------- */
+//   @ResponseBody
+//   @PostMapping("/likePost")
+//   public ResponseEntity<Map<String, Object>> likePost(
+//       @RequestParam(value = "post_id") Integer post_id,
+//       HttpServletRequest request, Principal userPrincipal) {
+//
+//       String id = userPrincipal.getName();
+//       Member member = memberService.getLoginMember(id);
+//       int currentUserId = member.getUser_id();
+//
+//       Map<String, Object> result = new HashMap<>();
+//       
+//       PostLike existingLike = postLikeService.findExistingLike(post_id, currentUserId);
+//
+//       if(existingLike == null) {
+//           try {
+//               postService.increaseLike(post_id, currentUserId); 
+//
+//               Post post= postService.getDetail(post_id); // 게시글 상세 정보 다시 조회
+//               int like_count = post.getLIKE_COUNT(); // 최신의 공감 수 가져오기
+//
+//               result.put("statusCode", 1);
+//               result.put("like_count", like_count); 
+//           } catch(Exception e) {
+//               result.put("statusCode", -1);
+//               result.put("errorMessage", e.getMessage());
+//           }
+//      } else { 
+//          // 이미 공감한 경우
+//          result.put("statusCode", 3);
+//          return new ResponseEntity<>(result, HttpStatus.OK);
+//      }
+//
+//      return new ResponseEntity<>(result, HttpStatus.OK);
+//   }
+   		
+   /* -------------------------------- ▼post/postLike 글 공감 액션 실험용▼ -------------------------------- */
+   
    @PostMapping("/likePost")
    public ResponseEntity<Map<String, Object>> likePost(
-       @RequestParam(value = "post_id") Integer post_id,
-       HttpServletRequest request, Principal userPrincipal) {
-
+		   @RequestParam(value = "POST_ID", required=false) Integer post_id,
+           Principal userPrincipal) {
        String id = userPrincipal.getName();
        Member member = memberService.getLoginMember(id);
        int currentUserId = member.getUser_id();
 
-       Map<String, Object> result = new HashMap<>();
-       
-       PostLike existingLike = postLikeService.findExistingLike(post_id, currentUserId);
+       Map<String, Object> resultMap = new HashMap<>();
 
-       if(existingLike == null) {
+       PostLike postLike = new PostLike();
+       logger.info("Received POST_ID: " + post_id);  // POST_ID 값 로그 출력
+       logger.info("Initial PostLike: " + postLike); // 초기 PostLike 객체 상태 로그 출력
+       postLike.setPOST_ID(post_id);
+       postLike.setUSER_ID(currentUserId);
+
+       int likeCount = postLikeService.checkIfUserAlreadyLiked(postLike);
+
+       if(likeCount == 0) {
            try {
-               postService.increaseLike(post_id, currentUserId); 
+               postLikeService.addNewlike(postLike); 
 
-               Post post= postService.getDetail(post_id); // 게시글 상세 정보 다시 조회
-               int like_count = post.getLIKE_COUNT(); // 최신의 공감 수 가져오기
-
-               result.put("statusCode", 1);
-               result.put("like_count", like_count); 
-           } catch(Exception e) {
-               result.put("statusCode", -1);
-               result.put("errorMessage", e.getMessage());
-           }
+               resultMap.put("statusCode", 1);
+               resultMap.put("like_count", postService.getPostLikes(post_id));
+               
+          } catch(Exception e) {
+             resultMap.put("statusCode", -1);
+             resultMap.put("errorMessage", e.getMessage());
+          }
+           
       } else { 
-          // 이미 공감한 경우
-          result.put("statusCode", 3);
-          return new ResponseEntity<>(result, HttpStatus.OK);
+          try {
+              postLikeService.removeExistinglike(postLike); 
+
+              resultMap.put("statusCode", 2);
+              resultMap.put("like_count", postService.getPostLikes(post_id));
+              
+          } catch(Exception e) {
+             resultMap.put("statusCode", -1);
+             resultMap.put("errorMessage", e.getMessage());
+          }
       }
 
-      return new ResponseEntity<>(result, HttpStatus.OK);
-   }
-
-
+     return new ResponseEntity<>(resultMap, HttpStatus.OK); 
+  }
 
 
 

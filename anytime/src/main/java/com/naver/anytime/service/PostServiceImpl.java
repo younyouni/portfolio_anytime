@@ -9,7 +9,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.mybatis.mapper.BoardMapper;
 import com.naver.anytime.mybatis.mapper.PostMapper;
@@ -199,11 +198,15 @@ public class PostServiceImpl implements PostService {
 		postDao.updatePost(post);
 	}
 	
+//	@Override
+//	public int increaseLike(Integer post_id, int currentUserId) {
+//		return postDao.increaseLike(post_id, currentUserId);
+//	}
+	
 	@Override
-	public int increaseLike(Integer post_id, int currentUserId) {
-		return postDao.increaseLike(post_id, currentUserId);
-	}
-
+    public int getPostLikes(int post_id) {
+		return postDao.getPostLikes(post_id);
+    } 
 	
 	// ********************************= 윤희 =********************************
 	@Override
@@ -218,9 +221,16 @@ public class PostServiceImpl implements PostService {
 		return result;
 	}
 
+	@Override
+	public void incrementLikes(int post_id) {
+	}
+
+	@Override
+	public void decrementLikes(int post_id) {
+	}
 
 	
 
-	
+
 
 }
