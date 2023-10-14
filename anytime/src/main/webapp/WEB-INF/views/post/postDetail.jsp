@@ -122,7 +122,7 @@
 		<jsp:include page="../common/rightside3.jsp" />
 		
 		
-		<%------------------------------------------------ 쪽지모달 ------------------------------------------------%>
+		<%------------------------------------------------ ▼쪽지모달▼ ------------------------------------------------%>
 		<form id="messageSend" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
 			<a title="닫기" class="close"></a>
 			<h3>쪽지 보내기</h3>
@@ -131,57 +131,62 @@
 			</p>
 			<input type="submit" value="전송" class="button">
 		</form>
-		<%------------------------------------------------ 쪽지모달 ------------------------------------------------%>
+		<%------------------------------------------------ ▲쪽지모달▲ ------------------------------------------------%>
 	</div>
-	
-	
-	
 	
 	
 	<%-- -------------------------------- ▼footer CSS수정 전이라 임시주석처리중입니다.▼ --------------------------------
 	<jsp:include page="../common/footer.jsp" /> 
 	--%>
+	
+	
+	
 	<script>
-	$("li.messagesend").click(function(){
-		$('form#messageSend').css('display', 'block');
-		$('form#messageSend').before('<div class="modalwrap"></div>');
-	});
+	var comment_id = null;
 
 	$('a.close').click(function() {
 		$('#messageSend').css('display', 'none');
 		$('div.modalwrap').remove();
 	});
 		
+	$(document).on("click", "li.messagesend", function(){
+	    $('form#messageSend').css('display', 'block');
+	    $('form#messageSend').before('<div class="modalwrap"></div>');
+	    var article = event.target.closest('article');
+	    comment_id = article.getAttribute('id');
+	});
+	
 	$("#messageSend").submit(function(e) {
 	    e.preventDefault();
-	    sendMessageAjax();
-	    console.log("실행1");
-	}); 
+	    var urlParams = new URLSearchParams(window.location.search);
+	    var post_id = urlParams.get('post_id');
 
-     function sendMessageAjax(){
-		    var urlParams = new URLSearchParams(window.location.search);
-		    var post_id = urlParams.get('post_id');
+	    if(comment_id > 0){
+	    	post_id = 0;
+	    }else{
+	    	comment_id = 0;
+	    }
+	    sendMessageAjax(post_id,comment_id);
+	});
+
+     function sendMessageAjax(post_id, comment_id){
     		var content = document.querySelector('#messageSend textarea').value;
-    		console.log("여기까진 오냐?" + post_id + "/" + content);
-    		 console.log("실행2");
     		$.ajax({
     			url: "${pageContext.request.contextPath}/sendmessage",
     			data: {
     				"post_id": post_id,
-    				"content": content,
+    				"comment_id": comment_id,
+    				"content": content
     			},
     			success: function (sendResult){
     				if(sendResult == 1){
-    					console.log("실행3");
     					alert("쪽지가 송신되었습니다.");
     					location.reload();	
     				}else{
     					alert("쪽지 송신에 실패했습니다.")
     				}
-   					console.log(post_id + "/" + content + "/" + sendResult);
     			}
     		})
-
     	};
 </script> 
 </body>

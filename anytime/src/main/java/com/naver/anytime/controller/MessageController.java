@@ -66,6 +66,7 @@ public class MessageController {
 		}else {
 			System.out.println("==메시지 출력 실패==");
 		}
+		
 		return messageList;
 	}
 	
@@ -87,7 +88,6 @@ public class MessageController {
 			System.out.println("==메시지 출력 실패==");
 		}
 		
-		System.out.println("값 =" + messageLastList);
 		return messageLastList;
 	}	
 	
@@ -119,11 +119,20 @@ public class MessageController {
 			messageall_id = messageService.isMessageAllIdPresent2(sender_user_id,receiver_user_id);
 			System.out.println("(3) - 쪽지 관리번호 체크 [" + messageall_id + "]");
 			messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
-			System.out.println("들어갔냐?" + messageinsert);
+			System.out.println("(4) - 메시지 insert 체크 [" + messageinsert + "]");
 		} else if (comment_id > 0) {
 			int receiver_user_id = messageService.getUserIdConversion(comment_id);
 			int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
+			
+			System.out.println("(1) - 체크 [" + check + "]");
+			if(check == 0) {
+				int messageall = messageService.insertMessageAllId(sender_user_id, receiver_user_id);
+				System.out.println("(2) - 쪽지 관리번호 insert 체크 [" + messageall + "]");
+			}
+			messageall_id = messageService.isMessageAllIdPresent2(sender_user_id,receiver_user_id);
+			System.out.println("(3) - 쪽지 관리번호 체크 [" + messageall_id + "]");
 			messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
+			System.out.println("(4) - 메시지 insert 체크 [" + messageinsert + "]");
 
 		} else if (messageall_id > 0) {
 			int receiver_user_id = messageService.getUserIdConversion2(sender_user_id,messageall_id);
@@ -137,7 +146,7 @@ public class MessageController {
 			sendResult = 1;
 		}
 		
-		System.out.println("메시지 보냈어? " + sendResult);
+		System.out.println("(5) - 메시지 최종 완료 체크 [" + sendResult + "]");
 		return sendResult;
 	}
 	

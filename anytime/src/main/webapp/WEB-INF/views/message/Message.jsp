@@ -38,7 +38,7 @@
     			<h2>익명</h2>
     				<a class="send" data-modal="messageSend" data-box-id="26589680" data-is-anonym="1">쪽지 보내기</a>
     				<a class="refresh">새로고침</a>
-    				<a class="more">더보기</a>
+    				<!-- <a class="more">더보기</a> -->
     	</div>
 	    <div class="items" id="right">
 	    	
@@ -71,9 +71,10 @@
 </body>
 
 <script>
+
 $(document).ready(function() {
-		getMessageLastListAjax();
 		
+		getMessageLastListAjax();
 		
 		//쪽지폼
 		$("a.send").click(function(){
@@ -82,9 +83,16 @@ $(document).ready(function() {
 			var messageall_id = $("#laft > a.active").data("id");
 		})
 		
+		
+		
 		//쪽지보내기
 		$("#messageSend").submit(function(){
 			sendMessage();
+		})
+		
+		//새로고침
+		$("a.refresh").click(function(){
+			location.reload();
 		})
 		
 		//모달 닫기
@@ -104,6 +112,7 @@ $(document).on("click", "a.item", function (event) {
 	$(this).removeClass("item").addClass("item active");
 	
 	getMessageListAjax(id);
+	
 });
 
 function getMessageListAjax(id) {
@@ -177,11 +186,19 @@ function getMessageLastListAjax() {
                 messageLastListItems.append(messageItem);
                 
                 messageItem = "";
+                
+                // 처음 요소에 "active" 클래스 추가 및 data-id 가져와서 처리
+                if (index === 0) {
+                    var firstItem = messageLastListItems.find('a.item:first');
+                    firstItem.addClass('active');
+                    var id = firstItem.data('id');
+                    getMessageListAjax(id);
+                }
+                
             });
             
-            } else {
-            	
-            	
+            
+            
             }
             
         }
