@@ -244,11 +244,6 @@
 	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 }
 
-#boardInfo {
-	border-radius: 12px;
-	padding: 25px 25px 20px 25px !important;
-}
-
 #boardInfo span.info {
 	border-bottom: 2px solid #7869E6;
 	color: #7869E6;

@@ -319,3 +319,8 @@ td.reject p {
 .menu a {
 	-webkit-text-stroke: 0.2px #a6a6a6;
 }
+
+#boardInfo {
+	border-radius: 12px;
+	padding: 25px 25px 20px 25px !important;
+}
