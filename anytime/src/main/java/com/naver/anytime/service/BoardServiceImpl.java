@@ -118,5 +118,10 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getBoardAdminCount(user_id);
 	}
 
+	@Override
+	public int getBoardAnonymous2(int num) {
+		return dao.getBoardAnonymous2(num);
+	}
+
 
 }
