@@ -16,10 +16,6 @@ public class MessageServiceImpl implements MessageService{
 		this.dao = dao;
 	}
 
-	public int getUserIdConversion(int num) {
-		return dao.getUserIdConversion(num);
-	}
-
 	@Override
 	public List<Message> getMessageList(int user_id, int messageall_id) {
 		return dao.getMessageList(user_id, messageall_id);
@@ -46,8 +42,8 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public int insertMessageAllId(int sender_user_id, int receiver_user_id) {
-		return dao.insertMessageAllId(sender_user_id, receiver_user_id);
+	public int insertMessageAllId(int num, int sender_user_id, int receiver_user_id) {
+		return dao.insertMessageAllId(num, sender_user_id, receiver_user_id);
 	}
 
 	@Override

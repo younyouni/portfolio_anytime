@@ -150,6 +150,14 @@ function getMessageListAjax(id) {
                 messageListItems.append(messageItem);
                 
                 messageItem = "";
+                
+                if (index === 0) {
+                	const newname = document.querySelector("a.item.active h3");
+                	const oldname = document.querySelector("#container > div.messages.visible > div.title > h2");
+
+                	// 새로운 값으로 변경합니다.
+                	oldname.textContent = newname.textContent;
+                }
             });
             
             } else {
@@ -179,7 +187,7 @@ function getMessageLastListAjax() {
                   	
 				messageItem += '<a class="item" data-id="' + ms.messageall_ID + '">';
                 messageItem += '<time>' + ms.message_DATE + '</time>';
-                messageItem += '<h3>' + '익명' + '</h3>';
+                messageItem += '<h3>' + ms.nickname + '</h3>';
                 messageItem += '<p class="text">' + ms.content + '</p>';
                 messageItem += '</a>';
 

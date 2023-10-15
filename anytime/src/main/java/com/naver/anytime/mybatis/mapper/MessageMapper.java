@@ -8,8 +8,6 @@ import com.naver.anytime.domain.Message;
 
 @Mapper
 public interface MessageMapper {
-	
-	public int getUserIdConversion(int num);
 
 	public List<Message> getMessageList(int user_id, int messageall_id);
 
@@ -21,7 +19,7 @@ public interface MessageMapper {
 
 	public int isMessageAllIdPresent(int sender_user_id, int receiver_user_id);
 
-	public int insertMessageAllId(int sender_user_id, int receiver_user_id);
+	public int insertMessageAllId(int num, int sender_user_id, int receiver_user_id);
 
 	public int insertMessage2(int messageall_id, int sender_user_id, int receiver_user_id, String content);
 

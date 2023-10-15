@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Message;
+import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.MessageService;
 
@@ -23,11 +24,13 @@ public class MessageController {
 	
 	private MessageService messageService;
 	private MemberService memberService;
+	private BoardService boardService;
 	
 	@Autowired
-	public MessageController(MessageService messageService, MemberService memberService) {
+	public MessageController(MessageService messageService, MemberService memberService, BoardService boardService) {
 		this.messageService = messageService;
 		this.memberService = memberService;
+		this.boardService = boardService;
 	}
 	
 	@RequestMapping(value = "/message")
@@ -51,7 +54,7 @@ public class MessageController {
 		
 		System.out.println("로그인 한 유저 아이디 [" + login_id + "] 로그인 한 유저 번호 [" + user_id + "]");
 		
-		List<Message> messageList = messageService.getMessageList(user_id,messageall_id);
+		List<Message> messageList = messageService.getMessageList(user_id, messageall_id);
 		
 		for(Message message : messageList) {
 			if(message.getSENDER() == user_id) {
@@ -82,6 +85,25 @@ public class MessageController {
 		
 		List<Message> messageLastList = messageService.getMessageListROWNUM(user_id);
 		
+		for(Message message : messageLastList) {
+				
+			int anonymouscheck = boardService.getBoardAnonymous2(message.getPOST_COMMENT_ID());
+				
+			if(anonymouscheck == 0) {
+				if(message.getSENDER() == user_id) {
+					message.setNickname(memberService.getNickName2(message.getRECEIVER()));
+				}else{
+					message.setNickname(memberService.getNickName2(message.getSENDER()));
+				}		
+			}else {
+				message.setNickname("익명");
+			}
+				
+			
+		}
+		
+		
+		
 		if(messageLastList != null) {
 			System.out.println("==메시지 출력 성공==");
 		}else {
@@ -108,12 +130,12 @@ public class MessageController {
 		
 		
 		if(post_id > 0) {
-			int receiver_user_id = messageService.getUserIdConversion(post_id);
+			int receiver_user_id = memberService.getUserIdConversion(post_id);
 			int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
 			
 			System.out.println("(1) - 체크 [" + check + "]");
 			if(check == 0) {
-				int messageall = messageService.insertMessageAllId(sender_user_id, receiver_user_id);
+				int messageall = messageService.insertMessageAllId(post_id, sender_user_id, receiver_user_id);
 				System.out.println("(2) - 쪽지 관리번호 insert 체크 [" + messageall + "]");
 			}
 			messageall_id = messageService.isMessageAllIdPresent2(sender_user_id,receiver_user_id);
@@ -121,12 +143,12 @@ public class MessageController {
 			messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
 			System.out.println("(4) - 메시지 insert 체크 [" + messageinsert + "]");
 		} else if (comment_id > 0) {
-			int receiver_user_id = messageService.getUserIdConversion(comment_id);
+			int receiver_user_id = memberService.getUserIdConversion(comment_id);
 			int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
 			
 			System.out.println("(1) - 체크 [" + check + "]");
 			if(check == 0) {
-				int messageall = messageService.insertMessageAllId(sender_user_id, receiver_user_id);
+				int messageall = messageService.insertMessageAllId(comment_id, sender_user_id, receiver_user_id);
 				System.out.println("(2) - 쪽지 관리번호 insert 체크 [" + messageall + "]");
 			}
 			messageall_id = messageService.isMessageAllIdPresent2(sender_user_id,receiver_user_id);
@@ -136,7 +158,6 @@ public class MessageController {
 
 		} else if (messageall_id > 0) {
 			int receiver_user_id = messageService.getUserIdConversion2(sender_user_id,messageall_id);
-		//	int check = messageService.isMessageAllIdPresent(sender_user_id,receiver_user_id);
 			messageinsert = messageService.insertMessage2(messageall_id, sender_user_id, receiver_user_id, content);
 
 		}

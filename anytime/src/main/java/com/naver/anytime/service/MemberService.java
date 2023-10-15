@@ -69,7 +69,9 @@ public interface MemberService {
 	
 	public Integer getStatusCheck(String userid);
 	
-	//public int getStatusCheck(int login_id);
+	public String getNickName2(int user_id);
+	
+	public int getUserIdConversion(int num); //num = post_id or comment_id
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 }

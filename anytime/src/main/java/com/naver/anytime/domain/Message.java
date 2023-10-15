@@ -10,6 +10,30 @@ public class Message {
 
     
     private int DIRECTION;
+    private int POST_COMMENT_ID;
+    private String nickname;
+    
+
+
+	public String getNickname() {
+		return nickname;
+	}
+
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+
+	public int getPOST_COMMENT_ID() {
+		return POST_COMMENT_ID;
+	}
+
+
+	public void setPOST_COMMENT_ID(int pOST_COMMENT_ID) {
+		POST_COMMENT_ID = pOST_COMMENT_ID;
+	}
+
 
 	public int getMESSAGE_ID() {
 		return MESSAGE_ID;

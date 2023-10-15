@@ -232,7 +232,18 @@ public class MemberServiceImpl implements MemberService {
 	public Integer getStatusCheck(String login_id) {
 		return dao.getStatusCheck(login_id);
 	}
+	@Override
+	public String getNickName2(int user_id) {
+		return dao.getNickName2(user_id);
+	}
+	
+	@Override
+	public int getUserIdConversion(int num) {
+		return dao.getUserIdConversion(num); //num = post_id or comment_id
+	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
+
 
 
 
