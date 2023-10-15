@@ -114,5 +114,26 @@
 						 WHERE LOGIN_ID = #{login_id})
 	</select>
 	<!-- ===========================윤희=========================== -->
+	
 
+	<select id="getBoardAnonymous2" resultType="int">	
+		select anonymous
+		from board
+		where board_id = (	select board_id
+							from post
+							where post_id = #{num}
+						)
+		or board_id =	( 	select board_id
+							from post
+							where post_id = 
+										(	select post_id
+											from comments
+											where comment_id = #{num}
+										)
+							
+						)
+	</select>
+	
+	
+	
 </mapper>

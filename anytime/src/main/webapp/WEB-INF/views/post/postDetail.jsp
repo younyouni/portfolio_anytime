@@ -10,6 +10,8 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.article.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/modal.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
@@ -118,67 +120,74 @@
 		</div>
 		<hr>
 		<jsp:include page="../common/rightside3.jsp" />
+		
+		
+		<%------------------------------------------------ ▼쪽지모달▼ ------------------------------------------------%>
+		<form id="messageSend" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
+			<a title="닫기" class="close"></a>
+			<h3>쪽지 보내기</h3>
+			<p>
+				<textarea name="message" class="text" placeholder="내용을 입력해주세요."></textarea>
+			</p>
+			<input type="submit" value="전송" class="button">
+		</form>
+		<%------------------------------------------------ ▲쪽지모달▲ ------------------------------------------------%>
 	</div>
+	
+	
 	<%-- -------------------------------- ▼footer CSS수정 전이라 임시주석처리중입니다.▼ --------------------------------
 	<jsp:include page="../common/footer.jsp" /> 
 	--%>
+	
+	
+	
 	<script>
-     $(document).ready(function() { 
-    	 $(".del").click(function() {
-    	     var confirmation = confirm("내용을 삭제하시겠습니까?");
-    	     if (confirmation) {
-    	         var post_id = $("#post_id").val();
-    	         $.ajax({
-    	             type: "GET",
-    	             url: "delete",
-    	             data: { post_id: post_id },
-    	             success: function(response) {
-    	                 alert(response);
-    	                 location.href = "list?board_id=" + ${postdata.BOARD_ID};
-    	             },
-    	             error: function() {
-    	                 alert("삭제 요청 실패했습니다.");
-    	             }
-    	         });
-    	     }
-    	});
-        
-     /* // "삭제" 버튼을 클릭하면 동작하는 스크립트
-        $(".del").click(function() {
-            // 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 확인 창을 띄웁니다.
-            if (currentUserId == writerId) {
-                var confirmation = confirm("내용을 삭제하시겠습니까?");
-                if (confirmation) {
-                    // 삭제 동작을 수행합니다.
-                    var post_id = $("#post_id").val();
+	var comment_id = null;
 
-                    $.ajax({
-                        type: "POST",
-                        url: "PostDeleteAction.bo",  // 실제 삭제 처리를 담당하는 서버 측 URL
-                        data: { post_id: post_id },
-                        success: function(response) {
-                            if (response == 0) {
-                                alert("삭제 실패했습니다.");
-                            } else {
-                                // 삭제 성공 시, 해당 게시물을 화면에서 숨깁니다.
-                                alert("게시물이 삭제되었습니다.");
-                                window.location.href = "list?board_id=" + ${boarddata.board_id}
-                                $(".article").hide();  // 해당 게시물 영역을 숨깁니다.
-                            }
-                        },
-                        error: function() {
-                            alert("삭제 요청 실패했습니다.");
-                        }
-                    });
-                }
-            }
-        });
-     */
-        $("#goListButton").click(function() {
-        	window.location.href = "list?board_id=" + ${boardtest.BOARD_ID}
-        }); 
-     	
-     }); 
+	$('a.close').click(function() {
+		$('#messageSend').css('display', 'none');
+		$('div.modalwrap').remove();
+	});
+		
+	$(document).on("click", "li.messagesend", function(){
+	    $('form#messageSend').css('display', 'block');
+	    $('form#messageSend').before('<div class="modalwrap"></div>');
+	    var article = event.target.closest('article');
+	    comment_id = article.getAttribute('id');
+	});
+	
+	$("#messageSend").submit(function(e) {
+	    e.preventDefault();
+	    var urlParams = new URLSearchParams(window.location.search);
+	    var post_id = urlParams.get('post_id');
+
+	    if(comment_id > 0){
+	    	post_id = 0;
+	    }else{
+	    	comment_id = 0;
+	    }
+	    sendMessageAjax(post_id,comment_id);
+	});
+
+     function sendMessageAjax(post_id, comment_id){
+    		var content = document.querySelector('#messageSend textarea').value;
+    		$.ajax({
+    			url: "${pageContext.request.contextPath}/sendmessage",
+    			data: {
+    				"post_id": post_id,
+    				"comment_id": comment_id,
+    				"content": content
+    			},
+    			success: function (sendResult){
+    				if(sendResult == 1){
+    					alert("쪽지가 송신되었습니다.");
+    					location.reload();	
+    				}else{
+    					alert("쪽지 송신에 실패했습니다.")
+    				}
+    			}
+    		})
+    	};
 </script> 
 </body>
 </html>

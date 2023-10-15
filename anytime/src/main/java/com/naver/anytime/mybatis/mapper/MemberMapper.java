@@ -70,8 +70,13 @@ public interface MemberMapper {
 	public int updateBoardAdminAdd(int user_id);
 	
 	public Integer getStatusCheck(String login_id);
+	
+	public String getNickName2(int user_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 	public Member isLoginId(String username);
+
+	public int getUserIdConversion(int num); //num = post_id or comment_id
+
 
 }

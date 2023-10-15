@@ -11,42 +11,10 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/container.modal.css"> --%>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message.css">
 <link href="/favicon.ico" rel="shortcut icon">
-
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-
-<!-- 					<script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script>
-					<script type="text/javascript" src="/js/extensions.underscore-min.js"></script>
-					<script type="text/javascript" src="/js/common.js"></script>
-					<script type="text/javascript" src="/js/message.index.js"></script>
-					<script type="text/javascript" src="/js/message.send.js"></script> -->
 </head>
 
 <body>
-
-<!-- <nav>
-    <div class="wrap">
-      <div id="logo">
-        <a href="/"><img src="/images/new/nav.logo.png"></a>
-        <p><span class="name multiple">에브리타임</span><span class="subname">숭실대</span></p>
-      </div>
-      <div id="account">
-        <a href="/message" title="쪽지함" class="icon message">쪽지함</a>
-        <a href="/my" title="내 정보" class="icon my">내 정보</a>
-        <input type="hidden" id="userUserid" value="rainbow281">
-        <input type="hidden" id="userSchool" value="21">
-        <input type="hidden" id="userCampus" value="37">
-      </div>
-      <ul id="menu">
-        <li><a href="/">게시판</a></li>
-        <li><a href="/timetable">시간표</a></li>
-        <li><a href="/lecture">강의실</a></li>
-        <li><a href="/calculator">학점계산기</a></li>
-        <li><a href="/friend">친구</a></li>
-        <li><a href="https://bookstore.everytime.kr/">책방</a></li>
-        <li><a href="https://www.campuspick.com/">캠퍼스픽</a></li>
-      </ul>
-    </div>
-  </nav> -->
   
 <div id="container" class="message" data-box-id="0">
     <aside class="none">
@@ -57,32 +25,9 @@
     </aside>
     <div class="messageboxes">
       <h2>쪽지함</h2>
-      <div class="items">
-        <a class="item active" href="/message/26589680">
-        	<time>20/10/20 22:29</time>
-        		<h3>익명</h3>
-        			<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
-        </a>
-        <a class="item" href="/message/26588813">
-        	<time>20/10/20 22:01</time>
-        		<h3>익명</h3>
-        			<p class="text">그러니까요 누락된 손유진씨도 제 글보고 쪽지 보냈으면 좋겠어요 ㅠㅠ 진짜 왜 학생들이 스트레스 받으면서 이짓을 해야되는건지.. 기말 강의평가만 기다립니다..</p>
-        </a>
-        <a class="item" href="/message/26586495">
-        	<time>20/10/20 21:20</time>
-        		<h3>익명</h3>	
-        			<p class="text">정말 정말 감사해요 ㅠㅠ 진짜 지금 너무 열받아서 머리가 아프고 ㅠㅠㅠ님 아녔으면 ㅠㅠ 계속 몰랐을거고 ㅠㅠ 저 손유진씨는 또 어떡해요 ㅠㅠ 하아... 진짜 이 교수님 너무 짜증나네요</p>
-        </a>
-        <a class="item" href="/message/20211474">
-        	<time>20/03/31 14:35</time>
-        		<h3>익명</h3>
-        			<p class="text">저도 놀행초대해주세요 ㅠㅠ</p>
-        </a>
-        <a class="item" href="/message/16812901">
-        	<time>19/11/26 22:43</time>
-        		<h3>익명</h3>
-        			<p class="text">네 그럼 그렇게 할게요!!</p>
-        </a>
+      <div class="items" id="laft">
+      			
+
         <div class="loading" style="display: none;"></div>
       </div>
     </div>
@@ -93,38 +38,15 @@
     			<h2>익명</h2>
     				<a class="send" data-modal="messageSend" data-box-id="26589680" data-is-anonym="1">쪽지 보내기</a>
     				<a class="refresh">새로고침</a>
-    				<a class="more">더보기</a>
+    				<!-- <a class="more">더보기</a> -->
     	</div>
-	    	<div class="items">
-	    		<div class="item">
-	    			<time>20/10/20 22:29</time>
-	    				<p class="type type1">받은 쪽지</p>
-	    					<p class="text">01093010366 이거에요!  감사해요정말ㅜㅜ</p>
-	    		</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:26</time>
-	    			<p class="type type2">보낸 쪽지</p>
-	    				<p class="text">유진씨랑 저만 누락됐더라고요 ㅠㅠ 번호알려주시면 초대해드릴게요</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:22</time>
-	    			<p class="type type1">받은 쪽지</p>
-	    				<p class="text">앗 네네</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:15</time>
-	    			<p class="type type2">보낸 쪽지</p>
-	    				<p class="text">혹시 손유진씨???</p>
-	    	</div>
-	    	<div class="item">
-	    		<time>20/10/20 22:15</time>
-	    			<p class="type type0">안내</p>
-	    				<p class="text">자유게시판에 작성된 익명1의 댓글을 통해 시작된 쪽지입니다.<br>글 내용: 스포츠와 건강관리 ㅂㅅㅇ교수님</p>
-	    	</div>
+	    <div class="items" id="right">
+	    	
+	    	
     	</div>
     </div>
     
-    <form id="messageSend" class="modal">
+    <form id="messageSend" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
       <a title="닫기" class="close"></a>
       <h3>쪽지 보내기</h3>
       <p>
@@ -144,39 +66,176 @@
     </form>
     
   </div>
-<div id="bottom">
-    <ul class="links">
-      <li><a href="/page/serviceagreement">이용약관</a></li>
-      <li class="privacy"><a href="/page/privacy">개인정보처리방침</a></li>
-      <li><a href="/page/youthpolicy">청소년보호정책</a></li>
-      <li><a href="/page/rules">커뮤니티이용규칙</a></li>
-      <li><a href="/notice">공지사항</a></li>
-      <li><a href="/page/faq">문의하기</a></li>
-      <li class="copyright"><a href="/">© 에브리타임</a></li>
-    </ul>
-    <span>직업정보제공사업 신고번호 : J1204020230008</span>
-  </div>
-  
-  
-  
-  
-  
-<!--   <script type="text/javascript">
-    var _serverTime = 1696983543459;
-    var _clientTime = new Date().getTime();
-    var _diffTime = _clientTime - _serverTime;
-    var _apiServerUrl = 'https://api.everytime.kr';
-    window._screenName = '알림/쪽지 - 알림 탭 (쪽지함 목록)';
-  </script>
-  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-85ZNEFVRGL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-85ZNEFVRGL', { 'send_page_view': false });
-    _gfn.logPageView();
-  </script> -->
 
+  
 </body>
+
+<script>
+
+$(document).ready(function() {
+		
+		getMessageLastListAjax();
+		
+		//쪽지폼
+		$("a.send").click(function(){
+			$('form#messageSend').css('display', 'block');
+			$('form#messageSend').before('<div class="modalwrap"></div>');
+			var messageall_id = $("#laft > a.active").data("id");
+		})
+		
+		
+		
+		//쪽지보내기
+		$("#messageSend").submit(function(){
+			sendMessage();
+		})
+		
+		//새로고침
+		$("a.refresh").click(function(){
+			location.reload();
+		})
+		
+		//모달 닫기
+		$('a.close').click(function() {
+			$('#messageSend').css('display', 'none');
+			$('div.modalwrap').remove();
+		});
+		
+});
+
+$(document).on("click", "a.item", function (event) {
+	
+	$("a.item.active").removeClass("active");
+	
+	var id = $(this).data("id");
+	
+	$(this).removeClass("item").addClass("item active");
+	
+	getMessageListAjax(id);
+	
+});
+
+function getMessageListAjax(id) {
+    $.ajax({
+        url: "${pageContext.request.contextPath}/messagelist",
+        data: {
+        	messageallid: id
+        },
+        dataType: "json",
+        success: function (messageList) {
+        	console.log("Ajax 요청 성공: ", messageList);
+			
+        	//사용자와 주고받은 쪽지 리스트 출력 칸
+            var messageListItems = $("#right");
+		
+            let messageItem = "";
+            
+            if(messageList != null){
+            
+            $("#right").empty();
+            	
+            $.each(messageList, function (index, ms) {
+                messageItem += '<div class="item">';
+                messageItem += '<time>' + ms.message_DATE + '</time>';
+                	if(ms.direction == 2){
+                		messageItem += '<p class="type type2">보낸 쪽지</p>';
+                	}else if(ms.direction == 1){
+                		messageItem += '<p class="type type1">받은 쪽지</p>';
+                	}else if(ms.direction == 3){
+                		messageItem += '<p class="type type0">안내</p>';
+                	}
+                messageItem += '<p class="text">' + ms.content + '</p>';
+                messageItem += '</div>';
+
+                messageListItems.append(messageItem);
+                
+                messageItem = "";
+                
+                if (index === 0) {
+                	const newname = document.querySelector("a.item.active h3");
+                	const oldname = document.querySelector("#container > div.messages.visible > div.title > h2");
+
+                	// 새로운 값으로 변경합니다.
+                	oldname.textContent = newname.textContent;
+                }
+            });
+            
+            } else {
+            	
+            	
+            }
+            
+        }
+    });
+}
+
+function getMessageLastListAjax() {
+    $.ajax({
+        url: "${pageContext.request.contextPath}/messagelastlist",
+        dataType: "json",
+        success: function (messageLastList) {
+        	console.log("Ajax 요청 성공: ", messageLastList);
+        	
+            //쪽지 리스트 선택
+            var messageLastListItems = $("#laft");
+			var context = "${pageContext.request.contextPath}"
+            let messageItem = "";
+            
+            if(messageLastList != null){
+            
+            $.each(messageLastList, function (index, ms) {
+                  	
+				messageItem += '<a class="item" data-id="' + ms.messageall_ID + '">';
+                messageItem += '<time>' + ms.message_DATE + '</time>';
+                messageItem += '<h3>' + ms.nickname + '</h3>';
+                messageItem += '<p class="text">' + ms.content + '</p>';
+                messageItem += '</a>';
+
+                messageLastListItems.append(messageItem);
+                
+                messageItem = "";
+                
+                // 처음 요소에 "active" 클래스 추가 및 data-id 가져와서 처리
+                if (index === 0) {
+                    var firstItem = messageLastListItems.find('a.item:first');
+                    firstItem.addClass('active');
+                    var id = firstItem.data('id');
+                    getMessageListAjax(id);
+                }
+                
+            });
+            
+            
+            
+            }
+            
+        }
+    });
+}
+
+function sendMessage(){
+	var messageall_id = $("#laft > a.active").data("id");
+	var content = document.querySelector('#messageSend textarea').value;
+	/* var text = $("textarea[name='message']").val(); */
+	$.ajax({
+		url: "${pageContext.request.contextPath}/sendmessage",
+		data: {
+			"messageall_id": messageall_id,
+			"content": content,
+		},
+		dataType: "json",
+		success: function (sendResult){
+			if(sendResult == 1){
+				alert("쪽지가 송신되었습니다.");
+				location.reload();
+			}else{
+				alert("쪽지 송신에 실패했습니다.")
+			}
+		}
+	})
+	
+	
+}
+</script>
 
 </html>
