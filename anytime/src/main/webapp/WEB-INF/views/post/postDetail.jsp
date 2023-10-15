@@ -14,7 +14,10 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postGoList.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postDelete.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postLike.js"></script>
 <script>
 	var userid = $('#login_id').val();
 	var anonymous = ${anonymous};
@@ -62,7 +65,7 @@
 					   <c:choose>
 					       <c:when test="${currentUserId eq postdata.USER_ID}">
 					           <li class="update" id="updateButton" POST_ID="${postdata.POST_ID}" LOGIN_ID="${currentUserId}">수정</li>
-					           <li class="del" POST_ID="${postdata.POST_ID}" BOARD_ID="${postdata.BOARD_ID}">삭제</li>
+					           <li class="del" data-POST_ID="${postdata.POST_ID}" data-BOARD_ID="${postdata.BOARD_ID}">삭제</li>
 					       </c:when>
 					       <c:otherwise>
 					            <li class="messagesend" data-modal="messageSend"
@@ -84,14 +87,15 @@
 					</div>
 					<ul class="status left">
 						<li title="공감" class="vote"> ${postdata.LIKE_COUNT} </li>
-						<li title="댓글" class="comment">0</li>
+						<li title="댓글" class="comment"> ${postdata.COMMENT_COUNT} </li>
 						<li title="스크랩" class="scrap"> ${postdata.SCRAP_COUNT} </li>
 					</ul>
 					<hr>
 					<div class="buttons">
-						<span class="posvote">공감</span><span class="scrap">스크랩</span>
-					</div> <input type="hidden" id="comment_post_id"
-					value="${postdata.POST_ID}">
+						<span class="posvote" data-post_id="${postdata.POST_ID}">공감</span>
+						<span class="scrap">스크랩</span>
+					</div> 
+					<input type="hidden" id="comment_post_id" value="${postdata.POST_ID}">
 				</a>
 				<%--------------------------------- comment 시작 ---------------------------------------------------%>
 				<div class="comments" style="display: block;">
@@ -111,7 +115,7 @@
 			<%--------------------------------- comment 끝 ---------------------------------------------------%>
 			<div class="clearBothOnly"></div>
 			<div class="pagination">
-				<a id="goListButton" class="list">글 목록</a>
+				<a id="goListButton" class="list" data-board_id="${boardtest.BOARD_ID}">글 목록</a>
 				<div class="center-block">
 					<ul class="pagination justify-content-center">
 					</ul>

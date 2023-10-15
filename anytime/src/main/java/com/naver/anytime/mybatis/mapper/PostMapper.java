@@ -1,14 +1,14 @@
 package com.naver.anytime.mybatis.mapper;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
-import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 
 @Mapper
@@ -76,6 +76,16 @@ public interface PostMapper {
 	
 	//글수정 실험용
 	public void updatePost(Post post);
+	
+//	int increaseLike(Integer post_id, int currentUserId);
+	
+	public int getPostLikes(int post_id);
+	
+	@Update("UPDATE POST SET LIKE_COUNT = LIKE_COUNT + 1 WHERE POST_ID = #{POST_ID}")
+    public void incrementLikes(int post_id);
+
+    @Update("UPDATE POST SET LIKE_COUNT = LIKE_COUNT - 1 WHERE POST_ID = #{POST_ID}")
+    public void decrementLikes(int post_id);
 	
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
