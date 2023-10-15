@@ -17,28 +17,7 @@
 </head>
 <body>
 	<div id="wrapper">
-		<div class="left_admin">
-			<div class="card">
-				<form class="admin">
-					<img src="${pageContext.request.contextPath}/resources/image/common/0.png"
-						class="picture">
-					<p class="nickname">${member.nickname}</p>
-					<p class="userid">${member.userid}</p>
-					<ul class="buttons">
-						<li><a href="account.com">내 정보</a></li>
-						<li><a href="logout.com">로그아웃</a></li>
-					</ul>
-					<hr>
-				</form>
-				<form class="login">
-					<h3>
-						커뮤니티 이용을 위해<br> <strong>로그인</strong>이 필요합니다!
-					</h3>
-					<a href="login.com" class="button login">로그인</a> <a
-						href="register.com" class="button register">애니타임 회원가입</a>
-				</form>
-			</div>
-		</div>
+		<jsp:include page="../common/left_admin.jsp" />
 		<form action="memberDeleteProcess.com" class="container">
 			<section>
 				<h1>회원 탈퇴</h1>

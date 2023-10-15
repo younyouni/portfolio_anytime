@@ -232,6 +232,27 @@
 		from member
 		where login_id = #{login_id}
 	</select>
+	
+	<select id="getNickName2" resultType="String">
+		select nickname
+		from member
+		where user_id = #{user_id}
+	</select>
+	
+	<select id="getUserIdConversion" resultType="Integer">
+		select user_id
+		from member
+		where user_id = (	select user_id
+							from post
+							where post_id = #{num}
+						)
+		or user_id =	(	select user_id
+							from comments
+							where comment_id = #{num}
+						)
+	</select>
+
+	
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
 
 </mapper>

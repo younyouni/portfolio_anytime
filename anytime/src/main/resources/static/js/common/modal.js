@@ -92,7 +92,7 @@ $(function() {
 		}
 	});
 
-	$ // 모달 닫기 버튼을 클릭할 때
+	// 모달 닫기 버튼을 클릭할 때
     $('a.close').click(function() {
         $('form#createBoard').css('display', 'none');
         $('div.modalwrap').remove();

@@ -397,7 +397,6 @@ public class PostController {
 	      
 	    System.out.println("보드넘테스트" + board_id);
 	    System.out.println("값테스트" + postlist);
-	    System.out.println("학교번호" + session.getAttribute("school_id"));						//테스트
 		return mv;
 	}
 
@@ -408,7 +407,8 @@ public class PostController {
 		   @RequestParam(value = "search_field", defaultValue = "0") int search_field,
 		   @RequestParam(value = "search_word", defaultValue = "") String search_word,
 		   HttpSession session,
-		   ModelAndView mv
+		   ModelAndView mv,
+		   Principal principal
 		   ) {
 	   
 //	   session.setAttribute("board_id", board_id);
@@ -418,7 +418,9 @@ public class PostController {
 //	   search_field = (int) session.getAttribute("search_field");
 	   search_word = (String) session.getAttribute("search_word");
 	   
-	   int school_id = (int) session.getAttribute("school_id");
+	   String login_id = principal.getName();
+	   
+	   int school_id = memberService.getSchoolId(login_id);
 	   
 	   int limit = 10;
 	   int listcount = 0;
