@@ -11,7 +11,7 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/modal.css" rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message.css">
+
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/comment/comment.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/postGoList.js"></script>
@@ -136,6 +136,22 @@
 			<input type="submit" value="전송" class="button">
 		</form>
 		<%------------------------------------------------ ▲쪽지모달▲ ------------------------------------------------%>
+		
+		<%------------------------------------------------ ▼신고모달▼ ------------------------------------------------%>
+		<form id="abuseForm" class="modal" style="margin-left: -200px; margin-top: -92.5px; display: none;">
+			<a title="닫기" class="close"></a>
+			<h3>신고 사유 선택</h3>
+			<ul>
+				<li><a data-reason="1">게시판 성격에 부적절함</a></li>
+				<li><a data-reason="2">욕설/비하</a></li>
+				<li><a data-reason="3">음란물/불건전한 만남 및 대화</a></li>
+				<li><a data-reason="4">상업적 광고 및 판매</a></li>
+				<li><a data-reason="5">유출/사칭/사기</a></li>
+				<li><a data-reason="6">낚시/놀람/도배</a></li>
+				<li><a data-reason="7">정당/정치인 비하 및 선거운동</a></li>
+			</ul>
+		</form>
+		<%------------------------------------------------ ▲신고모달▲ ------------------------------------------------%>
 	</div>
 	
 	
@@ -145,21 +161,35 @@
 	
 	
 	
-	<script>
+<script>
 	var comment_id = null;
-
+	
+	
+	//닫기
 	$('a.close').click(function() {
 		$('#messageSend').css('display', 'none');
+		$('#abuseForm').css('display', 'none');
 		$('div.modalwrap').remove();
 	});
 		
+	//쪽지
 	$(document).on("click", "li.messagesend", function(){
 	    $('form#messageSend').css('display', 'block');
 	    $('form#messageSend').before('<div class="modalwrap"></div>');
-	    var article = event.target.closest('article');
+	    const article = event.target.closest('article');
 	    comment_id = article.getAttribute('id');
 	});
 	
+	//신고
+	$(document).on("click", "li.abuse", function(){
+	    $('form#abuseForm').css('display', 'block');
+	    $('form#abuseForm').before('<div class="modalwrap"></div>');
+	    const article = event.target.closest('article');
+	    comment_id = article.getAttribute('id');
+	});
+	
+	
+	//쪽지 보내기
 	$("#messageSend").submit(function(e) {
 	    e.preventDefault();
 	    var urlParams = new URLSearchParams(window.location.search);
@@ -172,26 +202,62 @@
 	    }
 	    sendMessageAjax(post_id,comment_id);
 	});
-
-     function sendMessageAjax(post_id, comment_id){
-    		var content = document.querySelector('#messageSend textarea').value;
-    		$.ajax({
-    			url: "${pageContext.request.contextPath}/sendmessage",
-    			data: {
-    				"post_id": post_id,
-    				"comment_id": comment_id,
-    				"content": content
-    			},
-    			success: function (sendResult){
-    				if(sendResult == 1){
-    					alert("쪽지가 송신되었습니다.");
-    					location.reload();	
-    				}else{
-    					alert("쪽지 송신에 실패했습니다.")
-    				}
-    			}
-    		})
-    	};
+	
+	//신고하기
+	$("#abuseForm li a").click(function(){
+		var urlParams = new URLSearchParams(window.location.search);
+	    var post_id = urlParams.get('post_id');
+	    
+	    if(comment_id > 0){
+	    	post_id = 0;
+	    }else{
+	    	comment_id = 0;
+	    }
+		var reportnum = $(this).data("reason");
+		
+		reportAjax(post_id,comment_id,reportnum);
+	});
+	
+    function sendMessageAjax(post_id, comment_id){
+   		var content = document.querySelector('#messageSend textarea').value;
+   		$.ajax({
+   			url: "${pageContext.request.contextPath}/sendmessage",
+   			data: {
+   				"post_id": post_id,
+   				"comment_id": comment_id,
+   				"content": content
+   			},
+   			success: function (sendResult){
+   				if(sendResult == 1){
+   					alert("쪽지가 송신되었습니다.");
+   					location.reload();	
+   				}else{
+   					alert("쪽지 송신에 실패했습니다.")
+   				}
+   			}
+   		})
+	};
+	
+	function reportAjax(post_id, comment_id, reportnum){
+		console.log("(ajax) post_id = " + post_id + "/ comment_id = " + comment_id + " / reportnum = " + reportnum)
+		$.ajax({
+			url: "${pageContext.request.contextPath}/report",
+			data:{
+				"post_id": post_id,
+				"comment_id": comment_id,
+				"reportnum": reportnum
+			},
+			success: function (reportResult){
+				if(reportResult == 1){
+					alert("신고가 완료되었습니다.");
+					location.reload();	
+				}else{
+					alert("신고 오류가 발생했습니다.")
+				}
+			}
+		
+		})
+	}
 </script> 
 </body>
 </html>

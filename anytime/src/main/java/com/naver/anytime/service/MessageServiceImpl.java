@@ -52,7 +52,7 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public int isMessageAllIdPresent2(int sender_user_id, int receiver_user_id) {
+	public Integer isMessageAllIdPresent2(int sender_user_id, int receiver_user_id) {
 		return dao.isMessageAllIdPresent2(sender_user_id, receiver_user_id);
 	}
 }
