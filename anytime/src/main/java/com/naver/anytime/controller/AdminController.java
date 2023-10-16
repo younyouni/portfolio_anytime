@@ -1,12 +1,16 @@
 package com.naver.anytime.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.naver.anytime.domain.Board;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.PostService;
 
@@ -31,8 +35,13 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/boardAdmin", method = RequestMethod.GET)
-	public String getBoardAdmin() {
-		return "/admin/boardAdmin";
+	public ModelAndView getBoardAdmin(ModelAndView mv) {
+		List<Board> boardrequest = null;
+		boardrequest = boardService.getBoardRequest();
+
+		mv.addObject("boardrequest", boardrequest);
+		mv.setViewName("/admin/boardAdmin");
+		return mv;
 	}
 
 	@RequestMapping(value = "/reportAdmin", method = RequestMethod.GET)
