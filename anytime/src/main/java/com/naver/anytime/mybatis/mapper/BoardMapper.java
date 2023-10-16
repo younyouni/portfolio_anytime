@@ -50,4 +50,6 @@ public interface BoardMapper {
 
 	public int getBoardAdminCount(int user_id);
 
+	public int getBoardAnonymous2(int num);
+
 }
