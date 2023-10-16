@@ -92,14 +92,20 @@ public class MessageController {
 			if(anonymouscheck == 0) {
 				if(message.getSENDER() == user_id) {
 					message.setNickname(memberService.getNickName2(message.getRECEIVER()));
+					if(memberService.getStatusCheck2(message.getRECEIVER()) == 0) {
+						message.setNickname("알 수 없음");
+					}
 				}else{
 					message.setNickname(memberService.getNickName2(message.getSENDER()));
+					if(memberService.getStatusCheck2(message.getSENDER()) == 0) {
+						message.setNickname("알 수 없음");
+					}
 				}		
 			}else {
 				message.setNickname("익명");
 			}
 				
-			
+
 		}
 		
 		

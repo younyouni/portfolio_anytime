@@ -516,7 +516,11 @@ public class PostController {
 	    	for(Post post : postlist) {
 	    		for(Post post2 : username) {
 	    			if(post.getUSER_ID() == post2.getUSER_ID()) {
-	    				post.setNICKNAME(post2.getNICKNAME());
+	    				if(memberService.getStatusCheck2(post2.getUSER_ID()) == 1) {
+	    					post.setNICKNAME(post2.getNICKNAME());	    					
+	    				}else {
+	    					post.setNICKNAME("알 수 없음");	
+	    				}
 	    			}
 	    		}
 	    	} 	

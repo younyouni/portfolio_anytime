@@ -241,7 +241,13 @@ public class MemberServiceImpl implements MemberService {
 	public int getUserIdConversion(int num) {
 		return dao.getUserIdConversion(num); //num = post_id or comment_id
 	}
+	
+	@Override
+	public Integer getStatusCheck2(int user_id) {
+		return dao.getStatusCheck2(user_id);
+	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
 
 
 
