@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.service.BoardService;
-import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
 import com.naver.constants.AnytimeConstants;
 
@@ -33,7 +32,6 @@ public class BoardController {
 
 	private BoardService boardService;
 	private MemberService memberService;
-	private CommentService commentService;
 	private PasswordEncoder passwordEncoder;
 
 
@@ -41,9 +39,8 @@ public class BoardController {
 	private String saveFolder;
 
 	@Autowired
-	public BoardController(BoardService boardService, CommentService commentService, MemberService memberService, PasswordEncoder passwordEncoder) {
+	public BoardController(BoardService boardService, MemberService memberService, PasswordEncoder passwordEncoder) {
 		this.boardService = boardService;
-		this.commentService = commentService;
 		this.memberService = memberService;
 		this.passwordEncoder = passwordEncoder;
 	}
@@ -83,10 +80,6 @@ public class BoardController {
 
 		}
 
-		// int result = boardService.insertBoard()
-		// 여기에서 데이터베이스 조회 또는 다른 로직을 수행하여 JSON 형식의 응답 데이터를 생성
-		// List<Board> responseData = boardService.getBoardList();
-		// 생성된 JSON 데이터를 클라이언트에 응답으로 전송
 		return url;
 	}
 
