@@ -27,4 +27,13 @@
 		WHERE domain=#{schoolDomain}
 	</select>
 
+    <select id = "getSchoolByUserId" resultType="School">
+
+        SELECT s.* 
+        FROM SCHOOL s
+        INNER JOIN MEMBER m ON s.SCHOOL_ID = m.SCHOOL_ID
+        WHERE m.user_id =#{user_id}
+
+    </select>
+
 </mapper>

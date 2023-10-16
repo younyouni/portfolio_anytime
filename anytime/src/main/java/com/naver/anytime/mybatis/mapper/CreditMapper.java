@@ -11,8 +11,13 @@ public interface CreditMapper {
 
 	public int insert(Credit c);
 
-	List<Semester_detail> getSemesterDetailsByUserId(int user_id);
+	public List<Semester_detail> getSemesterDetailsByUserId(int user_id);
 
 	public List<Semester_detail> getSemesterDetailsBySemesterId(int semester_id);
 	
+    public Credit getCreditByUserId(int user_id);
+	
+    public int updateGraduateCredit(int graduate_credit);
+
+	public int getTotalAcquisition(int semester_id);
 }

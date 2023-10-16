@@ -35,6 +35,24 @@ public class CreditServiceImpl implements CreditService {
 	public List<Semester_detail> getSemesterDetailsBySemesterId(int semester_id) {
 		return dao.getSemesterDetailsBySemesterId(semester_id);
 	}
+
+
+	@Override
+	public Credit getCreditByUserId(int user_id){
+		return dao.getCreditByUserId(user_id);
+	}
+
+
+	@Override
+	public int updateGraduateCredit(int graduate_credit) {
+		return dao.updateGraduateCredit(graduate_credit);
+	}
+
+
+	@Override
+	public int getTotalAcquisition(int semester_id) {
+		return dao.getTotalAcquisition(semester_id);
+	}
 	
 
 }
