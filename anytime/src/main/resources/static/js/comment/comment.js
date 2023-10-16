@@ -59,7 +59,7 @@ function getList() {
 						+ '  <img src="https://cf-fpi.everytime.kr/0.png" class="picture medium">      							'
 						+ '  <h3 class="medium">' + writername + '</h3>                           								'
 						+ '       <ul class="status">                                          									'
-					if (lev < 2) {
+					if (lev < 2 && status !=0) {
 						output += '          <li class="childcomment">                           								'
 							+ '            <a href="javascript:replyform(' + this.comment_id + ',' + this.re_lev + 		  ',' 
 							+ 				this.re_seq + ',' + this.re_ref + ')" class="reply">   								'

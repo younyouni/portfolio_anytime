@@ -14,6 +14,8 @@ public class Board {
 
 	private String LOGIN_ID;
 	private int NEW_BOARD_ID;
+	
+	private String SCHOOL_NAME;
 
 	public int getNEW_BOARD_ID() {
 		return NEW_BOARD_ID;
@@ -101,6 +103,14 @@ public class Board {
 
 	public void setSTATUS(int sTATUS) {
 		STATUS = sTATUS;
+	}
+
+	public String getSCHOOL_NAME() {
+		return SCHOOL_NAME;
+	}
+
+	public void setSCHOOL_NAME(String sCHOOL_NAME) {
+		SCHOOL_NAME = sCHOOL_NAME;
 	}
 
 }
