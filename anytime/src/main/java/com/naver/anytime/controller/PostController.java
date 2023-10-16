@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -190,7 +191,7 @@ public class PostController {
    @PostMapping(value = "/write")
    public ResponseEntity<Map<String, Object>> writePost(
       @RequestParam(value = "LOGIN_ID", required=false) String USER_ID,
-      @RequestParam(value = "POST_FILE", required = false) MultipartFile[] files,
+      @RequestPart(value = "file[]", required = false) MultipartFile[] files,
       Post post, HttpServletRequest request) {
 
     Map<String, Object> result = new HashMap<>();
@@ -202,10 +203,10 @@ public class PostController {
     int user_id = memberService.getUserId(login_id);
     post.setBOARD_ID(boardId);
     post.setUSER_ID(user_id);
+    
+    StringBuilder sbFiles = new StringBuilder();
 
     try {
-        // 게시글 먼저 저장
-        postService.insertPost(post);
 
         // 이미지 파일 저장
         if(files != null && files.length >0){
@@ -215,7 +216,7 @@ public class PostController {
                     photo.setPOST_ID(post.getPOST_ID());
                     
                     String originalFilename=file.getOriginalFilename();// 원래 파일명
-
+                    System.out.println("Processing file: " + originalFilename);
                     //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
                     String saveFolder="c:/upload/";
                     
@@ -225,17 +226,23 @@ public class PostController {
 
                     photo.setPATH(saveFolder+fileDBName);
                     
-                     // Post 객체에 원본 파일명 설정
-//                     post.setPOST_ORIGINAL(originalFilename);
-//                     
-//                     post.setUploadfile(fileDBName);
+                     post.setPOST_FILE(originalFilename);
 
-                   postPhotoService.savePhoto(photo); 
+                   postPhotoService.insertPhoto(photo); 
+                   
+                   sbFiles.append(originalFilename).append(",");
                 }
             }
         }
         
-        postService.updatePost(post);
+        if(sbFiles.length() > 0) {
+            sbFiles.setLength(sbFiles.length() - 1);
+        }
+        
+        post.setPOST_FILE(sbFiles.toString());
+        // 게시글 저장
+        postService.insertPost(post);
+        
         result.put("statusCode", 1);
 
      } catch (Exception e) {

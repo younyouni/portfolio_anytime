@@ -79,9 +79,9 @@
 					<h2 class="large"> ${postdata.SUBJECT}</h2>
 					<p class="large"> ${postdata.CONTENT}</p>
 					<div class="attaches multiple">
-						<c:forEach var="b" items="${paths}">
+						<c:forEach var="b" items="${PATH}">
 							<figure class="attach">
-								<img src="/anytime/boardupload/${b}" alt="none">
+								<img src="/anytime/upload/${b}" alt="none">
 							</figure>
 						</c:forEach>
 					</div>
