@@ -77,9 +77,9 @@
 		<div class="boardadmin">
 			<div class="menu">
 				<ol>
-					<li class="boardrequest"><a class="active">게시판 승인 요청</a></li>
-					<li class="boardlist"><a>게시판 목록</a></li>
-					<li>
+					<li class="boardrequest menu"><a class="active">게시판 승인 요청</a></li>
+					<li class="boardlist menu"><a>게시판 목록</a></li>
+					<li class="search">
 						<form id="searchBoard" class="search"
 							action="/anytime/post/search" method="get" accept-charset="UTF-8">
 							<input type="hidden" name="board_id" value="1"> <select

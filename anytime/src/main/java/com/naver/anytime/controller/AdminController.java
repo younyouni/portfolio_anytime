@@ -34,10 +34,15 @@ public class AdminController {
 	public String getBoardAdmin() {
 		return "/admin/boardAdmin";
 	}
-	
+
 	@RequestMapping(value = "/reportAdmin", method = RequestMethod.GET)
 	public String getReportAdmin() {
 		return "/admin/reportAdmin";
+	}
+
+	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
+	public String getAdminNotice() {
+		return "/admin/adminNotice";
 	}
 
 }
