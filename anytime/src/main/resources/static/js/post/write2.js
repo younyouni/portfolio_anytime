@@ -43,7 +43,7 @@ $(document).ready(function(){
 <li title="첨부" class="attach">
   <label class="file-label">
     <span class="file-name" id="file-name"></span> 파일 선택
-    <input type="file" id="post_file" name="post_file" class="post_file">
+    <input type="file" id="post_file" name="post_file" class="file-input">
   </label>
 </li>
 <li title="완료" class="submit" id="writePost"></li>

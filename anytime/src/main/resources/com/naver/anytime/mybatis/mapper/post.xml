@@ -46,10 +46,10 @@
 	</select>
 	
 	<insert id="insertPost" parameterType="com.naver.anytime.domain.Post">
-	     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT,
+	     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE,
 	                        POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
 	                        STATUS)
-	     VALUES (post_comment_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT},
+	     VALUES (post_comment_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, #{POST_FILE},
 	              SYSDATE, 0, 0, 0, 1)
   	</insert>
   	

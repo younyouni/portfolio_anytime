@@ -217,7 +217,7 @@ public class PostController {
                     String originalFilename=file.getOriginalFilename();// 원래 파일명
 
                     //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
-                    String saveFolder="C:/upload/";
+                    String saveFolder="c:/upload/";
                     
                     String fileDBName=fileDBName(originalFilename, saveFolder); 
                     
@@ -226,13 +226,16 @@ public class PostController {
                     photo.setPATH(saveFolder+fileDBName);
                     
                      // Post 객체에 원본 파일명 설정
-                     post.setPOST_ORIGINAL(originalFilename);
+//                     post.setPOST_ORIGINAL(originalFilename);
+//                     
+//                     post.setUploadfile(fileDBName);
 
                    postPhotoService.savePhoto(photo); 
                 }
             }
         }
-
+        
+        postService.updatePost(post);
         result.put("statusCode", 1);
 
      } catch (Exception e) {
