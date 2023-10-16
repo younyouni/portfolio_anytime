@@ -361,13 +361,6 @@
 			<p>
 				<label>소개</label> <input type="text" name="info" class="text">
 			</p>
-			<p class="hide">
-				<label>인기 글 금지</label> <input type="checkbox"
-					id="manageMoimForm_is_not_selected_hot_article"
-					name="is_not_selected_hot_article"><label
-					for="manageMoimForm_is_not_selected_hot_article" class="checkbox">글이
-					공감을 받아도 인기 글 및 HOT 게시물에 선정되지 않음</label>
-			</p>
 			<input type="button" id="transferButton" value="게시판 양도" class="button light floatLeft">
 			<input type="button" id="deleteButton" value="게시판 삭제" class="button light floatLeft">
 			<input type="submit" id="updateButton" value="수정" class="button">
