@@ -251,7 +251,12 @@
 							where comment_id = #{num}
 						)
 	</select>
-
+	
+	<select id="getStatusCheck2" resultType="Integer">
+		select account_status
+		from member
+		where user_id = #{user_id}
+	</select>
 	
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
 
