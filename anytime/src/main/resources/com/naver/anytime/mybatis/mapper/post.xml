@@ -49,8 +49,8 @@
 	     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT,
 	                        POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
 	                        STATUS)
-	     VALUES (post_comment_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, 
-	              SYSDATE, 0, 0 , 0 ,1)
+	     VALUES (post_comment_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT},
+	              SYSDATE, 0, 0, 0, 1)
   	</insert>
   	
   	<update id="updatePost" parameterType="com.naver.anytime.domain.Post">

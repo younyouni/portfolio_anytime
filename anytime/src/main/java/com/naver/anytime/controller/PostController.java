@@ -1,10 +1,13 @@
 package com.naver.anytime.controller;
 
+import java.io.File;
 import java.security.Principal;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,16 +25,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
+import com.naver.anytime.domain.Photo;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.PostLike;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostLikeService;
+import com.naver.anytime.service.PostPhotoService;
 import com.naver.anytime.service.PostService;
 
 @Controller
@@ -49,13 +56,20 @@ public class PostController {
    
    private PostLikeService postLikeService;
    
+   private PostPhotoService postPhotoService;
+   
+   @Value("${my.savefolder}")
+   private String saveFolder;
+   
    @Autowired
-   public PostController(PostService postService, BoardService boardService, CommentService commentService, MemberService memberService, PostLikeService postLikeService) {
+   public PostController(PostService postService, BoardService boardService, CommentService commentService, MemberService memberService, 
+		   				 PostLikeService postLikeService, PostPhotoService postPhotoService) {
 	  this.postService = postService;
       this.boardService = boardService;
       this.commentService = commentService;
       this.memberService = memberService;
       this.postLikeService = postLikeService;
+      this.postPhotoService = postPhotoService;
    }
    
 /* -------------------------------------------------------------- ▼Created By UniUni▼ -------------------------------------------------------------- */
@@ -173,31 +187,137 @@ public class PostController {
    
    /* -------------------------------- ▼post/write 글 작성 액션 첨부파일 포함 실험용▼ -------------------------------- */
    @ResponseBody
-   @RequestMapping(value = "/write", method = RequestMethod.POST)
-   public ResponseEntity<Map<String, Object>> insert(
-	   @RequestParam(value = "LOGIN_ID", required=false) String USER_ID, 
-	   Post post, HttpServletRequest request) {
-       Map<String, Object> result = new HashMap<>();
-       
-       HttpSession session = request.getSession();
-       // 세션으로부터 BOARD_ID 및 USER_ID 값을 얻어옵니다.
-       // 여기서 "boardId" 와 "userId" 는 세션에 저장된 실제 키 이름에 따라 변경되어야 합니다.
-       int boardId = (Integer) session.getAttribute("board_id");
-      String login_id =USER_ID;
-       
-      int user_id = memberService.getUserId(login_id);
-       post.setBOARD_ID(boardId);
-       post.setUSER_ID(user_id);
-       
-       try {
-           postService.insertPost(post);
-           result.put("statusCode", 1);
-       } catch (Exception e) {
-           result.put("statusCode", -1);
-           result.put("errorMessage", e.getMessage());
-       }
-       return new ResponseEntity<>(result, HttpStatus.OK);
+   @PostMapping(value = "/write")
+   public ResponseEntity<Map<String, Object>> writePost(
+      @RequestParam(value = "LOGIN_ID", required=false) String USER_ID,
+      @RequestParam(value = "POST_FILE", required = false) MultipartFile[] files,
+      Post post, HttpServletRequest request) {
+
+    Map<String, Object> result = new HashMap<>();
+
+    HttpSession session = request.getSession();
+    int boardId = (Integer) session.getAttribute("board_id");
+    String login_id =USER_ID;
+
+    int user_id = memberService.getUserId(login_id);
+    post.setBOARD_ID(boardId);
+    post.setUSER_ID(user_id);
+
+    try {
+        // 게시글 먼저 저장
+        postService.insertPost(post);
+
+        // 이미지 파일 저장
+        if(files != null && files.length >0){
+            for(MultipartFile file : files){
+                if(!file.isEmpty()){
+                    Photo photo=new Photo();
+                    photo.setPOST_ID(post.getPOST_ID());
+                    
+                    String originalFilename=file.getOriginalFilename();// 원래 파일명
+
+                    //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
+                    String saveFolder="C:/upload/";
+                    
+                    String fileDBName=fileDBName(originalFilename, saveFolder); 
+                    
+                    file.transferTo(new File(saveFolder + fileDBName));
+
+                    photo.setPATH(saveFolder+fileDBName);
+                    
+                     // Post 객체에 원본 파일명 설정
+                     post.setPOST_ORIGINAL(originalFilename);
+
+                   postPhotoService.savePhoto(photo); 
+                }
+            }
+        }
+
+        result.put("statusCode", 1);
+
+     } catch (Exception e) {
+         result.put("statusCode", -1);
+         result.put("errorMessage", e.getMessage());
+     }
+
+     return new ResponseEntity<>(result, HttpStatus.OK);
    }
+
+
+   private String fileDBName(String fileName, String saveFolder) {
+       Calendar c=Calendar.getInstance();
+       int year=c.get(Calendar.YEAR);// 오늘 년도 구합니다.
+       int month=c.get(Calendar.MONTH)+1;// 오늘 월 구합니다.
+       int date=c.get(Calendar.DATE);// 오늘 일 구합니다.
+
+       String homedir=saveFolder+"/"+year+"-"+month+"-"+date;
+       
+       File path1=new File(homedir);
+       if(!(path1.exists())) {
+           path1.mkdir();// 새로운 폴더를 생성
+       }
+
+       Random r=new Random();
+       int random=r.nextInt(100000000);
+
+       
+      
+   	int index=fileName.lastIndexOf(".");
+   	
+   	String fileExtension=fileName.substring(index+1);
+
+   	String refileName="bbs"+year+month+date+random+"."+fileExtension;
+
+   	
+   	String fileDBName="/"+year+"-"+month+"-"+date+"/"+refileName;
+   	
+
+   	return fileDBName;
+   }
+
+
+   
+   
+//   private String fileDBName(String fileName, String saveFolder) {
+//	      // 새로운 폴더 이름 : 오늘 년 + 월 + 일
+//	      Calendar c = Calendar.getInstance();
+//	      int year = c.get(Calendar.YEAR);// 오늘 년도 구합니다.
+//	      int month = c.get(Calendar.MONTH) + 1;// 오늘 월 구합니다.
+//	      int date = c.get(Calendar.DATE);// 오늘 일 구합니다.
+//
+//	      String homedir = saveFolder + "/" + year + "-" + month + "-" + date;
+//	      logger.info(homedir);
+//	      File path1 = new File(homedir);
+//	      if (!(path1.exists())) {
+//	         path1.mkdir();// 새로운 폴더를 생성
+//	      }
+//
+//	      // 난수를 구합니다.
+//	      Random r = new Random();
+//	      int random = r.nextInt(100000000);
+//
+//	      /**** 확장자 구하기 시작 ****/
+//	      int index = fileName.lastIndexOf(".");
+//	      // 문자열에서 특정 문자열의 위치 값(index)를 반환합니다.
+//	      // indexOf가 처음 발견되는 문자열에 대한 index를 반환하는 반면,
+//	      // lastIndexOf는 마지막으로 발견되는 문자열의 index를 반환합니다.
+//	      // (파일명에 점에 여러개 있을 경우 맨 마지막에 발견되는 문자열의 위치를 리턴합니다.
+//	      logger.info("index = " + index);
+//
+//	      String fileExtension = fileName.substring(index + 1);
+//	      logger.info("fileExtension = " + fileExtension);
+//
+//	      // 새로운 파일명
+//	      String refileName = "bbs" + year + month + date + random + "." + fileExtension;
+//	      logger.info("refileName = " + refileName);
+//
+//	      // 오라클 디비에 저장될 파일 명
+//	      // String fileDBName = "/" + year + "-" + month + "-" + date + "/" + refileName;
+//	      String fileDBName = File.separator + year + "-" + month + "-" + date + File.separator + refileName;
+//	      logger.info("fileDBName = " + fileDBName);
+//
+//	      return fileDBName;
+//	   }
    
    /* -------------------------------- ▼post/updatePost 상세페이지-수정_데이터값출력(POST방식)▼ -------------------------------- */
    @PostMapping("/updatePost")
