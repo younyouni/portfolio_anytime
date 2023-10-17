@@ -11,6 +11,8 @@ public class Board {
 
 	private int ANONYMOUS;
 	private int STATUS;
+	
+	private String REJECT_REASON; 
 
 	private String LOGIN_ID;
 	private int NEW_BOARD_ID;
@@ -111,6 +113,14 @@ public class Board {
 
 	public void setSCHOOL_NAME(String sCHOOL_NAME) {
 		SCHOOL_NAME = sCHOOL_NAME;
+	}
+
+	public String getREJECT_REASON() {
+		return REJECT_REASON;
+	}
+
+	public void setREJECT_REASON(String rEJECT_REASON) {
+		REJECT_REASON = rEJECT_REASON;
 	}
 
 }
