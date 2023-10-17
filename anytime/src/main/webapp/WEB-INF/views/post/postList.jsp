@@ -375,13 +375,13 @@
 			<p>
 				<label>양도인 비밀번호</label> <input type="password"
 					name="transferer_password" class="text"
-					data-gtm-form-interact-field-id="1">
+					data-gtm-form-interact-field-id="1" required>
 			</p>
 			<p>
 				<label>피양도인 아이디</label> <input type="text" name="transferee_userid"
-					class="text" data-gtm-form-interact-field-id="0">
+					class="text" data-gtm-form-interact-field-id="0" required>
 			</p>
-			<input type="submit" value="양도 요청" class="button">
+			<input type="submit" id="transferOfBoardButton" value="양도 요청" class="button">
 		</form>
 
 
@@ -426,6 +426,13 @@
 	<jsp:include page="../common/footer.jsp" />
 	
 	<script>
+	
+	//board status 체크
+	if("${statuscheck}" == 1){
+		alert("승인되지 않은 게시판입니다.");
+		history.back();
+	}
+	
 	$(document).ready(function() {
 		
 		/* -------------------------------- ▼postDetail 임시작성용▼ -------------------------------- */
@@ -493,7 +500,7 @@
 			$('#deleteCheckForm').show();
 		});		
 		
-		$('#updateButton').click(function(){
+		$('#updateButton').click(function(event){
 			event.preventDefault()
 			updateBoardContentAjax();
 		});
@@ -505,10 +512,16 @@
 			$('div.modalwrap').remove();
 		});
 		
-		$('#deleteCheckButton').click(function(){
+		$('#deleteCheckButton').click(function(event){
 			event.preventDefault()
 			boardDeleteAjax();
 		});
+		
+		$('#transferOfBoardButton').click(function(event){
+			event.preventDefault()
+			
+			transferOfBoardAjax();
+		})
 		
 	});		
 	function getBoardContentAjax(){
@@ -613,6 +626,45 @@
 		}
 	}
 	
+	function transferOfBoardAjax(){
+		var inputpass = $("input[name='transferer_password']");
+		var inputid = $("input[name='transferee_userid']");
+		var pass = inputpass.val();
+		var id = inputid.val();
+		
+		var urlParams = new URLSearchParams(window.location.search);
+		var board_id = urlParams.get('board_id');
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/updatemanagerboard",
+			data: {
+				password: pass,
+				userid: id,
+				board_id: board_id
+			},
+			dataType: "json",
+			success: function (updateManagerBoardResult){
+				if(updateManagerBoardResult == 1){
+					alert("게시판이 양도 되었습니다.");
+					location.reload();
+				}else if(updateManagerBoardResult == 2){
+					alert("게시판 양도에 실패했습니다.");
+				}else if(updateManagerBoardResult == 3){
+					alert("비밀번호가 맞지 않습니다.");
+				}else if(updateManagerBoardResult == 4){
+					alert("양도할 유저가 해당 학교 학생이 아닙니다.");
+				}else if(updateManagerBoardResult == 5){
+					alert("양도할 유저 존재하지 않습니다.");
+				}else{
+					alert("게시판 양도에 실패했습니다 관리자에게 문의 바랍니다.");
+				}
+			},
+			error: function(xhr, status, error){
+				console.error("에러 발생" + error);
+			}
+			
+		})
+	}
 	
 	
 	</script> 

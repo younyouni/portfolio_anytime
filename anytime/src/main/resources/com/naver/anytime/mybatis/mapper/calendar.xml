@@ -5,15 +5,20 @@
 
 <mapper namespace="com.naver.anytime.mybatis.mapper.CalendarMapper">
 	
-	<select id="getCalendarList" resultType="map">
-		select *
-		from calendar
-		where user_id = #{user_id}
+	<select id="getCalendarList" parameterType="int" resultType="Calendar">
+		SELECT
+	    CALENDAR_ID AS id,
+	    USER_ID,
+	    SUBJECT AS title,
+	    TO_CHAR(START_TIME, 'YYYY-MM-DD"T"HH24:MI:SS') AS "start",
+	    TO_CHAR(END_TIME, 'YYYY-MM-DD"T"HH24:MI:SS') AS "end",
+	    CONTENT AS description,
+	    CASE 
+	        WHEN ALL_TIME = 1 THEN 'true'
+	        ELSE 'false'
+	    END AS allDay
+		FROM calendar
+		WHERE user_id = #{user_id}
 	</select>
-	
-	<insert id="insertCalendarList">
-		insert into calendar(CALENDAR_ID, USER_ID, SUBJECT, TYPE, START_TIME, END_TIME, CONTENT, ALL_TIME)
-		values(CALENDAR_SEQ.nextval, #{user_id}, #{subject}, #{type}, #{start_time}, #{end_time}, #{content}, #{all_time})
-	</insert>
 	
 </mapper>

@@ -52,4 +52,6 @@ public interface BoardMapper {
 
 	public int getBoardAnonymous2(int num);
 
+	public int isBoardStatusCheck(int board_id);
+
 }

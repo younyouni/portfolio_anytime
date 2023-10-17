@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.Calendar;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
@@ -125,7 +126,7 @@ public class BoardController {
 		int managerCheck = 0;
 		int user_id = memberService.getUserId(login_id);
 		int check = boardService.getBoardManager(board_id, user_id);
-
+		
 		if(check != 0) {
 			managerCheck = 1;
 		}
@@ -199,8 +200,11 @@ public class BoardController {
 		int updateManagerBoardResult = 0;
 		String loginid = principal.getName();			//양도인(로그인한) 유저 아이디 ex)uniuni
 		String dbPwd = memberService.getPwd(loginid);	//양도인(로그인한) 유저 db 보안 비밀번호 ex)$1b$592qa.Ql2 ...
+		
 		Integer idcheck = memberService.getStatusCheck(userid);		//피양도인 존재 유저 확인													//스테이터스 체크 확인
 		int schooltest = 0;
+		
+		
 		
 		Integer am_school_num = memberService.getSchoolId2(loginid);		//양도인 유저의 스쿨 번호
 		Integer tf_school_num = memberService.getSchoolId2(userid);			//피양도인 유저의 스쿨 번호

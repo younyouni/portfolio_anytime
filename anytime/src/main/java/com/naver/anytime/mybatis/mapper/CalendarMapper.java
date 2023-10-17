@@ -1,12 +1,15 @@
 package com.naver.anytime.mybatis.mapper;
 
-import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.naver.anytime.domain.Calendar;
 
 @Mapper
 public interface CalendarMapper {
 
-	Map<String, Object> getCalendarList(int user_id);
+	public List<Calendar> getCalendarList(int user_id);
 
 }

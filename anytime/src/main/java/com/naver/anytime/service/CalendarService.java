@@ -1,9 +1,11 @@
 package com.naver.anytime.service;
 
-import java.util.Map;
+import java.util.List;
+
+import com.naver.anytime.domain.Calendar;
 
 public interface CalendarService {
 
-	Map<String, Object> getCalendarList(int user_id);
+	public List<Calendar> getCalendarList(int user_id);
 
 }

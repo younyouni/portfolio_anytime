@@ -35,45 +35,59 @@
 	</div>
 
 <script>
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      headerToolbar: {
-        left: 'prevYear,prev,next,nextYear today',
-        center: 'title',
-        right: 'dayGridMonth,dayGridWeek,dayGridDay'
-      },
-      initialView: 'dayGridMonth',
-      navLinks: true, // can click day/week names to navigate views
-      editable: true,
-      dayMaxEvents: true, // allow "more" link when too many events
-      locale: 'ko',
-      events: {
-          url: "calendarlist", // 데이터를 가져올 URL을 지정
-          method: 'POST', // GET 또는 POST를 사용하여 데이터를 가져옴
-          beforeSend: function(xhr)
-	  		{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
-	  			xhr.setRequestHeader(header, token);
-	  		},
-  		dataType: "json",
-        failure: function() {
-            // 데이터 가져오기 실패 시 처리
-            alert('Failed to fetch events!');
-          }
-        }
- 
-    });
-
-    calendar.render();
-  });
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
   
-
+  var token = $("meta[name='_csrf']").attr("content");
+  var header = $("meta[name='_csrf_header']").attr("content");
+  
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    headerToolbar: {
+      left: 'prevYear,prev,next,nextYear today',
+      center: 'title',
+      right: 'dayGridMonth,dayGridWeek,dayGridDay'
+    },
+    initialView: 'dayGridMonth',
+    navLinks: true,
+    editable: true,
+    dayMaxEvents: true,
+    locale: 'ko',
+    events: function(info, successCallback, failureCallback) {
+      $.ajax({
+        url: "calendarlist",
+        method: 'POST',
+        dataType: "json",
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader(header, token);
+        },
+        success: function(Result) {
+          var events = [];
+          $.each(Result, function(index, data) {
+            //if (data.pValue != null && data.pValue === 'private') {
+              events.push({
+            	id: data.id,
+                title: data.title,
+                start: data.start,
+                end: data.end,
+                description: data.description
+                //color: 'red'
+              });
+            //}
+          });
+          console.log(events)
+          successCallback(events);
+        },
+        error: function(Result) {
+          alert("에러가 발생했습니다.");
+          failureCallback(Result);
+        }
+      });
+    }
+  });
+  calendar.render();
+});
 </script>
+  
 
 </body>
 </html>

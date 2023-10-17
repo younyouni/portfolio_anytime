@@ -134,6 +134,10 @@
 						)
 	</select>
 	
-	
+	<select id="isBoardStatusCheck" resultType="int">
+		select status
+		from board
+		where board_id = #{board_id}
+	</select>
 	
 </mapper>
