@@ -71,6 +71,11 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> getBoardRequest() {
 		return dao.getBoardRequest();
 	}
+
+	@Override
+	public int updateBoardStatus(int board_id, int approvalStatus) {
+		return dao.updateBoardStatus(board_id,approvalStatus);
+	}
 	// ********************************= 윤희 =********************************
 
 	@Override
@@ -125,5 +130,6 @@ public class BoardServiceImpl implements BoardService {
 	public int getBoardAnonymous2(int num) {
 		return dao.getBoardAnonymous2(num);
 	}
+
 
 }

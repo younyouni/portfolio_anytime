@@ -25,6 +25,10 @@
 </head>
 <script>
 	$(function() {
+		let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+
+		var approvalStatus = 0;
 		$("form#searchBoard").hide();
 		$("div.center-block").hide();
 		$("div.boardadmin div.menu a").click(function() {
@@ -45,9 +49,11 @@
 			$("div.center-block").show();
 		});
 
-		$('a.approval').click(function() {
+		$(document).on("click", "a.approval", function() {
 			$('form#approvalreview').css('display', 'block');
 			$('form#approvalreview').before('<div class="modalwrap"></div>');
+			var board_id= $(this).parent().parent().parent().find('input.approval').val();
+			$('form#approvalreview input[name="board_id"]').val(board_id);
 		});
 
 		// 모달 닫기 버튼을 클릭할 때
@@ -68,9 +74,82 @@
 		$('.list tbody td:not(.switch)').click(function() {
 			$('form#boardInfo').css('display', 'block');
 			$('form#boardInfo').before('<div class="modalwrap"></div>');
-
 		});
+		
+		$("#approvalreview").submit(function(){
+			var approvalStatus = 4;
+			var rejectionreason = $("form#approvalreview input.rejectreason").val();
+			var board_id =$('#approvalreview input[name="board_id"]').val();
+			alert("board_id : "+board_id)
+			updateBoardStatus(board_id, approvalStatus,
+					rejectionreason);
+			location.reload();
+			e.preventDefault();
+		});
+
+		$("input.approval").on("change",
+				function() {
+					if (this.checked) {
+						approvalStatus = 3;
+						var rejectionreason = ''
+						var board_id = $(this).val();
+						$(this).parent().parent().siblings(
+								'.approvalprocess').removeClass('pending reject');
+						$(this).parent().parent().siblings(
+								'.approvalprocess').find('p').text(
+								'승인완료');
+						$(this).parent().parent().siblings(
+								'.approvalprocess').find('img')
+								.remove();
+	
+						$(this).parent().parent().siblings(
+								'.approvalprocess')
+								.addClass('complete');
+					} else {
+						approvalStatus = 0;
+						var board_id = $(this).val();
+						$(this).parent().parent().siblings(
+								'.approvalprocess').removeClass(
+								'complete');
+						$(this).parent().parent().siblings(
+								'.approvalprocess').find('p').text(
+								'승인보류');
+						$(this)
+								.parent()
+								.parent()
+								.siblings('.approvalprocess')
+								.find('p')
+								.append(
+										'<a class="approval"><img src="${pageContext.request.contextPath}/resources/image/admin/approval.cancel.png"></a>');
+						$(this).parent().parent().siblings(
+								'.approvalprocess').addClass('pending');
+					}
+					updateBoardStatus(board_id, approvalStatus,
+							rejectionreason);
+				});
 	});
+
+	function updateBoardStatus(board_id, approvalStatus, rejectionreason) {
+		let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		$.ajax({
+			type : "post",
+			url : 'updateBoardStatus',
+			data : {
+				board_id : board_id,
+				approvalStatus : approvalStatus,
+				rejectionreason : rejectionreason
+			},
+			beforeSend : function(xhr) { // 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(rdata) {
+				if (rdata == 1) {
+					alert('승인처리완료');
+				}
+			}
+		});
+	}
 </script>
 <body>
 	<div id="wrapper">
@@ -111,42 +190,41 @@
 					<tbody>
 						<c:forEach var="request" items="${boardrequest}">
 							<tr>
-								<td><label class="switch"> <input type="checkbox">
-										<span class="slider round"></span>
-								</label></td>
+								<td><c:choose>
+										<c:when test="${request.STATUS ==3 }">
+											<label class="switch"> <input type="checkbox"
+												class="approval" value="${request.BOARD_ID }" checked>
+												<span class="slider round"></span>
+											</label>
+										</c:when>
+										<c:when test="${request.STATUS !=3 }">
+											<label class="switch"> <input type="checkbox"
+												class="approval" value="${request.BOARD_ID }"> <span
+												class="slider round"></span>
+											</label>
+										</c:when>
+									</c:choose></td>
 								<td>${request.SCHOOL_NAME}</td>
 								<td>${request.TYPE}</td>
 								<td>${request.NAME}</td>
 								<td>${request.PURPOSE}</td>
 								<td>${request.LOGIN_ID}</td>
-								<td class="complete"><p>승인완료</p></td>
+								<c:choose>
+									<c:when test="${request.STATUS ==3 }">
+										<td class="approvalprocess complete"><p>승인완료</p></td>
+									</c:when>
+									<c:when test="${request.STATUS ==0 }">
+										<td class="approvalprocess pending"><p>
+												승인보류<a class="approval"><img
+													src="${pageContext.request.contextPath}/resources/image/admin/approval.cancel.png"></a>
+											</p></td>
+									</c:when>
+									<c:when test="${request.STATUS == 4 }">
+										<td class="approvalprocess reject"><p>승인거부</p></td>
+									</c:when>
+								</c:choose>
 							</tr>
 						</c:forEach>
-						<tr>
-							<td><label class="switch"> <input type="checkbox">
-									<span class="slider round"></span>
-							</label></td>
-							<td>학교이름</td>
-							<td>유형</td>
-							<td>게시판이름</td>
-							<td>게시판 개설 목적</td>
-							<td>운영자</td>
-							<td class="pending"><p>
-									승인보류<a class="approval"><img
-										src="${pageContext.request.contextPath}/resources/image/admin/approval.cancel.png"></a>
-								</p></td>
-						</tr>
-						<tr>
-							<td><label class="switch"> <input type="checkbox">
-									<span class="slider round"></span>
-							</label></td>
-							<td>학교이름</td>
-							<td>유형</td>
-							<td>게시판이름</td>
-							<td>게시판 개설 목적</td>
-							<td>운영자</td>
-							<td class="reject"><p>승인거부</p></td>
-						</tr>
 					</tbody>
 				</table>
 				<table class="list" style="display: none;">
@@ -170,7 +248,8 @@
 							<td>게시판 개설 목적</td>
 							<td>운영자</td>
 							<td class="switch"><label class="switch"> <input
-									type="checkbox"> <span class="slider round"></span>
+									type="checkbox" class="approval"> <span
+									class="slider round"></span>
 							</label></td>
 						</tr>
 					</tbody>
@@ -186,8 +265,9 @@
 			<a title="닫기" class="close"></a> <span class="new">게시판 승인 심사</span>
 			<p></p>
 			<label id="rejectreason">승인 거부 사유</label> <input type="text"
-				class="info" name="reason" placeholder="승인 거부 사유"
-				class="text rejectreason"> <input type="submit" value="확인"
+				name="rejectreason" placeholder="승인 거부 사유"
+				class="text info rejectreason"> <input type="hidden"
+				name="board_id"> <input type="submit" value="확인"
 				class="button">
 		</form>
 		<form id="boardInfo" class="modal"

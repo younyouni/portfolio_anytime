@@ -5,16 +5,18 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.PostService;
+import com.naver.constants.AnytimeConstants;
 
-@Controller
+@RestController
 //@RequestMapping(value = "/admin")
 public class AdminController {
 
@@ -42,6 +44,26 @@ public class AdminController {
 		mv.addObject("boardrequest", boardrequest);
 		mv.setViewName("/admin/boardAdmin");
 		return mv;
+	}
+
+	@RequestMapping(value = "/updateBoardStatus", method = RequestMethod.POST)
+	public int updateBoardStatus(int board_id, int approvalStatus, String rejectionreason) {
+		logger.info("board_id : " + board_id + "approvalStatus : " + approvalStatus);
+		int result = 0;
+		//if (approvalStatus != AnytimeConstants.BOARD_APPROVAL_SCHEDULED_FOR_DENIAL) {
+			result = boardService.updateBoardStatus(board_id, approvalStatus);
+		//}
+//		else {
+//			result = 1;
+//		}
+		logger.info("result : " + result);
+		return result;
+	}
+
+	@Scheduled(cron = "0 0 0 * * ?")
+	public String updateBoardStatusComplete() {
+
+		return "0";
 	}
 
 	@RequestMapping(value = "/reportAdmin", method = RequestMethod.GET)
