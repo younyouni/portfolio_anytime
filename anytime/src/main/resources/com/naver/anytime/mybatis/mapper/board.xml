@@ -76,10 +76,10 @@
 		INSERT INTO BOARD
 				(BOARD_ID, SCHOOL_ID, USER_ID,
 				TYPE, NAME, CONTENT, ANONYMOUS,
-				STATUS, PURPOSE)
+				STATUS, PURPOSE, REJECT_REASON)
 		VALUES (BOARD_SEQ.NEXTVAL, #{SCHOOL_ID}, #{USER_ID},
 				#{TYPE}, #{NAME}, #{CONTENT}, #{ANONYMOUS},
-				#{STATUS}, #{PURPOSE})
+				#{STATUS}, #{PURPOSE}, NULL)
 	</insert>
 	
 	<delete id="deleteBoard">
@@ -120,7 +120,7 @@
         ON B.SCHOOL_ID = S.SCHOOL_ID
         INNER JOIN MEMBER M
         ON B.USER_ID = M.USER_ID
-		WHERE (B.STATUS != 1 OR B.STATUS !=2)
+		WHERE (B.STATUS != 1 AND B.STATUS !=2)
 		AND (B.TYPE =2 OR B.TYPE =3)
 	</select>
 	
@@ -128,6 +128,23 @@
 		UPDATE BOARD
 		SET STATUS = #{approvalStatus}
 		WHERE BOARD_ID = #{board_id}
+	</update>
+
+	<update id="updateApprovalStatus" parameterType ="map">
+		UPDATE BOARD
+		SET STATUS = #{approvalStatus},REJECT_REASON = #{rejectionReason}
+		WHERE BOARD_ID = #{board_id}
+	</update>
+	
+	<update id="updateBoardStatusComplete">
+		UPDATE BOARD
+		SET STATUS =
+		  CASE
+		    WHEN STATUS = 3 THEN 1
+		    WHEN STATUS = 4 THEN 2
+		    ELSE STATUS
+		  END
+		WHERE STATUS IN (3, 4)
 	</update>
 	<!-- ===========================윤희=========================== -->
 	
