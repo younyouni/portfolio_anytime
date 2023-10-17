@@ -86,6 +86,9 @@ public interface PostMapper {
 
     @Update("UPDATE POST SET LIKE_COUNT = LIKE_COUNT - 1 WHERE POST_ID = #{POST_ID}")
     public void decrementLikes(int post_id);
+    
+    public void updatePostFile(int post_id, String post_file);
+    public void updatePostFile(Map<String, Object> params);
 	
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);

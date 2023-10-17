@@ -92,12 +92,12 @@
 			<ul class="status">
 			
 				<c:set var="fileCount" value="0" />
-               <%--  <c:forEach var="file" items="${post.POST_FILE.split(',')}">
+                 <c:forEach var="file" items="${pageContext.request.contextPath}/upload${photo.PATH}">
                     <!-- 파일이 존재하면 fileCount 증가 -->
                     <c:if test="${not empty file}">
                         <c:set var="fileCount" value="${fileCount + 1}" />
                     </c:if>
-                </c:forEach> --%>
+                </c:forEach> 
                 <li class="attach">${fileCount}</li>
                 
 				<li title="공감" class="vote">${post.LIKE_COUNT}</li>

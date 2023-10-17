@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,13 @@ import com.naver.anytime.mybatis.mapper.PostMapper;
 public class PostServiceImpl implements PostService {
 	private PostMapper postDao;
 	private BoardMapper boardDao;
+	private SqlSession sqlSession;
 
 	@Autowired
-	public PostServiceImpl(PostMapper postDao, BoardMapper boardDao) {
+	public PostServiceImpl(PostMapper postDao, BoardMapper boardDao, SqlSession sqlSession) {
 		this.postDao = postDao;
 		this.boardDao = boardDao;
+		this.sqlSession = sqlSession;
 	}
 
 	@Override
@@ -208,6 +211,20 @@ public class PostServiceImpl implements PostService {
 		return postDao.getPostLikes(post_id);
     } 
 	
+	@Override
+    public void updatePostFile(int post_id, String post_file) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("post_id", post_id);
+        params.put("post_file", post_file);
+        this.postDao.updatePostFile(params);
+    }
+	
+	@Override
+	public void updatePostFile(Map<String, Object> params) {
+		sqlSession.update("post.updatePostFile", params);
+		
+	}
+	
 	// ********************************= 윤희 =********************************
 	@Override
 	public List<List<Post>> getPostListByBoard(int[] board_ids) {
@@ -228,6 +245,10 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void decrementLikes(int post_id) {
 	}
+
+	
+
+	
 
 	
 

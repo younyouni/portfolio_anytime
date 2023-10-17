@@ -9,4 +9,8 @@
 		VALUES(photo_seq.nextval, #{POST_ID}, #{PATH})
     </insert>
 
+	<select id="getPhotosByPostId" resultType="com.naver.anytime.domain.Photo">
+        SELECT * FROM PHOTO WHERE POST_ID = #{POST_ID}
+    </select>
+	
 </mapper>

@@ -21,20 +21,22 @@ public class Post {
 	private String BOARDNAME;		//게시판 번호로 게시판이름 매칭
 	private String LOGIN_ID;
 	
-	private MultipartFile uploadfile;
+	private String uploadfile;
 	private String POST_ORIGINAL; //첨부될 파일의 이름
 	
 	/* ---------- POST테이블 Getter/Setter ---------- */
 	
-	public MultipartFile getUploadfile() {
+	public String getUploadfile() {
 		return uploadfile;
 	}
-	public void setUploadfile(MultipartFile uploadfile) {
+	public void setUploadfile(String uploadfile) {
 		this.uploadfile = uploadfile;
 	}
+	
 	public String getPOST_ORIGINAL() {
 		return POST_ORIGINAL;
 	}
+	
 	public void setPOST_ORIGINAL(String pOST_ORIGINAL) {
 		POST_ORIGINAL = pOST_ORIGINAL;
 	}

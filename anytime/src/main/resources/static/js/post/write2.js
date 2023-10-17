@@ -43,7 +43,7 @@ $(document).ready(function(){
 <li title="첨부" class="attach">
   <label class="file-label">
     <span class="file-name" id="file-name"></span> 파일 선택
-    <input type="file" id="post_file" name="post_file" class="post_file">
+    <input type="file" id="post_file" name="post_file" class="file-input">
   </label>
 </li>
 <li title="완료" class="submit" id="writePost"></li>
@@ -76,77 +76,112 @@ $("#writeArticleButton").on("click", function(e) {
 });
 
 /*글쓰기 완료*/
-$("#writePost").on("click", function(e) {
-    e.preventDefault();
-
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-
-    var board_id = document.getElementById('board_id').textContent;
-
-    var formData = new FormData();
-    formData.append('BOARD_ID', board_id);
-    formData.append('LOGIN_ID', $('#login_id').val());
-    formData.append('SUBJECT', $("#title").val());
-    formData.append('CONTENT', $("#content").val());
-
-    var filesInputElem = document.querySelector('#post_file');
-    
-	// 파일 첨부가 있을 경우에만 FormData에 추가
-	if (filesInputElem.files.length > 0) {
-        for(var i=0; i<filesInputElem.files.length; i++) {
-            formData.append("POST_FILE", filesInputElem.files[i]);
-        }
-	}
-  
-	console.log(formData);
-
-	for (var pair of formData.entries()) {
-	    console.log(pair[0]+ ', ' + pair[1]); 
-	}
-
-  	$.ajax({
-    	type: "POST",
-    	url: "write",
-    	data: formData,
-    	processData: false,  
-  		contentType: false,
-  		async: false,
-  		beforeSend: function(xhr) {
-  			xhr.setRequestHeader(header, token);
-  		},
-  	}).done(function(res) {
-      	if (res.statusCode == 1){
-          	alert("게시글 작성에 성공하였습니다.");
-          	location.reload();
-      	} else {
-          	alert("게시글 작성에 실패하였습니다. 오류: " + res.errorMessage);
-      	}
-  	});
-});
-
+var filesToUpload = []; // 업로드할 파일들을 저장하는 배열
 
 $(document).on('change', '#post_file', function() {
-    var fileList = this.files;
-    var anyWindow = window.URL || window.webkitURL;
+    var newFiles = this.files;
 
     // 이미 업로드된 파일의 개수
     var uploadedFileCount = $('.thumbnails li').length - 1; // 'new' li 제외
 
-    if(uploadedFileCount + fileList.length > 5) {
+    if (uploadedFileCount + newFiles.length > 5) {
         alert('첨부파일은 최대 5개까지만 가능합니다.');
         this.value = ''; // 현재 입력 필드 초기화
         return;
     }
 
-    for(var i = 0; i < fileList.length; i++){
-    //이미지 만들기
-      var objectUrl = anyWindow.createObjectURL(fileList[i]);
-      $('.thumbnails .new').before('<li><img src="' + objectUrl + '" /></li>');
-      
-      window.URL.revokeObjectURL(fileList[i]);
+    for (var i = 0; i < newFiles.length; i++) {
+        filesToUpload.push(newFiles[i]); // 새롭게 추가된 파일들도 배열에 포함시킵니다.
+
+        var objectUrl = URL.createObjectURL(newFiles[i]);
+
+        // 이미지 업로드 시 미리보기 썸네일 추가
+        var thumbnailItem = $('<li><img src="' + objectUrl + '" /></li>');
+        
+	thumbnailItem.find('img').on('load', function () { 
+		URL.revokeObjectURL(this.src);   // Here we are revoking the object URL after the image has loaded.
+	});
+
+        thumbnailItem.find('img').css('max-width', '100px'); // 썸네일 이미지 크기 조절
+
+        $('.thumbnails .new').before(thumbnailItem);
     }
 });
+
+
+
+    $("#writePost").on("click", function(e) {
+        e.preventDefault();
+
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+	    var board_id = document.getElementById('board_id').textContent;
+
+	    var formData=new FormData();
+	    formData.append('BOARD_ID', board_id);
+	    formData.append('LOGIN_ID', $('#login_id').val());
+	    formData.append('SUBJECT', $("#title").val());
+	    formData.append('CONTENT', $("#content").val());
+
+	    for (var i=0; i<filesToUpload.length; i++) { 
+		    // 모든 첨부파일을 formData에 추가합니다.
+		    formData.append("file[]", filesToUpload[i]);
+	    }
+
+	  	$.ajax({
+	    	type: "POST",
+	    	url: "write",
+	    	data: formData,
+	    	processData: false,  
+	  		contentType: false,
+	  		beforeSend: function(xhr) {
+	  			xhr.setRequestHeader(header, token);
+	  		},
+	  	}).done(function(res) {
+	      	if (res.statusCode == 1){
+	          	alert("게시글 작성에 성공하였습니다.");
+	          	location.reload();
+	      	} else {
+	          	alert("게시글 작성에 실패하였습니다. 오류: " + res.errorMessage);
+	      	}
+	  	});
+    });
+
+function displayThumbnails(files) {
+	var fileList = files;
+	var anyWindow = window.URL || window.webkitURL;
+
+	for(var i = 0; i < fileList.length; i++){
+		var objectUrl = anyWindow.createObjectURL(fileList[i]);
+		$('.thumbnails .new').before('<li><img src="' + objectUrl + '" /></li>');
+		
+		window.URL.revokeObjectURL(fileList[i]);
+	}
+  }
+
+
+// $(document).on('change', '#post_file', function() {
+//     var fileList = this.files;
+//     var anyWindow = window.URL || window.webkitURL;
+
+//     // 이미 업로드된 파일의 개수
+//     var uploadedFileCount = $('.thumbnails li').length - 1; // 'new' li 제외
+
+//     if(uploadedFileCount + fileList.length > 5) {
+//         alert('첨부파일은 최대 5개까지만 가능합니다.');
+//         this.value = ''; // 현재 입력 필드 초기화
+//         return;
+//     }
+
+//     for(var i = 0; i < fileList.length; i++){
+//     //이미지 만들기
+//       var objectUrl = anyWindow.createObjectURL(fileList[i]);
+//       $('.thumbnails .new').before('<li><img src="' + objectUrl + '" /></li>');
+      
+//       window.URL.revokeObjectURL(fileList[i]);
+//     }
+// });
 
 /*글쓰기 완료*/
 })
