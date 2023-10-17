@@ -1,5 +1,7 @@
 package com.naver.anytime.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,10 @@ public class Semester_detailServiceImpl implements Semester_detailService {
 	@Override
 	public int update(Semester_detail semester_detail) {
 		return dao.update(semester_detail);
+	}
+
+	@Override
+	public List<Semester_detail> getSemesterDetailsBySemesterId(int semester_id) {
+		return dao.getSemesterDetailsBySemesterId(semester_id);
 	}
 }

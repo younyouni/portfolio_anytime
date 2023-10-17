@@ -13,4 +13,8 @@ public interface SchoolService {
 	String getSchoolName(String schoolDomain);
 
 	School getSchool(String schoolDomain);
+
+	School getSchoolByUserId(int user_id);
+	
+	
 }

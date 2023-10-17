@@ -6,7 +6,7 @@ public class School {
 	private String name;
 	private String domain;
 	private String address;
-	private int credit;
+	private float credit;
 	private int total_count;
 	
 	public int getSchool_id() {
@@ -33,10 +33,10 @@ public class School {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getCredit() {
+	public float getCredit() {
 		return credit;
 	}
-	public void setCredit(int credit) {
+	public void setCredit(float credit) {
 		this.credit = credit;
 	}
 	public int getTotal_count() {

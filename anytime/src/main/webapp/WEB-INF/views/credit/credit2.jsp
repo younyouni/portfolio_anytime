@@ -13,7 +13,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.pie.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery.flot.resize.min.js"></script>
- <script src="${pageContext.request.contextPath}/resources/js/credit/calculator.js"></script>  
+ <script src="${pageContext.request.contextPath}/resources/js/credit/calculator.index.js"></script>  
 </head>
 <body style="">
 
