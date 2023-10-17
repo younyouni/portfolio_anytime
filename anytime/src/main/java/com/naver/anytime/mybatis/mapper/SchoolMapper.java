@@ -14,11 +14,14 @@ import com.naver.anytime.domain.School;
 @Mapper
 public interface SchoolMapper {
 
-	List<School> getSchoolList();
+	public List<School> getSchoolList();
 
 	public String getSchoolDomain(String SchoolName);
 
-	String getSchoolName(String schoolDomain);
+    public String getSchoolName(String schoolDomain);
 
-	School getSchool(String schoolDomain);
+	public School getSchool(String schoolDomain);
+	
+	public School getSchoolByUserId(int user_id);
+	
 }

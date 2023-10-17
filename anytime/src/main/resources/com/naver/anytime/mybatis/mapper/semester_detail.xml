@@ -23,4 +23,14 @@
 </update>
 
 
+
+
+     <select id="getSemesterDetailsBySemesterId" parameterType="int" resultType="semester_detail">
+        SELECT * FROM semester_detail WHERE semester_id = #{semester_id}
+    </select>
+    
+
+
+
+
 </mapper>

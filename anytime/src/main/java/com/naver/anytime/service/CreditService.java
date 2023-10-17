@@ -12,5 +12,11 @@ public interface CreditService {
 	public List<Semester_detail> getSemesterDetailsByUserId(int user_id);
 
 	public List<Semester_detail> getSemesterDetailsBySemesterId(int semester_id);
+
+	public Credit getCreditByUserId(int user_id);
+
+	public int updateGraduateCredit(int graduate_credit);
+
+	public int getTotalAcquisition(int user_id);
 	
 }
