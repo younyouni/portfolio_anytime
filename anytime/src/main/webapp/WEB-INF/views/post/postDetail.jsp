@@ -79,9 +79,9 @@
 					<h2 class="large"> ${postdata.SUBJECT}</h2>
 					<p class="large"> ${postdata.CONTENT}</p>
 					<div class="attaches multiple">
-						<c:forEach var="b" items="${PATH}">
+						<c:forEach var="photo" items="${photos}">
 							<figure class="attach">
-								<img src="/anytime/upload/${b}" alt="none">
+								<img src="${pageContext.request.contextPath}/upload${photo.PATH}" alt="none" title="${photo.PATH} '다운로드'">
 							</figure>
 						</c:forEach>
 					</div>

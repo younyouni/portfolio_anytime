@@ -78,7 +78,7 @@ public class PostController {
    /* -------------------------------- ▼post/detail 상세페이지▼ -------------------------------- */ 
    @GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
    public ModelAndView postDetail(
-	   @RequestParam(value = "post_id", required = false) int post_id,
+	   @RequestParam(value = "post_id", required = false) Integer post_id,
 	   ModelAndView mv,
 	   HttpServletRequest request, Principal userPrincipal) {
 	   
@@ -93,7 +93,7 @@ public class PostController {
 	   
 	   Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
 	   Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
-	   
+	   List<Photo> photos = postPhotoService.getPhotosByPostId(post_id);
 	   
 	      // post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
 	      if (post == null) {
@@ -120,6 +120,8 @@ public class PostController {
 	    	  mv.addObject("boardtest", board);
 	    	  mv.addObject("currentUserId", currentUserId);
 	    	  mv.addObject("anonymous", board.getANONYMOUS());
+	    	  mv.addObject("photos", photos);
+	    	  logger.info("패쓰값" + photos);
 	    	  System.out.println("post테스트=>"+post);
 	    	  
 	      }
@@ -199,15 +201,16 @@ public class PostController {
     HttpSession session = request.getSession();
     int boardId = (Integer) session.getAttribute("board_id");
     String login_id =USER_ID;
-
+    
+    
+    
     int user_id = memberService.getUserId(login_id);
     post.setBOARD_ID(boardId);
     post.setUSER_ID(user_id);
-    
     StringBuilder sbFiles = new StringBuilder();
 
     try {
-
+    	postService.insertPost(post);
         // 이미지 파일 저장
         if(files != null && files.length >0){
             for(MultipartFile file : files){
@@ -224,7 +227,8 @@ public class PostController {
                     
                     file.transferTo(new File(saveFolder + fileDBName));
 
-                    photo.setPATH(saveFolder+fileDBName);
+//                    photo.setPATH(saveFolder+fileDBName);
+                    photo.setPATH(fileDBName);
                     
                      post.setPOST_FILE(originalFilename);
 
@@ -237,11 +241,13 @@ public class PostController {
         
         if(sbFiles.length() > 0) {
             sbFiles.setLength(sbFiles.length() - 1);
+            post.setPOST_FILE(sbFiles.toString());
+            postService.updatePostFile(post.getPOST_ID(), sbFiles.toString());
         }
         
-        post.setPOST_FILE(sbFiles.toString());
+        
         // 게시글 저장
-        postService.insertPost(post);
+//        postService.insertPost(post);
         
         result.put("statusCode", 1);
 
@@ -276,7 +282,7 @@ public class PostController {
    	
    	String fileExtension=fileName.substring(index+1);
 
-   	String refileName="bbs"+year+month+date+random+"."+fileExtension;
+   	String refileName="anytime"+year+month+date+random+"."+fileExtension;
 
    	
    	String fileDBName="/"+year+"-"+month+"-"+date+"/"+refileName;
