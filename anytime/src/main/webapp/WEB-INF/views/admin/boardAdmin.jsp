@@ -80,7 +80,6 @@
 			var approvalStatus = 4;
 			var rejectionreason = $("form#approvalreview input.rejectreason").val();
 			var board_id =$('#approvalreview input[name="board_id"]').val();
-			alert("board_id : "+board_id)
 			updateBoardStatus(board_id, approvalStatus,
 					rejectionreason);
 			location.reload();
@@ -89,9 +88,9 @@
 
 		$("input.approval").on("change",
 				function() {
+					var rejectionreason = ''
 					if (this.checked) {
 						approvalStatus = 3;
-						var rejectionreason = ''
 						var board_id = $(this).val();
 						$(this).parent().parent().siblings(
 								'.approvalprocess').removeClass('pending reject');

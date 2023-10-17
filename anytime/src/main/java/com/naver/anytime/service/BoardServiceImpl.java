@@ -74,7 +74,22 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int updateBoardStatus(int board_id, int approvalStatus) {
-		return dao.updateBoardStatus(board_id,approvalStatus);
+		return dao.updateBoardStatus(board_id, approvalStatus);
+	}
+
+	@Override
+	public int updateApprovalStatus(int board_id, int approvalStatus, String rejectionreason) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("board_id", board_id);
+		map.put("approvalStatus", approvalStatus);
+		map.put("rejectionReason", rejectionreason);
+		
+		return dao.updateApprovalStatus(map);
+	}
+
+	@Override
+	public int updateBoardStatusComplete() {
+		return dao.updateBoardStatusComplete();
 	}
 	// ********************************= 윤희 =********************************
 

@@ -51,4 +51,8 @@ public interface BoardService {
 	
 	public int getBoardAnonymous2(int num);
 
+	public int updateApprovalStatus(int board_id, int approvalStatus, String rejectionreason);
+
+	public int updateBoardStatusComplete();
+
 }
