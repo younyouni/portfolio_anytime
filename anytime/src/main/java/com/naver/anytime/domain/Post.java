@@ -1,5 +1,7 @@
 package com.naver.anytime.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Post {
 	private int    POST_ID;    		// 게시물 고유번호
 	private int    BOARD_ID;   		// 게시판 고유번호
@@ -19,8 +21,23 @@ public class Post {
 	private String BOARDNAME;		//게시판 번호로 게시판이름 매칭
 	private String LOGIN_ID;
 	
+	private MultipartFile uploadfile;
+	private String POST_ORIGINAL; //첨부될 파일의 이름
+	
 	/* ---------- POST테이블 Getter/Setter ---------- */
 	
+	public MultipartFile getUploadfile() {
+		return uploadfile;
+	}
+	public void setUploadfile(MultipartFile uploadfile) {
+		this.uploadfile = uploadfile;
+	}
+	public String getPOST_ORIGINAL() {
+		return POST_ORIGINAL;
+	}
+	public void setPOST_ORIGINAL(String pOST_ORIGINAL) {
+		POST_ORIGINAL = pOST_ORIGINAL;
+	}
 	public String getLOGIN_ID() {
 		return LOGIN_ID;
 	}
@@ -60,7 +77,7 @@ public class Post {
 	}
 	public String getPOST_FILE() {
 		return POST_FILE;
-	}
+	}	
 	public void setPOST_FILE(String pOST_FILE) {
 		POST_FILE = pOST_FILE;
 	}
@@ -113,8 +130,17 @@ public class Post {
 		BOARDNAME = bOARDNAME;
 	}
 	
-	/* ---------- POST테이블 toString ---------- */
 	
+	
+	/* ---------- POST테이블 toString ---------- */
+	@Override
+	public String toString() {
+		return "Post [POST_ID=" + POST_ID + ", BOARD_ID=" + BOARD_ID + ", USER_ID=" + USER_ID + ", SUBJECT=" + SUBJECT
+				+ ", CONTENT=" + CONTENT + ", POST_FILE=" + POST_FILE + ", POST_DATE=" + POST_DATE + ", LIKE_COUNT="
+				+ LIKE_COUNT + ", SCRAP_COUNT=" + SCRAP_COUNT + ", REPORT_COUNT=" + REPORT_COUNT + ", STATUS=" + STATUS
+				+ ", COMMENT_COUNT=" + COMMENT_COUNT + ", NICKNAME=" + NICKNAME + ", BOARDNAME=" + BOARDNAME
+				+ ", LOGIN_ID=" + LOGIN_ID + ", uploadfile=" + uploadfile + ", POST_ORIGINAL=" + POST_ORIGINAL + "]";
+	}
 	
 	
 	

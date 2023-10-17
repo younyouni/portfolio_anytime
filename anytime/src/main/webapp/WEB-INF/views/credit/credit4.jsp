@@ -38,6 +38,7 @@ $(document).ready(function(){
 	                $('#requiredCreditForm').hide();
 	                $('div.modalwrap').remove();
 	                $('div.column.acquisition p.total').text('/ ' + newCreditValue);
+	                
 	            },
 	             error:function(request,status,error){
 	                 alert("code:"+request.status+

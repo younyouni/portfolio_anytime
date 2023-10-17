@@ -47,8 +47,6 @@ public class BoardServiceImpl implements BoardService {
 	public int getBoardAnonymous(int board_id) {
 		return dao.getBoardAnonymous(board_id);
 	}
-	
-	
 
 	// ********************************= 윤희 =********************************
 	@Override
@@ -60,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
 	public int[] getBoardIdsByDomain(String schoolDomain) {
 		return dao.getBoardIdsByDomain(schoolDomain);
 	}
-	
+
 	@Transactional
 	public int insertBoard(Board board) {
 		int result = dao.insertBoard(board);
@@ -68,7 +66,12 @@ public class BoardServiceImpl implements BoardService {
 		boardAuthDao.insertBoardAuth(board.getNEW_BOARD_ID(), board.getUSER_ID());
 		return result;
 	}
-	// ********************************= 윤희 =********************************	
+
+	@Override
+	public List<Board> getBoardRequest() {
+		return dao.getBoardRequest();
+	}
+	// ********************************= 윤희 =********************************
 
 	@Override
 	public List<Board> getBoardContent(int board_id) {
@@ -90,13 +93,13 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteBoard(String board_name, int user_id) {
 		return dao.deleteBoard(board_name, user_id);
 	}
-	
+
 	// 권한
 	@Override
 	public int deleteBoardAuth(int board_id) {
 		return boardAuthDao.deleteBoardAuth(board_id);
 	}
-	
+
 	@Override
 	public int getBoardName2(String board_name, int board_id) {
 		Integer result = dao.getBoardName2(board_name, board_id);
@@ -127,6 +130,5 @@ public class BoardServiceImpl implements BoardService {
 	public int isBoardStatusCheck(int board_id) {
 		return dao.isBoardStatusCheck(board_id);
 	}
-
 
 }

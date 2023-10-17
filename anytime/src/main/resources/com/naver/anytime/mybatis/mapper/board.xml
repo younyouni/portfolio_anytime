@@ -113,6 +113,16 @@
 						 FROM MEMBER
 						 WHERE LOGIN_ID = #{login_id})
 	</select>
+
+	<select id="getBoardRequest" resultType="Board">
+		SELECT S.NAME SCHOOL_NAME, B.*, M.LOGIN_ID
+		FROM BOARD B INNER JOIN SCHOOL S
+        ON B.SCHOOL_ID = S.SCHOOL_ID
+        INNER JOIN MEMBER M
+        ON B.USER_ID = M.USER_ID
+		WHERE B.STATUS = 0
+		AND (B.TYPE =2 OR B.TYPE =3)
+	</select>
 	<!-- ===========================윤희=========================== -->
 	
 

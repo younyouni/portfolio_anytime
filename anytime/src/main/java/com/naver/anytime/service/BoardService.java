@@ -24,7 +24,8 @@ public interface BoardService {
 	public int[] getBoardIdsByDomain(String schoolDomain);
 
 	public int insertBoard(Board board);
-	
+
+	public List<Board> getBoardRequest();
 	// ********************************= 윤희 =********************************
 	
 	public List<Board> getBoardContent(int board_id);
@@ -46,6 +47,6 @@ public interface BoardService {
 	public int getBoardAdminCount(int user_id);
 	
 	public int getBoardAnonymous2(int num);
-	
+
 	public int isBoardStatusCheck(int board_id);
 }

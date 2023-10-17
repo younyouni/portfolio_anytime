@@ -10,6 +10,7 @@
 	    CALENDAR_ID AS id,
 	    USER_ID,
 	    SUBJECT AS title,
+	    TYPE,
 	    TO_CHAR(START_TIME, 'YYYY-MM-DD"T"HH24:MI:SS') AS "start",
 	    TO_CHAR(END_TIME, 'YYYY-MM-DD"T"HH24:MI:SS') AS "end",
 	    CONTENT AS description,

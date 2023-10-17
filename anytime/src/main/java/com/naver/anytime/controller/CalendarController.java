@@ -57,11 +57,11 @@ public class CalendarController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/calendarlist", method = RequestMethod.POST)
+	@RequestMapping(value = "/calendarlist")
 	@ResponseBody
 	public List<Calendar> CalendarList(
 			Principal principal
-			) throws JSONException{
+			) {
 		String login_id = principal.getName();						//로그인한 유저 login_id
 		int user_id = memberService.getUserId(login_id);
 		
@@ -70,6 +70,8 @@ public class CalendarController {
 		System.out.println("이거 됨? " + Result);
 		return Result;
 	}
+	
+	
 	
 	
 }

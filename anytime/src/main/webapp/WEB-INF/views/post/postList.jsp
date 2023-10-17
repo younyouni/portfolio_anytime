@@ -18,7 +18,7 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/write2.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/post/board.index.js"></script> --%>
 
 </head>
@@ -375,11 +375,11 @@
 			<p>
 				<label>양도인 비밀번호</label> <input type="password"
 					name="transferer_password" class="text"
-					data-gtm-form-interact-field-id="1" required>
+					data-gtm-form-interact-field-id="1">
 			</p>
 			<p>
 				<label>피양도인 아이디</label> <input type="text" name="transferee_userid"
-					class="text" data-gtm-form-interact-field-id="0" required>
+					class="text" data-gtm-form-interact-field-id="0">
 			</p>
 			<input type="submit" id="transferOfBoardButton" value="양도 요청" class="button">
 		</form>
@@ -610,7 +610,7 @@
 			success: function (deleteResult){
 				if(deleteResult == 1){
 					alert("게시판이 삭제되었습니다.");
-					window.location.href = context + "/member/login";
+					window.location.href = context + "/" + school;
 				}else if(deleteResult == 2){
 					alert("게시판 이름이 다릅니다.");
 				}else {

@@ -6,6 +6,8 @@
     <script src="${pageContext.request.contextPath}/resources/js/index.global.js"></script>
     <link type="text/css" href="${pageContext.request.contextPath}/resources/css/calendar/calendar.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/modal.css">
 
 <style>
 
@@ -33,61 +35,29 @@
 	    </div>
 	  </div>
 	</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  
-  var token = $("meta[name='_csrf']").attr("content");
-  var header = $("meta[name='_csrf_header']").attr("content");
-  
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    headerToolbar: {
-      left: 'prevYear,prev,next,nextYear today',
-      center: 'title',
-      right: 'dayGridMonth,dayGridWeek,dayGridDay'
-    },
-    initialView: 'dayGridMonth',
-    navLinks: true,
-    editable: true,
-    dayMaxEvents: true,
-    locale: 'ko',
-    events: function(info, successCallback, failureCallback) {
-      $.ajax({
-        url: "calendarlist",
-        method: 'POST',
-        dataType: "json",
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader(header, token);
-        },
-        success: function(Result) {
-          var events = [];
-          $.each(Result, function(index, data) {
-            //if (data.pValue != null && data.pValue === 'private') {
-              events.push({
-            	id: data.id,
+	
+	<form id="calendarModalForm" class="modal" data-gtm-form-interact-id="0" style="margin-left: -200px; margin-top: -92.5px; display: none;">
+		<a title="닫기" class="close"></a>
+		<h3>일정 등록</h3>
                 title: data.title,
                 start: data.start,
                 end: data.end,
                 description: data.description
-                //color: 'red'
-              });
-            //}
-          });
-          console.log(events)
-          successCallback(events);
-        },
-        error: function(Result) {
-          alert("에러가 발생했습니다.");
-          failureCallback(Result);
-        }
-      });
-    }
-  });
-  calendar.render();
-});
-</script>
-  
+		<p>
+			<label>일정 제목</label> 
+			<input type="text" class="text" name="calendar_title">
+		</p>
+		<p>
+			<label>일정 날짜</label> 
+			<input type="date" class="text" name="calendar_date">
+		</p>
+		<p>
+			<label>설명</label> 
+			<input type="text" class="text" name="calendar_title">
+		</p>
+
+		<input type="submit" id="calendarModalFormButton" value="일정 등록" class="button">
+	</form>
 
 </body>
 </html>

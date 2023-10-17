@@ -36,3 +36,11 @@ nav {
   /* 오른쪽 컨테이너 스타일 */
   background-color: #ffffff;
 }
+
+
+button.fc-myCustomButton-button {
+	width: 100px;
+    height: 29.59px;
+}
+
+

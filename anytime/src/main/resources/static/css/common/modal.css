@@ -50,7 +50,7 @@
 	margin-left: 2px;
 }
 
-#createBoard>input, #createBoard>input {
+#createBoard>input {
 	padding: 8px;
 	border: 1px solid #7869E6;
 	line-height: 24px;
@@ -147,7 +147,7 @@
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * 관리자 모달 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#approvalreview {
+#approvalreview, #reportprocess, #reportInfo {
 	border-radius: 12px;
 	padding: 25px 25px 20px 25px !important;
 }
@@ -244,7 +244,7 @@
 	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 }
 
-#boardInfo span.info {
+#boardInfo span.info, #reportInfo span.info {
 	border-bottom: 2px solid #7869E6;
 	color: #7869E6;
 	font-weight: bold;
@@ -254,17 +254,14 @@
 	line-height: 24px;
 }
 
-#boardInfo table {
+#boardInfo table, #reportprocess table {
 	margin-top: 20px;
 }
 
-#boardInfo table td {
+#boardInfo table td, #reportprocess table td, #reportInfo table td {
 	border: 0px;
 	color: #a6a6a6;
 	font-weight: bold;
-}
-
-#boardInfo table td {
 	text-align: left;
 }
 
@@ -272,18 +269,46 @@
 	width: 80px;
 }
 
+#reportprocess table td:first-child {
+	width: 100px;
+}
+
+#reportprocess label {
+	font-weight: normal;
+}
+
 #boardInfo input.first {
 	width: 70px;
 }
 
-#boardInfo table td.box input {
+#boardInfo table td.box input, #reportprocess table td.box input {
 	height: 30px;
 	border: 1px solid #d6d6d6;
 	padding: 10px;
 	background-color: #f2f2f2;
 }
 
-#boardInfo table td.box textarea {
+#reportInfo table td.box {
+	
+}
+
+#reportInfo table td.box input {
+	height: 30px;
+	border: 1px solid #d6d6d6;
+	padding: 10px;
+	background-color: #f2f2f2;
+}
+
+#reportInfo table td.box input.right {
+	float: right;
+	text-align: left !important;
+}
+
+#reportInfo table td.box input.full {
+	width: 375px;
+}
+
+#boardInfo table td.box textarea, #reportInfo table td.box textarea {
 	border: 1px solid #d6d6d6;
 	padding: 10px;
 	background-color: #f2f2f2;
@@ -297,4 +322,27 @@
 #boardInfo .switch {
 	float: right;
 	margin: 10px -9px -7px 0;
+}
+
+#reportprocess>span {
+	border-bottom: 2px solid #7869E6;
+	color: #7869E6;
+	font-weight: bold;
+	letter-spacing: -0.5px;
+	font-family: NanumSquareEB;
+	font-size: 16px;
+	line-height: 24px;
+}
+
+#reportprocess a.button {
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
+div.reportadmin td.continue {
+	color: red;
+}
+
+#reportInfo table td:first-child {
+	width: 70px;
 }

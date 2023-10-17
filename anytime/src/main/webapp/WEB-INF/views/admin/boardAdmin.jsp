@@ -20,7 +20,8 @@
 	href="${pageContext.request.contextPath}/resources/css/common/modal.css">
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-
+<script
+	src="${pageContext.request.contextPath}/resources/js/admin/boardAdmin.js"></script>
 </head>
 <script>
 	$(function() {
@@ -77,9 +78,9 @@
 		<div class="boardadmin">
 			<div class="menu">
 				<ol>
-					<li class="boardrequest"><a class="active">게시판 승인 요청</a></li>
-					<li class="boardlist"><a>게시판 목록</a></li>
-					<li>
+					<li class="boardrequest menu"><a class="active">게시판 승인 요청</a></li>
+					<li class="boardlist menu"><a>게시판 목록</a></li>
+					<li class="search">
 						<form id="searchBoard" class="search"
 							action="/anytime/post/search" method="get" accept-charset="UTF-8">
 							<input type="hidden" name="board_id" value="1"> <select
@@ -108,17 +109,19 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><label class="switch"> <input type="checkbox">
-									<span class="slider round"></span>
-							</label></td>
-							<td>학교이름</td>
-							<td>유형</td>
-							<td>게시판이름</td>
-							<td>게시판 개설 목적</td>
-							<td>운영자</td>
-							<td class="complete"><p>승인완료</p></td>
-						</tr>
+						<c:forEach var="request" items="${boardrequest}">
+							<tr>
+								<td><label class="switch"> <input type="checkbox">
+										<span class="slider round"></span>
+								</label></td>
+								<td>${request.SCHOOL_NAME}</td>
+								<td>${request.TYPE}</td>
+								<td>${request.NAME}</td>
+								<td>${request.PURPOSE}</td>
+								<td>${request.LOGIN_ID}</td>
+								<td class="complete"><p>승인완료</p></td>
+							</tr>
+						</c:forEach>
 						<tr>
 							<td><label class="switch"> <input type="checkbox">
 									<span class="slider round"></span>
