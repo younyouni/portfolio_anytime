@@ -210,7 +210,7 @@ public class PostController {
     StringBuilder sbFiles = new StringBuilder();
 
     try {
-    	postService.insertPost(post);
+        postService.insertPost(post);
         // 이미지 파일 저장
         if(files != null && files.length >0){
             for(MultipartFile file : files){
@@ -220,6 +220,9 @@ public class PostController {
                     
                     String originalFilename=file.getOriginalFilename();// 원래 파일명
                     System.out.println("Processing file: " + originalFilename);
+                    
+                    sbFiles.append(originalFilename).append(",");
+                    
                     //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
                     String saveFolder="c:/upload/";
                     
@@ -227,28 +230,21 @@ public class PostController {
                     
                     file.transferTo(new File(saveFolder + fileDBName));
 
-//                    photo.setPATH(saveFolder+fileDBName);
-                    photo.setPATH(fileDBName);
-                    
-                     post.setPOST_FILE(originalFilename);
+//                        photo.setPATH(saveFolder+fileDBName);
+                   photo.setPATH(fileDBName);
 
                    postPhotoService.insertPhoto(photo); 
-                   
-                   sbFiles.append(originalFilename).append(",");
                 }
             }
+            
+            if(sbFiles.length() > 0) {
+                sbFiles.setLength(sbFiles.length() - 1); // 마지막 콤마 제거
+                post.setPOST_FILE(sbFiles.toString());   // 첨부파일 목록을 POST 객체에 설정
+                
+                postService.updatePostFile(post.getPOST_ID(), sbFiles.toString());
+            }
         }
-        
-        if(sbFiles.length() > 0) {
-            sbFiles.setLength(sbFiles.length() - 1);
-            post.setPOST_FILE(sbFiles.toString());
-            postService.updatePostFile(post.getPOST_ID(), sbFiles.toString());
-        }
-        
-        
-        // 게시글 저장
-//        postService.insertPost(post);
-        
+
         result.put("statusCode", 1);
 
      } catch (Exception e) {

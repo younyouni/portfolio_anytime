@@ -18,6 +18,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/post/update.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/postDelete.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/postLike.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/downloadImage.js"></script>
 <script>
 	var userid = $('#login_id').val();
 	var anonymous = ${anonymous};
@@ -81,7 +82,8 @@
 					<div class="attaches multiple">
 						<c:forEach var="photo" items="${photos}">
 							<figure class="attach">
-								<img src="${pageContext.request.contextPath}/upload${photo.PATH}" alt="none" title="${photo.PATH} '다운로드'">
+								<img src="${pageContext.request.contextPath}/upload${photo.PATH}" alt="none" title="${photo.PATH}" 
+											onclick="downloadImage('${pageContext.request.contextPath}/upload${photo.PATH}')">
 							</figure>
 						</c:forEach>
 					</div>

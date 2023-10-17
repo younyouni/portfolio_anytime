@@ -78,37 +78,45 @@ $("#writeArticleButton").on("click", function(e) {
 /*글쓰기 완료*/
 var filesToUpload = []; // 업로드할 파일들을 저장하는 배열
 
-$(document).on('change', '#post_file', function() {
+$('#post_file').on('change', function() {
     var newFiles = this.files;
 
     // 이미 업로드된 파일의 개수
-    var uploadedFileCount = $('.thumbnails li').length - 1; // 'new' li 제외
+    var uploadedFileCount = $('.thumbnails li').length - 1; //'new' li 제외
 
-    if (uploadedFileCount + newFiles.length > 5) {
-        alert('첨부파일은 최대 5개까지만 가능합니다.');
-        this.value = ''; // 현재 입력 필드 초기화
+    if(uploadedFileCount + newFiles.length > 5) {
+        // alert('첨부파일은 최대 5개까지만 가능합니다.');
+        // this.value = ''; // 현재 입력 필드 초기화
+        // $('#file-name').text('');
         return;
     }
 
-    for (var i = 0; i < newFiles.length; i++) {
-        filesToUpload.push(newFiles[i]); // 새롭게 추가된 파일들도 배열에 포함시킵니다.
+    for(var i=0; i<newFiles.length; i++){
+        if(!newFiles[i].type.startsWith('image/')){
+            alert('현재 지원되지 않는 형식이거나, \n파일이 손상되었기 때문에 사진을 열 수 없습니다.');
+            this.value='';
+            $('#file-name').text('');
+            continue;
+        }
+
+        filesToUpload.push(newFiles[i]); // 새롭게 추가된 파일들도 배열에 포함시킴
 
         var objectUrl = URL.createObjectURL(newFiles[i]);
 
         // 이미지 업로드 시 미리보기 썸네일 추가
-        var thumbnailItem = $('<li><img src="' + objectUrl + '" /></li>');
-        
-	thumbnailItem.find('img').on('load', function () { 
-		URL.revokeObjectURL(this.src);   // Here we are revoking the object URL after the image has loaded.
-	});
+        var thumbnailItem=$('<li><img src="' + objectUrl + '" /></li>');
+            
+	    thumbnailItem.find('img').on('load', function() { 
+	        URL.revokeObjectURL(this.src);  
+	    });
 
-        thumbnailItem.find('img').css('max-width', '100px'); // 썸네일 이미지 크기 조절
+	    thumbnailItem.find('img').css('max-width', '100px'); // 썸네일 이미지 크기 조절
 
-        $('.thumbnails .new').before(thumbnailItem);
-    }
+	    $('.thumbnails .new').before(thumbnailItem);
+
+	    $('#file-name').text(newFiles[i].name); // 파일명 표시
+	}
 });
-
-
 
     $("#writePost").on("click", function(e) {
         e.preventDefault();
