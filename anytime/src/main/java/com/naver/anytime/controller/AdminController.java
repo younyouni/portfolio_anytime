@@ -50,9 +50,9 @@ public class AdminController {
 	public int updateBoardStatus(int board_id, int approvalStatus, String rejectionreason) {
 		logger.info("board_id : " + board_id + "approvalStatus : " + approvalStatus);
 		int result = 0;
-		//if (approvalStatus != AnytimeConstants.BOARD_APPROVAL_SCHEDULED_FOR_DENIAL) {
-			result = boardService.updateBoardStatus(board_id, approvalStatus);
-		//}
+//		 if (approvalStatus != AnytimeConstants.BOARD_APPROVAL_SCHEDULED_FOR_DENIAL) {
+		result = boardService.updateBoardStatus(board_id, approvalStatus);
+//		 }
 //		else {
 //			result = 1;
 //		}
