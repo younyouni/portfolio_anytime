@@ -20,6 +20,6 @@ public interface MessageService {
 
 	public int insertMessage2(int messageall_id, int sender_user_id, int receiver_user_id, String content);
 
-	public int isMessageAllIdPresent2(int sender_user_id, int receiver_user_id);
+	public Integer isMessageAllIdPresent2(int sender_user_id, int receiver_user_id);
 
 }

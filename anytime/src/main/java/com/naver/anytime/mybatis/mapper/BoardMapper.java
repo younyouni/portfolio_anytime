@@ -31,6 +31,9 @@ public interface BoardMapper {
 	public int[] getBoardIdsByDomain(String schoolDomain);
 
 	public int insertBoard(Board board);
+	
+	public List<Board> getBoardRequest();
+	
 	// ********************************= 윤희 =********************************	
 	
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.anytime.mybatis.mapper.ReportMapper">
+	
+	<insert id="insertReport">
+		insert into report(REPORT_ID, REPORTER, REPORTED_ORIGIN, REASON, NOTE_DATE)
+		values(report_seq.nextval, #{report_user_id}, #{id}, #{reason}, sysdate)
+	</insert> <!-- id = post_id or comment_id -->
+
+	<update id="updatePostReportCount">
+		update post
+		set report_count = report_count + 1
+		where post_id = #{post_id}
+	</update>
+	
+	<update id="updateCommentReportCount">
+		update comments
+		set report_count = report_count + 1
+		where comment_id = #{comment_id}
+	</update>
+	
+</mapper>
