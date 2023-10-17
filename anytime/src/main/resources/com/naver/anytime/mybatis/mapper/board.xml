@@ -120,9 +120,15 @@
         ON B.SCHOOL_ID = S.SCHOOL_ID
         INNER JOIN MEMBER M
         ON B.USER_ID = M.USER_ID
-		WHERE B.STATUS = 0
+		WHERE (B.STATUS != 1 OR B.STATUS !=2)
 		AND (B.TYPE =2 OR B.TYPE =3)
 	</select>
+	
+	<update id="updateBoardStatus" parameterType ="int">
+		UPDATE BOARD
+		SET STATUS = #{approvalStatus}
+		WHERE BOARD_ID = #{board_id}
+	</update>
 	<!-- ===========================윤희=========================== -->
 	
 

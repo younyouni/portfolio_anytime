@@ -26,7 +26,16 @@ public class AnytimeConstants {
 	public static final int BOARD_ADMIN = 1;
 	public static final int NOT_BOARD_ADMIN = 0;
 	
+	//게시판 관리자 승인절차 미진행 상태 
+	public static final int BOARD_APPROVAL_PENDING =0;
 	
+	//게시판 관리자 승인 완료 진행 상태(활성화 예정 - 활성화)
+	public static final int BOARD_APPROVAL_SCHEDULED = 3;
+	public static final int BOARD_APPROVAL_COMPLETED = 1;
+	
+	//게시판 관리자 승인 거부 진행 상태(비활성화 예정 - 비활성화)
+	public static final int BOARD_APPROVAL_SCHEDULED_FOR_DENIAL =4;
+	public static final int BOARD_APPROVAL_DENIED =2;
 
 	
 }

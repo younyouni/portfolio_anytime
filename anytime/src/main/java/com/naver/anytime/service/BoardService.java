@@ -26,6 +26,9 @@ public interface BoardService {
 	public int insertBoard(Board board);
 
 	public List<Board> getBoardRequest();
+
+	public int updateBoardStatus(int board_id, int approvalStatus);
+
 	// ********************************= 윤희 =********************************
 	
 	public List<Board> getBoardContent(int board_id);
