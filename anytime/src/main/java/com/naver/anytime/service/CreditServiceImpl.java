@@ -50,8 +50,8 @@ public class CreditServiceImpl implements CreditService {
 
 
 	@Override
-	public int getTotalAcquisition(int semester_id) {
-		return dao.getTotalAcquisition(semester_id);
+	public int getTotalAcquisition(int user_id) {
+		return dao.getTotalAcquisition(user_id);
 	}
 	
 

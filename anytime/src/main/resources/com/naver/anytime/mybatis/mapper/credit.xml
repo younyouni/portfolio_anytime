@@ -48,11 +48,18 @@
 
 	</update>
 
+
 	<select id="getTotalAcquisition" resultType="int">
     SELECT SUM(sd.credit)
     FROM semester_detail sd
-    WHERE sd.semester_id = #{semester_id}
+    JOIN semester s ON sd.semester_id = s.semester_id
+    JOIN credit c ON s.credit_id = c.credit_id
+    JOIN member m ON c.user_id = m.user_id
+    WHERE m.user_id = #{user_id}
    </select>
+
+     
+
 
 
 

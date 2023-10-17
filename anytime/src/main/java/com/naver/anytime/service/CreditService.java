@@ -17,6 +17,6 @@ public interface CreditService {
 
 	public int updateGraduateCredit(int graduate_credit);
 
-	public int getTotalAcquisition(int semester_id);
+	public int getTotalAcquisition(int user_id);
 	
 }
