@@ -146,5 +146,10 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getBoardAnonymous2(num);
 	}
 
+	@Override
+	public int isBoardStatusCheck(int board_id) {
+		return dao.isBoardStatusCheck(board_id);
+	}
+
 
 }

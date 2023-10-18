@@ -1,14 +1,12 @@
-#writeArticleButton>img { /* 湲��벐湲� 踰꾪듉 */
+#writeArticleButton>img { /* 글쓰기 버튼 */
 	justify-content: flex-end;
 	width: 23px;
 	height: 23px;
-	margin-left: 592px; /* �씠誘몄�瑜� �뀓�뒪�듃 �쁿�뿉 遺숈씠湲� �쐞�빐 醫뚯륫 留덉쭊�쓣 �꽕�젙�빀�땲�떎. */
+	margin-left: 592px; /* 이미지를 텍스트 옆에 붙이기 위해 좌측 마진을 설정합니다. */
 	margin-bottom: 3px;
-	cursor: pointer;
-	
 }
 
-/*-----------------------------------------------------------  �럹�씠吏��꽕�씠�뀡 諛� �옉�뾽 ----------------------------------------------------------- */
+/*-----------------------------------------------------------  페이지네이션 밑 작업 ----------------------------------------------------------- */
 .center-block {
 	text-align: center;
 	margin: 20px auto;
@@ -53,12 +51,12 @@
 	color: #888;
 	cursor: default;
 }
-/*-----------------------------------------------------------  �럹�씠吏��꽕�씠�뀡 �씠�쟾 , �떎�쓬 踰꾪듉 ----------------------------------------------------------- */
+/*-----------------------------------------------------------  페이지네이션 이전 , 다음 버튼 ----------------------------------------------------------- */
 #container>div.wrap.articles>div>ul>li:nth-child(1)>a {
-	/* �꽑�깮�옄�뒗 異뷀썑�뿉 蹂�寃� */
+	/* 선택자는 추후에 변경 */
 	border: 1px solid #fff0;
 	background-image:
-		url(/anytime/resources/image/post/container.articles.pagination.before.png);
+		url(/Anytime/image/new/container.articles.pagination.before.png);
 	background-position: right 1px center;
 	margin-top: 5px;
 	margin-left: 5px;
@@ -77,10 +75,10 @@
 }
 
 #container>div.wrap.articles>div>ul>li:last-child>a {
-	/* �꽑�깮�옄�뒗 異뷀썑�뿉 蹂�寃� */
+	/* 선택자는 추후에 변경 */
 	border: 1px solid #fff0;
 	background-image:
-		url(/anytime/resources/image/post/container.articles.pagination.next.png);
+		url(/Anytime/image/new/container.articles.pagination.next.png);
 	background-position: left 50px center !important;
 	margin-top: 5px;
 	margin-left: 5px;
@@ -98,7 +96,7 @@
 	cursor: pointer;
 }
 
-.pagination .page-link.active { /* �븸�떚釉뚮맂 �럹�씠吏� 諛묒쨪 媛뺤“�몴�떆 肄붾뱶�뿉 �뵲�씪 異뷀썑�뿉 �꽭遺� 蹂�寃� */
+.pagination .page-link.active { /* 액티브된 페이지 밑줄 강조표시 코드에 따라 추후에 세부 변경 */
 	font-weight: bold;
 	text-decoration: underline;
 }
@@ -107,7 +105,7 @@
   display: none !important;
 }
 
-/*-----------------------------------------------------------  遺덈윭�삱 湲� �궡�슜 �뾾�쓣�븣 ----------------------------------------------------------- */
+/*-----------------------------------------------------------  불러올 글 내용 없을때 ----------------------------------------------------------- */
 .empty_postlist{
     font-size: 40px;
     text-align: center;
@@ -122,7 +120,7 @@
 	font-size: 40px;
 	animation: slide 5s linear infinite;
 }
-/*----------------------------------------------------------- 寃뚯떆湲� 由ъ뒪�듃 蹂대뱶�씠由�  ----------------------------------------------------------- */
+/*----------------------------------------------------------- 게시글 리스트 보드이름  ----------------------------------------------------------- */
 #container > div.wrap.title > h1{
 	color: #292929;
     font-size: 22px;
@@ -133,7 +131,7 @@
 	font-size: 12px;
 }
 
-/*----------------------------------------------------------- 寃뚯떆湲� 由ъ뒪�듃 �샇踰꾩깋�긽  ----------------------------------------------------------- */
+/*----------------------------------------------------------- 게시글 리스트 호버색상  ----------------------------------------------------------- */
 #container > div.wrap.articles > article > a[href]:hover {
 	background-color: #fbfbfb;
 }

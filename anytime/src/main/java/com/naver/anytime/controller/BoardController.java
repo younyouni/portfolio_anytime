@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.Calendar;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.constants.AnytimeConstants;
@@ -118,7 +119,7 @@ public class BoardController {
 		int managerCheck = 0;
 		int user_id = memberService.getUserId(login_id);
 		int check = boardService.getBoardManager(board_id, user_id);
-
+		
 		if(check != 0) {
 			managerCheck = 1;
 		}
@@ -185,14 +186,14 @@ public class BoardController {
 	public int updateManagerBoard(
 			@RequestParam(name = "board_id", defaultValue = "-1") int board_id,
 			@RequestParam("password") String password,
-			@RequestParam("userid") String userid,		//user_id 아님 login_id 임 
+			@RequestParam("userid") String userid,
 			Principal principal,
 			HttpSession session
 			) {
 		int updateManagerBoardResult = 0;
 		String loginid = principal.getName();			//양도인(로그인한) 유저 아이디 ex)uniuni
 		String dbPwd = memberService.getPwd(loginid);	//양도인(로그인한) 유저 db 보안 비밀번호 ex)$1b$592qa.Ql2 ...
-		Integer idcheck = memberService.getStatusCheck(userid);		//피양도인 존재 유저 확인													//스테이터스 체크 확인
+		Integer idcheck = memberService.isId(userid);		//피양도인 존재 유저 확인
 		int schooltest = 0;
 		
 		Integer am_school_num = memberService.getSchoolId2(loginid);		//양도인 유저의 스쿨 번호
@@ -215,18 +216,11 @@ public class BoardController {
 					int am_user_id_num = memberService.getUserId(loginid);	//양도인 유저번호 구하기
 					int tf_user_id_num = memberService.getUserId(userid);	//피양도인 유저번호 구하기
 					int result1 = boardService.updateBoardAuth(am_user_id_num, tf_user_id_num, board_id);
-						System.out.println("양도 유저 번호 체크 / 양도인 [" + am_user_id_num + "] 피양도인 [" + tf_user_id_num + "]" );
+					
 					if(am_user_id_num != 0 && tf_user_id_num != 0 && result1 == 1) {
 						int result2 = boardService.updateBoardUserId(am_user_id_num ,tf_user_id_num, board_id);
 						if(result2 == 1) {
-							int tf_board_adminadd = memberService.updateBoardAdminAdd(tf_user_id_num);
-							System.out.println("피양도인 board_admin 변경 체크" + tf_board_adminadd);
-							int boardadmincheck = boardService.getBoardAdminCount(am_user_id_num);
-								if(boardadmincheck == 0) {
-									int am_board_admindelete = memberService.updateBoardAdminDelete(am_user_id_num);
-									System.out.println("양도인 board_admin 변경 체크" + am_board_admindelete);
-							}
-								updateManagerBoardResult = 1;	//board 테이블 업데이트 성공
+							updateManagerBoardResult = 1;	//board 테이블 업데이트 성공
 						}
 					} else {
 						System.out.println("양도인 체크[" + am_user_id_num + "] 피양도인 체크 [" + tf_user_id_num + "] 권한업데이트 체크 [" + result1 + "]");
