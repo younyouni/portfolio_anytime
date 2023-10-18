@@ -1,5 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
+  	var calendarEl = document.getElementById('calendar');
+  
+	
+  	var calendar2El = document.getElementById('calendar2');
+    
+    
+   var calendar2 = new FullCalendar.Calendar(calendar2El, {
+   headerToolbar: {
+	      left: 'title prevYear,nextYear',
+    },
+   locale: 'ko',
+   
+  });
+    
+
+      
+  
   
   var calendar = new FullCalendar.Calendar(calendarEl, {
 	  customButtons: {
@@ -9,12 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		      		$("form#calendarModal").show();
 		      		$('form#calendarModal').css('display', 'block');
 					$('form#calendarModal').before('<div class="modalwrap"></div>');
-					
-					$('a.close').click(function() {
-						$('#calendarModal').css('display', 'none');
 
-						$('div.modalwrap').remove();
-					});
 		      }
 		    }
 		  },
@@ -29,50 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
     editable: true,
     dayMaxEvents: true,
     locale: 'ko',
+    droppable: true,
+    selectable: true,
     eventRender: function(info) {
  		
     },
-    
-/*
-    events: [
-          {
-          		id: '1',
-                title: '테스트1',
-                start: '2023-10-18T12:09',
-                type: '테스트타입1',
-                end: '2023-10-18T18:00',
-                description: '18일 12시 부터 6시까지',
-                color: '#E60000'
-          },
-          {
-          		id: '2',
-                title: '테스트2',
-                start: '2023-10-20T12:00',
-                type: '테스트타입2',
-                description: '20일 12시 하루만',
-                color: '#1C06E6'
-          },
-          {
-          		id: '3',
-                title: '테스트3',
-                start: '2023-10-23T13:00',
-                type: '테스트타입3',
-                end: '2023-10-23T17:00',
-                description: '23일 1시 부터 5시까지',
-                color: '#0DE606'
-          },
-          {
-          		id: '4',
-                title: '테스트4',
-                start: '2023-10-25T14:00',
-                type: '테스트타입4',
-                end: '2023-10-26T18:00',
-                description: '25일 2시 부터 6시까지 하루종일?',
-                color: '#0DE606',
-                allday: 'true'
-          },
-          ]
-*/ 
+
 
     events: function(info, successCallback, failureCallback) {
       $.ajax({
@@ -91,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 type: data.type,
                 end: data.end,
                 description: data.description,
-                color: data.color,
+                borderColor: data.color,
                 allday: data.allday
               });
             //}
@@ -108,14 +81,143 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     },
-
+    
+    eventDrop: function(info){
+    	console.log(info);
+    },
+    
+    select: function(arg){
+		var start = arg.start;
+		//var end = arg.end;
+		
+		// YYYY-MM-DDTHH:MM 형식으로 변환
+		//var startdate = start.toISOString().slice(0, 16);
+		
+		// 년, 월, 일 부분만 추출
+		var year = start.getFullYear();
+	    var month = (start.getMonth() + 1).toString().padStart(2, '0');
+	    var day = start.getDate().toString().padStart(2, '0');
+	    var hours = start.getHours().toString().padStart(2, '0');
+	    var minutes = start.getMinutes().toString().padStart(2, '0');
+		
+		// YYYY-MM-DD 형식으로 조합
+		var formattedDate = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+		
+	    $("form#calendarModal").show();
+  		$('form#calendarModal').css('display', 'block');
+		$('form#calendarModal').before('<div class="modalwrap"></div>');
+		
+		// 입력 요소에 값을 할당
+		document.getElementById('all_check').value = formattedDate;
+		
+    },
+    
+    eventClick: function(info) {
+	     var event = info.event;
+		 console.log('클릭한 이벤트 고유 ID:', event.id);
+	 	 console.log('클릭한 이벤트 제목:', event.title);
+		 console.log('클릭한 이벤트 시작 시간:', event.start);
+		 console.log('클릭한 이벤트 타입:', event.type);
+		 console.log('클릭한 이벤트 종료 시간:', event.end);
+		 console.log('클릭한 이벤트 설명:', event.description);
+		 console.log('클릭한 이벤트 색상:', event.color);
+		 console.log('클릭한 이벤트 하루 종일:', event.allDay);
+		 console.log('클릭한 이벤트 이건뭐야:', event.extendedProps);
+		 
+		console.log('이건됨? = ' , event.extendedProps.type);
+		
+		$("form#calendarDetail").show();
+  		$('form#calendarDetail').css('display', 'block');
+		$('form#calendarDetail').before('<div class="modalwrap"></div>');
+     	
+     },
   
   });
   calendar.render();
+  calendar2.render();
+  
+	document.getElementById('allday_check').addEventListener('change', function() {
+	  var datetimeField = document.getElementById('all_check'); // 날짜 및 시간 입력 필드
+	  var datetimeField2 = document.getElementById('all_check2'); // 날짜 및 시간 입력 필드
+	
+	  // 기존 값 저장
+	  var datetimeFieldValue = datetimeField.value;
+	  var datetimeField2Value = datetimeField2.value;
+	
+	  // 체크박스가 체크된 경우 datetime 입력 필드를 날짜 선택 모드로 변경
+	  if (this.checked) {
+	    datetimeField.type = 'date';
+	    datetimeField2.type = 'date';
+	
+	    // 이전 값을 복원
+	    datetimeField.value = datetimeFieldValue.split("T")[0];
+	    datetimeField2.value = datetimeField2Value.split("T")[0];
+	  } else {
+	    datetimeField.type = 'datetime-local';
+	    datetimeField2.type = 'datetime-local';
+	
+	    datetimeField.value = datetimeFieldValue;
+	    datetimeField2.value = datetimeField2Value;
+	  }
+	});
+	
+	//< 달
+	var calendarButton = document.querySelector('#calendar .fc-prev-button');
+  	var calendar2Button = document.querySelector('#calendar2 .fc-prev-button');
+  	//> 달
+  	var calendarButton2 = document.querySelector('#calendar .fc-next-button');
+  	var calendar2Button2 = document.querySelector('#calendar2 .fc-next-button');
+  	//< 년
+  	var calendarButton3 = document.querySelector('#calendar .fc-prevYear-button');
+  	var calendar2Button3 = document.querySelector('#calendar2 .fc-prevYear-button');
+  	//> 년
+  	var calendarButton4 = document.querySelector('#calendar .fc-nextYear-button');
+  	var calendar2Button4 = document.querySelector('#calendar2 .fc-nextYear-button');
+  	//투데이
+  	var calendarButton5 = document.querySelector('#calendar .fc-today-button');
+  	var calendar2Button5 = document.querySelector('#calendar2 .fc-today-button');
+  	
+	//버튼 동시 기능
+	  calendarButton.addEventListener('click', function() {
+	    var clickEvent = new Event('click', { bubbles: true });
+	    calendar2Button.dispatchEvent(clickEvent);
+	  });
+	  
+	  calendarButton2.addEventListener('click', function() {
+	  	var clickEvent = new Event('click', { bubbles: true });
+	    calendar2Button2.dispatchEvent(clickEvent);
+	  });
+	  
+	  calendarButton3.addEventListener('click', function() {
+	  	var clickEvent = new Event('click', { bubbles: true });
+	    calendar2Button3.dispatchEvent(clickEvent);
+	  });
+	  
+	  calendarButton4.addEventListener('click', function() {
+	  	var clickEvent = new Event('click', { bubbles: true });
+	    calendar2Button4.dispatchEvent(clickEvent);
+	  });
+	  
+	  calendarButton5.addEventListener('click', function() {
+	  	var clickEvent = new Event('click', { bubbles: true });
+	    calendar2Button5.dispatchEvent(clickEvent);
+	  });
+	  
+	
 });
 
 
 $(document).ready(function() {
+	
+	// 모달 창 닫기
+	$('a.close').click(function() {
+		$('#calendarModal').css('display', 'none');
+		$('#calendarDetail').css('display', 'none');
+		
+		$('div.modalwrap').remove();
+	});
+
+//일정 등록
 $("#calendarModal").submit(function(event) {
 	     event.preventDefault();
 		
@@ -130,11 +232,13 @@ $("#calendarModal").submit(function(event) {
         var start = $('input[name="calendar_date"]').val();
         var end = $('input[name="calendar_date2"]').val();
         var allday = $('input[name="allday"]:checked').val();
-        var description = $('input[name="calendar_description"]').val();
+        var description = $('textarea[name="calendar_description"]').val();
 		
+		// 커스텀 컬러 선택
 		if(color == 1){
 			color = $('input[name="custom_color"]').val();
-		}		
+		}			
+		
         $.ajax({
         	url: "calendaradd",
         	type: "POST",
@@ -170,6 +274,11 @@ $("#calendarModal").submit(function(event) {
         console.log("종료 일자:", end);
         console.log("하루 종일 여부:", allday);
         console.log("설명:", description);
+            
 });
 
-});
+
+
+
+
+});//ready

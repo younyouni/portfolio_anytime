@@ -37,18 +37,20 @@ nav {
   background-color: #ffffff;
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * ▼일정 등록 모달▼ * * * * * * * * * * * * * * * * * * * * * * * */
 
 button.fc-myCustomButton-button {
 	width: 100px;
     height: 29.59px;
 }
 
-#calendarModal {
+form {
 	padding: 25px 25px 20px 25px ;
 	border-radius: 12px;
+	width: 500px;
 }
 
-#calendarModal>span {
+form#calendarModal span {
     border-bottom: 2px solid #7869E6;
     color: #7869E6;
     font-weight: bold;
@@ -58,7 +60,7 @@ button.fc-myCustomButton-button {
     line-height: 24px;
 }
 
-#calendarModal > p > input {
+form > p > input {
     padding: 8px;
     border: 1px solid #7869E6;
     line-height: 24px;
@@ -77,6 +79,26 @@ button.fc-myCustomButton-button {
     height: 40px;
 }
 
+form > p > textarea{
+	padding: 8px;
+    border: 1px solid #7869E6;
+    line-height: 24px;
+    color: #292929;
+    font-size: 16px !important;
+    background-color: #F9F9F9;
+    display: block;
+    margin-bottom: 5px;
+    color: #737373;
+    font-size: 11px;
+    margin-left: 1px;
+    display: block;
+    box-sizing: border-box;
+    border-radius: 12px;
+	width: 500px;
+    height: 150px;
+    resize: none;
+}
+
 a.close {
 	display: block;
 	float: right;
@@ -89,7 +111,7 @@ a.close {
 	cursor: pointer;
 }
 
-#calendarModal>input.button {
+form >input.button {
     margin-top: 0px;
     font-size: 12px !important;
     width: 80px !important;
@@ -124,7 +146,69 @@ form.modal .button {
 #color {
 	width: 20% !important;
 }
-
- {
-	width: 5% !important;
+form input[name="calendar_description"] {
+	height: 100px;
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * ▲일정 등록 모달▲ * * * * * * * * * * * * * * * * * * * * * * * */
+
+form#calendarDetail{
+	width: 500px;
+    height: 80px;
+}
+
+form#calendarDetail span {
+	padding-left: 7px;
+    border-left: 20px solid #7869E6;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    font-family: NanumSquareEB;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.calendar_detail_date {
+	font-size: 16px;
+}
+/* * * * * * * * * * * * * * * * * * * * * * * * ▼일정▼ * * * * * * * * * * * * * * * * * * * * * * * */
+/* 일정 시간 색 */
+div.fc-event-main-frame > div{
+	color: white;
+}
+/* 일정 타이틀 색 */
+div.fc-event-title-container > div{
+	color: white;
+}
+/* * * * * * * * * * * * * * * * * * * * * * * * ▲일정▲ * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * ▼왼쪽 미니 캘린더▼ * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* 왼쪽 캘린더 툴바 버튼 숨기기 */
+#calendar2 .fc-prev-button{
+	display: none;
+}
+
+#calendar2 .fc-next-button{
+	display: none;
+}
+
+#calendar2 .fc-prevYear-button{
+	display: none;
+}
+
+#calendar2 .fc-nextYear-button{
+	display: none;
+}
+
+#calendar2 .fc-today-button{
+	display: none;
+}
+
+/* 왼쪽 캘린더 크기 조정*/
+#calendar2 > div.fc-view-harness.fc-view-harness-active > div > table{
+	height: 180%;
+	position: relative;
+	top: -30px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * ▲왼쪽 미니 캘린더▲ * * * * * * * * * * * * * * * * * * * * * * * */

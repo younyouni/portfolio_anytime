@@ -6,7 +6,8 @@
     <script src="${pageContext.request.contextPath}/resources/js/index.global.js"></script>
     <link type="text/css" href="${pageContext.request.contextPath}/resources/css/calendar/calendar.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/resources/js/calendar/calendar.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/calendar/jscolor.js"></script>
+    <%-- <script src="${pageContext.request.contextPath}/resources/js/calendar/jscolor.js"></script> --%>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/modal.css">
 
@@ -28,7 +29,7 @@
 	  <div class="top">상단 내용</div>
 	  <div class="content">
 	  	<div class="left">
-	  	
+	  		<div id='calendar2'></div> 
 	  	</div>
 
 	  	<div class="right">
@@ -37,22 +38,16 @@
 	  </div>
 	</div>
 	
-	<form id="calendarModal" class="modal" data-gtm-form-interact-id="0" style="margin-left: -300px; margin-top: -300px; display: none;">
+	<form id="calendarModal" class="modal" data-gtm-form-interact-id="0" style="margin-left: -300px; margin-top: -400px; display: none;">
 		<a title="닫기" class="close"></a>
 		<span>일정 추가</span>
 		<p>
-                id: data.id,
-                title: data.title,
-                start: data.start,
-                type: data.type,
-                end: data.end,
-                description: data.description,
-                color: #FF5733
+
         </p>
         
 		<p>
 			<label id="calendar_label">일정 제목</label> 
-			<input type="text" class="text" name="calendar_title">
+			<input type="text" class="text" name="calendar_title" required>
 		</p>
 		<p>
 			<label id="calendar_label">범주</label>
@@ -69,19 +64,34 @@
 			파랑<input type="radio" name="color" id="color_check" value="#0000FF" style="width: 10%; height: 20px;">
 		<p>
 			<label id="calendar_label">일정 시작</label> 
-			<input type="datetime-local" class="text" name="calendar_date">
+			<input type="datetime-local" class="text" name="calendar_date" id="all_check" required>
 			<label id="calendar_label">일정 종료</label> 
-			<input type="datetime-local" class="text" name="calendar_date2">
-			종일<input type="radio" name="allday" id="allday_check" value="1" style="width: 10%; height: 20px;">
-
+			<input type="datetime-local" class="text" name="calendar_date2" id="all_check2">
+			종일<input type="checkbox" name="allday" id="allday_check" value="1" style="width: 10%; height: 20px;">
 		</p>
 		<p>
 			<label id="calendar_label">설명</label> 
-			<input type="text" class="text" name="calendar_description">
+			<textarea type="text" class="text" name="calendar_description"></textarea>
 		</p>
-
-
 		<input type="submit" id="calendarModalFormButton" value="일정 등록" class="button">
+	</form>
+	
+	
+	<form id="calendarDetail" class="modal" data-gtm-form-interact-id="0" style="margin-left: -300px; margin-top: -100px; display: none;">
+		<a title="닫기" class="close"></a>
+		<p>
+		<span id="calendar_detail_title">제목</span>
+		</p>
+		<p>
+		<div id="calendar_detail_date">일정 2023 00:00:00 GMT+0900 (한국 표준시)</div>
+		</p>
+		<p>
+
+		</p>
+		
+		
+		<input type="button" id="calendar_update" value="수정" class="button">
+		<input type="button" id="calendar_delete" value="삭제" class="button">
 	</form>
 
 </body>
