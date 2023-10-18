@@ -28,6 +28,10 @@ public interface BoardService {
 	public List<Board> getBoardRequest();
 
 	public int updateBoardStatus(int board_id, int approvalStatus);
+	
+	public List<Board> getBoardTotalList(int page, int limit);
+
+	public int getListCount();
 
 	// ********************************= 윤희 =********************************
 	
@@ -54,5 +58,6 @@ public interface BoardService {
 	public int updateApprovalStatus(int board_id, int approvalStatus, String rejectionreason);
 
 	public int updateBoardStatusComplete();
+
 
 }

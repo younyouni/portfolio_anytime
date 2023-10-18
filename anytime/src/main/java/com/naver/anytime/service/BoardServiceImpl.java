@@ -83,13 +83,30 @@ public class BoardServiceImpl implements BoardService {
 		map.put("board_id", board_id);
 		map.put("approvalStatus", approvalStatus);
 		map.put("rejectionReason", rejectionreason);
-		
+
 		return dao.updateApprovalStatus(map);
 	}
 
 	@Override
 	public int updateBoardStatusComplete() {
 		return dao.updateBoardStatusComplete();
+	}
+
+	@Override
+	public List<Board> getBoardTotalList(int page, int limit) {
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("start", startrow); //31
+		map.put("end", endrow);//40
+
+		return dao.getBoardTotalList(map);
+	}
+
+	@Override
+	public int getListCount() {
+		return dao.getListCount();
 	}
 	// ********************************= 윤희 =********************************
 
@@ -145,6 +162,5 @@ public class BoardServiceImpl implements BoardService {
 	public int getBoardAnonymous2(int num) {
 		return dao.getBoardAnonymous2(num);
 	}
-
 
 }

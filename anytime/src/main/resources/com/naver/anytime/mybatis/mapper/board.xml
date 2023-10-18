@@ -146,6 +146,30 @@
 		  END
 		WHERE STATUS IN (3, 4)
 	</update>
+
+	<select id="getBoardTotalList" resultType ="board">
+		SELECT * FROM
+			( SELECT ROWNUM RNUM, B.*
+			  FROM
+					( SELECT B.*, M.LOGIN_ID login_id, S.NAME school_name 
+					  FROM BOARD B INNER JOIN MEMBER M
+					  ON B.USER_ID = M.USER_ID
+					  INNER JOIN SCHOOL S 
+					  ON B.SCHOOL_ID = S.SCHOOL_ID
+					  WHERE B.STATUS = 1 OR B.STATUS = 2
+					 )B
+					  WHERE ROWNUM &lt; = #{end}
+			 )
+		WHERE RNUM &gt; = #{start} AND RNUM &lt; = #{end}
+	</select>
+	
+	<select id="getListCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM BOARD B INNER JOIN MEMBER M
+	    ON B.USER_ID = M.USER_ID
+		INNER JOIN SCHOOL S 
+		ON B.SCHOOL_ID = S.SCHOOL_ID
+	    WHERE STATUS = 1 OR STATUS = 2</select>
 	<!-- ===========================윤희=========================== -->
 	
 
