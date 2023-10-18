@@ -11,15 +11,20 @@
 	    USER_ID,
 	    SUBJECT AS title,
 	    TYPE,
-	    TO_CHAR(START_TIME, 'YYYY-MM-DD"T"HH24:MI:SS') AS "start",
-	    TO_CHAR(END_TIME, 'YYYY-MM-DD"T"HH24:MI:SS') AS "end",
+	    START_TIME AS "start",
+	    END_TIME AS "end",
 	    CONTENT AS description,
 	    CASE 
 	        WHEN ALL_TIME = 1 THEN 'true'
 	        ELSE 'false'
-	    END AS allDay
+	    END AS allDay,
+	    color
 		FROM calendar
 		WHERE user_id = #{user_id}
 	</select>
 	
+	<insert id="insertCalendar">
+		INSERT INTO calendar (CALENDAR_ID, USER_ID, SUBJECT, TYPE, START_TIME, END_TIME, CONTENT, ALL_TIME, COLOR)
+		VALUES (CALENDAR_SEQ.nextval, #{user_id}, #{title}, #{type}, #{start}, #{end}, #{description}, #{allday}, #{color})
+	</insert>
 </mapper>

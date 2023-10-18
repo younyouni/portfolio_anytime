@@ -71,6 +71,26 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> getBoardRequest() {
 		return dao.getBoardRequest();
 	}
+
+	@Override
+	public int updateBoardStatus(int board_id, int approvalStatus) {
+		return dao.updateBoardStatus(board_id, approvalStatus);
+	}
+
+	@Override
+	public int updateApprovalStatus(int board_id, int approvalStatus, String rejectionreason) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("board_id", board_id);
+		map.put("approvalStatus", approvalStatus);
+		map.put("rejectionReason", rejectionreason);
+		
+		return dao.updateApprovalStatus(map);
+	}
+
+	@Override
+	public int updateBoardStatusComplete() {
+		return dao.updateBoardStatusComplete();
+	}
 	// ********************************= 윤희 =********************************
 
 	@Override
@@ -130,5 +150,6 @@ public class BoardServiceImpl implements BoardService {
 	public int isBoardStatusCheck(int board_id) {
 		return dao.isBoardStatusCheck(board_id);
 	}
+
 
 }

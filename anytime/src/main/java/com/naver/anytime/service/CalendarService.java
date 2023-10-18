@@ -8,4 +8,6 @@ public interface CalendarService {
 
 	public List<Calendar> getCalendarList(int user_id);
 
+	public int insertCalendar(String title, int user_id, String type, String color, String start, String end, int allday, String description);
+
 }

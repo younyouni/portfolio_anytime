@@ -45,11 +45,11 @@
     	FROM member
 	</select>
 	
-	<insert id="insertPost" parameterType="com.naver.anytime.domain.Post">
-	     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT,
+	<insert id="insertPost" parameterType="com.naver.anytime.domain.Post" useGeneratedKeys="true" keyProperty="POST_ID" keyColumn="POST_ID">
+	     INSERT INTO POST (POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE,
 	                        POST_DATE, LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT,
 	                        STATUS)
-	     VALUES (post_comment_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT},
+	     VALUES (post_comment_seq.nextval, #{BOARD_ID}, #{USER_ID}, #{SUBJECT}, #{CONTENT}, #{POST_FILE},
 	              SYSDATE, 0, 0, 0, 1)
   	</insert>
   	
@@ -71,6 +71,10 @@
    <select id="getPostLikes" parameterType="int" resultType="int">
       SELECT COUNT(*) FROM POST_LIKE WHERE POST_ID = #{post_id}
   </select>
+  
+  	<update id="updatePostFile" parameterType="map">
+   		UPDATE POST SET POST_FILE = #{post_file} WHERE POST_ID = #{post_id}
+	</update>
 	
 	<!-- 일반 검색 리스트 값 출력-->
 	<select id="getSearchPostList" parameterType="map" resultType="post">

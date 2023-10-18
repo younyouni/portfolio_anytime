@@ -18,6 +18,7 @@ public class Calendar {
 	private String end;
 	private String description;
 	private String allday;
+	private String color;
 	
 	
 	public int getId() {
@@ -67,6 +68,12 @@ public class Calendar {
 	}
 	public void setAllday(String allday) {
 		this.allday = allday;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 	

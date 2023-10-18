@@ -34,6 +34,9 @@ public interface BoardMapper {
 	
 	public List<Board> getBoardRequest();
 	
+	public int updateBoardStatus(int board_id, int approvalStatus);
+
+	public int updateApprovalStatus(HashMap<String, Object> map);
 	// ********************************= 윤희 =********************************	
 	
 
@@ -56,5 +59,9 @@ public interface BoardMapper {
 	public int getBoardAnonymous2(int num);
 
 	public int isBoardStatusCheck(int board_id);
+
+	public int updateBoardStatusComplete();
+
+
 
 }

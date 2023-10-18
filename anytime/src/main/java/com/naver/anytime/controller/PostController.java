@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -77,7 +78,7 @@ public class PostController {
    /* -------------------------------- ▼post/detail 상세페이지▼ -------------------------------- */ 
    @GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
    public ModelAndView postDetail(
-	   @RequestParam(value = "post_id", required = false) int post_id,
+	   @RequestParam(value = "post_id", required = false) Integer post_id,
 	   ModelAndView mv,
 	   HttpServletRequest request, Principal userPrincipal) {
 	   
@@ -92,7 +93,7 @@ public class PostController {
 	   
 	   Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
 	   Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
-	   
+	   List<Photo> photos = postPhotoService.getPhotosByPostId(post_id);
 	   
 	      // post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
 	      if (post == null) {
@@ -119,6 +120,8 @@ public class PostController {
 	    	  mv.addObject("boardtest", board);
 	    	  mv.addObject("currentUserId", currentUserId);
 	    	  mv.addObject("anonymous", board.getANONYMOUS());
+	    	  mv.addObject("photos", photos);
+	    	  logger.info("패쓰값" + photos);
 	    	  System.out.println("post테스트=>"+post);
 	    	  
 	      }
@@ -190,7 +193,7 @@ public class PostController {
    @PostMapping(value = "/write")
    public ResponseEntity<Map<String, Object>> writePost(
       @RequestParam(value = "LOGIN_ID", required=false) String USER_ID,
-      @RequestParam(value = "POST_FILE", required = false) MultipartFile[] files,
+      @RequestPart(value = "file[]", required = false) MultipartFile[] files,
       Post post, HttpServletRequest request) {
 
     Map<String, Object> result = new HashMap<>();
@@ -198,15 +201,16 @@ public class PostController {
     HttpSession session = request.getSession();
     int boardId = (Integer) session.getAttribute("board_id");
     String login_id =USER_ID;
-
+    
+    
+    
     int user_id = memberService.getUserId(login_id);
     post.setBOARD_ID(boardId);
     post.setUSER_ID(user_id);
+    StringBuilder sbFiles = new StringBuilder();
 
     try {
-        // 게시글 먼저 저장
-        postService.insertPost(post);
-
+    	postService.insertPost(post);
         // 이미지 파일 저장
         if(files != null && files.length >0){
             for(MultipartFile file : files){
@@ -215,24 +219,36 @@ public class PostController {
                     photo.setPOST_ID(post.getPOST_ID());
                     
                     String originalFilename=file.getOriginalFilename();// 원래 파일명
-
+                    System.out.println("Processing file: " + originalFilename);
                     //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
-                    String saveFolder="C:/upload/";
+                    String saveFolder="c:/upload/";
                     
                     String fileDBName=fileDBName(originalFilename, saveFolder); 
                     
                     file.transferTo(new File(saveFolder + fileDBName));
 
-                    photo.setPATH(saveFolder+fileDBName);
+//                    photo.setPATH(saveFolder+fileDBName);
+                    photo.setPATH(fileDBName);
                     
-                     // Post 객체에 원본 파일명 설정
-                     post.setPOST_ORIGINAL(originalFilename);
+                     post.setPOST_FILE(originalFilename);
 
-                   postPhotoService.savePhoto(photo); 
+                   postPhotoService.insertPhoto(photo); 
+                   
+                   sbFiles.append(originalFilename).append(",");
                 }
             }
         }
-
+        
+        if(sbFiles.length() > 0) {
+            sbFiles.setLength(sbFiles.length() - 1);
+            post.setPOST_FILE(sbFiles.toString());
+            postService.updatePostFile(post.getPOST_ID(), sbFiles.toString());
+        }
+        
+        
+        // 게시글 저장
+//        postService.insertPost(post);
+        
         result.put("statusCode", 1);
 
      } catch (Exception e) {
@@ -266,7 +282,7 @@ public class PostController {
    	
    	String fileExtension=fileName.substring(index+1);
 
-   	String refileName="bbs"+year+month+date+random+"."+fileExtension;
+   	String refileName="anytime"+year+month+date+random+"."+fileExtension;
 
    	
    	String fileDBName="/"+year+"-"+month+"-"+date+"/"+refileName;

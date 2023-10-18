@@ -13,6 +13,9 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 $(document).ready(function(){
 	let token = $("meta[name='_csrf']").attr("content");
@@ -235,6 +238,86 @@ $(document).ready(function(){
           }
      });
   }
+//초기화 버튼 클릭 이벤트 핸들러
+  $('.reset').click(function() {
+      $('.subjects tbody tr').each(function() {
+          var $row = $(this);
+          var semester_detail_id = $row.data('id');
+
+          // 초기값 설정
+          var subject = "";
+          var credit = "0";
+          var grade = "A+";
+          var major = false; 
+
+          $.ajax({
+              url: 'updatesemester_detail',
+              type: 'POST',
+              async: false,
+              data: {
+                  semester_detail_id: semester_detail_id,
+                  semester_id: semester_id,
+                  subject: subject,
+                  credit: credit,
+                  grade: grade,
+                  major: major
+              },
+              beforeSend:function(xhr){
+                 xhr.setRequestHeader(header,token);
+              },
+              success: function(data) {
+                  console.log(data);
+                  
+                  // 성적 업데이트 후 평균 점수 다시 계산
+                  var totalCredit = 0;
+                  var totalMajorCredit = 0;
+                  var weightedSum = 0;
+                  var weightedMajorSum = 0;
+                  
+                  var gradeValueMap = 
+                	  { "A+":4.5, "A0":4.3, "A-":4, "B+":3.5, "B0":3.3, "B-":3,
+                		"C+":2.5, "C0":2.3, "C-":2, "D+":1.5, "D0":1.3, "D-":1,
+                		"F":0, "P":0, "NP":0};
+                  
+                  $('.subjects tbody tr').each(function() {
+                      var $row = $(this);
+                      var credit = Number($row.find('input[name="credit"]').val());
+                      var gradeValue = gradeValueMap[$row.find('select[name="grade"]').val()];
+                      var major = $row.find('input[name="major"]').prop('checked');
+                      
+                      totalCredit += credit;
+                      weightedSum += gradeValue * credit;
+
+                      if (major){
+                          totalMajorCredit += credit;
+                          weightedMajorSum += gradeValue * credit;
+                      }
+                  });
+                  var gpa = (totalCredit > 0) ? (weightedSum / totalCredit).toFixed(2) : "-";
+                  var majorGpa = (totalMajorCredit > 0) ? (weightedMajorSum / totalMajorCredit).toFixed(2) : "-";
+
+      	        $('dd.gpa').text(gpa);
+      	        $('dd.major').text(majorGpa);
+      	        $('dd.acquisition').text(totalCredit);
+      	        
+    	  	    $('.column.gpa .value').text(data.totalgpa);
+    	        $('.column.major .value').text(data.totalmajor);
+    	        $('.column.acquisition .value').text(data.totalAcquisition);
+    	   
+    	        location.reload();
+             }
+         });
+     });
+  });
+  
+  
+  
+  
+  
+  
+  
+  
+  
   // 각 입력 필드에 change 이벤트 핸들러 추가
   $('.subjects').on('change', 'input, select', updateField);
   updateField();
@@ -290,6 +373,155 @@ $(document).ready(function(){
 						<p class="total" title="졸업 학점 설정">/ ${credit.graduate_credit} </p>
 					</div>
 				</article>
+				<article class="semester">
+					<div class="series">
+						<div class="legend">
+							<table style="font-size: smaller; color: #545454">
+								<tbody>
+									<tr>
+										<td class="legendColorBox"><div
+												style="border: 1px solid transparent; padding: 1px">
+												<div
+													style="width: 4px; height: 0; border: 5px solid rgb(198, 41, 23); overflow: hidden"></div>
+											</div></td>
+										<td class="legendLabel"><span
+											style="color: rgb(198, 41, 23)">전체</span></td>
+										<td class="legendColorBox"><div
+												style="border: 1px solid transparent; padding: 1px">
+												<div
+													style="width: 4px; height: 0; border: 5px solid rgb(166, 166, 166); overflow: hidden"></div>
+											</div></td>
+										<td class="legendLabel"><span
+											style="color: rgb(166, 166, 166)">전공</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div id="plot" class="plot" style="padding: 0px; position: relative;">
+						<!--  
+							<canvas class="flot-base" width="328" height="116"
+								style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 365px; height: 129px;"></canvas>
+							<div class="flot-text"
+								style="position: absolute; inset: 0px; font-size: smaller; color: rgb(84, 84, 84);">
+								<div class="flot-x-axis flot-x1-axis xAxis x1Axis"
+									style="position: absolute; inset: 0px; display: block;">
+							
+								<div
+										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 19px; text-align: center;">
+										1학년<br>1학기
+									</div>
+						
+								</div>
+								<div class="flot-y-axis flot-y1-axis yAxis y1Axis"
+									style="position: absolute; inset: 0px; display: block;">
+									<div
+										style="position: absolute; top: 70px; font: 400 12px/14px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 0px; text-align: right;">2.0</div>
+									<div
+										style="position: absolute; top: 43px; font: 400 12px/14px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 0px; text-align: right;">3.0</div>
+									<div
+										style="position: absolute; top: 16px; font: 400 12px/14px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 0px; text-align: right;">4.0</div>
+								</div>
+							</div>
+							<canvas class="flot-overlay" width="328" height="116"
+								style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 365px; height: 129px;"></canvas>-->
+						
+   <div class="chart-view" data-v-6a145b43="">
+  <canvas id="myChart" width="365" height="150" style="display: block; box-sizing: border-box; height: 274px; width: 100px;"></canvas>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+
+// 실제 데이터와 설정을 추가하여 data 변수 정의
+var data = {
+  labels: ['1학년 1학기', '1학년 2학기', '2학년 1학기', '2학년 2학기', '1학년 1학기', '1학년 2학기', '2학년 1학기', '2학년 2학기' ], // X축 레이블
+  datasets: [
+    {
+      label: 'Dataset 1',
+      data: [2.0, 3.0, 4.0], // Y축 데이터
+      borderColor: 'rgb(255,99,132)',
+      backgroundColor : 'rgba(255,99,132,0.5)',
+      yAxisID : 'y'
+    },
+    {
+      label : 'Dataset2',
+      data : [], // Y축 데이터
+      borderColor :'rgb(54 ,162 ,235)',
+      backgroundColor :'rgba(54 ,162 ,235 ,0 .5)',
+     yAxisID :'y1'
+    }
+   ]
+};
+
+var myChart = new Chart(ctx,{
+    type:'line',
+    data:data,
+    options:{
+        responsive:true,
+        interaction:{
+            mode:'index',
+            intersect:false
+        },
+        stacked:false,
+        plugins:{
+
+        },
+        scales:{
+            y:{type:'linear' ,display:true ,position:'left'},
+            y1:{type:'linear' ,display:true ,position:'right' ,
+                grid:{drawOnChartArea:false}
+           }
+       }
+   }
+});
+</script>
+						
+						
+						</div>
+					
+					</div>
+					
+					<ul class="ratioplot">
+						<li><span class="grade">A+</span>
+						<div class="ratiowrapper">
+								<div class="ratiobar"
+									style="width: calc(68.4211%); height: 4px; background-color: rgb(242, 133, 114);"></div>
+								<span class="ratiotext"
+									style="left: calc(68.4211%); color: rgb(242, 133, 114);">34%</span>
+							</div></li>
+						<li><span class="grade">B+</span>
+						<div class="ratiowrapper">
+								<div class="ratiobar"
+									style="width: calc(52.6316%); height: 4px; background-color: rgb(236, 197, 92);"></div>
+								<span class="ratiotext"
+									style="left: calc(52.6316%); color: rgb(236, 197, 92);">26%</span>
+							</div></li>
+						<li><span class="grade">P</span>
+						<div class="ratiowrapper">
+								<div class="ratiobar"
+									style="width: calc(26.3158%); height: 4px; background-color: rgb(160, 198, 97);"></div>
+								<span class="ratiotext"
+									style="left: calc(26.3158%); color: rgb(160, 198, 97);">13%</span>
+							</div></li>
+						<li><span class="grade">A-</span>
+						<div class="ratiowrapper">
+								<div class="ratiobar"
+									style="width: calc(15.7895%); height: 4px; background-color: rgb(130, 209, 194);"></div>
+								<span class="ratiotext"
+									style="left: calc(15.7895%); color: rgb(130, 209, 194);">8%</span>
+							</div></li>
+						<li><span class="grade">B0</span>
+						<div class="ratiowrapper">
+								<div class="ratiobar"
+									style="width: calc(10.5263%); height: 4px; background-color: rgb(122, 158, 224);"></div>
+								<span class="ratiotext"
+									style="left: calc(10.5263%); color: rgb(122, 158, 224);">5%</span>
+							</div></li>
+					</ul>
+				</article>
+				
+				
 			</div>
 			
 			<div class="menu">
@@ -322,7 +554,6 @@ $(document).ready(function(){
 					</tr>
 				</thead>
 				<tbody>
-
 				</tbody>
 				<tfoot>
 					<tr>
@@ -345,15 +576,6 @@ $(document).ready(function(){
 					<option value="42662455">2023년 2학기 (시간표 1)</option>
 					<option value="40480064">2023년 여름학기 (시간표 1)</option>
 					<option value="40480070">2023년 1학기 (시간표 1)</option>
-					<option value="42644989">2022년 1학기 (시간표 1)</option>
-					<option value="42644991">2021년 여름학기 (시간표 1)</option>
-					<option value="24372243">2021년 1학기 (시간표)</option>
-					<option value="24372222">2020년 겨울학기 (시간표)</option>
-					<option value="22897232">2020년 2학기 (플랜B)</option>
-					<option value="42743666">2015년 여름학기 (시간표 1)</option>
-					<option value="42785680">2015년 1학기 (시간표 1)</option>
-					<option value="42644986">2013년 여름학기 (시간표 1)</option>
-					<option value="42743665">2012년 여름학기 (시간표 1)</option>
 					<option value="42644510">2011년 1학기 (시간표 1)</option></select>
 			</p>
 			<input type="submit" value="가져오기" class="button" >
