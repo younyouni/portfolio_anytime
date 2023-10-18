@@ -361,13 +361,6 @@
 			<p>
 				<label>소개</label> <input type="text" name="info" class="text">
 			</p>
-			<p class="hide">
-				<label>인기 글 금지</label> <input type="checkbox"
-					id="manageMoimForm_is_not_selected_hot_article"
-					name="is_not_selected_hot_article"><label
-					for="manageMoimForm_is_not_selected_hot_article" class="checkbox">글이
-					공감을 받아도 인기 글 및 HOT 게시물에 선정되지 않음</label>
-			</p>
 			<input type="button" id="transferButton" value="게시판 양도" class="button light floatLeft">
 			<input type="button" id="deleteButton" value="게시판 삭제" class="button light floatLeft">
 			<input type="submit" id="updateButton" value="수정" class="button">
@@ -388,7 +381,7 @@
 				<label>피양도인 아이디</label> <input type="text" name="transferee_userid"
 					class="text" data-gtm-form-interact-field-id="0">
 			</p>
-			<input type="submit" value="양도 요청" class="button">
+			<input type="submit" id="transferOfBoardButton" value="양도 요청" class="button">
 		</form>
 
 
@@ -433,6 +426,13 @@
 	<jsp:include page="../common/footer.jsp" />
 	
 	<script>
+	
+	//board status 체크
+	if("${statuscheck}" == 1){
+		alert("승인되지 않은 게시판입니다.");
+		history.back();
+	}
+	
 	$(document).ready(function() {
 		
 		/* -------------------------------- ▼postDetail 임시작성용▼ -------------------------------- */
@@ -500,7 +500,7 @@
 			$('#deleteCheckForm').show();
 		});		
 		
-		$('#updateButton').click(function(){
+		$('#updateButton').click(function(event){
 			event.preventDefault()
 			updateBoardContentAjax();
 		});
@@ -512,10 +512,16 @@
 			$('div.modalwrap').remove();
 		});
 		
-		$('#deleteCheckButton').click(function(){
+		$('#deleteCheckButton').click(function(event){
 			event.preventDefault()
 			boardDeleteAjax();
 		});
+		
+		$('#transferOfBoardButton').click(function(event){
+			event.preventDefault()
+			
+			transferOfBoardAjax();
+		})
 		
 	});		
 	function getBoardContentAjax(){
@@ -604,7 +610,7 @@
 			success: function (deleteResult){
 				if(deleteResult == 1){
 					alert("게시판이 삭제되었습니다.");
-					window.location.href = context + "/member/login";
+					window.location.href = context + "/" + school;
 				}else if(deleteResult == 2){
 					alert("게시판 이름이 다릅니다.");
 				}else {
@@ -620,6 +626,45 @@
 		}
 	}
 	
+	function transferOfBoardAjax(){
+		var inputpass = $("input[name='transferer_password']");
+		var inputid = $("input[name='transferee_userid']");
+		var pass = inputpass.val();
+		var id = inputid.val();
+		
+		var urlParams = new URLSearchParams(window.location.search);
+		var board_id = urlParams.get('board_id');
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/updatemanagerboard",
+			data: {
+				password: pass,
+				userid: id,
+				board_id: board_id
+			},
+			dataType: "json",
+			success: function (updateManagerBoardResult){
+				if(updateManagerBoardResult == 1){
+					alert("게시판이 양도 되었습니다.");
+					location.reload();
+				}else if(updateManagerBoardResult == 2){
+					alert("게시판 양도에 실패했습니다.");
+				}else if(updateManagerBoardResult == 3){
+					alert("비밀번호가 맞지 않습니다.");
+				}else if(updateManagerBoardResult == 4){
+					alert("양도할 유저가 해당 학교 학생이 아닙니다.");
+				}else if(updateManagerBoardResult == 5){
+					alert("양도할 유저 존재하지 않습니다.");
+				}else{
+					alert("게시판 양도에 실패했습니다 관리자에게 문의 바랍니다.");
+				}
+			},
+			error: function(xhr, status, error){
+				console.error("에러 발생" + error);
+			}
+			
+		})
+	}
 	
 	
 	</script> 

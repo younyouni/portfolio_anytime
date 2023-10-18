@@ -493,6 +493,9 @@ public class PostController {
 	   ModelAndView mv
 	   ) {
 		
+	   int statuscheck = boardService.isBoardStatusCheck(board_id);
+	   
+	   if(statuscheck == 1) {
 	   session.setAttribute("board_id", board_id);
 	   	int limit = 10;
 	   	
@@ -562,9 +565,17 @@ public class PostController {
 	    if(postlist != null) {
 	    	mv.addObject("emptycheck", 1);
 	    }
-	      
-	    System.out.println("보드넘테스트" + board_id);
-	    System.out.println("값테스트" + postlist);
+	    
+	    System.out.println("board_id 테스트 = [" + board_id + "]");
+	    if(postlist != null) {
+	    	System.out.println("postlist 값 존재");
+	    }
+	    
+	    }else {
+	    	mv.setViewName("post/postList");
+	    	mv.addObject("statuscheck", 1);
+	    	System.out.println("status 0 인 페이지 접근");
+	    }
 		return mv;
 	}
 
