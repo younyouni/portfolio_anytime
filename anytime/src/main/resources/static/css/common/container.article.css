@@ -256,8 +256,9 @@ form.writecomment.clone.grandchild {
 }
 
 #container>div.articles>form.write ol.thumbnails>li.new {
+	position: absolute;
 	background: transparent
-		url('../../image/post/test_thumbnail.png')
+		url('/anytime/resources/image/post/thumbnails.new.png')
 		no-repeat center center;
 	background-size: 24px 24px;
 }

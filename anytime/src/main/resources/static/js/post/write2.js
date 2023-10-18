@@ -32,7 +32,9 @@ $(document).ready(function(){
 </textarea></p>
 <input class="file" type="file" name="file" multiple="multiple">
 <ol class="thumbnails">
-<li class="new"></li>
+<li class="new">
+	<input type="file" id="new_file" name="file" multiple style='display:none;'>
+</li>
 </ol>
 <div class="clearBothOnly"></div>
 <ul class="option">
@@ -78,36 +80,64 @@ $("#writeArticleButton").on("click", function(e) {
 /*글쓰기 완료*/
 var filesToUpload = []; // 업로드할 파일들을 저장하는 배열
 
-$(document).on('change', '#post_file', function() {
-    var newFiles = this.files;
-
-    // 이미 업로드된 파일의 개수
-    var uploadedFileCount = $('.thumbnails li').length - 1; // 'new' li 제외
-
-    if (uploadedFileCount + newFiles.length > 5) {
-        alert('첨부파일은 최대 5개까지만 가능합니다.');
-        this.value = ''; // 현재 입력 필드 초기화
-        return;
-    }
-
-    for (var i = 0; i < newFiles.length; i++) {
-        filesToUpload.push(newFiles[i]); // 새롭게 추가된 파일들도 배열에 포함시킵니다.
-
-        var objectUrl = URL.createObjectURL(newFiles[i]);
-
-        // 이미지 업로드 시 미리보기 썸네일 추가
-        var thumbnailItem = $('<li><img src="' + objectUrl + '" /></li>');
-        
-	thumbnailItem.find('img').on('load', function () { 
-		URL.revokeObjectURL(this.src);   // Here we are revoking the object URL after the image has loaded.
+$('body').on('click', 'li.new', function() {
+	    $('#post_file').trigger('click');
 	});
 
-        thumbnailItem.find('img').css('max-width', '100px'); // 썸네일 이미지 크기 조절
+	$('#post_file, #new_file').on('change', function() {
+		var newFiles = this.files;
+	
+		// 이미 업로드된 파일의 개수
+		var uploadedFileCount = $('.thumbnails li').length - 1; //'new' li 제외
+	
+		if(uploadedFileCount + newFiles.length > 5) {
+			alert("최대 5개의 파일만 첨부 가능합니다.");
+			this.value=''; // input 태그의 value 초기화
+			return;
+		}
+	
+		for(var i=0; i<newFiles.length; i++){
+			if(!newFiles[i].type.startsWith('image/')){
+				alert('현재 지원되지 않는 형식이거나, \n파일이 손상되었기 때문에 사진을 열 수 없습니다.');
+				this.value='';
+				continue;
+			}
+	
+			filesToUpload.push(newFiles[i]); // 새롭게 추가된 파일들도 배열에 포함시킴
+	
+			var reader = new FileReader();
+	
+			reader.onloadend = function(e) {
+				// 여기서 썸네일 미리보기를 생성합니다.
+				var thumbnailItem=$('<li><img src="' + e.target.result + '" style="max-width:85px; height:85px;"></li>');
+				
+				$('.thumbnails .new').before(thumbnailItem);
+				
+				// 첨부파일이 선택되었으므로, thumbnails 영역을 보여줍니다.
+				$('#container>div.articles>form.write ol.thumbnails').css('display', 'block');
+			};
+			
+			reader.readAsDataURL(newFiles[i]);
+		}
+		
+		// input 태그의 value 초기화
+		this.value='';
+	});
 
-        $('.thumbnails .new').before(thumbnailItem);
-    }
-});
-
+	$('body').on('click', '.thumbnails li:not(.new)', function() {
+		var index = $(this).index();
+		
+		// 썸네일 삭제
+		$(this).remove();
+	
+		// 배열에서 파일제거
+		filesToUpload.splice(index, 1);
+	
+		 // 업로드된 파일의 개수가 0이면 thumbnails 영역을 숨깁니다.
+		 if($('.thumbnails li').length == 1) { //'new' li만 남았다면
+			 $('#container>div.articles>form.write ol.thumbnails').css('display', 'none');
+		 }
+	});
 
 
     $("#writePost").on("click", function(e) {
@@ -147,41 +177,5 @@ $(document).on('change', '#post_file', function() {
 	      	}
 	  	});
     });
-
-function displayThumbnails(files) {
-	var fileList = files;
-	var anyWindow = window.URL || window.webkitURL;
-
-	for(var i = 0; i < fileList.length; i++){
-		var objectUrl = anyWindow.createObjectURL(fileList[i]);
-		$('.thumbnails .new').before('<li><img src="' + objectUrl + '" /></li>');
-		
-		window.URL.revokeObjectURL(fileList[i]);
-	}
-  }
-
-
-// $(document).on('change', '#post_file', function() {
-//     var fileList = this.files;
-//     var anyWindow = window.URL || window.webkitURL;
-
-//     // 이미 업로드된 파일의 개수
-//     var uploadedFileCount = $('.thumbnails li').length - 1; // 'new' li 제외
-
-//     if(uploadedFileCount + fileList.length > 5) {
-//         alert('첨부파일은 최대 5개까지만 가능합니다.');
-//         this.value = ''; // 현재 입력 필드 초기화
-//         return;
-//     }
-
-//     for(var i = 0; i < fileList.length; i++){
-//     //이미지 만들기
-//       var objectUrl = anyWindow.createObjectURL(fileList[i]);
-//       $('.thumbnails .new').before('<li><img src="' + objectUrl + '" /></li>');
-      
-//       window.URL.revokeObjectURL(fileList[i]);
-//     }
-// });
-
 /*글쓰기 완료*/
 })
