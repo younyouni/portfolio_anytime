@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -129,64 +130,7 @@ public class PostController {
 	     
 	   }
    
-   /* -------------------------------- ▼post/updateGet 상세페이지-수정_데이터값받기(GET방식)▼ -------------------------------- */
-   @GetMapping("/updateGet")
-   @ResponseBody
-   public Map<String, Object> updateGet(
-       @RequestParam(value = "post_id", required = false) Integer post_id,
-       HttpServletRequest request, Principal userPrincipal) {
-
-       // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
-       String id = userPrincipal.getName();
-       Member member = memberService.getLoginMember(id);
-       int currentUserId = member.getUser_id();
-
-       Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
-       
-       if (post == null) {
-           logger.info("상세보기 실패");
-           return Collections.singletonMap("error", "상세보기 실패입니다.");
-       } else {
-           logger.info("★ 상세보기 성공 ★");
-
-           Map<String, Object> responseMap = new HashMap<>();
-           responseMap.put("SUBJECT", post.getSUBJECT());
-           responseMap.put("CONTENT", post.getCONTENT());
-           
-           return responseMap;
-      }
-   }
    
-   
-   
-   
-//   /* -------------------------------- ▼post/write 글 작성 액션▼ -------------------------------- */
-//   @ResponseBody
-//   @RequestMapping(value = "/write", method = RequestMethod.POST)
-//   public ResponseEntity<Map<String, Object>> insert(
-//	   @RequestParam(value = "LOGIN_ID", required=false) String USER_ID, 
-//	   Post post, HttpServletRequest request) {
-//       Map<String, Object> result = new HashMap<>();
-//       
-//       HttpSession session = request.getSession();
-//       // 세션으로부터 BOARD_ID 및 USER_ID 값을 얻어옵니다.
-//       // 여기서 "boardId" 와 "userId" 는 세션에 저장된 실제 키 이름에 따라 변경되어야 합니다.
-//       int boardId = (Integer) session.getAttribute("board_id");
-//      String login_id =USER_ID;
-//       
-//      int user_id = memberService.getUserId(login_id);
-//       post.setBOARD_ID(boardId);
-//       post.setUSER_ID(user_id);
-//       
-//       try {
-//           postService.insertPost(post);
-//           result.put("statusCode", 1);
-//       } catch (Exception e) {
-//           result.put("statusCode", -1);
-//           result.put("errorMessage", e.getMessage());
-//       }
-//       return new ResponseEntity<>(result, HttpStatus.OK);
-//   }
    
    /* -------------------------------- ▼post/write 글 작성 액션 첨부파일 포함 실험용▼ -------------------------------- */
    @ResponseBody
@@ -286,93 +230,135 @@ public class PostController {
 
    	return fileDBName;
    }
-
-
    
    
-//   private String fileDBName(String fileName, String saveFolder) {
-//	      // 새로운 폴더 이름 : 오늘 년 + 월 + 일
-//	      Calendar c = Calendar.getInstance();
-//	      int year = c.get(Calendar.YEAR);// 오늘 년도 구합니다.
-//	      int month = c.get(Calendar.MONTH) + 1;// 오늘 월 구합니다.
-//	      int date = c.get(Calendar.DATE);// 오늘 일 구합니다.
-//
-//	      String homedir = saveFolder + "/" + year + "-" + month + "-" + date;
-//	      logger.info(homedir);
-//	      File path1 = new File(homedir);
-//	      if (!(path1.exists())) {
-//	         path1.mkdir();// 새로운 폴더를 생성
-//	      }
-//
-//	      // 난수를 구합니다.
-//	      Random r = new Random();
-//	      int random = r.nextInt(100000000);
-//
-//	      /**** 확장자 구하기 시작 ****/
-//	      int index = fileName.lastIndexOf(".");
-//	      // 문자열에서 특정 문자열의 위치 값(index)를 반환합니다.
-//	      // indexOf가 처음 발견되는 문자열에 대한 index를 반환하는 반면,
-//	      // lastIndexOf는 마지막으로 발견되는 문자열의 index를 반환합니다.
-//	      // (파일명에 점에 여러개 있을 경우 맨 마지막에 발견되는 문자열의 위치를 리턴합니다.
-//	      logger.info("index = " + index);
-//
-//	      String fileExtension = fileName.substring(index + 1);
-//	      logger.info("fileExtension = " + fileExtension);
-//
-//	      // 새로운 파일명
-//	      String refileName = "bbs" + year + month + date + random + "." + fileExtension;
-//	      logger.info("refileName = " + refileName);
-//
-//	      // 오라클 디비에 저장될 파일 명
-//	      // String fileDBName = "/" + year + "-" + month + "-" + date + "/" + refileName;
-//	      String fileDBName = File.separator + year + "-" + month + "-" + date + File.separator + refileName;
-//	      logger.info("fileDBName = " + fileDBName);
-//
-//	      return fileDBName;
-//	   }
-   
-   /* -------------------------------- ▼post/updatePost 상세페이지-수정_데이터값출력(POST방식)▼ -------------------------------- */
-   @PostMapping("/updatePost")
+   /* -------------------------------- ▼post/updateGet 상세페이지-수정_데이터값받기(GET방식)▼ -------------------------------- */
    @ResponseBody
-   public Map<String, Object> updatePost(
-       @RequestParam(value = "LOGIN_ID", required=false) String USER_ID,
-       @RequestParam(value = "POST_ID") Integer post_id,
-       @RequestParam(value = "SUBJECT") String subject,
-       @RequestParam(value = "CONTENT") String content,
+   @GetMapping("/updateGet")
+   public Map<String, Object> updateGet(
+       @RequestParam(value = "post_id", required = false) Integer post_id,
        HttpServletRequest request, Principal userPrincipal) {
 
-      // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
-      String id = userPrincipal.getName();
-      Member member = memberService.getLoginMember(id);
-      int currentUserId = member.getUser_id();
+       // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
+       String id = userPrincipal.getName();
+       Member member = memberService.getLoginMember(id);
+       int currentUserId = member.getUser_id();
 
-      Post post = new Post();
-      
-      // 요청으로 받은 파라미터로 post 객체 설정
-      post.setPOST_ID(post_id);
-      
-      if (USER_ID != null) {
-          int userId = memberService.getUserId(USER_ID);
-          post.setUSER_ID(userId);
-      } else {
-          post.setUSER_ID(currentUserId);  // USER_ID가 없다면 현재 사용자 ID 사용
+       Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
+       
+   	List<Photo> photos=postPhotoService.getPhotosByPostId(post_id);
+
+   	List<String> photoPaths=photos.stream().map(Photo::getPATH).collect(Collectors.toList());
+
+   	if (post == null) {
+   		logger.info("수정 상세보기 실패");
+   		return Collections.singletonMap("error", "수정 상세보기 실패입니다.");
+   	} else {
+   		logger.info("★ 수정 상세보기 성공 ★");
+
+   		Map<String, Object> responseMap = new HashMap<>();
+   		responseMap.put("SUBJECT", post.getSUBJECT());
+   		responseMap.put("CONTENT", post.getCONTENT());
+   		
+   		responseMap.put("FILES", photoPaths);
+
+   	   return responseMap;
       }
-      
-      post.setSUBJECT(subject);
-      post.setCONTENT(content);
-
-     Map<String, Object> result = new HashMap<>();
-     
-     try {
-         postService.updatePost(post);
-         result.put("statusCode", 1);
-     } catch (Exception e) {
-         result.put("statusCode", -1);
-         result.put("errorMessage", e.getMessage());
-     }
-     
-     return result;
    }
+
+   
+   /* -------------------------------- ▼post/updatePost 상세페이지-수정_데이터값출력(POST방식)▼ -------------------------------- */
+   @ResponseBody
+   @PostMapping("/updatePost")
+   public Map<String, Object> updatePost(
+      @RequestParam(value = "LOGIN_ID", required=false) String USER_ID,
+      @RequestParam(value = "POST_ID") Integer post_id,
+      @RequestParam(value="SUBJECT") String subject,
+      @RequestParam(value="CONTENT") String content,
+      @RequestPart(value="file[]", required=false) MultipartFile[] files,
+      HttpServletRequest request, Principal userPrincipal) {
+
+     // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
+     String id = userPrincipal.getName();
+     Member member = memberService.getLoginMember(id);
+     int currentUserId = member.getUser_id();
+
+     Post postToUpdate=postService.getDetail(post_id);
+     
+     if (USER_ID != null) {
+         int userId=memberService.getUserId(USER_ID);
+         if(userId==currentUserId){
+             // 로그인 사용자와 작성자가 동일하면 수정 가능
+             postToUpdate.setUSER_ID(userId);
+         }else{
+             return Collections.singletonMap("error","작성자만 수정할 수 있습니다.");
+         }
+     }else{
+         return Collections.singletonMap("error","작성자만 수정할 수 있습니다.");
+     }
+
+   	if(subject!=null && !subject.isEmpty()){
+   	  postToUpdate.setSUBJECT(subject);
+   	}
+   	
+   	if(content!=null && !content.isEmpty()){
+   	  postToUpdate.setCONTENT(content);
+   	}
+
+   	StringBuilder sbFiles;
+   	if(postToUpdate.getPOST_FILE() != null){
+   	  	sbFiles=new StringBuilder(postToUpdate.getPOST_FILE());
+   	}else{
+   	  	sbFiles=new StringBuilder();
+   	}
+
+   	try{
+   	     if(files!=null && files.length >0){
+   	         for(MultipartFile file : files){
+   	             if(!file.isEmpty()){
+   	                 Photo photo=new Photo();
+   	                 photo.setPOST_ID(postToUpdate.getPOST_ID());
+   	                 
+   	                 String originalFilename=file.getOriginalFilename();// 원래 파일명
+   	                 System.out.println("Processing file: " + originalFilename);
+
+   	                 sbFiles.append(originalFilename).append(",");
+   	                 
+   	                 //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
+   	               	String saveFolder="c:/upload/";
+   	               	String fileDBName=fileDBName(originalFilename, saveFolder); 
+   	               	file.transferTo(new File(saveFolder + fileDBName));
+
+   	               photo.setPATH(fileDBName);
+
+   	               postPhotoService.insertPhoto(photo); 
+   	            }
+   	        }
+
+   	        if(sbFiles.length() > 0) {
+   	        	sbFiles.setLength(sbFiles.length() - 1); // 마지막 콤마 제거
+   	           	postToUpdate.setPOST_FILE(sbFiles.toString());   // 첨부파일 목록을 POST 객체에 설정
+   	            
+   	           	postService.updatePostFile(postToUpdate.getPOST_ID(), sbFiles.toString());
+   	        }
+   	     }
+
+   	    	postService.updatePost(postToUpdate);
+
+   	    	Map<String,Object> result=new HashMap<>();
+   	      	result.put("statusCode",1);
+
+   	      	return result;
+
+   	 } catch (Exception e) {
+   	 		Map<String,Object> result=new HashMap<>();
+   	      	result.put("statusCode",-1);
+   	      	result.put("errorMessage",e.getMessage());
+
+   	 		return result;
+   	 }
+   }
+
    
    /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */
    @ResponseBody
