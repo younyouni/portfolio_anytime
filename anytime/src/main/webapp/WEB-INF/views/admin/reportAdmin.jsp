@@ -79,9 +79,9 @@
 					<li class="reportlist menu"><a>신고 목록</a></li>
 				</ol>
 				<div class="order">
-					<label> <input type="radio" name="board_id" value="1">
+					<label> <input type="radio" name="latest" value="1" checked>
 						최신순
-					</label> <label> <input type="radio" name="board_id" value="1">
+					</label> <label> <input type="radio" name="mostReported" value="2">
 						신고순
 					</label>
 				</div>

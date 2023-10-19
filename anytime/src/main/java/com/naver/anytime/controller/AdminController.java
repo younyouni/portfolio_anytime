@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.Report;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.PostService;
 
@@ -121,6 +122,16 @@ public class AdminController {
 
 	@RequestMapping(value = "/reportAdmin", method = RequestMethod.GET)
 	public String getReportAdmin() {
+		
+		List<Report> reportrequest = null;
+//		reportrequest = 
+		
+//		List<Board> boardrequest = null;
+//		boardrequest = boardService.getBoardRequest();
+//
+//		mv.addObject("boardrequest", boardrequest);
+//		mv.setViewName("/admin/boardAdmin");
+		
 		return "/admin/reportAdmin";
 	}
 

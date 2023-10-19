@@ -87,7 +87,6 @@ public class ReportController {
 				reportResult = 1;			
 			}
 		}
-
 		return reportResult;
 	}
 }
