@@ -73,7 +73,7 @@ public class CreditController {
 		if (credit != null) {
 			mv.addObject("credit", credit);
 		}
-
+/////
 		// 학점 계산 로직 추가
 		double totalGradePoints = 0.0;
 		double majorGradePoints = 0.0;
