@@ -93,20 +93,36 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> getBoardTotalList(int page, int limit) {
-		
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
-		int startrow = (page - 1) * limit + 1;
-		int endrow = startrow + limit - 1;
-		map.put("start", startrow); //31
-		map.put("end", endrow);//40
+	public List<Board> getBoardTotalList(int page, int limit, int searchKey, String keyword) {
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1; // 1
+		int endrow = startrow + limit - 1; // 10
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("searchKey", searchKey);
+		map.put("keyword", keyword);
 
 		return dao.getBoardTotalList(map);
 	}
 
 	@Override
-	public int getListCount() {
-		return dao.getListCount();
+	public int getListCount(int searchKey, String keyword) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("searchKey", searchKey);
+		map.put("keyword", keyword);
+
+		return dao.getListCount(map);
+	}
+
+	@Override
+	public int updateBoardStatusImmediately(int board_id, int approvalStatus) {
+		return dao.updateBoardStatusImmediately(board_id, approvalStatus);
+	}
+	
+	@Override
+	public int getBoardStatus(int board_id) {
+		return dao.getBoardStatus(board_id);
 	}
 	// ********************************= 윤희 =********************************
 

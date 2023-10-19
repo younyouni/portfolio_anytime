@@ -38,9 +38,14 @@ public interface BoardMapper {
 
 	public int updateApprovalStatus(HashMap<String, Object> map);
 
-	public List<Board> getBoardTotalList(HashMap<String, Integer> map);
+	public List<Board> getBoardTotalList(HashMap<String, Object> map);
 
-	public int getListCount();
+	public int getListCount(HashMap<String, Object> map);
+
+	public int updateBoardStatusImmediately(int board_id, int approvalStatus);
+
+	public int getBoardStatus(int board_id);
+
 	// ********************************= 윤희 =********************************
 
 	public List<Board> getBoardContent(int board_id);

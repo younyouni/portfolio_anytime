@@ -6,6 +6,7 @@ public class Board {
 	private int USER_ID;
 	private int TYPE;
 	private String NAME;
+	private String BOARD_NAME;
 	private String CONTENT;
 	private String PURPOSE;
 
@@ -121,6 +122,14 @@ public class Board {
 
 	public void setREJECT_REASON(String rEJECT_REASON) {
 		REJECT_REASON = rEJECT_REASON;
+	}
+
+	public String getBOARD_NAME() {
+		return BOARD_NAME;
+	}
+
+	public void setBOARD_NAME(String bOARD_NAME) {
+		BOARD_NAME = bOARD_NAME;
 	}
 
 }

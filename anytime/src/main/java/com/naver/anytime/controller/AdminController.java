@@ -60,27 +60,42 @@ public class AdminController {
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
 	@Scheduled(cron = "0 0 * * * ?" /* 매일마다 */)
-	public int updateBoardStatusComplete() {
+	public int updateBoardStatusCompleteScheduled() {
 		return boardService.updateBoardStatusComplete();
+	}
+
+	@RequestMapping(value = "/updateBoardStatusImmediately", method = RequestMethod.GET)
+	@ResponseBody
+	public int updateBoardStatusImmediately(@RequestParam("board_id") int board_id) {
+		int approvalStatus = 0;
+		int currentStatus = boardService.getBoardStatus(board_id);
+
+		if (currentStatus == 1) {
+			approvalStatus = 2;
+		} else {
+			approvalStatus = 1;
+		}
+		return boardService.updateBoardStatusImmediately(board_id, approvalStatus);
 	}
 
 	@RequestMapping(value = "/boardtotal", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getBoardTotalList(
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-			@RequestParam("searchKey") int searchKey, @RequestParam(value = "keyword", required = true) String keyword) {
+			@RequestParam("searchKey") int searchKey,
+			@RequestParam(value = "keyword", required = true) String keyword) {
 
-		if(keyword.equals("null")) {
+		if (keyword.equals("null")) {
 			keyword = null;
 		}
 		int limit = 10;
-		
-		int listcount = boardService.getListCount();
-		logger.info("총 개수 : "+ listcount);
-		
+		List<Board> boardTotal = null;
+
+		int listcount = boardService.getListCount(searchKey, keyword);
+
 		// 총 페이지 수
 		int maxpage = (listcount + limit - 1) / limit;
-		
+
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
 		int startpage = ((page - 1) / 10) * 10 + 1;
 
@@ -90,7 +105,7 @@ public class AdminController {
 		if (endpage > maxpage)
 			endpage = maxpage;
 
-		List<Board> boardTotal = boardService.getBoardTotalList(page, limit);
+		boardTotal = boardService.getBoardTotalList(page, limit, searchKey, keyword);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardTotal", boardTotal);

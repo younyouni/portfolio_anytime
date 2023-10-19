@@ -58,7 +58,7 @@
 			$("div.center-block").show();
 			boardTotalList(page, searchKey, keyword);
 		});
-
+		
 		$(document).on(
 				"click",
 				"a.approval",
@@ -87,12 +87,77 @@
 				return false;
 			}
 		});
-
-		$('.list tbody td:not(.switch)').click(function() {
-			$('form#boardInfo').css('display', 'block');
-			$('form#boardInfo').before('<div class="modalwrap"></div>');
+		
+		var clickFlag = true;
+		$('table.list').off().on("click","td.switch",function() {
+			  if (clickFlag) {
+			        clickFlag = false; // 클릭 이벤트 비활성화
+					var board_id = $(this).children().find('input.approval').val();
+			        
+					$.ajax({
+						type : "get",
+						url : 'updateBoardStatusImmediately',
+						data : {
+							board_id : board_id
+						},
+						success : function(rdata) {
+							if(rdata==1){
+							alert('상태 변경 완료')
+							}
+						}
+					})
+			  }
 		});
 
+		$('table.list').on("click","td:not(.switch)",function() {
+			$('form#boardInfo').css('display', 'block');
+			var board_id = $(this).parent().find('td.switch input.approval').val();
+			var school_name = $(this).parent().find('td:nth-child(2)').text();
+			var type = $(this).parent().find('td:nth-child(3)').text();
+			var name = $(this).parent().find('td:nth-child(4)').text();
+			var purpose = $(this).parent().find('td:nth-child(5)').text();
+			var manager = $(this).parent().find('td:nth-child(6)').text();
+			$('form#boardInfo input.school_name').val(school_name);
+			$('form#boardInfo input.type').val(type);
+			$('form#boardInfo input.name').val(name);
+			$('form#boardInfo input.purpose').val(purpose);
+			$('form#boardInfo input.manager').val(manager);
+			$('form#boardInfo .switch input').val(board_id);
+			
+			if($(this).parent().find('td.switch input.approval').is(':checked')){
+				$('form#boardInfo .switch input').prop('checked', true);
+			}else{
+				$('form#boardInfo .switch input').prop('checked', false);
+			}
+			$('form#boardInfo').before('<div class="modalwrap"></div>');
+		});
+		
+		$('#boardInfo .switch input').on("change",function(){
+			var board_id = $(this).parent().find('input').val();
+			$.ajax({
+						type : "get",
+						url : 'updateBoardStatusImmediately',
+						data : {
+							board_id : board_id
+						},
+						success : function(rdata) {
+							if(rdata==1){
+							alert('상태 변경 완료')
+							
+							$('table.list input.approval').each(function() {
+							    // input 요소의 value 값을 가져옵니다.
+							    var value = $(this).val();
+							    
+							    if (value == board_id) {
+							        $(this).prop('checked', !$(this).prop('checked'));
+							    }
+							});
+							}
+						}
+					})
+		})
+
+		
 		$("#approvalreview")
 				.submit(
 						function() {
@@ -109,7 +174,7 @@
 							location.reload();
 						});// $("#approvalreview").submit end
 
-		$("input.approval")
+		$("table.request input.approval")
 				.on(
 						"change",
 						function() {
@@ -142,14 +207,18 @@
 									rejectionreason);
 						});
 
-		$('#searchBoard').submit(function() {
-			e.preventDefault();
+		$('#searchButton').click(function() {
 			// <select> 요소에서 선택된 옵션의 value 값을 가져옵니다.
 			searchKey = $("#search_field").val();
 			keyword = $('#search_word').val();
 
+			$('table.list tbody').empty();
+            $('ul.pagination').empty();
 			boardTotalList(page, searchKey, keyword);
+			//e.preventDefault();
 		})
+		
+		
 	});
 
 	function updateBoardStatus(board_id, approvalStatus, rejectionreason) {
@@ -175,7 +244,6 @@
 	}
 
 	function boardTotalList(page, searchKey, keyword) {
-
 	var output ='';
 	$.ajax({
 		type : "get",
@@ -187,13 +255,13 @@
 		},
 		dataType : "json",
 		success : function(rdata) {
-			
-			let output = "";
-			let rownum = 1;
             $('table.list tbody').empty();
             $('ul.pagination').empty();
 			
 			if (rdata.boardTotal.length > 0) {
+				let output = "";
+				let rownum = 1;
+				keyword = "'"+keyword+"'";
 				$(rdata.boardTotal).each(function() {
 					let board_type = '';
 					if (this.type == 1) {
@@ -205,25 +273,24 @@
 					} else {
 						board_type = '커스텀';
 					}
-					output += '<tr><td>' + rownum + '</td><td>'	+ this.school_NAME	+ '</td><td>			'
-							+ board_type + '</td><td>' + this.name	+ '</td><td>							';
+					output += '<tr><td>' + rownum + '</td><td>'	+ this.school_NAME	+ '</td><td>'
+							+board_type+ '</td><td>' + this.board_NAME+ '</td><td>							';
 					if (this.purpose != null) {
 						output += this.purpose;
 					} else {
 						output += '';
 					}
-					output += '</td><td>' + this.login_ID + '</td><td class="switch"><label class="switch">	';
+					output += '</td><td>' + this.login_ID + '</td><td class="switch"><label class="switch">	'
 					if (this.status == 1) {
-						output += '<input type="checkbox" class="approval" checked>							';
-					} else if (this.status == 1) {
-						output += '<input type="checkbox" class="approval">									';
+						output+='<input type="checkbox" class="approval checked" value="'+this.board_ID+'" checked>			';
+					} else if (this.status == 2) {
+						output += '<input type="checkbox" class="approval" value="'+this.board_ID+'">			';
 					}
 						output += '<span class="slider round"></span></label></td></tr>						';
 						rownum++;
-					})//each end
+					})//$(rdata.boardTotal).each(function()
 					$('table.list tbody').append(output);
-				}//if end
-				
+					
 				let maxpage =rdata.maxpage;
 				let startpage =rdata.startpage;
 				let endpage =rdata.endpage;
@@ -240,7 +307,7 @@
 					+'이전&nbsp;&nbsp;</a></li>																';
 				}else if(page > 1){
 					output = '<li class="page-item"><a href="javascript:boardTotalList('+beforepage+','+searchKey+','
-							+ keyword+')" class="page-link">이전</a>&nbsp;</li>';
+							+keyword+')" class="page-link">이전</a>&nbsp;</li>';
 				}
 				
 				for(let i=startpage; i<=endpage; i++) {
@@ -259,10 +326,15 @@
 							+ nextpage+','+searchKey+',' + keyword+')" class="page-link">&nbsp;다음</a></li>';
 				}
 				$('ul.pagination').append(output);
-			}
-		
-		});
-	}
+				}//if (rdata.boardTotal.length > 0) {
+				else {
+					$('table.list tbody').empty();
+		            $('ul.pagination').empty();
+					}
+				}
+			});
+		};
+	
 </script>
 </head>
 <body>
@@ -274,7 +346,7 @@
 					<li class="boardrequest menu"><a class="active">게시판 승인 요청</a></li>
 					<li class="boardlist menu"><a>게시판 목록</a></li>
 					<li class="search">
-						<form id="searchBoard" class="search" method="post"
+						<form id="searchBoard" class="search"
 							accept-charset="UTF-8">
 							<select name="search_field" id="search_field">
 								<option value="0">전체</option>
@@ -318,7 +390,16 @@
 										</c:when>
 									</c:choose></td>
 								<td>${request.SCHOOL_NAME}</td>
-								<td>${request.TYPE}</td>
+								<td>
+									<c:choose>
+										<c:when test ="${request.TYPE ==2}">
+											단체
+										</c:when>
+										<c:when test ="${request.TYPE ==3}">
+											학과
+										</c:when>
+									</c:choose>
+								</td>
 								<td>${request.NAME}</td>
 								<td>${request.PURPOSE}</td>
 								<td>${request.LOGIN_ID}</td>
@@ -382,23 +463,23 @@
 			<table>
 				<tr>
 					<td>학교명</td>
-					<td class="box"><input type="text" class="first" readOnly
+					<td class="box"><input type="text" class="first school_name" readOnly
 						value="x대"></td>
 					<td style="padding: 0 20px;">유형</td>
-					<td class="box"><input type="text" class="first" readOnly
+					<td class="box"><input type="text" class="first type" readOnly
 						value="단체"></td>
 					<td style="padding: 0 20px;">운영자</td>
-					<td class="box"><input type="text" class="first" readOnly
+					<td class="box"><input type="text" class="first manager" readOnly
 						value="youni"></td>
 				</tr>
 				<tr>
 					<td>게시판 이름</td>
-					<td colspan="5" class="box"><input type="text" readOnly
+					<td colspan="5" class="box"><input type="text" class="name" readOnly
 						value="게게시피" style="width: 360px;"></td>
 				</tr>
 				<tr>
 					<td>개설 목적</td>
-					<td colspan="5" class="box"><textarea readOnly>목적
+					<td colspan="5" class="box purpose"><textarea readOnly>목적
 						</textarea></td>
 				</tr>
 			</table>
