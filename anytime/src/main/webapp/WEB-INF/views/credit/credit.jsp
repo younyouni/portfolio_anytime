@@ -52,6 +52,7 @@
 				</article>
 				<article class="semester">
 					<div class="series">
+				
 						<div class="legend">
 							<table style="font-size: smaller; color: #545454">
 								<tbody>
@@ -73,6 +74,7 @@
 								</tbody>
 							</table>
 						</div>
+					
 
 						<div id="plot" class="plot"
 							style="padding: 0px; position: relative;">
