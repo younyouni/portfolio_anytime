@@ -53,6 +53,8 @@ public class CreditServiceImpl implements CreditService {
 	public int getTotalAcquisition(int user_id) {
 		return dao.getTotalAcquisition(user_id);
 	}
-	
+
+
+
 
 }

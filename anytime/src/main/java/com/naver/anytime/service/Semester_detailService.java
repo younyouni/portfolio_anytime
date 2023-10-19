@@ -12,4 +12,6 @@ public interface Semester_detailService {
 
 	public List<Semester_detail> getSemesterDetailsBySemesterId(int semester_id);
 
+	public List<Semester_detail> getDetailPerSemester(int semester_id);
+
 }
