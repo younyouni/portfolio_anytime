@@ -53,6 +53,10 @@ $(document).ready(function () {
         }
     });
 
+    var existingFiles = []; // 이미 업로드된 파일들을 저장하는 배열
+    var filesToUpload = []; // 업로드할 파일들을 저장하는 배열
+    var filesToDelete = []; // 삭제할 파일들을 저장하는 배열
+
     /*글 수정 시작 => 기존 정보 데이터값 불러오기*/
     $("#updateButton").on("click", function(e) {
         e.preventDefault();
@@ -86,13 +90,14 @@ $(document).ready(function () {
                 $('#content').val(CONTENT);
 
                 // 첨부 파일 데이터 업데이트
-                let files = data.POST_FILE; // 이부분은 서버에서 가져오는 실제 파일 데이터에 맞게 수정해야 합니다.
-
+                let files = data.FILES;  // 서버에서 반환하는 데이터가 문자열 형태라면, JSON.parse를 사용하여 배열로 변환
                 if (files && files.length > 0) {
-					for (let i = 0; i < files.length; i++) {
-						addThumbnail(files[i]); // 첨부 파일의 미리보기 썸네일 추가 함수
-					}
-				}
+                    for (let i = 0; i < files.length; i++) {
+                        addThumbnail('http://localhost:9700/anytime/upload' + files[i]);  // 상대 경로를 사용하여 썸네일 추가
+		                existingFiles.push(files[i]);         // 기존에 있던 파일들도 업로드 대상 배열에 추가.
+                    }
+                    $('#container>div.articles>form.write ol.thumbnails').css('display', 'block');   // 썸네일 영역 보이기 추가
+                }
 
                 $("#writeBoard").show();
                 $("#boardInfo").hide();
@@ -114,7 +119,6 @@ $(document).ready(function () {
     /*글 수정 종료 => 기존 정보 데이터값 불러오기*/
 
     /*글쓰기 완료*/
-    var filesToUpload = []; // 업로드할 파일들을 저장하는 배열
 
     $('body').on('click', 'li.new', function() {
         $('#post_file').trigger('click');
@@ -145,7 +149,7 @@ $(document).ready(function () {
 
         reader.onloadend = function(e) {
             // 여기서 썸네일 미리보기를 생성합니다.
-            var thumbnailItem=$('<li><img src="/uploads' + e.target.result + '" style="width:85px; height:85px;"></li>');
+            var thumbnailItem=$('<li><img src="' + e.target.result + '" style="width:85px; height:85px;"></li>');
             
             $('.thumbnails .new').before(thumbnailItem);
             
@@ -163,15 +167,20 @@ $(document).ready(function () {
     $('body').on('click', '.thumbnails li:not(.new)', function() {
         var index = $(this).index();
 
-        // 썸네일 삭제
+        if(index < existingFiles.length){
+            let deletedFile = existingFiles.splice(index, 1)[0];
+            filesToDelete.push(deletedFile);
+            console.log('Deleted existing file: ' + deletedFile);
+        } else {
+            index -= existingFiles.length;
+            deletedFile = filesToUpload.splice(index, 1)[0];
+            console.log('Deleted new file: ' + deletedFile.name);
+        }
+ 
         $(this).remove();
 
-        // 배열에서 파일제거
-        filesToUpload.splice(index, 1);
-
         // 업로드된 파일의 개수가 0이면 thumbnails 영역을 숨깁니다.
-        if ($('.thumbnails li').length == 1) {
-            //'new' li만 남았다면
+        if($('.thumbnails li').length == 1){ 
             $('#container>div.articles>form.write ol.thumbnails').css('display', 'none');
         }
     });
@@ -190,9 +199,17 @@ $(document).ready(function () {
         formData.append('SUBJECT', $("#title").val());
         formData.append('CONTENT', $("#content").val());
 
-        for (var i = 0; i < filesToUpload.length; i++) {
-            // 모든 첨부파일을 formData에 추가합니다.
+        for (var i=0; i<existingFiles.length; i++) { 
+            formData.append("existingFile[]", existingFiles[i]);
+        }
+  
+        for (var i=0; i<filesToUpload.length; i++) { 
             formData.append("file[]", filesToUpload[i]);
+        }
+  
+        for (var i=0; i<filesToDelete.length; i++) { 
+            formData.append("deleteFile[]", filesToDelete[i]);
+            console.log('Sending delete request for file: ' + filesToDelete[i]);
         }
 
         $.ajax({
