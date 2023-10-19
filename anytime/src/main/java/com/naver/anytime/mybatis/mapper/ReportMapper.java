@@ -1,6 +1,10 @@
 package com.naver.anytime.mybatis.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import com.naver.anytime.domain.Report;
 
 @Mapper
 public interface ReportMapper {
@@ -10,5 +14,9 @@ public interface ReportMapper {
 	int updatePostReportCount(int post_id);
 
 	int updateCommentReportCount(int comment_id);
+
+	/* =============================== 윤희 =============================== */
+	
+	List<Report> getReportRequest(int order);
 
 }

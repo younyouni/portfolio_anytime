@@ -99,5 +99,9 @@ public interface PostService {
 	// ********************************= 윤희 =********************************
 	public List<List<Post>> getPostListByBoard(int[] board_ids);
 
+	public List<Post> getPostTotalList(int board_id, int page, int limit, int searchKey, String keyword);
+
+	public int getPostTotalListCount(int board_id, int searchKey, String keyword);
+
 
 }

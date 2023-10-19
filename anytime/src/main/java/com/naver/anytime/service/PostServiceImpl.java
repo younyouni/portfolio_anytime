@@ -31,14 +31,14 @@ public class PostServiceImpl implements PostService {
 	public String getPostlist(String SchoolName) {
 		return postDao.getPostlist(SchoolName);
 	}
-	
-	//게시물 리스트 총 수
+
+	// 게시물 리스트 총 수
 	@Override
 	public int getListCount(int board_id) {
 		return postDao.getListCount(board_id);
 	}
-	
-	//게시물 리스트 결과
+
+	// 게시물 리스트 결과
 	@Override
 	public List<Post> getPostList(int page, int limit, int board_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -55,42 +55,42 @@ public class PostServiceImpl implements PostService {
 		Map<String, String> map = new HashMap<String, String>();
 		return postDao.getUserNickname(map);
 	}
-	
-	//검색용 게시물 리스트 총 수
+
+	// 검색용 게시물 리스트 총 수
 	public int getSearchListCount(int board_id, int search_field, String search_word) {
 		return postDao.getSearchListCount(board_id, search_field, search_word);
 	}
-	
-	//검색용 게시물 리스트 결과
+
+	// 검색용 게시물 리스트 결과
 	@Override
 	public List<Post> getSearchPostList(int page, int limit, int board_id, int search_field, String search_word) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		int startrow = (page - 1) * limit + 1;
-	    int endrow = startrow + limit - 1;
-	    map.put("start", startrow);
-	    map.put("end", endrow);
-	    map.put("board_id", board_id);
-	    map.put("search_field", search_field);
-	    map.put("search_word", search_word);
-	    
+		int endrow = startrow + limit - 1;
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("board_id", board_id);
+		map.put("search_field", search_field);
+		map.put("search_word", search_word);
+
 		return postDao.getSearchPostList(map);
 	}
-	
-	//전체 검색용 리스트 총 수
+
+	// 전체 검색용 리스트 총 수
 	public int getAllSearchListCount(int school_id, String search_word) {
 		return postDao.getAllSearchListCount(school_id, search_word);
 	}
-	
-	//전체 검색용 리스트 결과
-	public List<Post> getAllSearchPostList(int page, int limit, int school_id, String search_word){
+
+	// 전체 검색용 리스트 결과
+	public List<Post> getAllSearchPostList(int page, int limit, int school_id, String search_word) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		int startrow = (page - 1) * limit + 1;
-	    int endrow = startrow + limit - 1;
-	    map.put("start", startrow);
-	    map.put("end", endrow);
-	    map.put("school_id", school_id);
-	    map.put("search_word", search_word);
-	    
+		int endrow = startrow + limit - 1;
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("school_id", school_id);
+		map.put("search_word", search_word);
+
 		return postDao.getAllSearchPostList(map);
 	}
 
@@ -98,7 +98,7 @@ public class PostServiceImpl implements PostService {
 	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit) {
 		return null;
 	}
-	
+
 	@Override
 	public List<Post> findSchoolBoardlistcount(int school_num) {
 		return null;
@@ -178,53 +178,61 @@ public class PostServiceImpl implements PostService {
 	public boolean postModify(Post modifypost, String filename) {
 		return false;
 	}
-	
-	//글삭제 => STATUS로 접근불가
+
+	// 글삭제 => STATUS로 접근불가
 	@Override
 	public int updatePostStatus(int post_id) {
 		return postDao.updatePostStatus(post_id);
 	}
 
-	//글쓰기 실험용
+	// 글쓰기 실험용
 	@Override
 	public void insertPost(Post post) {
 		if (post.getSUBJECT() == null || post.getSUBJECT().isEmpty()) {
-            throw new IllegalArgumentException("Subject cannot be null or empty");
-        }
+			throw new IllegalArgumentException("Subject cannot be null or empty");
+		}
 		postDao.insertPost(post);
-		
+
 	}
-	
-	//글수정 실험용
+
+	// 글수정 실험용
 	@Override
 	public void updatePost(Post post) {
 		postDao.updatePost(post);
 	}
-	
+
 //	@Override
 //	public int increaseLike(Integer post_id, int currentUserId) {
 //		return postDao.increaseLike(post_id, currentUserId);
 //	}
-	
+
 	@Override
-    public int getPostLikes(int post_id) {
+	public int getPostLikes(int post_id) {
 		return postDao.getPostLikes(post_id);
-    } 
-	
+	}
+
 	@Override
-    public void updatePostFile(int post_id, String post_file) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("post_id", post_id);
-        params.put("post_file", post_file);
-        this.postDao.updatePostFile(params);
-    }
-	
+	public void updatePostFile(int post_id, String post_file) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("post_id", post_id);
+		params.put("post_file", post_file);
+		this.postDao.updatePostFile(params);
+	}
+
 	@Override
 	public void updatePostFile(Map<String, Object> params) {
 		sqlSession.update("post.updatePostFile", params);
-		
+
 	}
-	
+
+	@Override
+	public void incrementLikes(int post_id) {
+	}
+
+	@Override
+	public void decrementLikes(int post_id) {
+	}
+
 	// ********************************= 윤희 =********************************
 	@Override
 	public List<List<Post>> getPostListByBoard(int[] board_ids) {
@@ -239,19 +247,24 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void incrementLikes(int post_id) {
+	public List<Post> getPostTotalList(int board_id, int page, int limit, int searchKey, String keyword) {
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+
+		map.put("board_id", board_id);
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("searchKey", searchKey);
+		map.put("keyword", keyword);
+
+		return postDao.getPostTotalList(map);
 	}
 
 	@Override
-	public void decrementLikes(int post_id) {
+	public int getPostTotalListCount(int board_id, int searchKey, String keyword) {
+		return 0;
 	}
-
-	
-
-	
-
-	
-
-
 
 }

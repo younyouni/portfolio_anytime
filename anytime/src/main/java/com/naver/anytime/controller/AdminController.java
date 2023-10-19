@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
-import com.naver.anytime.domain.Report;
+import com.naver.anytime.domain.Post;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.PostService;
+import com.naver.anytime.service.ReportService;
 
 @Controller
 //@RequestMapping(value = "/admin")
@@ -28,11 +29,13 @@ public class AdminController {
 
 	private BoardService boardService;
 	private PostService postService;
+	private ReportService reportService;
 
 	@Autowired
-	public AdminController(BoardService boardService, PostService postService) {
+	public AdminController(BoardService boardService, PostService postService, ReportService reportService) {
 		this.boardService = boardService;
 		this.postService = postService;
+		this.reportService = reportService;
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -90,7 +93,6 @@ public class AdminController {
 			keyword = null;
 		}
 		int limit = 10;
-		List<Board> boardTotal = null;
 
 		int listcount = boardService.getListCount(searchKey, keyword);
 
@@ -106,7 +108,7 @@ public class AdminController {
 		if (endpage > maxpage)
 			endpage = maxpage;
 
-		boardTotal = boardService.getBoardTotalList(page, limit, searchKey, keyword);
+		List<Board> boardTotal = boardService.getBoardTotalList(page, limit, searchKey, keyword);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardTotal", boardTotal);
@@ -121,23 +123,55 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/reportAdmin", method = RequestMethod.GET)
-	public String getReportAdmin() {
-		
-		List<Report> reportrequest = null;
+//		@ResponseBody
+	public String getReportAdmin(@RequestParam(value = "order", defaultValue = "1", required = false) int order) {
+
+//		List<Report> reportrequest = null;
+//		reportrequest = reportService.getReportRequest(order);
+
 //		reportrequest = 
-		
+
 //		List<Board> boardrequest = null;
 //		boardrequest = boardService.getBoardRequest();
 //
 //		mv.addObject("boardrequest", boardrequest);
 //		mv.setViewName("/admin/boardAdmin");
-		
+
 		return "/admin/reportAdmin";
 	}
 
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
-	public String getAdminNotice() {
-		return "/admin/adminNotice";
+	@ResponseBody
+	public ModelAndView getAdminNotice(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+			@RequestParam("searchKey") int searchKey, @RequestParam(value = "keyword", required = true) String keyword,
+			ModelAndView mv) {
+
+		if (keyword.equals("null")) {
+			keyword = null;
+		}
+
+		int board_id = 0;
+
+		int limit = 10;
+
+		int listcount = postService.getPostTotalListCount(board_id, searchKey, keyword);
+
+		// 총 페이지 수
+		int maxpage = (listcount + limit - 1) / limit;
+
+		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
+		int startpage = ((page - 1) / 10) * 10 + 1;
+
+		// 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
+		int endpage = startpage + 10 - 1;
+
+		if (endpage > maxpage)
+			endpage = maxpage;
+
+		List<Post> notice = postService.getPostTotalList(board_id, page, limit, searchKey, keyword);
+
+		mv.setViewName("/admin/adminNotice");
+		return mv;
 	}
 
 }

@@ -68,6 +68,8 @@
 
 		});
 	});
+	
+	//function reportTotalList()
 </script>
 <body>
 	<div id="wrapper">

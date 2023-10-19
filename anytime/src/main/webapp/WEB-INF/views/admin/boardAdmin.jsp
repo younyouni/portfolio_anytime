@@ -196,9 +196,7 @@
 								var img = new Image();
 								img.src = "${pageContext.request.contextPath}/resources/image/admin/approval.cancel.png";
 								img.onload = function() {
-									$this
-											.find('p')
-											.append(
+									$this.find('p').append(
 													'<a class="approval"><img src="' + img.src + '"></a>');
 								};
 								$this.addClass('pending');
@@ -217,8 +215,6 @@
 			boardTotalList(page, searchKey, keyword);
 			//e.preventDefault();
 		})
-		
-		
 	});
 
 	function updateBoardStatus(board_id, approvalStatus, rejectionreason) {

@@ -217,4 +217,64 @@
 		WHERE rn &lt;= 4;
 	</select>
 	
+	<select id="getPostTotalList">
+	
+	</select>
+	<!-- 
+
+	<select id="getBoardTotalList" resultType="board">
+	    SELECT * 
+	    FROM (  SELECT ROWNUM RNUM, B.*
+	        	FROM (  SELECT B.TYPE TYPE, B.NAME BOARD_NAME, B.PURPOSE PURPOSE,
+	        			B.BOARD_ID BOARD_ID, B.STATUS STATUS,
+	            		M.LOGIN_ID LOGIN_ID, S.NAME SCHOOL_NAME
+	            		FROM BOARD B
+	            		INNER JOIN MEMBER M ON B.USER_ID = M.USER_ID
+	            		INNER JOIN SCHOOL S ON B.SCHOOL_ID = S.SCHOOL_ID
+	            		WHERE B.STATUS = 1 OR B.STATUS = 2
+	        		  ) B
+	        	WHERE ROWNUM &lt;= #{end}
+            	<if test="keyword != null">
+                 AND (
+                        <include refid="search" />
+                     )
+                </if>
+	    	 ) 
+	    WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+
+	<select id="getListCount" resultType="int">
+	 	SELECT COUNT(*)
+		FROM (	SELECT * 
+				FROM (	SELECT B.TYPE TYPE, B.NAME BOARD_NAME, B.PURPOSE PURPOSE, 
+						B.BOARD_ID BOARD_ID, B.STATUS STATUS,
+						M.LOGIN_ID LOGIN_ID, S.NAME SCHOOL_NAME
+	  					FROM BOARD B
+	  					INNER JOIN MEMBER M ON B.USER_ID = M.USER_ID
+	  					INNER JOIN SCHOOL S ON B.SCHOOL_ID = S.SCHOOL_ID
+	  					WHERE B.STATUS = 1 OR B.STATUS = 2
+	   				  )
+	   			<if test="keyword != null">
+	      		WHERE
+	        		<include refid="search" />
+	      		</if>
+	      	  )
+	</select>
+
+	<sql id="search">
+	  <choose>
+	    <when test="searchKey == 0">
+	      SCHOOL_NAME LIKE '%' || #{keyword} || '%' OR  BOARD_NAME LIKE '%' || #{keyword} || '%' OR LOGIN_ID LIKE '%' || #{keyword} || '%'
+	    </when>
+	    <when test="searchKey == 1">
+	      SCHOOL_NAME LIKE '%' || #{keyword} || '%'
+	    </when>
+	    <when test="searchKey == 2">
+	      BOARD_NAME LIKE '%' || #{keyword} || '%'
+	    </when>
+	  </choose>
+	</sql>
+	
+		 -->
+	
 </mapper>

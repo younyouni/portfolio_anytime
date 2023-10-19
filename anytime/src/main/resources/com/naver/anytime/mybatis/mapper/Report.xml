@@ -21,4 +21,8 @@
 		where comment_id = #{comment_id}
 	</update>
 	
+	<select id="getReportRequest">
+		
+	</select>
+	
 </mapper>
