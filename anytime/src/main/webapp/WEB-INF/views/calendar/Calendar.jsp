@@ -6,7 +6,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/index.global.js"></script>
     <link type="text/css" href="${pageContext.request.contextPath}/resources/css/calendar/calendar.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/resources/js/calendar/calendar.js"></script>
-    <%-- <script src="${pageContext.request.contextPath}/resources/js/calendar/jscolor.js"></script> --%>
+    <script src="${pageContext.request.contextPath}/resources/js/calendar/jscolor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/modal.css">
@@ -40,7 +40,7 @@
 	
 	<form id="calendarModal" class="modal" data-gtm-form-interact-id="0" style="margin-left: -300px; margin-top: -400px; display: none;">
 		<a title="닫기" class="close"></a>
-		<span>일정 추가</span>
+		<span id="calendar_setting"></span>
 		<p>
 
         </p>
@@ -77,21 +77,24 @@
 	</form>
 	
 	
-	<form id="calendarDetail" class="modal" data-gtm-form-interact-id="0" style="margin-left: -300px; margin-top: -100px; display: none;">
+	<form id="calendarDetail" class="modal" style="margin-left: -300px; margin-top: -200px; display: none;">
 		<a title="닫기" class="close"></a>
 		<p>
-		<span id="calendar_detail_title">제목</span>
+		<span id="calendar_detail_title"></span>
 		</p>
 		<p>
-		<div id="calendar_detail_date">일정 2023 00:00:00 GMT+0900 (한국 표준시)</div>
+		<div id="calendar_detail_type"></div>
 		</p>
 		<p>
+		<div id="calendar_detail_date"></div>
+		</p>
+		<p>
+		<textarea type="text" class="text" id="calendar_detail_description" readonly></textarea>
+		</p>
 
-		</p>
-		
-		
 		<input type="button" id="calendar_update" value="수정" class="button">
 		<input type="button" id="calendar_delete" value="삭제" class="button">
+
 	</form>
 
 </body>

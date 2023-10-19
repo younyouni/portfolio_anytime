@@ -154,10 +154,11 @@ form input[name="calendar_description"] {
 
 form#calendarDetail{
 	width: 500px;
-    height: 80px;
+    height: 240px;
 }
 
 form#calendarDetail span {
+	padding: 5px;
 	padding-left: 7px;
     border-left: 20px solid #7869E6;
     font-weight: bold;
@@ -167,9 +168,19 @@ form#calendarDetail span {
     line-height: 24px;
 }
 
-.calendar_detail_date {
-	font-size: 16px;
+#calendar_detail_date {
+	padding: 5px;
+	font-size: 18px;
 }
+
+#calendar_detail_description {
+	font-size: 18px;
+}
+
+#calendar_detail_date::before {
+	color: red;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * ▼일정▼ * * * * * * * * * * * * * * * * * * * * * * * */
 /* 일정 시간 색 */
 div.fc-event-main-frame > div{
