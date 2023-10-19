@@ -7,13 +7,24 @@
 <head>
 <title>애니타임</title>
 <meta charset="utf-8">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/credit/credit.js"></script>
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/common.css"
+	rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
+	rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
+	rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css"
+	rel="stylesheet">
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/credit/credit.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body style="">
@@ -52,7 +63,7 @@
 				</article>
 				<article class="semester">
 					<div class="series">
-				
+
 						<div class="legend">
 							<table style="font-size: smaller; color: #545454">
 								<tbody>
@@ -74,7 +85,7 @@
 								</tbody>
 							</table>
 						</div>
-					
+
 
 						<div id="plot" class="plot"
 							style="padding: 0px; position: relative;">
@@ -84,7 +95,7 @@
 							</div>
 							<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 							<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-							
+
 							<script>
 								
 							   var labelData = [
@@ -161,43 +172,41 @@
 							</script>
 						</div>
 					</div>
+					<div>
 					<ul class="ratioplot">
-						<li><span class="grade">A+</span>
-							<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(68.4211%); height: 4px; background-color: rgb(242, 133, 114);"></div>
-								<span class="ratiotext"
-									style="left: calc(68.4211%); color: rgb(242, 133, 114);">34%</span>
-							</div></li>
-						<li><span class="grade">B+</span>
-							<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(52.6316%); height: 4px; background-color: rgb(236, 197, 92);"></div>
-								<span class="ratiotext"
-									style="left: calc(52.6316%); color: rgb(236, 197, 92);">26%</span>
-							</div></li>
-						<li><span class="grade">P</span>
-							<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(26.3158%); height: 4px; background-color: rgb(160, 198, 97);"></div>
-								<span class="ratiotext"
-									style="left: calc(26.3158%); color: rgb(160, 198, 97);">13%</span>
-							</div></li>
-						<li><span class="grade">A-</span>
-							<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(15.7895%); height: 4px; background-color: rgb(130, 209, 194);"></div>
-								<span class="ratiotext"
-									style="left: calc(15.7895%); color: rgb(130, 209, 194);">8%</span>
-							</div></li>
-						<li><span class="grade">B0</span>
-							<div class="ratiowrapper">
-								<div class="ratiobar"
-									style="width: calc(10.5263%); height: 4px; background-color: rgb(122, 158, 224);"></div>
-								<span class="ratiotext"
-									style="left: calc(10.5263%); color: rgb(122, 158, 224);">5%</span>
-							</div></li>
+						<div id="donutchart" style="width: 400px; height: 300px;">
+						 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities',
+          pieHole: 0.4,
+          colors: ['rgb(242, 133, 114)', 'rgb(236, 197, 92)', 'rgb(160, 198, 97)', 'rgb(130, 209, 194)', 'rgb(122, 158, 224)']
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+       
+        
+        
+      }
+    </script>
+    </div>
+
+
 					</ul>
+					</div>
 				</article>
 
 
