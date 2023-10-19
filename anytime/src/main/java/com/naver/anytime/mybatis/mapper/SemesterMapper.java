@@ -13,4 +13,5 @@ public interface SemesterMapper {
 
 	public List<Semester> getSemestersByUserId(int userId);
 
+    public List<Semester> getSemesternameByUserId(int userId);	
 }

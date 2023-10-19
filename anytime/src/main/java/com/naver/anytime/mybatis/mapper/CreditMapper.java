@@ -20,4 +20,6 @@ public interface CreditMapper {
     public int updateGraduateCredit(int graduate_credit);
 
 	public int getTotalAcquisition(int user_id);
+	
+
 }

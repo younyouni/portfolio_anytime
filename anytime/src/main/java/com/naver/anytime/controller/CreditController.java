@@ -1,6 +1,7 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,7 @@ public class CreditController {
 	}
 
 	@RequestMapping(value = "/calculator", method = RequestMethod.GET)
+	@ResponseBody
 	public ModelAndView main(ModelAndView mv, Principal principal) {
 		int user_id = memberservice.getUserId(principal.getName());
 
@@ -73,12 +75,12 @@ public class CreditController {
 		if (credit != null) {
 			mv.addObject("credit", credit);
 		}
-/////
+      
 		// 학점 계산 로직 추가
 		double totalGradePoints = 0.0;
 		double majorGradePoints = 0.0;
 		int majorCredits = 0;
-
+		
 		Map<String, Double> gradeValueMap = new HashMap<>() {
 			{
 				put("A+", 4.5); put("A0", 4.3); put("A-", 4.0);
@@ -108,10 +110,54 @@ public class CreditController {
 		String formattedMajorGpa = String.format("%.2f", majorGpa);
 
 		mv.addObject("totalgpa", formattedTotalGpa);
-		mv.addObject("totalmajor", formattedMajorGpa);
+		mv.addObject("totalmajor", formattedMajorGpa); 
 
-		mv.setViewName("credit/credit");
+		/*=========================================================================================================*/
+		// 각 학기별 성적 계산 로직 시작
+		List<Map<String, String>> maplist = new ArrayList<>();
+		    
+		    for(Semester semester : semesters) {
+		    	Map<String, String> map = new HashMap<>(); 
+		    	double totalCredit = 0;
+		    	double weightedSum = 0;//학점 * 점수
+		    	double weightedMajorSum = 0;
+			    double totalMajorCredit = 0;
+		    	
+			    int semester_id = semester.getSemester_id();
+			    
+			    List<Semester_detail> detailPerSemester = semester_detailservice.getDetailPerSemester(semester_id); //학기별
+			    
+			    for (Semester_detail detail : detailPerSemester) {
+					double gradeValue = gradeValueMap.get(detail.getGrade());
+					
+					totalCredit+=detail.getCredit();
+					weightedSum += gradeValue * detail.getCredit();//학점 * 점수
+					totalGradePoints += gradeValue * detail.getCredit();
 
+					if(detail.isMajor()){
+			        	totalMajorCredit += detail.getCredit();
+			        	weightedMajorSum += gradeValue * detail.getCredit();
+			        }
+				}
+			    double gpa=(totalCredit > 0) ?  (weightedSum / totalCredit) : 0; //평점
+				double major =(totalMajorCredit >0) ? (weightedMajorSum / totalMajorCredit) : 0;//전공
+				
+				map.put("Gpa", String.format("%.2f", gpa));
+				map.put("Major", String.format("%.2f", major));
+				
+				if(gpa != 0.00 || major != 0.00) {
+					maplist.add(map);
+				}
+				
+				
+		    }//총 학기별 총 학점, 
+		mv.addObject("gpa", maplist);
+		mv.setViewName( "credit/credit" );
+		
+		
+		List<Semester> semestername = semesterservice.getSemesternameByUserId(user_id);
+		mv.addObject("semestername", semestername);
+		
 		return mv;
 	}
 
@@ -128,11 +174,11 @@ public class CreditController {
 
 	@RequestMapping(value = "/updatesemester_detail", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> updatesemester_detail(@ModelAttribute Semester_detail semester_detail, ModelAndView mv,
+	public Map<String, Object> updatesemester_detail(@ModelAttribute Semester_detail semester_detail, ModelAndView mv,
 			HttpServletRequest request,Principal principal, RedirectAttributes rattr) {
 		
 		int result = semester_detailservice.update(semester_detail);
-		Map<String, String> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 
 		// 업데이트가 성공적으로 수행된 경우
 		if (result == 1) {
@@ -176,7 +222,55 @@ public class CreditController {
 			map.put("totalgpa", formattedTotalGpa);
 			map.put("totalmajor", formattedMajorGpa);
 			map.put("totalAcquisition", Integer.toString(totalAcquisition));
+			
+			
+			// 각 학기별 성적 계산 로직 시작
+		    List<Map<String, String>> maplist = new ArrayList<>();
+		    List<Semester> semesters = semesterservice.getSemestersByUserId(user_id);
+		    
+		    for(Semester semester : semesters) {
+		        // ... 학기별 성적 계산 ...
+			    	Map<String, String> gpamap = new HashMap<>(); 
+			    	double totalCredit = 0;
+			    	double weightedSum = 0;//학점 * 점수
+			    	double weightedMajorSum = 0;
+				    double totalMajorCredit = 0;
+			    	
+				    int semester_id = semester.getSemester_id();
+				    
+				    List<Semester_detail> detailPerSemester = semester_detailservice.getDetailPerSemester(semester_id); //학기별
+				    
+				    for (Semester_detail detail : detailPerSemester) {
+						double gradeValue = gradeValueMap.get(detail.getGrade());
+						
+						totalCredit+=detail.getCredit();
+						weightedSum += gradeValue * detail.getCredit();//학점 * 점수
+						totalGradePoints += gradeValue * detail.getCredit();
+
+						if(detail.isMajor()){
+				        	totalMajorCredit += detail.getCredit();
+				        	weightedMajorSum += gradeValue * detail.getCredit();
+				        }
+					}
+				    double gpa=(totalCredit > 0) ?  (weightedSum / totalCredit) : 0; //평점
+					double major =(totalMajorCredit >0) ? (weightedMajorSum / totalMajorCredit) : 0;//전공
+					
+					gpamap.put("Gpa", String.format("%.2f", gpa));
+					gpamap.put("Major", String.format("%.2f", major));
+					
+					if(gpa != 0.00 || major != 0.00) {
+						maplist.add(gpamap);
+		        }
+		    }
+
+		    map.put("semestername", semesters);
+		    map.put("gpa", maplist);
+			
 		} 
+		int user_id = memberservice.getUserId(principal.getName());
+		List<Semester> semestername = semesterservice.getSemesternameByUserId(user_id);
+		map.put("semestername", semestername);
+		
 		return map;
 	}
 
@@ -193,5 +287,9 @@ public class CreditController {
 			return "error";
 		}
 	}
+	
+	
+	
+	
 
 }

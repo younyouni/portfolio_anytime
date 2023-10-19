@@ -29,6 +29,13 @@
         SELECT * FROM semester_detail WHERE semester_id = #{semester_id}
     </select>
     
+    
+    <select id="getDetailPerSemester" resultType="semester_detail">
+	    select * from 
+	    semester_detail WHERE semester_id = #{semester_id}
+	    
+    </select>
+    
 
 
 
