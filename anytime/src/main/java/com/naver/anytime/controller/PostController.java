@@ -268,89 +268,94 @@ public class PostController {
    }
 
    
-   /* -------------------------------- ▼post/updatePost 상세페이지-수정_데이터값출력(POST방식)▼ -------------------------------- */
-   @ResponseBody 
-   @PostMapping("/updatePost") 
-   public Map<String, Object> updatePost(
-       @RequestParam(value = "LOGIN_ID", required=false) String USER_ID,
-       @RequestParam(value = "POST_ID") Integer post_id,
-       @RequestParam(value="SUBJECT") String subject,
-       @RequestParam(value="CONTENT") String content,
-       @RequestPart(value="file[]", required=false) MultipartFile[] files,
+   /* -------------------------------- ▼post/updatePost 상세페이지-수정_데이터값출력(POST방식)▼ -------------------------------- */ 
+   @ResponseBody  
+   @PostMapping("/updatePost")  
+   public Map<String, Object> updatePost( 
+       @RequestParam(value = "LOGIN_ID", required=false) String USER_ID, 
+       @RequestParam(value = "POST_ID") Integer post_id, 
+       @RequestParam(value="SUBJECT") String subject, 
+       @RequestParam(value="CONTENT") String content, 
+       @RequestPart(value="file[]", required=false) MultipartFile[] files, 
        
-       // 기존에 업로드된 파일들
-       @RequestPart(value="existingFile[]", required=false) MultipartFile[] existingFiles,
-       // 삭제될 파일들
-       @RequestParam(value="deleteFile[]", required=false) String[] deleteFiles,
-
-        HttpServletRequest request, Principal userPrincipal) {
-
-        // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
-        String id = userPrincipal.getName();
-        Member member = memberService.getLoginMember(id);
-        int currentUserId = member.getUser_id();
-
-        Post postToUpdate=postService.getDetail(post_id);
-        
-        if (USER_ID != null) {
-            int userId=memberService.getUserId(USER_ID);
-            if(userId==currentUserId){
-                // 로그인 사용자와 작성자가 동일하면 수정 가능
-                postToUpdate.setUSER_ID(userId);
-            }else{
-                return Collections.singletonMap("error","작성자만 수정할 수 있습니다.");
-            }
-        }else{
-            return Collections.singletonMap("error","작성자만 수정할 수 있습니다.");
-        }
-
-         if(subject!=null && !subject.isEmpty()){
-           postToUpdate.setSUBJECT(subject);
-         }
+       // 새롭게 추가된 파일들
+       @RequestPart(value="file[]", required=false) MultipartFile[] newFiles,
+       
+       // 기존에 업로드된 파일들 
+       @RequestPart(value="existingFile[]", required=false) List<MultipartFile> existingFiles, 
+       // 삭제될 파일들 
+       @RequestParam(value="deleteFile[]", required=false) String[] deleteFiles, 
+ 
+        HttpServletRequest request, Principal userPrincipal) { 
+	   
+        // 현재 로그인된 유저아이디를 가져오기 위한 코드입니다. 
+        String id = userPrincipal.getName(); 
+        Member member = memberService.getLoginMember(id); 
+        int currentUserId = member.getUser_id(); 
+ 
+        Post postToUpdate=postService.getDetail(post_id); //수정 안된상태인 
          
-         if(content!=null && !content.isEmpty()){
-           postToUpdate.setCONTENT(content);
-         }
+        if (USER_ID != null) { 
+            int userId=memberService.getUserId(USER_ID); 
+            if(userId==currentUserId){ 
+                // 로그인 사용자와 작성자가 동일하면 수정 가능 
+                postToUpdate.setUSER_ID(userId); 
+            }else{ 
+                return Collections.singletonMap("error","작성자만 수정할 수 있습니다."); 
+            } 
+        }else{ 
+            return Collections.singletonMap("error","작성자만 수정할 수 있습니다."); 
+        } 
+ 
+         if(subject!=null && !subject.isEmpty()){ 
+           postToUpdate.setSUBJECT(subject); 
+         } 
+          
+         if(content!=null && !content.isEmpty()){ 
+           postToUpdate.setCONTENT(content); 
+         } 
+ 
+ 
+         try {
+        	 
+        	 StringBuilder sbFiles;
+        	 
+             if(postToUpdate.getPOST_FILE() != null){ 
+                 sbFiles=new StringBuilder(postToUpdate.getPOST_FILE()); 
+             }else{ 
+                 sbFiles=new StringBuilder(); 
+             }
 
-         StringBuilder sbFiles;
-         if(postToUpdate.getPOST_FILE() != null){
-             sbFiles=new StringBuilder(postToUpdate.getPOST_FILE());
-         }else{
-             sbFiles=new StringBuilder();
-         }
+             // 새롭게 추가된 파일 처리
+             if(files!=null && files.length >0){
+                 for(MultipartFile file : files){
+                     if(!file.isEmpty()){
+                         Photo photo=new Photo();
+                         photo.setPOST_ID(postToUpdate.getPOST_ID());
 
-          try{
+                         String originalFilename=file.getOriginalFilename();// 원래 파일명
 
-              // 새로 업로드된 파일 처리
-              if(existingFiles!=null && existingFiles.length >0){
-                  for(MultipartFile file : existingFiles){
-                      if(!file.isEmpty()){
-                          Photo photo=new Photo();
-                          photo.setPOST_ID(postToUpdate.getPOST_ID());
-                          
-                          String originalFilename=file.getOriginalFilename();// 원래 파일명
+                         sbFiles.append(originalFilename).append(",");
 
-                          sbFiles.append(originalFilename).append(",");
-                          
-                          //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
-                         String saveFolder="c:/upload/";
-                         String fileDBName=fileDBName(originalFilename, saveFolder); 
-                         file.transferTo(new File(saveFolder + fileDBName));
+                         //파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
+                        String saveFolder="c:/upload/";
+                        String fileDBName=fileDBName(originalFilename, saveFolder);  
+                        file.transferTo(new File(saveFolder + fileDBName));
 
-                        photo.setPATH(fileDBName);
+                       photo.setPATH(fileDBName);
 
-                        postPhotoService.insertPhoto(photo); 
-                     }
-                 }
+                       postPhotoService.insertPhoto(photo);  
+                    }
+                }
 
-                 if(sbFiles.length() > 0) {
-                   sbFiles.setLength(sbFiles.length() - 1); // 마지막 콤마 제거
-                   postToUpdate.setPOST_FILE(sbFiles.toString());   // 첨부파일 목록을 POST 객체에 설정
-                   
-                   postService.updatePostFile(postToUpdate.getPOST_ID(), sbFiles.toString());   // POST 테이블의 POST_FILE 컬럼 업데이트
-                 }
-              }
+                if(sbFiles.length() > 0) {
+                  sbFiles.setLength(sbFiles.length() - 1); // 마지막 콤마 제거
+                  postToUpdate.setPOST_FILE(sbFiles.toString());   // 첨부파일 목록을 POST 객체에 설정
 
+                  postService.updatePostFile(postToUpdate.getPOST_ID(), sbFiles.toString());   // POST 테이블의 POST_FILE 컬럼 업데이트
+                }
+             } 
+ 
               // 삭제될 파일 처리
               String[] originalFiles = postToUpdate.getPOST_FILE() != null ? postToUpdate.getPOST_FILE().split(",") : new String[0];
               if(deleteFiles!=null && deleteFiles.length >0){
@@ -358,52 +363,59 @@ public class PostController {
                       Photo photo = postPhotoService.getPhotoByPath(filePath);
                       if(photo != null) {
                           File fileToDelete = new File(filePath);   // 실제 파일 삭제
-                          fileToDelete.delete();
+                          if(fileToDelete.exists()) {
+                              boolean isDeleted = fileToDelete.delete();
+                              if(isDeleted) {
+                                  System.out.println("File deleted successfully: " + filePath);
+                              } else {
+                                  System.out.println("Failed to delete the file: " + filePath);
+                              }
+                          }
 
                           postPhotoService.deletePhoto(photo.getPHOTO_ID());
-
-                          originalFiles = Arrays.stream(originalFiles).filter(file -> !file.equals(filePath)).toArray(String[]::new);   // POST 테이블에서 해당 파일 이름 제거
+                          
+                          // POST 테이블에서 해당 파일 이름 제거
+                          originalFiles = Arrays.stream(originalFiles).filter(file -> !file.equals(filePath)).toArray(String[]::new);   
                       }
                   }
-              }
-
-             StringBuilder sbUpdatedPostFile = new StringBuilder();
-             for (String file : originalFiles) {
-                 sbUpdatedPostFile.append(file).append(",");
-             }
-
-             if(sbUpdatedPostFile.length() > 0) {
-                 sbUpdatedPostFile.setLength(sbUpdatedPostFile.length() - 1); // 마지막 콤마 제거
-             }
-
+              } 
+ 
+             StringBuilder sbUpdatedPostFile = new StringBuilder(); 
+             for (String file : originalFiles) { 
+                 sbUpdatedPostFile.append(file).append(","); 
+             } 
+ 
+             if(sbUpdatedPostFile.length() > 0) { 
+                 sbUpdatedPostFile.setLength(sbUpdatedPostFile.length() - 1); // 마지막 콤마 제거 
+             } 
+ 
              postToUpdate.setPOST_FILE(sbUpdatedPostFile.toString());
-
-           	try {
-               	postService.updatePost(postToUpdate);
-               } catch (Exception e) {
-                   Map<String,Object> result=new HashMap<>();
-                   result.put("statusCode",-1);
-                   result.put("errorMessage","Failed to update the Post: " + e.getMessage());
-                   return result;
-               }
-
-      	    	Map<String,Object> result=new HashMap<>();
-      	      	result.put("statusCode",1);
-
-      	      	return result;
-
-      	 } catch (Exception e) {
-      	 		Map<String,Object> result=new HashMap<>();
-      	      	result.put("statusCode",-1);
-      	      	result.put("errorMessage",e.getMessage());
-
-      	 		return result;
-      	 }
+             
+             // POST 테이블의 POST_FILE 컬럼 업데이트 (삭제된 항목까지 반영)
+             postService.updatePostFile(postToUpdate.getPOST_ID(), sbUpdatedPostFile.toString());
+ 
+           	try { 
+               	postService.updatePost(postToUpdate); 
+               } catch (Exception e) { 
+                   Map<String,Object> result=new HashMap<>(); 
+                   result.put("statusCode",-1); 
+                   result.put("errorMessage","Failed to update the Post: " + e.getMessage()); 
+                   return result; 
+               } 
+ 
+      	    	Map<String,Object> result=new HashMap<>(); 
+      	      	result.put("statusCode",1); 
+ 
+      	      	return result; 
+ 
+      	 } catch (Exception e) { 
+      	 		Map<String,Object> result=new HashMap<>(); 
+      	      	result.put("statusCode",-1); 
+      	      	result.put("errorMessage",e.getMessage()); 
+ 
+      	 		return result; 
+      	 } 
       }
-
-
-
-
 
    
    /* -------------------------------- ▼post/delete 글 삭제 액션▼ -------------------------------- */
