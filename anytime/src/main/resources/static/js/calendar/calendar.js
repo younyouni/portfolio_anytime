@@ -378,6 +378,8 @@ $("#calendarModal").submit(function(event) {
     var title = $('input[name="calendar_title"]').val();
     var color = $('input[name="color"]:checked').val();
     var start = $('input[name="calendar_date"]').val();
+    if(end != null){
+    
     var end = $('input[name="calendar_date2"]').val();
     var allday = $('input[name="allday"]:checked').val();
     var description = $('textarea[name="calendar_description"]').val();
