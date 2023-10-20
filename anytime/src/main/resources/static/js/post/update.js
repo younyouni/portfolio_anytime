@@ -191,10 +191,10 @@ $(document).ready(function () {
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
 
-        var POST_ID = $('#updateButton').attr('POST_ID');
+        var post_id = $('#updateButton').attr('POST_ID');
 
         let formData = new FormData();
-        formData.append('POST_ID', POST_ID);
+        formData.append('POST_ID', post_id);
         formData.append('LOGIN_ID', $('#login_id').val());
         formData.append('SUBJECT', $("#title").val());
         formData.append('CONTENT', $("#content").val());

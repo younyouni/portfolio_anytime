@@ -276,7 +276,6 @@ public class PostController {
        @RequestParam(value = "POST_ID") Integer post_id, 
        @RequestParam(value="SUBJECT") String subject, 
        @RequestParam(value="CONTENT") String content, 
-       @RequestPart(value="file[]", required=false) MultipartFile[] files, 
        
        // 새롭게 추가된 파일들
        @RequestPart(value="file[]", required=false) MultipartFile[] newFiles,
@@ -327,13 +326,17 @@ public class PostController {
              }
 
              // 새롭게 추가된 파일 처리
-             if(files!=null && files.length >0){
-                 for(MultipartFile file : files){
+             if(newFiles!=null && newFiles.length >0){
+                 for(MultipartFile file : newFiles){
                      if(!file.isEmpty()){
                          Photo photo=new Photo();
                          photo.setPOST_ID(postToUpdate.getPOST_ID());
 
                          String originalFilename=file.getOriginalFilename();// 원래 파일명
+                         
+                         if(sbFiles.length() > 0 && sbFiles.charAt(sbFiles.length() - 1) != ',') {
+                             sbFiles.append(",");
+                         }
 
                          sbFiles.append(originalFilename).append(",");
 
@@ -376,23 +379,23 @@ public class PostController {
                           
                           // POST 테이블에서 해당 파일 이름 제거
                           originalFiles = Arrays.stream(originalFiles).filter(file -> !file.equals(filePath)).toArray(String[]::new);   
-                      }
-                  }
-              } 
- 
-             StringBuilder sbUpdatedPostFile = new StringBuilder(); 
-             for (String file : originalFiles) { 
-                 sbUpdatedPostFile.append(file).append(","); 
-             } 
- 
-             if(sbUpdatedPostFile.length() > 0) { 
-                 sbUpdatedPostFile.setLength(sbUpdatedPostFile.length() - 1); // 마지막 콤마 제거 
-             } 
- 
-             postToUpdate.setPOST_FILE(sbUpdatedPostFile.toString());
-             
-             // POST 테이블의 POST_FILE 컬럼 업데이트 (삭제된 항목까지 반영)
-             postService.updatePostFile(postToUpdate.getPOST_ID(), sbUpdatedPostFile.toString());
+                          StringBuilder sbUpdatedPostFile = new StringBuilder(); 
+                          for (String file : originalFiles) { 
+                              sbUpdatedPostFile.append(file).append(","); 
+                          } 
+              
+                          if(sbUpdatedPostFile.length() > 0) { 
+                              sbUpdatedPostFile.setLength(sbUpdatedPostFile.length() - 1); // 마지막 콤마 제거 
+                          } 
+              
+                          postToUpdate.setPOST_FILE(sbUpdatedPostFile.toString());
+                          
+                          // POST 테이블의 POST_FILE 컬럼 업데이트 (삭제된 항목까지 반영)
+                          postService.updatePostFile(postToUpdate.getPOST_ID(), sbUpdatedPostFile.toString());
+                          
+                     }
+                 }
+             }
  
            	try { 
                	postService.updatePost(postToUpdate); 
