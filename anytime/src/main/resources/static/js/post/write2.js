@@ -109,7 +109,7 @@ $('body').on('click', 'li.new', function() {
 	
 			reader.onloadend = function(e) {
 				// 여기서 썸네일 미리보기를 생성합니다.
-				var thumbnailItem=$('<li><img src="' + e.target.result + '" style="max-width:85px; height:85px;"></li>');
+				var thumbnailItem=$('<li><img src="' + e.target.result + '" style="width:85px; height:85px;"></li>');
 				
 				$('.thumbnails .new').before(thumbnailItem);
 				

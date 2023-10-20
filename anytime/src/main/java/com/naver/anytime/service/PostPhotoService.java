@@ -9,5 +9,9 @@ public interface PostPhotoService {
 	public void insertPhoto(Photo photo);
 	
 	public List<Photo> getPhotosByPostId(int post_id);
+	
+	public Photo getPhotoByPath(String path);
     
+	public Photo getPhotoById(int photo_id);
+	public void deletePhoto(int photo_id);
 }
