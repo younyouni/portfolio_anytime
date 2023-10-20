@@ -24,7 +24,7 @@
 	</select>
 	
 	<insert id="insertCalendar">
-		INSERT INTO calendar (CALENDAR_ID, USER_ID, SUBJECT, TYPE, START_TIME, END_TIME, CONTENT, ALL_TIME, COLOR)
-		VALUES (CALENDAR_SEQ.nextval, #{user_id}, #{title}, #{type}, #{start}, #{end}, #{description}, #{allday}, #{color})
+		INSERT INTO calendar (CALENDAR_ID, USER_ID, SUBJECT, START_TIME, END_TIME, CONTENT, ALL_TIME, COLOR)
+		VALUES (CALENDAR_SEQ.nextval, #{user_id}, #{title}, #{start}, #{end}, #{description}, #{allday}, #{color})
 	</insert>
 </mapper>

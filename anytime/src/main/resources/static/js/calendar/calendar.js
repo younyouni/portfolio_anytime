@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function() {
             	id: data.id,
                 title: data.title,
                 start: data.start,
-                type: data.type,
                 end: data.end,
                 description: data.description,
                 borderColor: data.color,
@@ -150,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('form#calendarModal').before('<div class="modalwrap"></div>');
 		
 		// 입력 요소에 값을 할당
-		document.getElementById('all_check').value = formattedDate;
+		document.getElementsByName('calendar_date').value = formattedDate;
 		
     },
     
@@ -159,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		 console.log('클릭한 이벤트 고유 ID:', event.id);
 	 	 console.log('클릭한 이벤트 제목:', event.title);
 		 console.log('클릭한 이벤트 시작 시간:', event.start);
-		 console.log('클릭한 이벤트 타입:', event.type);
 		 console.log('클릭한 이벤트 종료 시간:', event.end);
 		 console.log('클릭한 이벤트 설명:', event.description);
 		 console.log('클릭한 이벤트 색상:', event.borderColor);
@@ -171,7 +169,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		/*쓰는거
 		event.id
 		event.title
-		event.extendedProps.type
 		event.borderColor
 		formattedStartDate
 		formattedEndDate
@@ -230,13 +227,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 		const id = event.id;
 		const title = event.title;
-		const type = event.extendedProps.type;
 		const borderColor = event.borderColor;
 		const description = event.extendedProps.description;
 	
 		
 		$('input[name="calendar_title"]').val(title);
-    	$('input[name="calendar_type"]').val(type);
 	    	if(borderColor != null){
     			$('input[name="color"]:checked').val();
 	    		$('input[name="custom_color"]').val(borderColor);
@@ -290,31 +285,33 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
   calendar2.render();
   
-//날짜 선택해서 일정 등록  
-document.getElementById('allday_check').addEventListener('change', function() {
-  var datetimeField = document.getElementById('all_check'); // 날짜 및 시간 입력 필드
-  var datetimeField2 = document.getElementById('all_check2'); // 날짜 및 시간 입력 필드
+	// 종일 선택 여부
+	document.getElementById('allday_check').addEventListener('change', function() {
+	  const datetimeField = document.getElementById('all_check'); // 날짜 및 시간 입력 필드
+	  const datetimeField2 = document.getElementById('all_check2'); // 날짜 및 시간 입력 필드
+	
+	  // 기존 값 저장
+	  var datetimeFieldValue = datetimeField.value;
+	  var datetimeField2Value = datetimeField2.value;
+	
+	  // 체크박스가 체크된 경우 datetime 입력 필드를 날짜 선택 모드로 변경
+	  if (this.checked) {
+	    datetimeField.type = 'date';
+	    datetimeField2.type = 'date';
+	
+	    // 이전 값을 복원
+	 //   datetimeField.value = datetimeFieldValue.split("T")[0];
+	  //  datetimeField2.value = datetimeField2Value.split("T")[0];
+	  } else {
+	    datetimeField.type = 'datetime-local';
+	    datetimeField2.type = 'datetime-local';
+	
+	 //   datetimeField.value = datetimeFieldValue;
+	 //   datetimeField2.value = datetimeField2Value;
+	  }
+	  
+	});
 
-  // 기존 값 저장
-  var datetimeFieldValue = datetimeField.value;
-  var datetimeField2Value = datetimeField2.value;
-
-  // 체크박스가 체크된 경우 datetime 입력 필드를 날짜 선택 모드로 변경
-  if (this.checked) {
-    datetimeField.type = 'date';
-    datetimeField2.type = 'date';
-
-    // 이전 값을 복원
-    datetimeField.value = datetimeFieldValue.split("T")[0];
-    datetimeField2.value = datetimeField2Value.split("T")[0];
-  } else {
-    datetimeField.type = 'datetime-local';
-    datetimeField2.type = 'datetime-local';
-
-    datetimeField.value = datetimeFieldValue;
-    datetimeField2.value = datetimeField2Value;
-  }
-});
 
 	//calendar1 , 2 연동
 	//< 달
@@ -379,7 +376,6 @@ $("#calendarModal").submit(function(event) {
 	
     // 폼 요소 내의 필드 값을 가져오기
     var title = $('input[name="calendar_title"]').val();
-    var type = $('input[name="calendar_type"]').val();
     var color = $('input[name="color"]:checked').val();
     var start = $('input[name="calendar_date"]').val();
     var end = $('input[name="calendar_date2"]').val();
@@ -396,7 +392,6 @@ $("#calendarModal").submit(function(event) {
     	type: "POST",
     	data:{
     		title: title,
-    		type: type,
     		color: color,
     		start: start,
     		end: end,
@@ -420,7 +415,6 @@ $("#calendarModal").submit(function(event) {
 
     // 예시: 콘솔에 데이터 출력
     console.log("제목:", title);
-    console.log("범주:", type);
     console.log("색상:", color);
     console.log("시작 일자:", start);
     console.log("종료 일자:", end);
@@ -452,13 +446,14 @@ $("#calendar_delete").click(function(event) {
 
 
 /*
-			addEventListener('click', (e) => {
-		    const x = e.clientX;
-		    const y = e.clientY;
-		    console.log("X 좌표: " + x);
-		    console.log("Y 좌표: " + y);
-		    // 모달 열기 등 다른 작업 수행
-		  });
+	//좌표
+	addEventListener('click', (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    console.log("X 좌표: " + x);
+    console.log("Y 좌표: " + y);
+    // 모달 열기 등 다른 작업 수행
+  });
 		  
 */
 });//ready

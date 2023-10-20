@@ -38,20 +38,43 @@
 	  </div>
 	</div>
 	
-	<form id="calendarModal" class="modal" data-gtm-form-interact-id="0" style="margin-left: -300px; margin-top: -400px; display: none;">
+	<form id="calendarModal" class="modal" style="margin-left: -300px; margin-top: -400px; display: none;">
 		<a title="닫기" class="close"></a>
-		<span id="calendar_setting"></span>
-		<p>
-
-        </p>
-        
+		<span id="calendar_setting"></span>       
 		<p>
 			<label id="calendar_label">일정 제목</label> 
 			<input type="text" class="text" name="calendar_title" required>
 		</p>
 		<p>
-			<label id="calendar_label">범주</label>
-			<input type="text" class="text" name="calendar_type">
+			<label id="calendar_label">구분</label>
+			<input id="color" name="custom_color" value="#7869e6" data-jscolor="{}">
+			<input type="radio" name="color" id="color_check" value="1" style="width: 10%; height: 20px;" checked>
+		</p>
+			빨강<input type="radio" name="color" id="color_check" value="#FF0000" style="width: 10%; height: 20px;">
+			주황<input type="radio" name="color" id="color_check" value="#FFA500" style="width: 10%; height: 20px;">
+			노랑<input type="radio" name="color" id="color_check" value="#FFFF00" style="width: 10%; height: 20px;">
+			파랑<input type="radio" name="color" id="color_check" value="#0000FF" style="width: 10%; height: 20px;">
+		<p>
+			<label id="calendar_label">일정 시작</label> 
+			<input type="datetime-local" class="text" name="calendar_date" id="all_check" required>
+			<label id="calendar_label">일정 종료</label> 
+			<input type="datetime-local" class="text" name="calendar_date2" id="all_check2">
+			종일
+			<input type="checkbox" name="allday" id="allday_check" value="1" style="width: 10%; height: 20px;">
+		</p>
+		<p>
+			<label id="calendar_label">설명</label> 
+			<textarea type="text" class="text" name="calendar_description"></textarea>
+		</p>
+		<input type="submit" id="calendarModalFormButton" value="일정 등록" class="button">
+	</form>
+	
+	<form id="calendarUpdateModal" class="modal" style="margin-left: -300px; margin-top: -400px; display: none;">
+		<a title="닫기" class="close"></a>
+		<span id="calendar_setting"></span>       
+		<p>
+			<label id="calendar_label">일정 제목</label> 
+			<input type="text" class="text" name="calendar_title" required>
 		</p>
 		<p>
 			<label id="calendar_label">구분</label>
@@ -91,10 +114,8 @@
 		<p>
 		<textarea type="text" class="text" id="calendar_detail_description" readonly></textarea>
 		</p>
-
 		<input type="button" id="calendar_update" value="수정" class="button">
 		<input type="button" id="calendar_delete" value="삭제" class="button">
-
 	</form>
 
 </body>

@@ -62,7 +62,11 @@ public class CalendarController {
 		
 		List<Calendar> Result = calendarService.getCalendarList(user_id);
 		
-		System.out.println("이거 됨? " + Result);
+		if(Result != null) {
+			System.out.println("캘린더 리스트 출력 완료");
+		}else {
+			System.out.println("캘린더 리스트 출력 실패");
+		}
 		return Result;
 	}
 	
@@ -70,7 +74,6 @@ public class CalendarController {
 	@ResponseBody
 	public int insertCalendar(
 			@RequestParam("title") String title,
-			@RequestParam("type") String type,
 			@RequestParam("color") String color,
 			@RequestParam("start") String start,
 			@RequestParam("end") String end,
@@ -82,7 +85,7 @@ public class CalendarController {
 		String login_id = principal.getName();						//로그인한 유저 login_id
 		int user_id = memberService.getUserId(login_id);			//로그인한 유저 user_id
 		
-		int addcheck = calendarService.insertCalendar(title, user_id, type, color, start, end, allday, description);
+		int addcheck = calendarService.insertCalendar(title, user_id, color, start, end, allday, description);
 		
 		if(addcheck == 1) {
 			Result = 1;
