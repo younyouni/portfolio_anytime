@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
@@ -82,7 +83,8 @@ public class PostController {
    public ModelAndView postDetail(
 	   @RequestParam(value = "post_id", required = false) Integer post_id,
 	   ModelAndView mv,
-	   HttpServletRequest request, Principal userPrincipal) {
+	   HttpServletRequest request, Principal userPrincipal,
+	   RedirectAttributes redirectAttrs) {
 	   
 	   HttpSession session = request.getSession(); 
 	   
@@ -91,45 +93,52 @@ public class PostController {
 	   Member member = memberService.getLoginMember(id);
 	   int currentUserId = member.getUser_id();
 	   
-	   
-	   
 	   Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
-	   Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
-	   List<Photo> photos = postPhotoService.getPhotosByPostId(post_id);
 	   
-	      // post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
-	      if (post == null) {
-	         logger.info("상세보기 실패");
-	         mv.setViewName("error/error");
-	         mv.addObject("url", request.getRequestURL());
-	         mv.addObject("message", "상세보기 실패입니다.");
-	      }else {
-	    	  logger.info("★ 상세보기 성공 ★");
-	    	  
-	    	  logger.info("현재로그인 유저아이디 => " + userPrincipal.getName());
-	   	   	  logger.info("유저학교(SCHOOL) 고유번호 => " + memberService.getSchoolId(id));
-	    	  
-	    	  if (board.getANONYMOUS() == 0) {
-	    		   member = memberService.findMemberByUserId(post.getUSER_ID());
-	              if (member != null){
-	                  String nickname = member.getNickname();
-	                  mv.addObject("nickname", nickname);
-	              }
-	          }
-	    	  
-	    	  mv.setViewName("post/postDetail");
-	    	  mv.addObject("postdata", post);
-	    	  mv.addObject("boardtest", board);
-	    	  mv.addObject("currentUserId", currentUserId);
-	    	  mv.addObject("anonymous", board.getANONYMOUS());
-	    	  mv.addObject("photos", photos);
-	    	  logger.info("패쓰값" + photos);
-	    	  System.out.println("post테스트=>"+post);
-	    	  
-	      }
-	      return mv;
-	     
-	   }
+	   // post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
+	   if (post == null || post.getSTATUS() == 0) {
+	        if (post != null && post.getSTATUS() == 0){
+	            redirectAttrs.addFlashAttribute("error", "권한이 없는 게시물입니다.");
+	            mv.setViewName("error/noAuthority");
+	            mv.addObject("redirectUrl", "/anytime/post/list?board_id=" + post.getBOARD_ID());
+	            return mv;
+	        }
+
+	        logger.info("상세보기 실패");
+	        mv.setViewName("error/error");
+	        mv.addObject("url", request.getRequestURL());
+	        mv.addObject("message", "상세보기 실패입니다.");
+	   } else {
+	       logger.info("★ 상세보기 성공 ★");
+
+	       Board board = boardService.getBoardDetail(post.getBOARD_ID()); // board테이블 정보 가져오기위한 메소드입니다.
+	       List<Photo> photos = postPhotoService.getPhotosByPostId(post_id);
+
+	       logger.info("현재로그인 유저아이디 => " + userPrincipal.getName());
+	       logger.info("유저학교(SCHOOL) 고유번호 => " + memberService.getSchoolId(id));
+
+	       if (board.getANONYMOUS() == 0) {
+	           member = memberService.findMemberByUserId(post.getUSER_ID());
+	           if (member != null){
+	               String nickname = member.getNickname();
+	               mv.addObject("nickname", nickname);
+	           }
+	       }
+
+	       mv.setViewName("post/postDetail");
+	       mv.addObject("postdata", post);
+	       mv.addObject("boardtest", board);
+	       mv.addObject("currentUserId", currentUserId);
+	       mv.addObject("anonymous", board.getANONYMOUS());
+		   mv.addObject("photos", photos);
+
+		   logger.info(photos.toString());
+
+		   System.out.println(post.toString());
+		}
+
+		return mv;
+	}
    
    
    
