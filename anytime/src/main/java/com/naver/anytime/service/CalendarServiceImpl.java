@@ -27,6 +27,12 @@ public class CalendarServiceImpl implements CalendarService {
 			String description) {
 		return dao.insertCalendar(title, user_id, color, start, end, allday, description);
 	}
+
+	@Override
+	public int updateCalendar(int id, String title, int user_id, String color, String start, String end, int allday,
+			String description) {
+		return dao.updateCalendar(id, title, user_id, color, start, end, allday, description);
+	}
 	
 	
 

@@ -40,7 +40,7 @@
 	
 	<form id="calendarModal" class="modal" style="margin-left: -300px; margin-top: -400px; display: none;">
 		<a title="닫기" class="close"></a>
-		<span id="calendar_setting"></span>       
+		<span id="calendar_setting">일정 추가</span>       
 		<p>
 			<label id="calendar_label">일정 제목</label> 
 			<input type="text" class="text" name="calendar_title" required>
@@ -71,32 +71,32 @@
 	
 	<form id="calendarUpdateModal" class="modal" style="margin-left: -300px; margin-top: -400px; display: none;">
 		<a title="닫기" class="close"></a>
-		<span id="calendar_setting"></span>       
+		<span id="calendar_setting">일정 수정</span>       
 		<p>
 			<label id="calendar_label">일정 제목</label> 
-			<input type="text" class="text" name="calendar_title" required>
+			<input type="text" class="text" id="calendar_title_update" required>
 		</p>
 		<p>
 			<label id="calendar_label">구분</label>
-			<input id="color" name="custom_color" value="#7869e6" data-jscolor="{}">
-			<input type="radio" name="color" id="color_check" value="1" style="width: 10%; height: 20px;" checked>
+			<input id="color_update" name="custom_color_update" value="#7869e6" data-jscolor="{}">
+			<input type="radio" name="color_update" id="color_check" value="1" style="width: 10%; height: 20px;" checked>
 		</p>
-			빨강<input type="radio" name="color" id="color_check" value="#FF0000" style="width: 10%; height: 20px;">
-			주황<input type="radio" name="color" id="color_check" value="#FFA500" style="width: 10%; height: 20px;">
-			노랑<input type="radio" name="color" id="color_check" value="#FFFF00" style="width: 10%; height: 20px;">
-			파랑<input type="radio" name="color" id="color_check" value="#0000FF" style="width: 10%; height: 20px;">
+			빨강<input type="radio" name="color_update" id="color_check" value="#FF0000" style="width: 10%; height: 20px;">
+			주황<input type="radio" name="color_update" id="color_check" value="#FFA500" style="width: 10%; height: 20px;">
+			노랑<input type="radio" name="color_update" id="color_check" value="#FFFF00" style="width: 10%; height: 20px;">
+			파랑<input type="radio" name="color_update" id="color_check" value="#0000FF" style="width: 10%; height: 20px;">
 		<p>
 			<label id="calendar_label">일정 시작</label> 
-			<input type="datetime-local" class="text" name="calendar_date" id="all_check" required>
+			<input type="datetime-local" class="text" name="calendar_date_update" id="all_check_update" required>
 			<label id="calendar_label">일정 종료</label> 
-			<input type="datetime-local" class="text" name="calendar_date2" id="all_check2">
-			종일<input type="checkbox" name="allday" id="allday_check" value="1" style="width: 10%; height: 20px;">
+			<input type="datetime-local" class="text" name="calendar_date2_update" id="all_check2_update2">
+			종일<input type="checkbox" name="allday_update" id="allday_check_update" value="1" style="width: 10%; height: 20px;">
 		</p>
 		<p>
 			<label id="calendar_label">설명</label> 
-			<textarea type="text" class="text" name="calendar_description"></textarea>
+			<textarea type="text" class="text" id="calendar_description_update"></textarea>
 		</p>
-		<input type="submit" id="calendarModalFormButton" value="일정 등록" class="button">
+		<input type="submit" id="calendarUpdateButton" value="일정 수정" class="button">
 	</form>
 	
 	

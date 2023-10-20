@@ -8,16 +8,12 @@
 	<select id="getCalendarList" parameterType="int" resultType="Calendar">
 		SELECT
 	    CALENDAR_ID AS id,
-	    USER_ID,
 	    SUBJECT AS title,
 	    TYPE,
 	    START_TIME AS "start",
 	    END_TIME AS "end",
 	    CONTENT AS description,
-	    CASE 
-	        WHEN ALL_TIME = 1 THEN 'true'
-	        ELSE 'false'
-	    END AS allDay,
+		ALL_TIME,
 	    color
 		FROM calendar
 		WHERE user_id = #{user_id}
@@ -27,4 +23,16 @@
 		INSERT INTO calendar (CALENDAR_ID, USER_ID, SUBJECT, START_TIME, END_TIME, CONTENT, ALL_TIME, COLOR)
 		VALUES (CALENDAR_SEQ.nextval, #{user_id}, #{title}, #{start}, #{end}, #{description}, #{allday}, #{color})
 	</insert>
+	
+	<update id="updateCalendar">
+		UPDATE CALENDAR
+		SET 
+		    SUBJECT = #{title},
+		    START_TIME = #{start},
+		    END_TIME = #{end},
+		    CONTENT = #{description},
+		    ALL_TIME = #{allday},
+		    COLOR = #{color}
+		WHERE CALENDAR_ID = #{id}
+	</update>
 </mapper>

@@ -15,4 +15,7 @@ public interface CalendarMapper {
 	public int insertCalendar(String title, int user_id, String color, String start, String end, int allday,
 			String description);
 
+	public int updateCalendar(int id, String title, int user_id, String color, String start, String end, int allday,
+			String description);
+
 }

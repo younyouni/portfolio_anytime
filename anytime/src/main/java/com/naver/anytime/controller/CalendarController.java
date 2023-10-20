@@ -62,6 +62,14 @@ public class CalendarController {
 		
 		List<Calendar> Result = calendarService.getCalendarList(user_id);
 		
+		for(Calendar calendar : Result) {
+			if(calendar.getALL_TIME() == 1) {
+				calendar.setAllday(true);
+			}else {
+				calendar.setAllday(false);
+			}
+		}
+		
 		if(Result != null) {
 			System.out.println("캘린더 리스트 출력 완료");
 		}else {
@@ -76,8 +84,8 @@ public class CalendarController {
 			@RequestParam("title") String title,
 			@RequestParam("color") String color,
 			@RequestParam("start") String start,
-			@RequestParam("end") String end,
-			@RequestParam(name = "allday", defaultValue = "0") int allday,
+			@RequestParam(value = "end", required = false) String end,
+			@RequestParam(value = "allday", defaultValue = "0") int allday,
 			@RequestParam("description") String description,		
 			Principal principal
 			) {
@@ -88,6 +96,31 @@ public class CalendarController {
 		int addcheck = calendarService.insertCalendar(title, user_id, color, start, end, allday, description);
 		
 		if(addcheck == 1) {
+			Result = 1;
+		}
+		
+		return Result;
+	}
+	
+	@RequestMapping(value = "/calendarupdate", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateCalendar(
+			@RequestParam("id") int id,
+			@RequestParam("title") String title,
+			@RequestParam("color") String color,
+			@RequestParam("start") String start,
+			@RequestParam(value = "end", required = false) String end,
+			@RequestParam(value = "allday", defaultValue = "0") int allday,
+			@RequestParam("description") String description,		
+			Principal principal
+			) {
+		int Result = 0;
+		String login_id = principal.getName();						//로그인한 유저 login_id
+		int user_id = memberService.getUserId(login_id);			//로그인한 유저 user_id
+		
+		int updatecheck = calendarService.updateCalendar(id, title, user_id, color, start, end, allday, description);
+		
+		if(updatecheck == 1) {
 			Result = 1;
 		}
 		
