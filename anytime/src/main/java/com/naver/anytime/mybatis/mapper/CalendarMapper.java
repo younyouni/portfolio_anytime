@@ -18,4 +18,8 @@ public interface CalendarMapper {
 	public int updateCalendar(int id, String title, int user_id, String color, String start, String end, int allday,
 			String description);
 
+	public int deleteCalendar(int calendar_id, int user_id);
+
+	public int updateDropCalendar(int calendar_id, int user_id, String start, String end);
+
 }

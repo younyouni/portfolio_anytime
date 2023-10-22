@@ -122,11 +122,51 @@ public class CalendarController {
 		
 		if(updatecheck == 1) {
 			Result = 1;
+			System.out.println("캘린더 수정 완료");
 		}
 		
 		return Result;
 	}
 	
+	@RequestMapping(value = "/calendardropupdate", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateCalendar(
+			@RequestParam("calendar_id") int calendar_id,
+			@RequestParam("start") String start,
+			@RequestParam(value= "end", required = false) String end,
+			Principal principal
+			) {
+		int Result = 0;
+		String login_id = principal.getName();						//로그인한 유저 login_id
+		int user_id = memberService.getUserId(login_id);			//로그인한 유저 user_id
+		
+		int updatecheck = calendarService.updateDropCalendar(calendar_id, user_id, start, end);
+		
+		if(updatecheck == 1) {
+			Result = 1;
+			System.out.println("캘린더 수정 완료");
+		}
+		
+		return Result;
+	}	
 	
+	@RequestMapping(value = "/calendardelete", method = RequestMethod.POST)
+	@ResponseBody
+	public int deleteCalendar(
+			@RequestParam("id") int calendar_id,
+			Principal principal
+			) {
+		int Result = 0;
+		String login_id = principal.getName();						//로그인한 유저 login_id
+		int user_id = memberService.getUserId(login_id);			//로그인한 유저 user_id
+		
+		int deletecheck = calendarService.deleteCalendar(calendar_id,user_id);
+		
+		if(deletecheck == 1) {
+			Result = 1;
+			System.out.println("캘린더 삭제 완료");
+		}
+		return Result;
+	}
 	
 }

@@ -35,4 +35,16 @@
 		    COLOR = #{color}
 		WHERE CALENDAR_ID = #{id}
 	</update>
+	
+	<update id="updateDropCalendar">
+		UPDATE CALENDAR
+		SET 
+		    START_TIME = #{start},
+		    END_TIME = #{end}
+		WHERE CALENDAR_ID = #{calendar_id} AND USER_ID = #{user_id}
+	</update>
+	
+	<delete id="deleteCalendar">
+		DELETE FROM CALENDAR WHERE CALENDAR_ID = #{calendar_id} AND USER_ID = #{user_id}
+	</delete>
 </mapper>

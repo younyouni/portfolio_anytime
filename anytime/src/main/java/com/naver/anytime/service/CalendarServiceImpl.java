@@ -33,6 +33,16 @@ public class CalendarServiceImpl implements CalendarService {
 			String description) {
 		return dao.updateCalendar(id, title, user_id, color, start, end, allday, description);
 	}
+
+	@Override
+	public int deleteCalendar(int calendar_id, int user_id) {
+		return dao.deleteCalendar(calendar_id,user_id);
+	}
+
+	@Override
+	public int updateDropCalendar(int calendar_id, int user_id, String start, String end) {
+		return dao.updateDropCalendar(calendar_id, user_id, start, end);
+	}
 	
 	
 

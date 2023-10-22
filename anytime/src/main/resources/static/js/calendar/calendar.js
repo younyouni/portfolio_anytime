@@ -1,17 +1,7 @@
-var idcheck;
-document.addEventListener('DOMContentLoaded', function() {
+	
+	//캘린더 고유 번호
+	var idcheck;
 
-  	var calendarEl = document.getElementById('calendar');
-  
-  	var calendar2El = document.getElementById('calendar2');
-        
-	var calendar2 = new FullCalendar.Calendar(calendar2El, {
-		headerToolbar: {
-			left: 'title prevYear,nextYear',
-		},
-		locale: 'ko',
-	});
-    
     // YYYY-MM-DD W HH:mm:ss 형식으로 날씨 변환
 	const formatDate = (date) => {
 		const year = date.getFullYear();
@@ -61,6 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	  
 	  return `${year}-${month}-${day}`;
 	};
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  	var calendarEl = document.getElementById('calendar');
+  
+  	var calendar2El = document.getElementById('calendar2');
+        
+	var calendar2 = new FullCalendar.Calendar(calendar2El, {
+		headerToolbar: {
+			left: 'title prevYear,nextYear',
+		},
+		locale: 'ko',
+	});
+    
   
   var calendar = new FullCalendar.Calendar(calendarEl, {
 	  customButtons: {
@@ -111,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					data.end = startDate;
 				}
 				*/
-	          
+				          
 	          	events.push({
 	        		id: data.id,
 	            	title: data.title,
@@ -136,7 +140,26 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     
     eventDrop: function(info){
+    	console.log("일정 이동 id" + info.event.id);
+    	console.log("일정 이동 스타트" + info.event.start);
+    	console.log("일정 이동 엔드" + info.event.end);
+    	
     	console.log(info);
+    	
+    	const eventStartDate = new Date(info.event.start);
+    	var formattedStartDate = formatDate3(eventStartDate);
+    	if(info.event.end != null) {
+			const eventEndDate = new Date(info.event.end);
+			var formattedEndDate = formatDate3(eventEndDate);	
+    	}
+		
+    	var data = {
+    		calendar_id: info.event.id,
+    		start: formattedStartDate,
+    		end: formattedEndDate
+    	}
+    	
+    	calendarDropUpdateAjax(data);
     },
     
     select: function(arg){
@@ -144,8 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		//var end = arg.end;
 		
 		// YYYY-MM-DDTHH:MM 형식으로 변환
-		//var startdate = start.toISOString().slice(0, 16);
-		
+		//var startdate = start.toISOString().slice(0, 16);	
 
 		var year = start.getFullYear();
 	    var month = (start.getMonth() + 1).toString().padStart(2, '0');
@@ -171,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	    console.log(event);
 	    console.log("클릭한 일정 시작시간 :" + event.start);
 	    console.log("클릭한 일정 시작시간 :" + event.end);
+	    
 		/*쓰는거
 		event.id
 		event.title
@@ -210,8 +233,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			calendarDetailDate.textContent = formattedStartDate;
 		}
 		
-			console.log('디테일에서의 시작 시간:', formattedStartDate);
-			console.log('디테일에서의 끝 시간:', formattedEndDate);
+		console.log('디테일에서의 시작 시간:', formattedStartDate);
+		console.log('디테일에서의 끝 시간:', formattedEndDate);
+		
 		//디테일 설명 변경
 		const calendarDetailDescription = document.getElementById('calendar_detail_description');
 		calendarDetailDescription.textContent = event.extendedProps.description;
@@ -275,18 +299,27 @@ document.addEventListener('DOMContentLoaded', function() {
 		colorInput.value = event.borderColor; // 원하는 색상으로 변경
 		colorInput.jscolor.fromString(colorInput.value); // jscolor 업데이트
 		
-
+		//캘린더 고유 번호
 		idcheck = event.id;
 		
+		//수정 폼 연결
 		$("#calendar_update").click(function(event) {
 			event.preventDefault();	  
 			$('#calendarDetail').css('display', 'none');
-			$("form#calendarUpdateModal").show();
-				
-				
+			$("form#calendarUpdateModal").show();			
 		});
-	
-	
+		
+		//삭제 실행
+		$("#calendar_delete").click(function(event) {
+			event.preventDefault();
+			if(confirm("일정을 삭제하시겠습니까?")) {
+				calendarDeleteAjax(idcheck);
+			} else {
+				console.log("삭제 취소");
+			}	
+		});
+		
+		
 		
      },
   
@@ -432,42 +465,38 @@ $("#calendarModal").submit(function(event) {
             
 });
 
-//일정 수정
+//일정 수정 확인
 $("#calendarUpdateModal").submit(function(event) {
 	event.preventDefault();
 	
+	var data = {
+		title: $('#calendar_title_update').val(),
+	    color: $('input[name="color_update"]:checked').val(),
+	    start: $('input[name="calendar_date_update"]').val(),
+	    end: $('input[name="calendar_date2_update"]').val(),
+	    allday: $('input[name="allday_update"]:checked').val(),
+	    description: $('#calendar_description_update').val(),
+	    id: idcheck
+	};
+	
+	if(data.color == 1){
+		data.color = $('input[name="custom_color_update"]').val();
+	}
+
+	calendarUpdateAjax(data);	
+	
+});
+
+//일정 수정
+function calendarUpdateAjax(data){
 	// 보안 토큰
 	const token = $("meta[name='_csrf']").attr("content");
 	const header = $("meta[name='_csrf_header']").attr("content");
 	
-    // 폼 요소 내의 필드 값을 가져오기
-    const title = $('#calendar_title_update').val();
-    let color = $('input[name="color_update"]:checked').val();
-    const start = $('input[name="calendar_date_update"]').val();
-    const end = $('input[name="calendar_date2_update"]').val();
-    const allday = $('input[name="allday_update"]:checked').val();
-    const description = $('#calendar_description_update').val();
-	
-	const id = idcheck;
-	
-	// 커스텀 컬러 선택
-	if(color == 1){
-		color = $('input[name="custom_color_update"]').val();
-	}
-	
-	
 	$.ajax({
     	url: "calendarupdate",
     	type: "POST",
-    	data:{
-    		id: id,
-    		title: title,
-    		color: color,
-    		start: start,
-    		end: end,
-    		allday: allday,
-    		description: description
-    	},
+		data: data,
     	beforeSend: function(xhr)
 		{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
 			xhr.setRequestHeader(header, token);
@@ -482,17 +511,61 @@ $("#calendarUpdateModal").submit(function(event) {
         	}
     	}
     })
-	
-	
-	
-	
-});
 
+}
+
+function calendarDropUpdateAjax(data){
+	// 보안 토큰
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+    	url: "calendardropupdate",
+    	type: "POST",
+		data: data,
+    	beforeSend: function(xhr)
+		{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+			xhr.setRequestHeader(header, token);
+		},
+    	dataType: "json",
+    	success: function(Result) {
+        	if(Result == 1){
+        		alert("일정이 수정 되었습니다.");
+        	} else {
+        		alert("일정 수정에 실패했습니다.");
+        	}
+    	}
+    })
+
+}
 
 //일정 삭제
-$("#calendar_delete").click(function(event) {
-		event.preventDefault();
-});
+function calendarDeleteAjax(id){
+	// 보안 토큰
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		url: "calendardelete",
+		type: "POST",
+		data: {
+			id: id,
+		},
+		beforeSend: function(xhr)
+		{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+			xhr.setRequestHeader(header, token);
+		},
+		dataType: "json",
+		success: function(Result) {
+			if(Result == 1){
+				alert("일정이 삭제 되었습니다.");
+        		location.reload();
+        	} else {
+        		alert("일정 삭제에 실패했습니다.");
+        	}
+		}
+	});
+}
 
 
 
