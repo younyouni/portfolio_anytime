@@ -1,30 +1,68 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html><head>
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
   <title>애니타임</title>
+  <meta charset="utf-8">
+  <meta name="referrer" content="origin">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="fb:app_id" content="258676027581965">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://everytime.kr/images/og_image.png">
+  <meta property="og:url" content="https://everytime.kr/timetable/2023/%EA%B2%A8%EC%9A%B8/42644511">
+  <meta property="og:site_name" content="에브리타임">
+  <meta property="og:title" content="에브리타임">
+  <meta property="og:description" content="전국 400개 대학을 지원하는 대학교 커뮤니티 및 시간표 서비스. 시간표 작성 및 학업 관리, 학교 생활 정보, 학교별 익명 커뮤니티 기능을 제공합니다.">
+  <meta name="description" content="전국 400개 대학을 지원하는 대학교 커뮤니티 및 시간표 서비스. 시간표 작성 및 학업 관리, 학교 생활 정보, 학교별 익명 커뮤니티 기능을 제공합니다.">
+  <meta name="keywords" content="에브리타임, 에타, everytime, 시간표, 수강신청, 강의평가, 학점계산기, 학식, 오늘의학식, 책방, 중고책, 대학생, 대학교, 대학, 대학생 시간표, 대학교 시간표, 대학생 커뮤니티, 대학교 커뮤니티, 시간표 앱, 시간표 어플">
+  <meta name="naver-site-verification" content="7366738375e320e44bd1c743b364db13086a7b0e">
+  <meta name="robots" content="noindex">
+  <jsp:include page="../common/header.jsp" />
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
+<%-- <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.article.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.community.css" rel="stylesheet"> --%>
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/timetable.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/timetable.subjects.css" rel="stylesheet">
-
-<script src="https://code.jquery.com/jquery-latest.js"></script>
-
-  <script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script>
-  <script type="text/javascript" src="/js/extensions.underscore-min.js"></script>
-  <script type="text/javascript" src="/js/common.js"></script>
-  <script type="text/javascript" src="/js/timetable.tableload.js"></script>
-  <script type="text/javascript" src="/js/timetable.tablesave.js"></script>
-  <script type="text/javascript" src="/js/timetable.subjects.js"></script>
-  <script type="text/javascript" src="/js/timetable.customsubjects.js"></script>
-  <script type="text/javascript" src="/js/timetable.index.js"></script>
-  <script type="text/javascript" src="/js/timetable.subjectcolumninfo.js"></script>
-  <script type="text/javascript" src="/js/timetable.imagegenerator.js"></script>
+  
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+  <%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/common.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tableload.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tablesave.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.subjects.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.customsubjects.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.index.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.subjectcolumninfo.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.imagegenerator.js"></script> --%>
 </head>
 <body style="">
-<jsp:include page="../common/header.jsp" />
 
+<!-- <nav>
+    <div class="wrap">
+      <div id="logo">
+        <a href="/"><img src="/images/new/nav.logo.png"></a>
+        <p><span class="name multiple">에브리타임</span><span class="subname">숭실대</span></p>
+      </div>
+      <div id="account">
+        <a href="/message" title="쪽지함" class="icon message">쪽지함</a>
+        <a href="/my" title="내 정보" class="icon my">내 정보</a>
+        <input type="hidden" id="userUserid" value="rainbow281">
+        <input type="hidden" id="userSchool" value="21">
+        <input type="hidden" id="userCampus" value="37">
+      </div>
+      <ul id="menu">
+        <li><a href="/">게시판</a></li>
+        <li class="active"><a href="/timetable">시간표</a></li>
+        <li><a href="/lecture">강의실</a></li>
+        <li><a href="/calculator">학점계산기</a></li>
+        <li><a href="/friend">친구</a></li>
+        <li><a href="https://bookstore.everytime.kr/">책방</a></li>
+        <li><a href="https://www.campuspick.com/">캠퍼스픽</a></li>
+      </ul>
+    </div>
+  </nav> -->
 <script type="text/javascript">
     var _timetableGridInfo = [{"no":"1","rows":[96,108],"hidden":false},{"no":"2","rows":[108,126],"hidden":false},{"no":"3","rows":[126,144],"hidden":false},{"no":"4","rows":[144,162],"hidden":false},{"no":"5","rows":[162,180],"hidden":false},{"no":"6","rows":[180,198],"hidden":false},{"no":"7","rows":[198,216],"hidden":false},{"no":"8","rows":[216,234],"hidden":false},{"no":"9","rows":[234,252],"hidden":false},{"no":"10","rows":[252,270],"hidden":false},{"no":"","rows":[270,288],"hidden":false}];
   </script>
@@ -40,7 +78,7 @@
         <div class="description">
           <ul class="info">
             <li style="display: none;"><span id="tableCredit">0</span> 학점</li>
-            <li><time id="tableUpdatedAt">09/11 16:48</time> 변경</li>
+            <li><time id="tableUpdatedAt">3분 전</time> 변경</li>
           </ul>
         </div>
         <hr>
@@ -55,9 +93,9 @@
         <ol><li class="active"><a href="/timetable/2023/겨울/42644511" class="primary">시간표 1</a></li><li><a href="/timetable/2023/겨울/42645010">시간표 2</a></li><li class="extension"><a class="create">새 시간표 만들기</a></li></ol>
       </div>
     </aside>
-    <div class="wrap" style="width: 469px;">
+    <div class="wrap" style="width: 1104px;">
       <div class="tablehead"><table class="tablehead"><tbody><tr><th></th><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td style="display: none;">토</td><td style="display: none;">일</td><th></th></tr></tbody></table></div>
-      <div class="tablebody"><table class="tablebody" style="margin-top: -402px;"><tbody><tr><th><div class="hours"><div class="hour" style="height: 50px; top: 400px; line-height: 50px;">1교시</div><div class="hour" style="height: 75px; top: 450px; line-height: 75px;">2교시</div><div class="hour" style="height: 75px; top: 525px; line-height: 75px;">3교시</div><div class="hour" style="height: 75px; top: 600px; line-height: 75px;">4교시</div><div class="hour" style="height: 75px; top: 675px; line-height: 75px;">5교시</div><div class="hour" style="height: 75px; top: 750px; line-height: 75px;">6교시</div><div class="hour" style="height: 75px; top: 825px; line-height: 75px;">7교시</div><div class="hour" style="height: 75px; top: 900px; line-height: 75px;">8교시</div><div class="hour" style="height: 75px; top: 975px; line-height: 75px;">9교시</div><div class="hour" style="height: 75px; top: 1050px; line-height: 75px;">10교시</div><div class="hour" style="height: 75px; top: 1125px; line-height: 75px;"></div></div></th><td><div class="cols" style="width: 68px;"><div class="subject color1" style="height: 51px; top: 500px;"><ul class="status"><li title="변경" class="edit"></li><li title="삭제" class="del"></li></ul><h3>1231232</h3><p><em>1231232</em><span></span></p></div></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td style="display: none;"><div class="cols"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td style="display: none;"><div class="cols"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><th><div class="times"><div class="time">오전 0시</div><div class="time">오전 1시</div><div class="time">오전 2시</div><div class="time">오전 3시</div><div class="time">오전 4시</div><div class="time">오전 5시</div><div class="time">오전 6시</div><div class="time">오전 7시</div><div class="time">오전 8시</div><div class="time">오전 9시</div><div class="time">오전 10시</div><div class="time">오전 11시</div><div class="time">오후 12시</div><div class="time">오후 1시</div><div class="time">오후 2시</div><div class="time">오후 3시</div><div class="time">오후 4시</div><div class="time">오후 5시</div><div class="time">오후 6시</div><div class="time">오후 7시</div><div class="time">오후 8시</div><div class="time">오후 9시</div><div class="time">오후 10시</div><div class="time">오후 11시</div></div></th></tr></tbody></table><div class="nontimes"></div></div>
+      <div class="tablebody"><table class="tablebody" style="margin-top: -542px;"><tbody><tr><th><div class="hours"><div class="hour" style="height: 50px; top: 400px; line-height: 50px;">1교시</div><div class="hour" style="height: 75px; top: 450px; line-height: 75px;">2교시</div><div class="hour" style="height: 75px; top: 525px; line-height: 75px;">3교시</div><div class="hour" style="height: 75px; top: 600px; line-height: 75px;">4교시</div><div class="hour" style="height: 75px; top: 675px; line-height: 75px;">5교시</div><div class="hour" style="height: 75px; top: 750px; line-height: 75px;">6교시</div><div class="hour" style="height: 75px; top: 825px; line-height: 75px;">7교시</div><div class="hour" style="height: 75px; top: 900px; line-height: 75px;">8교시</div><div class="hour" style="height: 75px; top: 975px; line-height: 75px;">9교시</div><div class="hour" style="height: 75px; top: 1050px; line-height: 75px;">10교시</div><div class="hour" style="height: 75px; top: 1125px; line-height: 75px;"></div></div></th><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td><div class="cols" style="width: 68px;"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td style="display: none;"><div class="cols"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><td style="display: none;"><div class="cols"></div><div class="grids"><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div><div class="grid"></div></div></td><th><div class="times"><div class="time">오전 0시</div><div class="time">오전 1시</div><div class="time">오전 2시</div><div class="time">오전 3시</div><div class="time">오전 4시</div><div class="time">오전 5시</div><div class="time">오전 6시</div><div class="time">오전 7시</div><div class="time">오전 8시</div><div class="time">오전 9시</div><div class="time">오전 10시</div><div class="time">오전 11시</div><div class="time">오후 12시</div><div class="time">오후 1시</div><div class="time">오후 2시</div><div class="time">오후 3시</div><div class="time">오후 4시</div><div class="time">오후 5시</div><div class="time">오후 6시</div><div class="time">오후 7시</div><div class="time">오후 8시</div><div class="time">오후 9시</div><div class="time">오후 10시</div><div class="time">오후 11시</div></div></th></tr></tbody></table><div class="nontimes"></div></div>
     </div>
     <form id="tableExport" class="modal">
       <a title="닫기" class="close"></a>
@@ -163,7 +201,7 @@
     <div class="submit"><input type="submit" value="저장" class="button"></div>
   </form>
   <div id="subjects"></div>
-<div id="bottom">
+<!-- <div id="bottom">
     <ul class="links">
       <li><a href="/page/serviceagreement">이용약관</a></li>
       <li class="privacy"><a href="/page/privacy">개인정보처리방침</a></li>
@@ -174,9 +212,9 @@
       <li class="copyright"><a href="/">© 에브리타임</a></li>
     </ul>
     <span>직업정보제공사업 신고번호 : J1204020230008</span>
-  </div>
+  </div> -->
   <script type="text/javascript">
-    var _serverTime = 1697890887482;
+    var _serverTime = 1697988483792;
     var _clientTime = new Date().getTime();
     var _diffTime = _clientTime - _serverTime;
     var _apiServerUrl = 'https://api.everytime.kr';
