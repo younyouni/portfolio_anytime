@@ -68,6 +68,10 @@ public class SecurityConfig{
 				
 				.antMatchers("/calculator").permitAll()
 				
+				
+				
+				.antMatchers("/gettimetable").permitAll()
+				
 				.antMatchers("/post/list").permitAll()
 				.antMatchers("/**/**").permitAll()
 		        .antMatchers("/**").permitAll();

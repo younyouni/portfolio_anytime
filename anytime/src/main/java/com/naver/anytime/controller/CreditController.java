@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import com.naver.anytime.domain.TimeTable;
 import com.naver.anytime.domain.Credit;
 import com.naver.anytime.domain.School;
 import com.naver.anytime.domain.Semester;
@@ -30,6 +32,7 @@ import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.service.SemesterService;
 import com.naver.anytime.service.Semester_detailService;
+import com.naver.anytime.service.TimeTableService;
 
 @Controller
 public class CreditController {
@@ -41,16 +44,19 @@ public class CreditController {
 	private CreditService creditservice;
 	private SemesterService semesterservice;
 	private Semester_detailService semester_detailservice;
+	private TimeTableService timetableservice;
+	
 
 	@Autowired
 	public CreditController(MemberService memberservice, SchoolService schoolservice, CreditService creditservice,
-			SemesterService semesterservice, Semester_detailService semester_detailservice) {
+			SemesterService semesterservice, Semester_detailService semester_detailservice, TimeTableService timetableservice) {
 
 		this.memberservice = memberservice;
 		this.schoolservice = schoolservice;
 		this.creditservice = creditservice;
 		this.semesterservice = semesterservice;
 		this.semester_detailservice = semester_detailservice;
+		this.timetableservice = timetableservice;
 
 	}
 
@@ -179,8 +185,7 @@ public class CreditController {
 	@RequestMapping(value = "/getsemester_detail", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Semester_detail> getsemester_detail(Principal principal, int semester_id) {
-		logger.info("ajax 실행");
-		// int user_id = memberservice.getUserId(principal.getName());
+	
 
 		List<Semester_detail> details = creditservice.getSemesterDetailsBySemesterId(semester_id);
 
@@ -315,4 +320,18 @@ public class CreditController {
 			return "error";
 		}
 	}
+	
+	@RequestMapping(value = "/gettimetable",method = RequestMethod.GET)
+	@ResponseBody
+	public List<TimeTable> gettimetable(Principal principal){
+		logger.info("진입은했니?");
+		int user_id = memberservice.getUserId(principal.getName());
+		
+		List<TimeTable> timetable = timetableservice.gettimetable(user_id);
+		
+		return timetable;
+				
+	}
+	
+	
 }
