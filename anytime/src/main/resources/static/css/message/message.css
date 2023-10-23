@@ -78,14 +78,16 @@ a {
 			  background-image: url('/images/container.message.back.png');
 			}
 			#container div.messages div.title a.send {
-			  background-image: url('/anytime/resources/image/message/1.png');
+			  background-image: url('/anytime/resources/image/message/send.png');
 			}
 			#container div.messages div.title a.refresh {
-			  background-image: url('/anytime/resources/image/message/2.png');
+			  background-image: url('/anytime/resources/image/message/refresh.png');
 			}
+/*
 			#container div.messages div.title a.more {
-			  width: 40px; background-image: url('/anytime/resources/image/message/3.png'); background-size: 16px 24px;
+			  width: 40px; background-image: url('/anytime/resources/image/message/more.png'); background-size: 16px 24px;
 			}
+*/
 #container div.messages div.items div.item {
   margin: 0 8px; padding: 12px 16px; border-bottom: 1px solid #ededed;
 }

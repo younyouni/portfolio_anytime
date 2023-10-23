@@ -3,11 +3,12 @@
   <head>
     <meta charset='utf-8' />
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/index.global.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/calendar/index.global.js"></script>
     <link type="text/css" href="${pageContext.request.contextPath}/resources/css/calendar/calendar.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/resources/js/calendar/calendar.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/calendar/jscolor.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/calendar/moment.js"></script>
+
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/modal.css">
 
