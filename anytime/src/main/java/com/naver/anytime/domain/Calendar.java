@@ -17,7 +17,8 @@ public class Calendar {
 	private String start;
 	private String end;
 	private String description;
-	private String allday;
+	private int ALL_TIME;
+	private boolean allday;
 	private String color;
 	
 	
@@ -63,10 +64,10 @@ public class Calendar {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getAllday() {
+	public boolean isAllday() {
 		return allday;
 	}
-	public void setAllday(String allday) {
+	public void setAllday(boolean allday) {
 		this.allday = allday;
 	}
 	public String getColor() {
@@ -74,6 +75,12 @@ public class Calendar {
 	}
 	public void setColor(String color) {
 		this.color = color;
+	}
+	public int getALL_TIME() {
+		return ALL_TIME;
+	}
+	public void setALL_TIME(int aLL_TIME) {
+		ALL_TIME = aLL_TIME;
 	}
 	
 	
