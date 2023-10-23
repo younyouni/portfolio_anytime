@@ -7,6 +7,7 @@ public class Report {
 	private int REASON;
 	private String NOTE_DATE;
 	private int ADMIN_ID;
+	private String ADMIN_LOGIN_ID;
 	private String POST_R_ACTION;
 	private String USER_R_ACTION;
 

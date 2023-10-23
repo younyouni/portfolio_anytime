@@ -115,4 +115,6 @@ public interface PostMapper {
 
 	public int getPostTotalListCount(HashMap<String, Object> map);
 
+	public int getPost(int content_id);
+
 }

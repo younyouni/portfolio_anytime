@@ -15,6 +15,7 @@ import com.naver.anytime.domain.Post;
 import com.naver.anytime.mybatis.mapper.BoardMapper;
 import com.naver.anytime.mybatis.mapper.PostMapper;
 import com.naver.anytime.mybatis.mapper.PostPhotoMapper;
+import com.naver.constants.AnytimeConstants;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -284,6 +285,17 @@ public class PostServiceImpl implements PostService {
 		map.put("board_id", board_id);
 
 		return postDao.getPostTotalListCount(map);
+	}
+
+	@Override
+	public int getPost(int content_id) {
+		int result = -1;
+		if(postDao.getPost(content_id) == 0) {
+			result = AnytimeConstants.NON_EXISTENT;
+		}else {
+			result = AnytimeConstants.EXISTENT;
+		}
+		return result;
 	}
 
 }

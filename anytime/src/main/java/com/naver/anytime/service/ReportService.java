@@ -18,4 +18,6 @@ public interface ReportService {
 
 	List<Report> getReportTotalList(int order, int page, int limit);
 
+	int updateReport(int content_id, String content_action, String user_action, int admin_id, String admin_login_id);
+
 }

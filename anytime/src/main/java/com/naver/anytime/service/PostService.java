@@ -105,6 +105,8 @@ public interface PostService {
 
 	public int getPostTotalListCount(int board_id, int searchKey, String keyword);
 
+	public int getPost(int content_id);
+
 
 
 }

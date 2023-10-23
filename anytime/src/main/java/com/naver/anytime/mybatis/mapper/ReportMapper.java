@@ -24,4 +24,6 @@ public interface ReportMapper {
 
 	List<Report> getReportTotalList(HashMap<String, Object> map);
 
+	int updateReport(HashMap<String, Object> map);
+
 }

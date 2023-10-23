@@ -37,5 +37,9 @@ public class AnytimeConstants {
 	public static final int BOARD_APPROVAL_SCHEDULED_FOR_DENIAL =4;
 	public static final int BOARD_APPROVAL_DENIED =2;
 
+	public static final int NON_EXISTENT = 0;
+	public static final int EXISTENT = 1;
 	
+	public static final int IS_POST = 1; 
+	public static final int IS_COMMENT = 2; 
 }

@@ -77,46 +77,46 @@
 	<select id="getReportTotalList" resultType="report">
 		SELECT * 
 	    FROM( SELECT ROWNUM RNUM ,T.* 
-			  FROM ( SELECT	R.*,M.LOGIN_ID REPORTER_LOGIN_ID,
+			  FROM ( SELECT * 
+			  		 FROM (	SELECT	R.*,M.LOGIN_ID REPORTER_LOGIN_ID,
 			  				C.POST_ID POST_ID, C.BOARD_NAME BOARD_NAME, C.COMMENT_ID CONTENT_ID, 
        						C.LOGIN_ID LOGIN_ID, C.NICKNAME NICKNAME, NULL SUBJECT ,
        						C.CONTENT CONTENT, C.COMMENT_DATE WRITE_DATE,
        						C.REPORT_COUNT REPORT_COUNT, C.STATUS STATUS
             		 
-            		 FROM REPORT R INNER JOIN ( SELECT 	C.*, P.BOARD_NAME BOARD_NAME, 
-       													M.LOGIN_ID LOGIN_ID, M.NICKNAME NICKNAME
-                              					FROM COMMENTS C INNER JOIN ( SELECT P.*, B.NAME BOARD_NAME 
-                                                           				 	 FROM POST P INNER JOIN BOARD B 
-                                                           				 	 ON P.BOARD_ID = B.BOARD_ID
-                                                         					) P
-                              					ON C.POST_ID = P.POST_ID
-                              					INNER JOIN MEMBER M
-                              					ON C.USER_ID = M.USER_ID
-                             			 	  ) C
-       				 ON R.REPORTED_ORIGIN = C.COMMENT_ID
-       				 INNER JOIN MEMBER M
-                     ON R.REPORTER =M.USER_ID 
-       				 WHERE R.POST_R_ACTION IS NULL
-      			
-      				 UNION
-       				 SELECT R.*,M.LOGIN_ID REPORTER_LOGIN_ID,
-       				 		P.POST_ID POST_ID, P.BOARD_NAME BOARD_NAME, P.POST_ID CONTENT_ID, 
-      						P.LOGIN_ID LOGIN_ID, P.NICKNAME NICKNAME, P.SUBJECT SUBJECT, P.CONTENT CONTENT, 
-      						P.POST_DATE WRITE_DATE, P.REPORT_COUNT REPORT_COUNT, P.STATUS STATUS 
-       				 FROM REPORT R INNER JOIN ( SELECT 	P.*, B.NAME BOARD_NAME, M.LOGIN_ID, M.NICKNAME NICKNAME
-       				 							FROM POST P INNER JOIN BOARD B
-       			      							ON P.BOARD_ID = B.BOARD_ID
-       			      							INNER JOIN MEMBER M
-       			      							ON P.USER_ID = M.USER_ID
-       			      					  	   ) P
-       				 ON R.REPORTED_ORIGIN = P.POST_ID 
-       				 INNER JOIN MEMBER M
-                     ON R.REPORTER =M.USER_ID
-       				 WHERE R.POST_R_ACTION IS NULL
+	            		 FROM REPORT R INNER JOIN ( SELECT 	C.*, P.BOARD_NAME BOARD_NAME, 
+	       													M.LOGIN_ID LOGIN_ID, M.NICKNAME NICKNAME
+	                              					FROM COMMENTS C INNER JOIN ( SELECT P.*, B.NAME BOARD_NAME 
+	                                                           				 	 FROM POST P INNER JOIN BOARD B 
+	                                                           				 	 ON P.BOARD_ID = B.BOARD_ID
+	                                                         					) P
+	                              					ON C.POST_ID = P.POST_ID
+	                              					INNER JOIN MEMBER M
+	                              					ON C.USER_ID = M.USER_ID
+	                             			 	  ) C
+	       				 ON R.REPORTED_ORIGIN = C.COMMENT_ID
+	       				 INNER JOIN MEMBER M
+	                     ON R.REPORTER =M.USER_ID 
+	      			
+	      				 UNION
+	       				 SELECT R.*,M.LOGIN_ID REPORTER_LOGIN_ID,
+	       				 		P.POST_ID POST_ID, P.BOARD_NAME BOARD_NAME, P.POST_ID CONTENT_ID, 
+	      						P.LOGIN_ID LOGIN_ID, P.NICKNAME NICKNAME, P.SUBJECT SUBJECT, P.CONTENT CONTENT, 
+	      						P.POST_DATE WRITE_DATE, P.REPORT_COUNT REPORT_COUNT, P.STATUS STATUS 
+	       				 FROM REPORT R INNER JOIN ( SELECT 	P.*, B.NAME BOARD_NAME, M.LOGIN_ID, M.NICKNAME NICKNAME
+	       				 							FROM POST P INNER JOIN BOARD B
+	       			      							ON P.BOARD_ID = B.BOARD_ID
+	       			      							INNER JOIN MEMBER M
+	       			      							ON P.USER_ID = M.USER_ID
+	       			      					  	   ) P
+	       				 ON R.REPORTED_ORIGIN = P.POST_ID 
+	       				 INNER JOIN MEMBER M
+	                     ON R.REPORTER =M.USER_ID
+                     	)
+    					<include refid="order" />
        			  	) T
              WHERE ROWNUM &lt;= #{end})
     	WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
-    	<include refid="order" />
      </select>
      
 	<sql id="order">
@@ -129,4 +129,12 @@
 	    </when>
 	  </choose>
 	</sql>
+	<update id="updateReport" parameterType="map">
+		UPDATE REPORT R
+		SET POST_R_ACTION = #{content_action}
+		, USER_R_ACTION = #{user_action}
+		, ADMIN_ID = #{admin_id}
+		, ADMIN_LOGIN_ID = #{admin_login_id}		
+		WHERE REPORTED_ORIGIN = #{content_id}
+	</update>
 </mapper>

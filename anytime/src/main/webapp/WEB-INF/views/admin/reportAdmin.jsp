@@ -24,6 +24,9 @@
 </head>
 <script>
 	$(function() {
+		let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		
 		 var order =1;
 		 var page = 1;
 		 go(order);
@@ -80,7 +83,7 @@
 			$("div.center-block").show();
 			$('input[type=radio]').prop('checked',false);
 			$('input[name=latest]').prop('checked',true);
-			 order =$(this).val();
+			 order =1;
 			 getList(order, page);
 			
 		});
@@ -100,20 +103,25 @@
 			$('#reportprocess input[type=hidden]').val(content_id);
 		});
 		
-		$('#reportprocess').on('submit',function(){
+		$('#reportprocess').on('click','a.button',function(){
 			let content_id = $('#reportprocess a.button input[type=hidden]').val();
 			let content_action = $('#reportprocess .content_disabled_reason').val();
 			let user_action = $('#reportprocess .member_disabled_reason').val();
-			a
+			
 			$.ajax({
 				type 	: "post",
 				data 	: { content_id : content_id,
 							content_action : content_action,
 							user_action : user_action},
-				url		: "",
-				dataType: "json",
+				url		: "reportProcess",
+				beforeSend : function(xhr) { // 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+					xhr.setRequestHeader(header, token);
+				},
 				success	: function(rdata){
-					alert('a');
+					if(rdata>0){
+						alert('신고가 처리되었습니다.');
+						location.reload();
+					}
 				}
 			})//ajax end
 		})
@@ -139,14 +147,15 @@
 			$('form#reportInfo').before('<div class="modalwrap"></div>');
 			
 			let writer = $(this).parent().find('td.writer').text();
-			let count = $(this).parent().find('td.count').text();
-			let reason = $(this).parent().find('td.reason').text();
-			let reporter = $(this).parent().find('td.reporter').text();
 			let note_date = $(this).parent().find('td.date').text();
 			let date = note_date.substr(5, 5) + ' ' + note_date.substr(11, 5);
 			date=date.replace('-', '/');
-			let status = $(this).parent().find('td.status').text();
+			
+			let reporter = $(this).parent().find('td.reporter').text();
 			let content = $(this).parent().find('input[name=content]').val();
+			let reason = $(this).parent().find('td.reason').text();
+			let status = $(this).parent().find('td.status').text();
+			let admin = $(this).parent().find('input[name=admin_login_id]').val();
 			
 			$('form#reportInfo input.writer').val(writer);
 			$('form#reportInfo input.date').val(date);
@@ -202,7 +211,7 @@
 							+ '<div class="profile"><span class="large">'+this.login_ID+'</span>'
 							+ '<span class="large">'+ this.write_DATE+'</span></div>'
 							+ '<button class="process">처리<img src="/anytime/resources/image/admin/process.png" class="process">'
-							+ '<input type="hidden" name="content_id" value="'+this.content_ID+'"> </button><br><h2 class="medium">';
+							+ '<input type="hidden" name="content_id" value="'+this.content_ID+'"><input type="hidden" name="admin_login_id" value="'+this.admin_LOGIN_ID+'"> </button><br><h2 class="medium">';
 					if(this.subject !=null){
 						output += this.subject;
 					}else{
@@ -265,26 +274,26 @@
 								+ '</td><td class="reason">'+reason+'</td><input type="hidden" name="content" value="'
 								+ this.content+'"><td class="reporter">'+this.reporter_LOGIN_ID +'</td><td class="date">'+this.note_DATE
 								+ '</td>';
-						if(this.POST_R_ACTION==null){
+						if(this.post_R_ACTION==null){
 							output +='<td class="continue status">처리 진행중</td>';
 						}else{
 							output +='<td class="status"> 게시글 : ';
-							if(this.POST_R_ACTION ==='반려'){
+							if(this.post_R_ACTION ==='반려'){
 								output +='반려, ';
 							}else{
 								output +='정지, ';
 							}
 							output += '사용자 : ';
-							if(this.POST_R_ACTION ==='반려'){
+							if(this.user_R_ACTION ==='반려'){
 								output +='반려, ';
 							}
 							else{
 								output +='정지, ';
 							}
 						}
-							output+='<input type="hidden" name="admin_id" ';
-							if(this.POST_R_ACTION !=null)
-								output+='value="'+this.admin_ID+'"';
+							output+='<input type="hidden" name="admin_login_id" ';
+							if(this.post_R_ACTION !=null)
+								output+='value="'+this.admin_LOGIN_ID+'"';
 							output+= '></td></tr>';
 							rownum++;
 					});

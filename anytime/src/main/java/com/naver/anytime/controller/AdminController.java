@@ -1,5 +1,6 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,11 @@ import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.Report;
 import com.naver.anytime.service.BoardService;
+import com.naver.anytime.service.CommentService;
+import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.ReportService;
+import com.naver.constants.AnytimeConstants;
 
 @Controller
 //@RequestMapping(value = "/admin")
@@ -31,12 +35,17 @@ public class AdminController {
 	private BoardService boardService;
 	private PostService postService;
 	private ReportService reportService;
+	private CommentService commentService;
+	private MemberService memberService;
 
 	@Autowired
-	public AdminController(BoardService boardService, PostService postService, ReportService reportService) {
+	public AdminController(BoardService boardService, PostService postService, ReportService reportService,
+			CommentService commentService, MemberService memberService) {
 		this.boardService = boardService;
 		this.postService = postService;
 		this.reportService = reportService;
+		this.commentService = commentService;
+		this.memberService = memberService;
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -175,17 +184,31 @@ public class AdminController {
 
 	@RequestMapping(value = "/reportProcess", method = RequestMethod.POST)
 	@ResponseBody
-	public int reportProcess(int content_id, String content_action, String user_action) {
-
-		if (content_action.equals("반려") && user_action.equals("반려")) {
-			// 게시물/유저 따로 처리안함
-		} else if (!content_action.equals("반려")) {
-			// 게시물 stauts 변경
-		} else if (!user_action.equals("반려")) {
-			// 유저 status 변경
+	public int reportProcess(int content_id, String content_action, String user_action, Principal principal) {
+		int admin_id = memberService.getUserId(principal.getName());
+		String admin_login_id = principal.getName();
+		int isContent = 0;
+		int result = 0;
+		if (!content_action.equals("반려")) {
+			if (postService.getPost(content_id) != 0) {
+				// 게시물 신고
+				postService.updatePostStatus(content_id);
+				isContent = AnytimeConstants.IS_POST;
+			} else {
+				// 코멘트 신고
+				commentService.updateCommentStatus(content_id);
+				isContent = AnytimeConstants.IS_COMMENT;
+			}
+			logger.info("isContent : " + Integer.toString(isContent));
 		}
-
-		return 0;
+		if (!user_action.equals("반려")) {
+			// 멤버 정지
+			memberService.updateStatusByContentId(content_id, isContent);
+		}
+		logger.info(Integer.toString(admin_id));
+		result = reportService.updateReport(content_id, content_action, user_action, admin_id, admin_login_id);// 반려인 경우 아닌 경우 모두 처리
+		logger.info("result : " + result);
+		return result;
 	}
 
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)

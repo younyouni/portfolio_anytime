@@ -51,15 +51,26 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public List<Report> getReportTotalList(int order, int page, int limit) {
-		
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		int startrow = (page - 1) * limit + 1;
 		int endrow = startrow + limit - 1;
 		map.put("order", order);
 		map.put("start", startrow);
 		map.put("end", endrow);
-		
+
 		return dao.getReportTotalList(map);
+	}
+
+	@Override
+	public int updateReport(int content_id, String content_action, String user_action, int admin_id, String admin_login_id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("content_id", content_id);
+		map.put("content_action", content_action);
+		map.put("user_action", user_action);
+		map.put("admin_id", admin_id);
+		map.put("admin_login_id", admin_login_id);
+		return dao.updateReport(map);
 	}
 
 }
