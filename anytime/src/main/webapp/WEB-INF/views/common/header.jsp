@@ -5,6 +5,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/common.css"
 	rel="stylesheet">
@@ -90,7 +91,7 @@
 		<ul id="menu">
 			<li class="board"><a
 				href="${pageContext.request.contextPath}/${school.domain}">게시판</a></li>
-			<li><a href="/timetable">시간표</a></li>
+			<li><a href="${pageContext.request.contextPath}/timetable">시간표</a></li>
 			<li><a href="${pageContext.request.contextPath}/calculator">학점계산기</a></li>
 			<li><a href="${pageContext.request.contextPath}/calendar">캘린더 </a></li>
 		</ul>
