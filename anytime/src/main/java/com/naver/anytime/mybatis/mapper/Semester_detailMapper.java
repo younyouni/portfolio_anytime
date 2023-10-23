@@ -17,4 +17,6 @@ public interface Semester_detailMapper {
 
 	public List<Semester_detail> getDetailPerSemester(int semester_id);
 	
+	public List<Object[]> findTop5Grades(int user_id);
+	
 }

@@ -7,31 +7,20 @@
 <head>
 <title>애니타임</title>
 <meta charset="utf-8">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css"
-	rel="stylesheet">
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/credit/credit.js"></script>
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/calculator/calculator.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.jquery-1.10.2.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/extensions.underscore-min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/credit/credit.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body style="">
 
 	<jsp:include page="../common/header.jsp" />
 
-	<div id="container" class="calculator">
+	<div id="container" class="calculator" style="overflow: hidden;">
 		<input type="hidden" id="userId" value="542509"> <input
 			type="hidden" id="userRequiredCredit" value="150"> <input
 			type="hidden" id="userGradeType" value="">
@@ -42,9 +31,9 @@
 			</div>
 		</aside>
 		<div class="section">
-			<div class="chart">
-				<article class="overview">
-					<div class="column gpa">
+			<div class="chart" style="padding-bottom: 0; margin-bottom: 0;">
+				<article class="overview" >
+					<div class="column gpa" >
 						<h4>전체 평점</h4>
 						<p class="value">${totalgpa}</p>
 						<p class="total">/ ${school.credit}</p>
@@ -61,7 +50,7 @@
 						</p>
 					</div>
 				</article>
-				<article class="semester">
+				<article class="semester" style="margin: 0; padding: 0;">
 					<div class="series">
 
 						<div class="legend">
@@ -91,7 +80,7 @@
 							style="padding: 0px; position: relative;">
 							<div class="chart-view" data-v-6a145b43="">
 								<canvas id="myChart" width="365" height="150"
-									style="display: block; box-sizing: border-box; height: 274px; width: 100px;"></canvas>
+									style=" box-sizing: border-box; height: 274px; width: 100px;"></canvas>
 							</div>
 							<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 							<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -174,44 +163,40 @@
 					</div>
 					<div>
 					<ul class="ratioplot">
-						<div id="donutchart" style="width: 400px; height: 300px;">
+						<div id="donutchart" style="  width: 380px; height: 250px; position:relative; left:-40px; top:-60px;">
 						 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
+    	  var data = new google.visualization.DataTable();
+    	    data.addColumn('string', 'Grade');
+    	    data.addColumn('number', 'Count');
+    	    
+    	    <c:forEach var="row" items="${gradeData}">
+    	    data.addRow(['${row.GRADE}', ${row.COUNT}]);
+    	</c:forEach>
+    	
         var options = {
-          title: 'My Daily Activities',
-          pieHole: 0.4,
-          colors: ['rgb(242, 133, 114)', 'rgb(236, 197, 92)', 'rgb(160, 198, 97)', 'rgb(130, 209, 194)', 'rgb(122, 158, 224)']
+          title: '학점 비율',
+          pieHole: 0.35,
+          colors: ['rgb(242, 133, 114)', 'rgb(236, 197, 92)', 'rgb(160, 198, 97)', 'rgb(130, 209, 194)', 'rgb(122, 158, 224)'],
+          pieSliceText: "label",
+          chartArea:{left:'10%',right:'10%',top:'10%',width:'70%',height:'70%'},
+         titleTextStyle: {fontSize: 13}
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
        
         
-        
       }
-    </script>
-    </div>
-
-
-					</ul>
-					</div>
-				</article>
-
-
-			</div>
-
+     	</script>
+      </div>
+	</ul>
+ </div>
+</article>
+</div>
 			<div class="menu">
 				<ol>
 					<c:forEach var="semester" items="${semesters}">

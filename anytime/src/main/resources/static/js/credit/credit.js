@@ -218,7 +218,7 @@ $(document).ready(function(){
 	        $('.column.major .value').text(data.totalmajor);
 	        $('.column.acquisition .value').text(data.totalAcquisition);
 	        
-
+       // chart1 업데이트
 		var newLabelData = data.semestername.map(function(semester) {
            return semester.semester_name;
        });
@@ -236,9 +236,33 @@ $(document).ready(function(){
        myChart.data.datasets[1].data = newMajorData;
 
        myChart.update();
+       
+       var gradeData = data.gradeData;  // 서버에서 반환된 상위 5개 성적 데이터
+
+	// chart2 업데이트
+	   var newData = new google.visualization.DataTable();
+	   newData.addColumn('string', 'Grade');
+	   newData.addColumn('number', 'Count');
+
+	   for (var i = 0; i < gradeData.length; i++) {
+       newData.addRow([gradeData[i].GRADE, gradeData[i].COUNT]);
+	 }
+
+	   var options = {
+       title: '학점 비율',
+       pieHole: 0.35,
+       colors: ['rgb(242,133,114)', 'rgb(236,197,92)', 'rgb(160,198,97)', 'rgb(130,209,194)', 'rgb(122,158,224)'],
+       pieSliceText: "label",
+       chartArea:{left:'10%',right:'10%',top:'10%',width:'70%',height:'70%'},
+       titleTextStyle: {fontSize: 13}
+    };
+
+		var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+		chart.draw(newData,options);
           }
      });
   }
+  
 //초기화 버튼 클릭 이벤트 핸들러
   $('.reset').click(function() {
 
