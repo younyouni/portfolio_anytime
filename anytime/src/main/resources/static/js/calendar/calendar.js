@@ -132,9 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
     droppable: true,				//일정 drop 수정 허용
     selectable: true,				//일정 선택
     eventResizableFromStart: true,
-    eventResize: function(info) {
-    	console.log(info);
-    },
     events: function(info, successCallback, failureCallback) {
       $.ajax({
         url: "calendarlist",
@@ -150,9 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	          		data.end = new Date(data.end);     
 	          		data.end.setDate(data.end.getDate() + 1);	
 	          	}
-	          	
-
-	          			          
+        			          
 	          	events.push({
 	        		id: data.id,
 	            	title: data.title,
@@ -162,7 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	            	borderColor: data.color,
 	            	backgroundColor: '#7869e6',
 	            	allDay: data.allday
-	          	});	          		
+	          	});
+	          	         		
 	          });
           }
           console.log(events)
@@ -173,6 +169,22 @@ document.addEventListener('DOMContentLoaded', function() {
           failureCallback(Result);
         }
       });
+    },
+    eventResize: function(info) {
+    	const eventStartDate = new Date(info.event.start);
+    	var formattedStartDate = formatDate2(eventStartDate);
+    	if(info.event.end != null) {
+			const eventEndDate = new Date(info.event.end);
+			var formattedEndDate = formatDate2(eventEndDate);	
+    	}
+		
+    	var data = {
+    		calendar_id: info.event.id,
+    		start: formattedStartDate,
+    		end: formattedEndDate
+    	}
+    	
+    	calendarDropUpdateAjax(data);  	
     },
     eventDrop: function(info){
     	console.log("일정 이동 id" + info.event.id);
@@ -203,21 +215,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	    // 종료 날짜를 하루 늘려서 선택한 범위를 포함하는 것처럼 표시
 	    arg.end.setDate(arg.end.getDate() - 1);
 
-		
-/*		
-		// YYYY-MM-DDTHH:MM 형식으로 변환
-		var year = start.getFullYear();
-	    var month = (start.getMonth() + 1).toString().padStart(2, '0');
-	    var day = start.getDate().toString().padStart(2, '0');
-	    var hours = start.getHours().toString().padStart(2, '0');
-	    var minutes = start.getMinutes().toString().padStart(2, '0');
-		console.log(year + month + day + hours + minutes);
-		// YYYY-MM-DD 형식으로 조합
-		var formattedDate = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
-		
-		// 입력 요소에 값을 할당
-		document.getElementsByName('calendar_date').value = formattedDate;
-*/		
 		
 		const selectStart = new Date(arg.start);
 		const selectEnd = new Date(arg.end);
