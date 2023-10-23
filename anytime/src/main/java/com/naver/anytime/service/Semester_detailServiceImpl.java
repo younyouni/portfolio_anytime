@@ -30,4 +30,14 @@ public class Semester_detailServiceImpl implements Semester_detailService {
 	public List<Semester_detail> getSemesterDetailsBySemesterId(int semester_id) {
 		return dao.getSemesterDetailsBySemesterId(semester_id);
 	}
+
+	@Override
+	public List<Semester_detail> getDetailPerSemester(int semester_id) {
+		return dao.getDetailPerSemester(semester_id);
+	}
+
+	@Override
+	public List<Object[]> findTop5Grades(int user_id) {
+		return dao.findTop5Grades(user_id);
+	}
 }

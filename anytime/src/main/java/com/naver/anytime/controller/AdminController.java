@@ -178,11 +178,11 @@ public class AdminController {
 	public int reportProcess(int content_id, String content_action, String user_action) {
 
 		if (content_action.equals("반려") && user_action.equals("반려")) {
-			//게시물/유저 따로 처리안함 
-		}else if(!content_action.equals("반려")) {
-			//게시물 stauts 변경
-		}else if(!user_action.equals("반려")) {
-			//유저 status 변경
+			// 게시물/유저 따로 처리안함
+		} else if (!content_action.equals("반려")) {
+			// 게시물 stauts 변경
+		} else if (!user_action.equals("반려")) {
+			// 유저 status 변경
 		}
 
 		return 0;

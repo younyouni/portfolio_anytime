@@ -79,12 +79,12 @@
 								style="position: absolute; inset: 0px; font-size: smaller; color: rgb(84, 84, 84);">
 								<div class="flot-x-axis flot-x1-axis xAxis x1Axis"
 									style="position: absolute; inset: 0px; display: block;">
-								<!-- 
+								 
 								<div
 										style="position: absolute; max-width: 73px; top: 105px; font: 400 10px/12px&amp; quot; 맑은 고딕&amp;quot; , 돋움 , &amp;quot; Apple SD Gothic Neo&amp;quot; , tahoma; color: rgb(166, 166, 166); left: 19px; text-align: center;">
 										1학년<br>1학기
 									</div>
-								 -->	
+								 	
 								</div>
 								<div class="flot-y-axis flot-y1-axis yAxis y1Axis"
 									style="position: absolute; inset: 0px; display: block;">

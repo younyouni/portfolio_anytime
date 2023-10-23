@@ -12,12 +12,12 @@ public class Board {
 
 	private int ANONYMOUS;
 	private int STATUS;
-	
-	private String REJECT_REASON; 
+
+	private String REJECT_REASON;
 
 	private String LOGIN_ID;
 	private int NEW_BOARD_ID;
-	
+
 	private String SCHOOL_NAME;
 
 	public int getNEW_BOARD_ID() {

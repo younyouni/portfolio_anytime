@@ -10,21 +10,26 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.naver.anytime.domain.Photo;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.mybatis.mapper.BoardMapper;
 import com.naver.anytime.mybatis.mapper.PostMapper;
+import com.naver.anytime.mybatis.mapper.PostPhotoMapper;
 
 @Service
 public class PostServiceImpl implements PostService {
 	private PostMapper postDao;
 	private BoardMapper boardDao;
 	private SqlSession sqlSession;
+	private PostPhotoMapper PostPhotoDao;
 
 	@Autowired
-	public PostServiceImpl(PostMapper postDao, BoardMapper boardDao, SqlSession sqlSession) {
+	public PostServiceImpl(PostMapper postDao, BoardMapper boardDao, SqlSession sqlSession,
+			PostPhotoMapper PostPhotoDao) {
 		this.postDao = postDao;
 		this.boardDao = boardDao;
 		this.sqlSession = sqlSession;
+		this.PostPhotoDao = PostPhotoDao;
 	}
 
 	@Override
@@ -231,6 +236,15 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void decrementLikes(int post_id) {
+	}
+
+	@Override
+	public void deletePhoto(int photo_id) {
+		Photo photo = PostPhotoDao.getPhotoById(photo_id);
+		if (photo != null) {
+			photo.deleteFile();
+			PostPhotoDao.deletePhoto(photo_id);
+		}
 	}
 
 	// ********************************= 윤희 =********************************

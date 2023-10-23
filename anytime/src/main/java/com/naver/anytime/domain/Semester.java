@@ -7,9 +7,6 @@ public class Semester {
 	private String semester_name;
 	
 	
-	
-	
-	
 	public int getSemester_id() {
 		return semester_id;
 	}

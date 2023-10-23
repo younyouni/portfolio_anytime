@@ -96,8 +96,8 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> getBoardTotalList(int page, int limit, int searchKey, String keyword) {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		int startrow = (page - 1) * limit + 1;
-		int endrow = startrow + limit - 1;
+		int startrow = (page - 1) * limit + 1; // 1
+		int endrow = startrow + limit - 1; // 10
 		map.put("start", startrow);
 		map.put("end", endrow);
 		map.put("searchKey", searchKey);
@@ -119,7 +119,7 @@ public class BoardServiceImpl implements BoardService {
 	public int updateBoardStatusImmediately(int board_id, int approvalStatus) {
 		return dao.updateBoardStatusImmediately(board_id, approvalStatus);
 	}
-	
+
 	@Override
 	public int getBoardStatus(int board_id) {
 		return dao.getBoardStatus(board_id);

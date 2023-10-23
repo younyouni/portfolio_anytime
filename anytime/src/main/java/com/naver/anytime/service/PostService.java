@@ -83,6 +83,8 @@ public interface PostService {
     
     public void updatePostFile(int post_id, String post_file);
     public void updatePostFile(Map<String, Object> params);
+    
+    public void deletePhoto(int photo_id);
 
 	//검색용 리스트 총 수
 	public int getSearchListCount(int board_id, int search_field, String search_word);
@@ -102,6 +104,7 @@ public interface PostService {
 	public List<Post> getPostTotalList(int board_id, int page, int limit, int searchKey, String keyword);
 
 	public int getPostTotalListCount(int board_id, int searchKey, String keyword);
+
 
 
 }
