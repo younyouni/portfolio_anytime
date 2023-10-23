@@ -71,7 +71,6 @@
 	
 	<select id="getListCount" resultType="int">
 		SELECT COUNT(*) FROM REPORT
-  		WHERE POST_R_ACTION IS NULL
 	</select>
 	
 	<select id="getReportTotalList" resultType="report">
