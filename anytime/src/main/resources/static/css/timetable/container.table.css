@@ -112,7 +112,7 @@ body {
 	position: fixed; z-index: 80; bottom: 15px;
 }
 #container ul.floating li.button {
-	float: left; margin: 0 1px; height: 40px; line-height: 40px; cursor: pointer;
+	float: left; margin: 50px 220px; height: 40px; line-height: 40px; cursor: pointer;
 	color: #fff; font-size: 14px; font-weight: bold; background-color: #c62917; background-repeat: no-repeat;
 }
 #container ul.floating li.button.search {
@@ -160,7 +160,7 @@ body {
 
 @media only screen and (min-width: 641px) {
 	#container div.tablehead {
-		position: fixed; z-index: 90; margin-top: -15px; padding-top: 15px; width: inherit;
+		position: fixed; z-index: 90; margin-top: -52px; padding-top: 15px; width: 62.4%;
 		background-color: #f8f8f8;
 	}
 	#container div.tablebody {

@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>애니타임</title>
+<title>에브리타임</title>
 <meta charset="utf-8">
 <meta name="referrer" content="origin">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,11 +32,12 @@
 <meta name="naver-site-verification"
 	content="7366738375e320e44bd1c743b364db13086a7b0e">
 <meta name="robots" content="noindex">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/common.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/common.partial.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/container.table.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/container.modal.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/subjects.css" rel="stylesheet">
+<link type="text/css" href="/css/common.css" rel="stylesheet">
+<link type="text/css" href="/css/common.partial.css" rel="stylesheet">
+<link type="text/css" href="/css/container.table.css" rel="stylesheet">
+<link type="text/css" href="/css/container.modal.css" rel="stylesheet">
+<link type="text/css" href="/css/subjects.css" rel="stylesheet">
+<link href="/favicon.ico" rel="shortcut icon">
 <!--[if lt IE 9]>
   <script src="/js/extensions.html5shiv.js"></script>
   <script src="/js/extensions.respond.min.js"></script>
@@ -45,17 +46,17 @@
 <!--[if lt IE 8]>
   <script src="/js/extensions.json3.min.js"></script>
   <![endif]-->
-  
-  <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tableload.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tablesave.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.subjects.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.customsubjects.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.index.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable//timetable.subjectcolumninfo.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.imagegenerator.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.js"></script>
+<script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/js/extensions.underscore-min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/timetable.tableload.js"></script>
+<script type="text/javascript" src="/js/timetable.tablesave.js"></script>
+<script type="text/javascript" src="/js/timetable.subjects.js"></script>
+<script type="text/javascript" src="/js/timetable.customsubjects.js"></script>
+<script type="text/javascript" src="/js/timetable.index.js"></script>
+<script type="text/javascript" src="/js/timetable.subjectcolumninfo.js"></script>
+<script type="text/javascript" src="/js/timetable.imagegenerator.js"></script>
+<script type="text/javascript" src="/js/timetable.js"></script>
 </head>
 
 <body>

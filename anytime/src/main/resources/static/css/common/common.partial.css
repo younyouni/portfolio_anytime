@@ -250,7 +250,7 @@ aside>form.search>input.text::-webkit-search-cancel-button {
 aside>form.select>select {
 	border: 0;
 	width: 100%;
-	height: 40px;
+	height: 45px;
 	line-height: 20px;
 	padding: 10px;
 	box-sizing: border-box;
@@ -455,10 +455,11 @@ aside>div.title>ol.buttons>li>a.image.setting {
 		margin: 0 1px;
 		width: 134px;
 	}
+	
 	aside>div.title>ol.buttons.threecols>li {
-		float: left;
-		margin: 0 1px;
-		width: 89px;
+		float: inline-end;
+    	margin: -65px 1px;
+    	width: 89px;
 	}
 	aside>div.title>ol.buttons>li.mobileonly {
 		display: none;
