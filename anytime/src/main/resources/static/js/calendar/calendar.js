@@ -13,7 +13,7 @@
 		const minutes = date.getMinutes().toString().padStart(2, '0');
 		const seconds = date.getSeconds().toString().padStart(2, '0');
 	  
-	  return `${year}-${month}-${day} (${dayOfWeek}) ${hours}:${minutes}:${seconds}`;
+	  return `${year}-${month}-${day} (${dayOfWeek}) ${hours}:${minutes}`;
 	};
 
 	// YYYY-MM-DD 형식으로 날씨 변환 ( 일정 보기의 종일 )
@@ -30,7 +30,7 @@
 	// YYYY-MM-DD 형식으로 날씨 변환 ( 일정 보기의 종일 )
 	const formatDateAllDayEnd = (date) => {
 
-		//하루를 빼고 포맷
+		//하루를 빼고 포맷 ( end 일자가 + 1 되어 있어서 강제로 - 1 )
 		date.setDate(date.getDate() - 1);
 		
 	  	const year = date.getFullYear();
@@ -75,6 +75,14 @@
 	  	const day = date.getDate().toString().padStart(2, '0');
 	  
 	  return `${year}-${month}-${day}`;
+	};
+	
+	const format00 = (date) => {
+		const hours = date.getHours().toString().padStart(2, '0');
+		const minutes = date.getMinutes().toString().padStart(2, '0');
+
+		
+		return `${hours}:${minutes}`;
 	};
 	
 
@@ -124,14 +132,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		month: 'long',	
     },
     initialView: 'dayGridMonth',
-    displayEventEnd: true,			//시작 ~ 종료 일 까지 표시
-    navLinks: true,					//네비게이션 허용
-    editable: true,					//일정 수정 허용
-    dayMaxEvents: 6,				//하루 최대 일정
-    locale: 'ko',					//지역 한국 설정
-    droppable: true,				//일정 drop 수정 허용
-    selectable: true,				//일정 선택
-    eventResizableFromStart: true,
+    displayEventEnd: true,					//시작 ~ 종료 일 까지 표시
+    navLinks: true,							//네비게이션 허용
+    editable: true,							//일정 수정 허용
+    dayMaxEvents: 3,						//하루 최대 일정
+    locale: 'ko',							//지역 한국 설정
+    droppable: true,						//일정 drop 수정 허용
+    selectable: true,						//일정 선택
+    eventResizableFromStart: true,			//이틀 이상 일정 늘이기 기능
+	defaultTimedEventDuration: '00:00:00',	//start ~ end 기본값 
     events: function(info, successCallback, failureCallback) {
       $.ajax({
         url: "calendarlist",
@@ -142,10 +151,17 @@ document.addEventListener('DOMContentLoaded', function() {
           if(Result != null){
 	          	$.each(Result, function(index, data) {	
 	          	
-	          	//종일 일때 하루 +1 표시
+	          	data.end = new Date(data.end);
+	          	 
+	          	//종일 일때, 1일 추가 표시 ( allDay 일때 하루가 모자람 )
 	          	if(data.allday){
-	          		data.end = new Date(data.end);     
-	          		data.end.setDate(data.end.getDate() + 1);	
+	          		//data.end.setDate(data.end.getDate() + 1);	
+	          	}
+	          	
+				//자정 일때, 1초 추가 표시 ( end 가 다음날의 00:00:00 일때 익일로 넘어가지 않음 )
+          		var test00 = format00(data.end);
+	          	if(test00 == '00:00'){
+	          		data.end.setSeconds(data.end.getSeconds() + 1);
 	          	}
         			          
 	          	events.push({
@@ -212,17 +228,19 @@ document.addEventListener('DOMContentLoaded', function() {
     select: function(arg){
 		console.log(arg);
 		
-	    // 종료 날짜를 하루 늘려서 선택한 범위를 포함하는 것처럼 표시
+	    // 종료 날짜 - 1일 ( end 가 자동으로 + 1일 추가되어 강제로 - 1일 )
 	    arg.end.setDate(arg.end.getDate() - 1);
 
 		
 		const selectStart = new Date(arg.start);
 		const selectEnd = new Date(arg.end);
 		var formattedselectStart = formatDate3(selectStart);
-		var formattedselectEnd = formatDate3(selectEnd);			
+		var formattedselectEnd = formatDate3(selectEnd);
+		
+		console.log(arg.start + "////////" + arg.end);		
 		
 		var time = "00:00";
-		var time2 = "23:59";
+		var time2 = "00:00";
 		
 		console.log("스타트=" + formattedselectStart+"T"+time + "// 엔드=" + formattedselectEnd+"T"+time2);
 		

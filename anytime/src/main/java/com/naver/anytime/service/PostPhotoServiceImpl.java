@@ -47,6 +47,11 @@ public class PostPhotoServiceImpl implements PostPhotoService {
         }
     }
 
+	@Override
+	public List<Photo> getPhotosPostlist(int board_id) {
+		return postPhotoDao.getPhotosPostlist(board_id);
+	}
+
 
     
     
