@@ -105,11 +105,16 @@ public interface PostMapper {
 	public int getAllSearchListCount(int school_id, String search_word);
 
 	// ********************************= 윤희 =********************************
+	
 	// 메인 커뮤니티 페이지 게시물 리스트 출력 사용X
 	public List<Post> getMainPostList(int school_id);
 
 	public List<Post> getPostListByBoard(int board_id);
 
+	public List<Post> getPostTotalList(HashMap<String, Object> map);
 
+	public int getPostTotalListCount(HashMap<String, Object> map);
+
+	public int getPost(int content_id);
 
 }

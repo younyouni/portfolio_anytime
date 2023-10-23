@@ -48,8 +48,9 @@ public class ReportController {
 		int report_user_id = memberService.getUserId(login_id);		//로그인한 유저 user_id 구하기
 		
 		int reportResult = 0;
+		/*
 		String reason = "";
-		
+
 		switch(reportnum) {
 		case 1:
 			reason ="게시판 성격에 부적절함";
@@ -73,21 +74,21 @@ public class ReportController {
 			reason ="정당/정치인 비하 및 선거운동";
 			break;
 		}
+		*/
 		
 		if(post_id > 0) {
-			int postreport = reportService.insertReport(post_id,report_user_id,reason);
+			int postreport = reportService.insertReport(post_id,report_user_id,reportnum);
 			int postreportupdate = reportService.updatePostReportCount(post_id);
 			if(postreport == 1 && postreportupdate == 1) {
 				reportResult = 1;			
 			}
 		}else if(comment_id > 0) {
-			int commentreport = reportService.insertReport(comment_id,report_user_id,reason);
+			int commentreport = reportService.insertReport(comment_id,report_user_id,reportnum);
 			int commentreportupdate = reportService.updateCommentReportCount(comment_id);
 			if(commentreport == 1 && commentreportupdate == 1) {
 				reportResult = 1;			
 			}
 		}
-
 		return reportResult;
 	}
 }
