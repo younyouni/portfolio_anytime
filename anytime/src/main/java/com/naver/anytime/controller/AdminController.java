@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Post;
+import com.naver.anytime.domain.Report;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.ReportService;
@@ -123,28 +124,75 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/reportAdmin", method = RequestMethod.GET)
-//		@ResponseBody
-	public String getReportAdmin(@RequestParam(value = "order", defaultValue = "1", required = false) int order) {
-
-//		List<Report> reportrequest = null;
-//		reportrequest = reportService.getReportRequest(order);
-
-//		reportrequest = 
-
-//		List<Board> boardrequest = null;
-//		boardrequest = boardService.getBoardRequest();
-//
-//		mv.addObject("boardrequest", boardrequest);
-//		mv.setViewName("/admin/boardAdmin");
-
+	public String getReportAdmin() {
 		return "/admin/reportAdmin";
+	}
+
+	@RequestMapping(value = "/reportListAdmin", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Report> getReportList(
+			@RequestParam(value = "order", defaultValue = "1", required = false) Integer order) {
+		logger.info("order : " + order);
+		return reportService.getReportRequest(order);
+	}
+
+	@RequestMapping(value = "/reportTotal", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getReporttotalList(
+			@RequestParam(value = "order", defaultValue = "1", required = false) int order,
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+
+		int limit = 10;
+
+		int listcount = reportService.getListCount();
+
+		// 총 페이지 수
+		int maxpage = (listcount + limit - 1) / limit;
+
+		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
+		int startpage = ((page - 1) / 10) * 10 + 1;
+
+		// 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
+		int endpage = startpage + 10 - 1;
+
+		if (endpage > maxpage)
+			endpage = maxpage;
+
+		List<Report> reportTotal = reportService.getReportTotalList(order, page, limit);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("reportTotal", reportTotal);
+		map.put("page", page);
+		map.put("maxpage", maxpage);
+		map.put("startpage", startpage);
+		map.put("endpage", endpage);
+		map.put("listcount", listcount);
+		map.put("limit", limit);
+
+		return map;
+	}
+
+	@RequestMapping(value = "/reportProcess", method = RequestMethod.POST)
+	@ResponseBody
+	public int reportProcess(int content_id, String content_action, String user_action) {
+
+		if (content_action.equals("반려") && user_action.equals("반려")) {
+			//게시물/유저 따로 처리안함 
+		}else if(!content_action.equals("반려")) {
+			//게시물 stauts 변경
+		}else if(!user_action.equals("반려")) {
+			//유저 status 변경
+		}
+
+		return 0;
 	}
 
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView getAdminNotice(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-			@RequestParam("searchKey") int searchKey, @RequestParam(value = "keyword", required = true) String keyword,
-			ModelAndView mv) {
+			@RequestParam(value = "searchKey", defaultValue = "0", required = false) int searchKey,
+			@RequestParam(value = "keyword", defaultValue = "", required = true) String keyword, ModelAndView mv) {
 
 		if (keyword.equals("null")) {
 			keyword = null;
@@ -170,6 +218,7 @@ public class AdminController {
 
 		List<Post> notice = postService.getPostTotalList(board_id, page, limit, searchKey, keyword);
 
+		mv.addObject("notice", notice);
 		mv.setViewName("/admin/adminNotice");
 		return mv;
 	}

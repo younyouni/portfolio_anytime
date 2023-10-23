@@ -4,11 +4,105 @@ public class Report {
 	private int REPORT_ID;
 	private String REPORTER;
 	private int REPORTED_ORIGIN;
-	private String REASON;
+	private int REASON;
 	private String NOTE_DATE;
 	private int ADMIN_ID;
 	private String POST_R_ACTION;
 	private String USER_R_ACTION;
+
+	// 신고 관리 페이지
+	private int POST_ID;
+	private String BOARD_NAME;
+	private int CONTENT_ID;
+	private String LOGIN_ID;
+	private String NICKNAME;
+	private String CONTENT;
+	private String SUBJECT;
+	private String WRITE_DATE;
+	private int LIKE_COUNT;
+	private int REPORT_COUNT;
+	private int STATUS;
+	private String REPORTER_LOGIN_ID;
+
+	public int getPOST_ID() {
+		return POST_ID;
+	}
+
+	public void setPOST_ID(int pOST_ID) {
+		POST_ID = pOST_ID;
+	}
+
+	public String getBOARD_NAME() {
+		return BOARD_NAME;
+	}
+
+	public void setBOARD_NAME(String bOARD_NAME) {
+		BOARD_NAME = bOARD_NAME;
+	}
+
+	public int getCONTENT_ID() {
+		return CONTENT_ID;
+	}
+
+	public void setCONTENT_ID(int cONTENT_ID) {
+		CONTENT_ID = cONTENT_ID;
+	}
+
+	public String getLOGIN_ID() {
+		return LOGIN_ID;
+	}
+
+	public void setLOGIN_ID(String lOGIN_ID) {
+		LOGIN_ID = lOGIN_ID;
+	}
+
+	public String getCONTENT() {
+		return CONTENT;
+	}
+
+	public void setCONTENT(String cONTENT) {
+		CONTENT = cONTENT;
+	}
+
+	public String getSUBJECT() {
+		return SUBJECT;
+	}
+
+	public void setSUBJECT(String sUBJECT) {
+		SUBJECT = sUBJECT;
+	}
+
+	public String getWRITE_DATE() {
+		return WRITE_DATE;
+	}
+
+	public void setWRITE_DATE(String wRITE_DATE) {
+		WRITE_DATE = wRITE_DATE;
+	}
+
+	public int getLIKE_COUNT() {
+		return LIKE_COUNT;
+	}
+
+	public void setLIKE_COUNT(int lIKE_COUNT) {
+		LIKE_COUNT = lIKE_COUNT;
+	}
+
+	public int getREPORT_COUNT() {
+		return REPORT_COUNT;
+	}
+
+	public void setREPORT_COUNT(int rEPORT_COUNT) {
+		REPORT_COUNT = rEPORT_COUNT;
+	}
+
+	public int getSTATUS() {
+		return STATUS;
+	}
+
+	public void setSTATUS(int sTATUS) {
+		STATUS = sTATUS;
+	}
 
 	public int getREPORT_ID() {
 		return REPORT_ID;
@@ -34,11 +128,11 @@ public class Report {
 		REPORTED_ORIGIN = rEPORTED_ORIGIN;
 	}
 
-	public String getREASON() {
+	public int getREASON() {
 		return REASON;
 	}
 
-	public void setREASON(String rEASON) {
+	public void setREASON(int rEASON) {
 		REASON = rEASON;
 	}
 
@@ -73,4 +167,21 @@ public class Report {
 	public void setUSER_R_ACTION(String uSER_R_ACTION) {
 		USER_R_ACTION = uSER_R_ACTION;
 	}
+
+	public String getNICKNAME() {
+		return NICKNAME;
+	}
+
+	public void setNICKNAME(String nICKNAME) {
+		NICKNAME = nICKNAME;
+	}
+
+	public String getREPORTER_LOGIN_ID() {
+		return REPORTER_LOGIN_ID;
+	}
+
+	public void setREPORTER_LOGIN_ID(String rEPORTER_LOGIN_ID) {
+		REPORTER_LOGIN_ID = rEPORTER_LOGIN_ID;
+	}
+
 }

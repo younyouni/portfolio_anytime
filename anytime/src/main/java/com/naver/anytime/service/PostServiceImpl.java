@@ -256,15 +256,20 @@ public class PostServiceImpl implements PostService {
 		map.put("board_id", board_id);
 		map.put("start", startrow);
 		map.put("end", endrow);
-		map.put("searchKey", searchKey);
-		map.put("keyword", keyword);
+		map.put("search_field", searchKey);
+		map.put("search_word", keyword);
 
 		return postDao.getPostTotalList(map);
 	}
 
 	@Override
 	public int getPostTotalListCount(int board_id, int searchKey, String keyword) {
-		return 0;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("search_field", searchKey);
+		map.put("search_word", keyword);
+		map.put("board_id", board_id);
+
+		return postDao.getPostTotalListCount(map);
 	}
 
 }

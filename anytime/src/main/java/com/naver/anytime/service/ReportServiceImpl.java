@@ -1,5 +1,6 @@
 package com.naver.anytime.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public int insertReport(int id, int report_user_id, String reason) { // id = post_id or comment_id
+	public int insertReport(int id, int report_user_id, int reason) { // id = post_id or comment_id
 		return dao.insertReport(id, report_user_id, reason);
 	}
 
@@ -34,6 +35,31 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<Report> getReportRequest(int order) {
 		return dao.getReportRequest(order);
+	}
+//	@Override
+//	public Map<String, Object> getReportRequest(int order) {
+//		List<Report> reportrequest = dao.getReportRequest();
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("reportrequest", reportrequest);
+//		return map;
+//	}
+
+	@Override
+	public int getListCount() {
+		return dao.getListCount();
+	}
+
+	@Override
+	public List<Report> getReportTotalList(int order, int page, int limit) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("order", order);
+		map.put("start", startrow);
+		map.put("end", endrow);
+		
+		return dao.getReportTotalList(map);
 	}
 
 }

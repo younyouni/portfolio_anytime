@@ -111,6 +111,6 @@ public interface PostMapper {
 
 	public List<Post> getPostTotalList(HashMap<String, Object> map);
 
-
+	public int getPostTotalListCount(HashMap<String, Object> map);
 
 }

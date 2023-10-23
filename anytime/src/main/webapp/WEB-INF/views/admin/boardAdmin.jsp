@@ -49,6 +49,7 @@
 			$("table.request").show();
 			$("table.list").hide();
 			$("form#searchBoard").hide();
+			$('ul.pagination').empty();
 		});
 
 		$(".menu li.boardlist").click(function() {
@@ -256,7 +257,8 @@
 			
 			if (rdata.boardTotal.length > 0) {
 				let output = "";
-				let rownum = 1;
+				let rownum = (page-1)*10+1;
+				
 				keyword = "'"+keyword+"'";
 				$(rdata.boardTotal).each(function() {
 					let board_type = '';
@@ -323,10 +325,10 @@
 				}
 				$('ul.pagination').append(output);
 				}//if (rdata.boardTotal.length > 0) {
-				else {
-					$('table.list tbody').empty();
-		            $('ul.pagination').empty();
-					}
+				//else {
+				//	$('table.list tbody').empty();
+		        //  $('ul.pagination').empty();
+				//	}
 				}
 			});
 		};
