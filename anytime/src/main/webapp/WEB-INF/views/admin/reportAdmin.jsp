@@ -89,6 +89,10 @@
 			event.preventDefault();
 			$('form#reportprocess').css('display', 'block');
 			$('form#reportprocess').before('<div class="modalwrap"></div>');
+			
+			$('.content_reject').prop('checked',true);
+			$('.member_reject').prop('checked',true);
+			
 			let user = $(this).parent().parent().find('.profile span:nth-child(1)').text();
 			$('#reportprocess tr:nth-child(3) input').val(user);
 			

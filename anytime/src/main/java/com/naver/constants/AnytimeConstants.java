@@ -20,7 +20,7 @@ public class AnytimeConstants {
 	public static final int DEPARTMENT_BOARD = 3;
 	public static final int CUSTOM_BOARD = 4;
 
-	public static final int STATUS_ACTIVE = 0;
+	public static final int STATUS_ACTIVE = 1;
 	public static final int STATUS_INACTIVE = 0;
 
 	public static final int BOARD_ADMIN = 1;
