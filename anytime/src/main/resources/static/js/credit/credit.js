@@ -1,6 +1,4 @@
 
-
-
 $(document).ready(function(){
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
@@ -45,6 +43,32 @@ $(document).ready(function(){
 	      $('#requiredCreditForm').hide();
 	      $('div.modalwrap').remove();
 	  });
+	  
+	  
+	 // 시간표 불러오기 모달기능
+		$('.import').click(function() {
+    	$('#importForm').show();
+    	$('#importForm').before('<div class="modalwrap"></div>');
+	 });
+	// 닫기 버튼을 눌렀을 때
+		$('#importForm .close').click(function(e) {
+    		e.preventDefault();
+    	$('#importForm').hide();
+    	$('div.modalwrap').remove();
+	});
+
+	// 모달 창 외부를 클릭했을 때
+	$(document).mouseup(function(e) {
+   		var container = $("#importForm");
+
+    	// if the target of the click isn't the container nor a descendant of the container
+    	if (!container.is(e.target) && container.has(e.target).length === 0) 
+   	 	{
+       	 	container.hide();
+       		 $('div.modalwrap').remove();  // 추가된 부분
+    	}
+	});
+	  
 	  
 	
 	// 메뉴 선택시 기본 semester_detail이랑 semester_id 불러오기
@@ -218,7 +242,7 @@ $(document).ready(function(){
 	        $('.column.major .value').text(data.totalmajor);
 	        $('.column.acquisition .value').text(data.totalAcquisition);
 	        
-
+       // chart1 업데이트
 		var newLabelData = data.semestername.map(function(semester) {
            return semester.semester_name;
        });
@@ -236,9 +260,33 @@ $(document).ready(function(){
        myChart.data.datasets[1].data = newMajorData;
 
        myChart.update();
+       
+       var gradeData = data.gradeData;  // 서버에서 반환된 상위 5개 성적 데이터
+
+	// chart2 업데이트
+	   var newData = new google.visualization.DataTable();
+	   newData.addColumn('string', 'Grade');
+	   newData.addColumn('number', 'Count');
+
+	   for (var i = 0; i < gradeData.length; i++) {
+       newData.addRow([gradeData[i].GRADE, gradeData[i].COUNT]);
+	 }
+
+	   var options = {
+       title: '학점 비율',
+       pieHole: 0.35,
+       colors: ['rgb(242,133,114)', 'rgb(236,197,92)', 'rgb(160,198,97)', 'rgb(130,209,194)', 'rgb(122,158,224)'],
+       pieSliceText: "label",
+       chartArea:{left:'10%',right:'10%',top:'10%',width:'70%',height:'70%'},
+       titleTextStyle: {fontSize: 13}
+    };
+
+		var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+		chart.draw(newData,options);
           }
      });
   }
+  
 //초기화 버튼 클릭 이벤트 핸들러
   $('.reset').click(function() {
 
