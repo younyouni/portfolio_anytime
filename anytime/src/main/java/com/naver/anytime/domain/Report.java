@@ -185,4 +185,12 @@ public class Report {
 		REPORTER_LOGIN_ID = rEPORTER_LOGIN_ID;
 	}
 
+	public String getADMIN_LOGIN_ID() {
+		return ADMIN_LOGIN_ID;
+	}
+
+	public void setADMIN_LOGIN_ID(String aDMIN_LOGIN_ID) {
+		ADMIN_LOGIN_ID = aDMIN_LOGIN_ID;
+	}
+
 }

@@ -189,24 +189,31 @@ public class AdminController {
 		String admin_login_id = principal.getName();
 		int isContent = 0;
 		int result = 0;
+
+		if (postService.getPost(content_id) != 0) {
+			isContent = AnytimeConstants.IS_POST;
+		} else {
+			isContent = AnytimeConstants.IS_COMMENT;
+		}
+
 		if (!content_action.equals("반려")) {
-			if (postService.getPost(content_id) != 0) {
+			if (isContent == AnytimeConstants.IS_POST) {
 				// 게시물 신고
 				postService.updatePostStatus(content_id);
-				isContent = AnytimeConstants.IS_POST;
 			} else {
 				// 코멘트 신고
 				commentService.updateCommentStatus(content_id);
-				isContent = AnytimeConstants.IS_COMMENT;
 			}
-			logger.info("isContent : " + Integer.toString(isContent));
 		}
+
 		if (!user_action.equals("반려")) {
 			// 멤버 정지
 			memberService.updateStatusByContentId(content_id, isContent);
 		}
 		logger.info(Integer.toString(admin_id));
-		result = reportService.updateReport(content_id, content_action, user_action, admin_id, admin_login_id);// 반려인 경우 아닌 경우 모두 처리
+		result = reportService.updateReport(content_id, content_action, user_action, admin_id, admin_login_id);// 반려인 경우
+																												// 아닌 경우
+																												// 모두 처리
 		logger.info("result : " + result);
 		return result;
 	}

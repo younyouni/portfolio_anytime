@@ -170,22 +170,23 @@
 		SET M.ACCOUNT_STATUS = 0
 		WHERE M.USER_ID IN (
 							<include refid="content"/>
-				 	 		);
+							#{content_id}
+				 	 		)
 	</update>
 	
 	<sql id="content">
-	<if test ='isContent == 1'> <!-- post -->
-		SELECT P.USER_ID
-  		FROM REPORT R
-  		JOIN POST P ON P.POST_ID = R.REPORTED_ORIGIN
-  		WHERE P.POST_ID = #{content_id}
-	</if>
-	<if test ='isContent == 2'> <!-- comment -->
-		SELECT C.USER_ID
-    	FROM REPORT R
-    	JOIN COMMENTS C ON C.COMMENT_ID = R.REPORTED_ORIGIN
-    	WHERE C.COMMENT_ID = #{content_id}
-	</if>
+		<if test ='isContent == 1'> <!-- post -->
+			SELECT P.USER_ID
+	  		FROM REPORT R
+	  		JOIN POST P ON P.POST_ID = R.REPORTED_ORIGIN
+	  		WHERE P.POST_ID = 
+		</if>
+		<if test ='isContent == 2'> <!-- comment -->
+			SELECT C.USER_ID
+	    	FROM REPORT R
+	    	JOIN COMMENTS C ON C.COMMENT_ID = R.REPORTED_ORIGIN
+	    	WHERE C.COMMENT_ID = 
+		</if>
 	</sql>
 	
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
