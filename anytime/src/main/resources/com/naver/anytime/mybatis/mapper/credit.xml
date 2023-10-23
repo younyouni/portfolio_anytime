@@ -58,9 +58,7 @@
     WHERE m.user_id = #{user_id}
    </select>
 
-     
-
-
+  
 
 
 </mapper>

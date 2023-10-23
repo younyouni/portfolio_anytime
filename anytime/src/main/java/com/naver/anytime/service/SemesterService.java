@@ -9,6 +9,8 @@ public interface SemesterService {
 	public int insert(Semester semester);
 
 	public List<Semester> getSemestersByUserId(int userId);
+
+	public List<Semester> getSemesternameByUserId(int user_id);
 	
 	
 }

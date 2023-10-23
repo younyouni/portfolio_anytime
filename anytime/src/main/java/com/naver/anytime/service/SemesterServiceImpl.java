@@ -26,6 +26,10 @@ public class SemesterServiceImpl implements SemesterService {
 	public List<Semester> getSemestersByUserId(int userId) {
 		return dao.getSemestersByUserId(userId);
 	}
+	@Override
+	public List<Semester> getSemesternameByUserId(int user_id) {
+		return dao.getSemesternameByUserId(user_id);
+	}
 	
 
 }

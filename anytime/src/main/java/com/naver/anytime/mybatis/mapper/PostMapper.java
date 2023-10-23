@@ -89,6 +89,8 @@ public interface PostMapper {
     
     public void updatePostFile(int post_id, String post_file);
     public void updatePostFile(Map<String, Object> params);
+    
+    public void deletePhoto(int photo_id);
 	
 	// 검색용
 	public List<Post> getSearchPostList(HashMap<String, Object> map);
