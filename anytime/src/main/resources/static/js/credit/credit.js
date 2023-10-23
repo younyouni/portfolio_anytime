@@ -1,6 +1,4 @@
 
-
-
 $(document).ready(function(){
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
@@ -45,6 +43,32 @@ $(document).ready(function(){
 	      $('#requiredCreditForm').hide();
 	      $('div.modalwrap').remove();
 	  });
+	  
+	  
+	 // 시간표 불러오기 모달기능
+		$('.import').click(function() {
+    	$('#importForm').show();
+    	$('#importForm').before('<div class="modalwrap"></div>');
+	 });
+	// 닫기 버튼을 눌렀을 때
+		$('#importForm .close').click(function(e) {
+    		e.preventDefault();
+    	$('#importForm').hide();
+    	$('div.modalwrap').remove();
+	});
+
+	// 모달 창 외부를 클릭했을 때
+	$(document).mouseup(function(e) {
+   		var container = $("#importForm");
+
+    	// if the target of the click isn't the container nor a descendant of the container
+    	if (!container.is(e.target) && container.has(e.target).length === 0) 
+   	 	{
+       	 	container.hide();
+       		 $('div.modalwrap').remove();  // 추가된 부분
+    	}
+	});
+	  
 	  
 	
 	// 메뉴 선택시 기본 semester_detail이랑 semester_id 불러오기

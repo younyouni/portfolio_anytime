@@ -161,9 +161,9 @@
 							</script>
 						</div>
 					</div>
-					<div>
-					<ul class="ratioplot">
-						<div id="donutchart" style="  width: 380px; height: 250px; position:relative; left:-40px; top:-60px;">
+					
+					
+						<div id="donutchart" style="  width: 380px; height: 250px; position:relative; top:-60px;">
 						 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
@@ -193,8 +193,8 @@
       }
      	</script>
       </div>
-	</ul>
- </div>
+	
+
 </article>
 </div>
 			<div class="menu">
@@ -245,11 +245,12 @@
 			<p>
 				<label>시간표 선택</label> <select name="semester"
 					data-gtm-form-interact-field-id="0"><option
-						value="42644511">2023년 겨울학기 (시간표 1)</option>
-					<option value="42662455">2023년 2학기 (시간표 1)</option>
-					<option value="40480064">2023년 여름학기 (시간표 1)</option>
-					<option value="40480070">2023년 1학기 (시간표 1)</option>
-					<option value="42644510">2011년 1학기 (시간표 1)</option></select>
+						value="">2023년 겨울학기 (시간표 1)</option>
+					<option value="">2023년 2학기 (시간표 1)</option>
+					<option value="">2023년 여름학기 (시간표 1)</option>
+					<option value="">2023년 1학기 (시간표 1)</option>
+					<option value="">2011년 1학기 (시간표 1)</option>
+					</select>
 			</p>
 			<input type="submit" value="가져오기" class="button">
 		</form>
