@@ -72,47 +72,6 @@
 		WHERE USER_ID = #{USER_ID}
 	</select>
 
-	
-	<sql id="search_">
-		<if test="search_field != null">
-			and
-			<choose>
-				<when test='search_field=="id"'>id</when>
-				<when test='search_field=="name"'>name</when>
-				<when test='search_field=="age"'>age</when>
-				<when test='search_field=="gender"'>gender</when>
-			</choose>
-			like #{search_word}
-		</if>
-	</sql>
-
-	<select id="getSearchListCount" resultType="int"
-		parameterType="map">
-		select count(*)
-		from member3
-		where id != 'admin'
-		<include refid="search_" />
-	</select>
-
-	<select id="getSearchList" parameterType="map"
-		resultType="member">
-		select *
-		from (select rownum rnum, b.*
-		from (select *
-		from member3
-		where
-		id != 'admin'
-		<include refid="search_" />
-		order by id
-		) b
-		where rownum &lt;= #{end}
-		)
-		where rnum between #{start}
-		and #{end}
-		<!-- where rnum &gt;= #{start} and rnum &lt;= #{end} -->
-	</select>
-
-
 	<!-- ===========윤희============ -->
 	<select id="getSchoolDomain" parameterType="String"
 		resultType="String">
@@ -205,6 +164,30 @@
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
 	</select>
+	
+	<update id="updateStatusByContentId">
+		UPDATE MEMBER M
+		SET M.ACCOUNT_STATUS = 0
+		WHERE M.USER_ID IN (
+							<include refid="content"/>
+							#{content_id}
+				 	 		)
+	</update>
+	
+	<sql id="content">
+		<if test ='isContent == 1'> <!-- post -->
+			SELECT P.USER_ID
+	  		FROM REPORT R
+	  		JOIN POST P ON P.POST_ID = R.REPORTED_ORIGIN
+	  		WHERE P.POST_ID = 
+		</if>
+		<if test ='isContent == 2'> <!-- comment -->
+			SELECT C.USER_ID
+	    	FROM REPORT R
+	    	JOIN COMMENTS C ON C.COMMENT_ID = R.REPORTED_ORIGIN
+	    	WHERE C.COMMENT_ID = 
+		</if>
+	</sql>
 	
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
 	<select id="getSchoolId2" parameterType="String" resultType="Integer">

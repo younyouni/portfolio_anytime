@@ -57,7 +57,7 @@ nav {
 							<span>${school.name}</span> <span>${member.admission_year}</span>
 							<span>학번</span>
 						</p>
-					</div>
+					</div>	
 				</sec:authorize>
 			</section>
 			<section>

@@ -61,26 +61,25 @@ public interface MemberMapper {
 	public int updateStatusInactive(String login_id);
 
 	public int getBoardAdmin(String login_id);
-	
+
+	public void updateStatusByContentId(int content_id, int isContent);
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	public Integer getSchoolId2(String id);
-	
+
 	public int updateBoardAdminDelete(int user_id);
-	
+
 	public int updateBoardAdminAdd(int user_id);
-	
+
 	public Integer getStatusCheck(String login_id);
-	
+
 	public String getNickName2(int user_id);
-	
-	public int getUserIdConversion(int num); //num = post_id or comment_id
-	
+
+	public int getUserIdConversion(int num); // num = post_id or comment_id
+
 	public int getStatusCheck2(int user_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 	public Member isLoginId(String username);
-
-
-
 
 }
