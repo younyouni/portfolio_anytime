@@ -87,14 +87,28 @@
 	
 
 document.addEventListener('DOMContentLoaded', function() {
-
+	
+	
+	var dayTopElements = document.querySelectorAll(".fc-daygrid-day-top");
+    
+    dayTopElements.forEach(function(element) {
+        element.addEventListener("click", function(event) {
+            // 클릭 이벤트를 막음
+            event.preventDefault();
+            event.stopPropagation();
+        });
+    });
+	
+	
+	
   	var calendarEl = document.getElementById('calendar');
   
   	var calendar2El = document.getElementById('calendar2');
         
 	var calendar2 = new FullCalendar.Calendar(calendar2El, {
 		headerToolbar: {
-			left: 'title prevYear,nextYear',
+			left: 'prevYear,nextYear',
+			center: 'title',
 		},
 		locale: 'ko',
 		selectable: true,
@@ -113,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		      		//폼 불러오기
 		      		$("form#calendarModal").show();
 		      		$('form#calendarModal').css('display', 'block');
-					$('form#calendarModal').before('<div class="modalwrap"></div>');
+					$('body').before('<div class="modalwrap"></div>');
 					
 					//초기화
 					$('#all_check').val("");
@@ -124,8 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	headerToolbar: {
 		left: 'prevYear,prev,next,nextYear today',
 		center: 'title',
-		right: 'addCalendar',     
-    },
+		right: 'addCalendar',
+	},
     titleFormat: {
     	year: 'numeric',
 		hour12: false,
@@ -133,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     initialView: 'dayGridMonth',
     displayEventEnd: true,					//시작 ~ 종료 일 까지 표시
-    navLinks: true,							//네비게이션 허용
     editable: true,							//일정 수정 허용
     dayMaxEvents: 3,						//하루 최대 일정
     locale: 'ko',							//지역 한국 설정
@@ -171,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	            	end: data.end,
 	            	description: data.description,
 	            	borderColor: data.color,
-	            	backgroundColor: '#7869e6',
+	            	backgroundColor: data.color,
 	            	allDay: data.allday
 	          	});
 	          	         		
@@ -236,22 +249,16 @@ document.addEventListener('DOMContentLoaded', function() {
 		const selectEnd = new Date(arg.end);
 		var formattedselectStart = formatDate3(selectStart);
 		var formattedselectEnd = formatDate3(selectEnd);
-		
-		console.log(arg.start + "////////" + arg.end);		
-		
-		var time = "00:00";
-		var time2 = "00:00";
-		
-		console.log("스타트=" + formattedselectStart+"T"+time + "// 엔드=" + formattedselectEnd+"T"+time2);
-		
-		
+				
 	    $("form#calendarModal").show();
   		$('form#calendarModal').css('display', 'block');
 		$('form#calendarModal').before('<div class="modalwrap"></div>');
 		
-		
-		$('#all_check').val(formattedselectStart+"T"+time);
-		$('#all_check2').val(formattedselectEnd+"T"+time2);
+		$('input[name="allday"]').prop('checked', true);
+		$("#all_check").attr("type", "data");
+		$("#all_check2").attr("type", "data");
+		$('#all_check').val(formattedselectStart);
+		$('#all_check2').val(formattedselectEnd);
 		
     },
     
@@ -263,11 +270,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	    console.log("클릭한 일정 종료시간 :" + event.end);
 	    
 		/* * * * * * * * * * * * * * * * * 디테일 * * * * * * * * * * * * * * * * */	    
-	    		
+				
 		$("form#calendarDetail").show();
   		$('form#calendarDetail').css('display', 'block');
 		$('form#calendarDetail').before('<div class="modalwrap"></div>');
-		
+
 		//디테일 모달창 제목 변경
 		const calendarDetailTitle = document.getElementById('calendar_detail_title');
 		calendarDetailTitle.textContent = event.title;
@@ -302,7 +309,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		//디테일 색상 변경
 		const calendarDetailSpanStyle = document.querySelector('#calendar_detail_title');
-		calendarDetailSpanStyle.style.borderLeft = '20px solid' + event.borderColor;
+		calendarDetailSpanStyle.style.borderLeft = '20px solid' + event.backgroundColor;
+		
 		
 		/* * * * * * * * * * * * * * * * * 업데이트 * * * * * * * * * * * * * * * * */
 		
@@ -353,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		//수정 색상 변경
 		// <input> 요소의 값을 변경하고 jscolor 업데이트
 		const colorInput = document.getElementById('color_update');
-		colorInput.value = event.borderColor; // 원하는 색상으로 변경
+		colorInput.value = event.backgroundColor; // 원하는 색상으로 변경
 		colorInput.jscolor.fromString(colorInput.value); // jscolor 업데이트
 		
 		//캘린더 고유 번호
@@ -391,10 +399,38 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
   calendar2.render(); 	
   	  	
-	// 종일 선택 여부
+	// 종일 선택 여부 (등록 폼)
 	document.getElementById('allday_check').addEventListener('change', function() {
-	  const datetimeField = document.getElementById('all_check'); // 날짜 및 시간 입력 필드
-	  const datetimeField2 = document.getElementById('all_check2'); // 날짜 및 시간 입력 필드
+		const datetimeField = document.getElementById('all_check'); // 날짜 및 시간 입력 필드
+		const datetimeField2 = document.getElementById('all_check2'); // 날짜 및 시간 입력 필드
+	
+		// 기존 값 저장
+		var datetimeFieldValue = datetimeField.value;
+		var datetimeField2Value = datetimeField2.value;
+		
+		// 체크박스가 체크된 경우 datetime 입력 필드를 날짜 선택 모드로 변경
+		if (this.checked) {
+			datetimeField.type = 'date';
+			datetimeField2.type = 'date';
+		
+		    // 이전 값 복원
+		 	datetimeField.value = datetimeField.value.split("T")[0];
+		  	datetimeField2.value = datetimeField2.value.split("T")[0];
+		} else {
+			datetimeField.type = 'datetime-local';
+			datetimeField2.type = 'datetime-local';
+			
+			// 이전 값 복원
+		 	datetimeField.value = datetimeField.Value;
+			datetimeField2.value = datetimeField2.Value;
+		}
+	  
+	});
+
+	// 종일 선택 여부 (업데이트 폼)
+	document.getElementById('allday_check_update').addEventListener('change', function() {
+	  const datetimeField = document.getElementById('all_check_update'); // 날짜 및 시간 입력 필드
+	  const datetimeField2 = document.getElementById('all_check2_update2'); // 날짜 및 시간 입력 필드
 	
 	  // 기존 값 저장
 	  var datetimeFieldValue = datetimeField.value;
@@ -406,17 +442,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	    datetimeField2.type = 'date';
 	
 	    //	이전 값을 복원
-	 	//  datetimeField.value = datetimeFieldValue.split("T")[0];
-	  	//  datetimeField2.value = datetimeField2Value.split("T")[0];
+	 	datetimeField.value = datetimeFieldValue.split("T")[0];
+	  	datetimeField2.value = datetimeField2Value.split("T")[0];
 	  } else {
 	    datetimeField.type = 'datetime-local';
 	    datetimeField2.type = 'datetime-local';
 	
-	 //   datetimeField.value = datetimeFieldValue;
-	 //   datetimeField2.value = datetimeField2Value;
+	 	datetimeField.value = datetimeFieldValue;
+	 	datetimeField2.value = datetimeField2Value;
 	  }
 	  
 	});
+
 
 
 	//calendar1 , 2 연동
@@ -632,17 +669,4 @@ function calendarDeleteAjax(id){
 	});
 }
 
-
-
-/*
-	//좌표
-	addEventListener('click', (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
-    console.log("X 좌표: " + x);
-    console.log("Y 좌표: " + y);
-    // 모달 열기 등 다른 작업 수행
-  });
-		  
-*/
 });//ready
