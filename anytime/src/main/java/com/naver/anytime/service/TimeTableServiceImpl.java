@@ -16,13 +16,12 @@ public class TimeTableServiceImpl implements TimeTableService{
 	public TimeTableServiceImpl(TimeTableMapper timeDao) {
 		this.timeDao = timeDao;
     }
-
-	@Override
-	public List<TimeTable> getTimetable() {
-		return timeDao.getTimetable();
+    
+    @Override
+	public List<TimeTable> gettimetable(int user_id) {
+		return timeDao.gettimetable(user_id);
 	}
-
-
+    
 	@Override
 	public List<TimeTable> getTimetableByUserId(int user_id) {
 		return timeDao.getTimetableByUserId(user_id);
@@ -33,4 +32,8 @@ public class TimeTableServiceImpl implements TimeTableService{
 		timeDao.changeName(timetable_id, newName);
 		
 	}
+	
+	
+
+	
 }
