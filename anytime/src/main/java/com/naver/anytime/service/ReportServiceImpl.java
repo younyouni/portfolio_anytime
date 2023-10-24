@@ -78,4 +78,9 @@ public class ReportServiceImpl implements ReportService {
 		return dao.updateReport(map);
 	}
 
+	@Override
+	public List<Report> getReportCount() {
+		return dao.getReportCount();
+	}
+
 }

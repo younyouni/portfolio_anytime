@@ -28,5 +28,7 @@ public interface ReportMapper {
 
 	int updateReport(HashMap<String, Object> map);
 
+	List<Report> getReportCount();
+
 
 }

@@ -24,6 +24,8 @@ public class Report {
 	private int REPORT_COUNT;
 	private int STATUS;
 	private String REPORTER_LOGIN_ID;
+	
+	private int COUNT_BY_REASON;
 
 	public int getPOST_ID() {
 		return POST_ID;
@@ -191,6 +193,14 @@ public class Report {
 
 	public void setADMIN_LOGIN_ID(String aDMIN_LOGIN_ID) {
 		ADMIN_LOGIN_ID = aDMIN_LOGIN_ID;
+	}
+
+	public int getCOUNT_BY_REASON() {
+		return COUNT_BY_REASON;
+	}
+
+	public void setCOUNT_BY_REASON(int cOUNT_BY_REASON) {
+		COUNT_BY_REASON = cOUNT_BY_REASON;
 	}
 
 }

@@ -50,10 +50,14 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public ModelAndView adminPage(Principal userPrincipal,ModelAndView mv) {
+	public ModelAndView adminPage(Principal userPrincipal, ModelAndView mv) {
 		String id = userPrincipal.getName();
 		Member m = memberService.getLoginMember(id);
+
+		List<Report> reportCount = reportService.getReportCount();
+
 		mv.addObject("member", m);
+		mv.addObject("reportCount", reportCount);
 		mv.setViewName("/admin/dashboard");
 		return mv;
 	}
@@ -222,7 +226,7 @@ public class AdminController {
 		logger.info("result : " + result);
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
 	public String getAdminNotice() {
 		return "/admin/adminNotice";
@@ -230,7 +234,8 @@ public class AdminController {
 
 	@RequestMapping(value = "/adminNoticeList", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getAdminNoticeList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+	public Map<String, Object> getAdminNoticeList(
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "searchKey", defaultValue = "0", required = false) int searchKey,
 			@RequestParam(value = "keyword", defaultValue = "", required = true) String keyword, ModelAndView mv) {
 
@@ -238,7 +243,7 @@ public class AdminController {
 			keyword = null;
 		}
 
-		int board_id = 121;//공지사항 board_id로 변경
+		int board_id = 121;// 공지사항 board_id로 변경
 
 		int limit = 10;
 
@@ -267,7 +272,7 @@ public class AdminController {
 		map.put("endpage", endpage);
 		map.put("listcount", listcount);
 		map.put("limit", limit);
-		
+
 		return map;
 	}
 

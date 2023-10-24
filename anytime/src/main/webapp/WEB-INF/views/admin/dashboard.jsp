@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,34 +15,100 @@
  -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 	<div id="wrapper">
 		<jsp:include page="../common/left_admin.jsp" />
-		<form action="memberDeleteProcess.com" class="container">
-			<section>
-				<h1>회원 탈퇴</h1>
-				<div class="input">
-					<div class="label">
-						<label>계정 비밀번호</label>
-					</div>
-					<input type="password" name="password" maxlength="20"
-						placeholder="계정 비밀번호">
-				</div>
-				<div class="rules">
-					<!---->
-					<p>
-						※ 탈퇴 후 개인 정보, 시간표 등의 데이터가 삭제되며, 복구할 수 없습니다.<br> ※ 다시 가입하여도,
-						게시판 등 이용 제한 기록은 초기화되지 않습니다.<br> ※ 작성한 게시물은 삭제되지 않으며, (알수없음)으로
-						닉네임이 표시됩니다.<br>
-					</p>
-				</div>
-				<input type="submit" value="회원 탈퇴" id="withdrawButton">
-			</section>
-		</form>
-		<input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}">
-		<jsp:include page="../common/footer2.jsp" />
+		<div
+			style="width: 300px; height: 300px; margin-top: 200px; margin-left: 150px;">
+			<canvas id="pieChart"></canvas>
+		</div>
+		<div
+			style="width: 300px; height: 300px; margin-top: 200px; margin-left: 150px;">
+			<canvas id="lineChart"></canvas>
+		</div>
 	</div>
 </body>
+<script>
+    var reportReason = [
+        <c:forEach items="${reportCount}" var="reportData">
+            '${reportData.REASON}',
+        </c:forEach>
+    ];
+
+    var reportReason_text = reportReason.map(function(value) {
+        if (value === '1') {
+            return '게시판 성격에 부적절함';
+        } else if (value === '2') {
+            return '욕설/비하';
+        } else if (value === '3') {
+            return '음란물/불건전한 만남 및 대화';
+        } else if (value === '4') {
+            return '상업적 광고 및 판매';
+        } else if (value === '5') {
+            return '유출/사칭/사기';
+        } else if (value === '6') {
+            return '낚시/놀람/도배';
+        } else if (value === '7') {
+            return '정당/정치인 비하 및 선거운동';
+        }
+    });
+
+    var reportCount = [
+        <c:forEach items="${reportCount}" var="reportData">
+            ${reportData.COUNT_BY_REASON},
+        </c:forEach>
+    ];
+
+    var pieCanvas = document.getElementById('pieChart');
+    var pieChart = new Chart(pieCanvas, {
+        type: 'pie',
+        data: {
+            labels: reportReason_text,
+            datasets: [{
+                data: reportCount,
+                backgroundColor: [
+                    '#5470c6', '#91cc75', '#fac858', '#ee6666',
+                    '#73c0de', '#3ba272', '#fc8452'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: false,
+            }
+        }
+    });
+
+    // Line Chart
+    const lineCanvas = document.getElementById('lineChart');
+    const lineChart = new Chart(lineCanvas, {
+        type: 'line',
+        data: {
+            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    backgroundColor: 'red',
+                    borderColor: 'red',
+                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'category',
+                    display: true,
+                }
+            }
+        }
+    });
+</script>
 </html>
