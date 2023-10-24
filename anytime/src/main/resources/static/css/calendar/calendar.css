@@ -1,17 +1,9 @@
-nav {
-	position: relative !important;
-}
+
 
 .container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-}
-
-.top {
-  /* 상단 컨테이너 스타일 */
-  background-color: #ccc;
-  padding: 10px;
 }
 
 .content {
@@ -21,20 +13,20 @@ nav {
 
 .left {
   flex: 1;
+  background-color: #eeeef7;
+  text-align: left !important;
+  margin-right: 20px;
 }
 
 .right {
   flex: 6;
-}
-
-.left {
-  /* 왼쪽 컨테이너 스타일 */
-  background-color: #f0f0f0;
-}
-
-.right {
-  /* 오른쪽 컨테이너 스타일 */
   background-color: #ffffff;
+}
+
+body > div {
+	margin-top: 126px;
+    width: 90%;
+    height: 90%;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * ▼일정 등록 모달▼ * * * * * * * * * * * * * * * * * * * * * * * */

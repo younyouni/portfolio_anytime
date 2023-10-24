@@ -77,28 +77,31 @@
 			</c:if>
 		
 		
-		<%-------------------------------- ▼테스트 게시물 출력▼ --------------------------------%>
+		<%-------------------------------- ▼게시물 출력▼ --------------------------------%>
 		
 		<c:choose>
        	<c:when test="${allsearchcheck == 0}">	
 		<c:forEach var="post" items="${postlist}">
          	<article>
          		<a class="article" href="detail?post_id=${post.POST_ID}">
+         		
+				<c:forEach var="photo" items="${photolist}">
+					<c:if test="${post.POST_ID == photo.POST_ID }">
+						<div class="attachthumbnail">
+							<img src="${pageContext.request.contextPath}/upload${photo.PATH}">
+						</div>
+					</c:if>
+				</c:forEach>
+				
          			<h2 class="medium">${post.SUBJECT}</h2>
          			<p class="small">${post.CONTENT}</p> 
          			
          			<time class="small">${post.POST_DATE}</time>
 					<h3 class="small">${post.NICKNAME}</h3>
 			<ul class="status">
+				
 			
-				<c:set var="fileCount" value="0" />
-                 <c:forEach var="file" items="${pageContext.request.contextPath}/upload${photo.PATH}">
-                    <!-- 파일이 존재하면 fileCount 증가 -->
-                    <c:if test="${not empty file}">
-                        <c:set var="fileCount" value="${fileCount + 1}" />
-                    </c:if>
-                </c:forEach> 
-                <li class="attach">${fileCount}</li>
+				
                 
 				<li title="공감" class="vote">${post.LIKE_COUNT}</li>
 				<li title="댓글" class="comment">${post.COMMENT_COUNT}</li>

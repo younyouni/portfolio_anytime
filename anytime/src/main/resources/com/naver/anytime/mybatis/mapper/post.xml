@@ -244,4 +244,10 @@
 		where post_id = #{content_id}
 	</select>
 	
+	<select id="getPostReportCount" resultType="int">
+		select report_count 
+		from post
+		where post_id = #{post_id}
+	</select>
+	
 </mapper>

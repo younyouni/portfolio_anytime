@@ -24,5 +24,17 @@
     <select id="getPhotoByPath" resultType="com.naver.anytime.domain.Photo">
         SELECT * FROM PHOTO WHERE PATH=#{PATH}
     </select>
+    
+    <select id="getPhotosPostlist" resultType="com.naver.anytime.domain.Photo">
+		SELECT P.POST_ID, PH.PATH, PH.PHOTO_ID AS PHOTO_ID
+		FROM POST P
+		INNER JOIN PHOTO PH ON P.POST_ID = PH.POST_ID
+		WHERE P.BOARD_ID = #{board_id}
+		AND PH.PHOTO_ID = (
+		    SELECT MIN(PHOTO_ID) 
+		    FROM PHOTO
+		    WHERE POST_ID = P.POST_ID
+		)
+    </select>
 	
 </mapper>

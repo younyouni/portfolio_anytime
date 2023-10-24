@@ -12,6 +12,8 @@ public interface ReportService {
 
 	int updateCommentReportCount(int comment_id);
 
+	int isReportCheck(int id, int report_user_id);
+	
 	List<Report> getReportRequest(int order);
 
 	int getListCount();
@@ -19,5 +21,6 @@ public interface ReportService {
 	List<Report> getReportTotalList(int order, int page, int limit);
 
 	int updateReport(int content_id, String content_action, String user_action, int admin_id, String admin_login_id);
+
 
 }

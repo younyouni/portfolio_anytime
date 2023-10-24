@@ -37,5 +37,8 @@ public interface CommentMapper {
 	public int updateCommentStatus(int comment_id);
 
 	public int selectReportCount(int comment_id);
+	
+	// 댓글 신고수
+	public int getCommentReportCount(int comment_id);
 
 }

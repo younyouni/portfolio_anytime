@@ -36,13 +36,15 @@
     	<div class="title">
     		<a class="back">뒤로</a>
     			<h2>익명</h2>
-    				<a class="send" data-modal="messageSend" data-box-id="26589680" data-is-anonym="1">쪽지 보내기</a>
+    				<a class="send" data-modal="messageSend">쪽지 보내기</a>
     				<a class="refresh">새로고침</a>
     				<!-- <a class="more">더보기</a> -->
     	</div>
 	    <div class="items" id="right">
-	    	
-	    	
+
+                <div class="item">
+                <p class="messageempty">쪽지가 없습니다.</p>
+               	</div>
     	</div>
     </div>
     
@@ -129,7 +131,7 @@ function getMessageListAjax(id) {
             var messageListItems = $("#right");
 		
             let messageItem = "";
-            
+                        
             if(messageList != null){
             
             $("#right").empty();
@@ -161,7 +163,6 @@ function getMessageListAjax(id) {
             });
             
             } else {
-            	
             	
             }
             
@@ -217,6 +218,7 @@ function sendMessage(){
 	var messageall_id = $("#laft > a.active").data("id");
 	var content = document.querySelector('#messageSend textarea').value;
 	/* var text = $("textarea[name='message']").val(); */
+	
 	$.ajax({
 		url: "${pageContext.request.contextPath}/sendmessage",
 		data: {

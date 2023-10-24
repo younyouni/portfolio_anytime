@@ -24,5 +24,8 @@ public interface CommentService {
 	public int updateComment(Comments co);
 
 	public int updateCommentStatus(int comment_id);
+	
+	// 댓글 신고수
+	public int getCommentReportCount(int comment_id);
 
 }

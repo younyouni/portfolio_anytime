@@ -100,10 +100,6 @@ public class BoardController {
 			@RequestParam("board_id") int board_id,
 			@RequestParam("content") String content
 			) {
-		// db 변경하기 귀찮아서 임시 설정 content 제약조건 notnull 변경해야함 /////////////////////////////////////////////
-		if(content.equals("")) {
-			content = "없음";
-		}
 
 		int updateData = boardService.updateBoardContent(board_id, content);
 		System.out.println("BoardController에서 content 업데이트 성공 여부 테스트 [0 / 1] = " + updateData);
