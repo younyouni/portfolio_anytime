@@ -594,7 +594,7 @@ public class PostController {
 	    				if(memberService.getStatusCheck2(post2.getUSER_ID()) == 1) {
 	    					post.setNICKNAME(post2.getNICKNAME());	    					
 	    				}else {
-	    					post.setNICKNAME("알 수 없음");	
+	    					post.setNICKNAME("(알 수 없음)");	
 	    				}
 	    			}
 	    		}

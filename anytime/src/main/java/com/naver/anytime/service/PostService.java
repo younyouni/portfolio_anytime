@@ -97,7 +97,9 @@ public interface PostService {
 	
 	//전체 검색용 리스트 결과
 	public List<Post> getAllSearchPostList(int page, int limit, int school_id, String search_word);
-
+	
+	//게시물 신고수
+	public int getPostReportCount(int post_id);
 	// ********************************= 윤희 =********************************
 	public List<List<Post>> getPostListByBoard(int[] board_ids);
 
@@ -106,6 +108,7 @@ public interface PostService {
 	public int getPostTotalListCount(int board_id, int searchKey, String keyword);
 
 	public int getPost(int content_id);
+
 
 
 

@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
     droppable: true,						//일정 drop 수정 허용
     selectable: true,						//일정 선택
     eventResizableFromStart: true,			//이틀 이상 일정 늘이기 기능
-	defaultTimedEventDuration: '00:00:00',	//start ~ end 기본값 
+	defaultTimedEventDuration: '00:00:00',	//start ~ end 기본값
     events: function(info, successCallback, failureCallback) {
       $.ajax({
         url: "calendarlist",
@@ -262,16 +262,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	    console.log("클릭한 일정 시작시간 :" + event.start);
 	    console.log("클릭한 일정 종료시간 :" + event.end);
 	    
-		/*쓰는거
-		event.id
-		event.title
-		event.borderColor
-		formattedStartDate
-		formattedEndDate
-		event.allDay
-		event.extendedProps.description
-		*/
-		
+		/* * * * * * * * * * * * * * * * * 디테일 * * * * * * * * * * * * * * * * */	    
+	    		
 		$("form#calendarDetail").show();
   		$('form#calendarDetail').css('display', 'block');
 		$('form#calendarDetail').before('<div class="modalwrap"></div>');
@@ -312,10 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const calendarDetailSpanStyle = document.querySelector('#calendar_detail_title');
 		calendarDetailSpanStyle.style.borderLeft = '20px solid' + event.borderColor;
 		
-		
-		
-		
-		/* * * * * * * * * * * * * 업데이트 * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * 업데이트 * * * * * * * * * * * * * * * * */
 		
 		//수정 모달창 제목 변경
 		const calendarTitleUpdate = document.getElementById('calendar_title_update');
@@ -377,26 +366,31 @@ document.addEventListener('DOMContentLoaded', function() {
 			$("form#calendarUpdateModal").show();			
 		});
 		
+		
+		/* * * * * * * * * * * * * * * * * 삭제 * * * * * * * * * * * * * * * * */
+		
 		//삭제 실행
-		$("#calendar_delete").click(function(event) {
-			event.preventDefault();
-			if(confirm("일정을 삭제하시겠습니까?")) {
-				calendarDeleteAjax(idcheck);
-			} else {
-				console.log("삭제 취소");
-			}	
+		$("#calendar_delete").click(function() {
+			const test = false;	//confirm 중복 발생 방지
+			if(!test){
+				if(confirm("일정을 삭제하시겠습니까?")) {
+					calendarDeleteAjax(idcheck);
+				} else {
+					console.log("삭제 취소");
+				}
+				test = true;
+			}
 		});
 		
 		
 		
      },
-    
   }); // calendar 끝
   
   
   calendar.render();
-  calendar2.render();
-  
+  calendar2.render(); 	
+  	  	
 	// 종일 선택 여부
 	document.getElementById('allday_check').addEventListener('change', function() {
 	  const datetimeField = document.getElementById('all_check'); // 날짜 및 시간 입력 필드
@@ -411,9 +405,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	    datetimeField.type = 'date';
 	    datetimeField2.type = 'date';
 	
-	    // 이전 값을 복원
-	 //   datetimeField.value = datetimeFieldValue.split("T")[0];
-	  //  datetimeField2.value = datetimeField2Value.split("T")[0];
+	    //	이전 값을 복원
+	 	//  datetimeField.value = datetimeFieldValue.split("T")[0];
+	  	//  datetimeField2.value = datetimeField2Value.split("T")[0];
 	  } else {
 	    datetimeField.type = 'datetime-local';
 	    datetimeField2.type = 'datetime-local';
@@ -637,8 +631,6 @@ function calendarDeleteAjax(id){
 		}
 	});
 }
-
-
 
 
 

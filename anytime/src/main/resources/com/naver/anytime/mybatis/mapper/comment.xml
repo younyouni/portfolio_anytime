@@ -56,5 +56,11 @@
 		SET STATUS = 0
 		WHERE COMMENT_ID =${comment_id}
 	</update>
+	
+	<select id="getCommentReportCount" resultType="int">
+		select report_count
+		from comments
+		where comment_id = #{comment_id}
+	</select>
 
 </mapper>

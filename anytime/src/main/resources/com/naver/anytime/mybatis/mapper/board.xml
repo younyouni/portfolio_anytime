@@ -12,7 +12,7 @@
 
 	<select id="getBoardList" resultType="board">
 		select * from board
-		where school_id = #{school_id}
+		where school_id = #{school_id} and status = 1
 	</select>
 	
 	<select id="getBoardDetail" parameterType="int" resultType="board">
