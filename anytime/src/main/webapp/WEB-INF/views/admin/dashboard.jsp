@@ -15,100 +15,72 @@
  -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawReportReasonChart);
+      google.charts.setOnLoadCallback(drawVisualization);
+
+      function drawReportReasonChart() {
+
+        var reportReasonData = google.visualization.arrayToDataTable([
+          ['신고 사유', '일별 신고 건수'],
+        	<c:forEach items="${reportCount}" var="reportData" varStatus="loop">
+          	[ <c:choose>
+             <c:when test ="${reportData.REASON eq '1'}">'게시판 성격에 부적절함'</c:when>
+             <c:when test ="${reportData.REASON eq'2'}">'욕설/비하'</c:when>
+             <c:when test ="${reportData.REASON eq'3'}">'음란물/불건전한 만남 및 대화'</c:when>
+             <c:when test ="${reportData.REASON eq'4'}">'상업적 광고 및 판매'</c:when>
+             <c:when test ="${reportData.REASON eq'5'}">'유출/사칭/사기'</c:when>
+             <c:when test ="${reportData.REASON eq'6'}">'낚시/놀람/도배'</c:when>
+             <c:when test ="${reportData.REASON eq'7'}">'정당/정치인 비하 및 선거운동'</c:when>
+             </c:choose>
+        	  , ${reportData.COUNT_BY_REASON}] <c:if test="${!loop.last}">, </c:if>
+          </c:forEach>
+        ]);
+
+        var reportReasonOptions = {
+          title: 'My Daily Activities'
+        };
+
+        var reportReasonChart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        reportReasonChart.draw(reportReasonData, reportReasonOptions);
+      }
+      
+      ////////////////////////////////////////////////////////////////////////////////////////////////
+
+     function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+          ['Day', 'Bolivia', 'Ecuador','total'],
+          ['23/10/23',  165,      938, 800],
+          ['23/10/24',  135,      1120,700]
+        ]);
+
+        var options = {
+          title : 'Monthly Coffee Production by Country',
+          vAxis: {title: 'Cups'},
+          hAxis: {title: 'Month'},
+          seriesType: 'bars',
+          series: {2: {type: 'line'}}
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+      
+     ////////////////////////////////////////////////////////////////////////////////////////////////
+    </script>
+  </head>
 <body>
 	<div id="wrapper">
 		<jsp:include page="../common/left_admin.jsp" />
-		<div
-			style="width: 300px; height: 300px; margin-top: 200px; margin-left: 150px;">
-			<canvas id="pieChart"></canvas>
-		</div>
-		<div
-			style="width: 300px; height: 300px; margin-top: 200px; margin-left: 150px;">
-			<canvas id="lineChart"></canvas>
-		</div>
+		  <div id="piechart" style="width: 1000px; height: 500px;"></div>
+		   <div id="chart_div" style="width: 1000px; height: 500px;"></div>
 	</div>
 </body>
 <script>
-    var reportReason = [
-        <c:forEach items="${reportCount}" var="reportData">
-            '${reportData.REASON}',
-        </c:forEach>
-    ];
-
-    var reportReason_text = reportReason.map(function(value) {
-        if (value === '1') {
-            return '게시판 성격에 부적절함';
-        } else if (value === '2') {
-            return '욕설/비하';
-        } else if (value === '3') {
-            return '음란물/불건전한 만남 및 대화';
-        } else if (value === '4') {
-            return '상업적 광고 및 판매';
-        } else if (value === '5') {
-            return '유출/사칭/사기';
-        } else if (value === '6') {
-            return '낚시/놀람/도배';
-        } else if (value === '7') {
-            return '정당/정치인 비하 및 선거운동';
-        }
-    });
-
-    var reportCount = [
-        <c:forEach items="${reportCount}" var="reportData">
-            ${reportData.COUNT_BY_REASON},
-        </c:forEach>
-    ];
-
-    var pieCanvas = document.getElementById('pieChart');
-    var pieChart = new Chart(pieCanvas, {
-        type: 'pie',
-        data: {
-            labels: reportReason_text,
-            datasets: [{
-                data: reportCount,
-                backgroundColor: [
-                    '#5470c6', '#91cc75', '#fac858', '#ee6666',
-                    '#73c0de', '#3ba272', '#fc8452'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                display: false,
-            }
-        }
-    });
-
-    // Line Chart
-    const lineCanvas = document.getElementById('lineChart');
-    const lineChart = new Chart(lineCanvas, {
-        type: 'line',
-        data: {
-            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-            datasets: [
-                {
-                    label: 'Dataset 1',
-                    backgroundColor: 'red',
-                    borderColor: 'red',
-                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-                    fill: false
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    type: 'category',
-                    display: true,
-                }
-            }
-        }
-    });
+   
 </script>
 </html>

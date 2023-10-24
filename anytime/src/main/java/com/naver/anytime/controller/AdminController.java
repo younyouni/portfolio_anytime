@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.DailyData;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.Report;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
+import com.naver.anytime.service.DailyDataService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.ReportService;
@@ -38,15 +40,17 @@ public class AdminController {
 	private ReportService reportService;
 	private CommentService commentService;
 	private MemberService memberService;
+	private DailyDataService dailyDataService;
 
 	@Autowired
 	public AdminController(BoardService boardService, PostService postService, ReportService reportService,
-			CommentService commentService, MemberService memberService) {
+			CommentService commentService, MemberService memberService, DailyDataService dailyDataService) {
 		this.boardService = boardService;
 		this.postService = postService;
 		this.reportService = reportService;
 		this.commentService = commentService;
 		this.memberService = memberService;
+		this.dailyDataService = dailyDataService;
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -54,6 +58,9 @@ public class AdminController {
 		String id = userPrincipal.getName();
 		Member m = memberService.getLoginMember(id);
 
+		List<DailyData> dailyData = dailyDataService.getDailyData();
+
+		// 신고 사유 데이터
 		List<Report> reportCount = reportService.getReportCount();
 
 		mv.addObject("member", m);
