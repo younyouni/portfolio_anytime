@@ -38,18 +38,125 @@ $(document).ready(function(){
 		 $('#requiredCreditForm').before('<div class="modalwrap"></div>');
 	  });
 	  
-	  $('.close').click(function(e) {
+	  $('#requiredCreditForm .close').click(function(e) {
 	      e.preventDefault();
 	      $('#requiredCreditForm').hide();
 	      $('div.modalwrap').remove();
 	  });
 	  
-	  
+//=============================================================================================================//	  
 	 // 시간표 불러오기 모달기능
-		$('.import').click(function() {
-    	$('#importForm').show();
-    	$('#importForm').before('<div class="modalwrap"></div>');
-	 });
+		$('.subjects').on('click','a.import',function() {
+	
+		
+        $.ajax({
+        
+        url: 'gettimetable',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var $select = $('#importForm select[name="semester"]');
+       
+            $select.empty();  // 기존의 select 옵션 제거
+
+            $.each(data, function(index, item) {
+              
+                var option = $('<option>', { value: item.timetable_ID, text: item.semester + ' (' + item.name + ')'  });
+                $select.append(option);
+            });
+				// 각 <option>의 timetableId 값들을 배열로 저장
+				var timetableIds = $.map($select.find('option'), function(option) {
+    			return $(option).val();  // 가정: <option>의 value가 timetable_id
+				});
+
+              // timetableIds 배열을 form의 data로 저장
+			  $('#importForm').data('timetableIds', timetableIds);
+
+
+               $select.prop('selectedIndex', 0);
+
+             $('#importForm').show();
+             $('#importForm').before('<div class="modalwrap"></div>')
+            
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus + ': ' + errorThrown);
+           alert('Failed to fetch timetable data.');
+        }
+    });
+});
+	
+	// 가져오기 버튼 클릭시 
+	$('#importForm').submit(function(event) {
+    event.preventDefault();  // 기본 submit 동작을 막음
+
+    var selectedSemester = $(this).find('select[name="semester"]').val();
+   
+   // 선택된 <option>의 인덱스를 구함
+    var selectedIndex = $(this).find('select[name="semester"]')[0].selectedIndex;
+
+    // 해당 인덱스에 맞는 timetableId 값을 가져옴
+    var timetableIds = $(this).data('timetableIds');
+    
+	// 선택된 옵션과 동일한 인덱스를 가진 데이터를 얻음 
+	var timetableId = (timetableIds && timetableIds[selectedIndex]) ? timetableIds[selectedIndex] : undefined;
+	
+	// active된 semester_id 다시 선언
+	var semesterId = $(".menu li.active").data('id');
+    
+
+    $.ajax({
+        url: 'gettimetable_detail',
+        type: 'GET',
+        data: { timetable_id: timetableId, 
+                semester_id: semesterId
+        },
+        dataType: 'json',
+        success: function(data) {
+            var tbody = $('.subjects tbody');
+         
+            tbody.empty();  // 기존 행들 삭제
+
+            var grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "D+", "D0", "D-", "F", "P", "NP"];
+
+           $.each(data.semester_detail, function(i, detail) {
+        var subject = (data.timetable_detail[i] && data.timetable_detail[i].subject) ? data.timetable_detail[i].subject : '';
+        var gradeOptions = '';
+        $.each(grades, function(i, grade) {
+            gradeOptions += '<option value="' + grade + '"' + (grade === detail.grade ? ' selected' : '') + '>' + grade + '</option>';
+        });
+        
+        var row = '<tr data-id="' + detail.semester_detail_id + '">' +
+            '<td><input name="name" maxlength="50" value="' + subject+ '"></td>' +
+            '<td><input name="credit" type="number" maxlength="4" min="0" value ="' + detail.credit+ '"></td>' +
+            '<td><select name="grade">' + gradeOptions+ '</select></td>' +
+            '<td><label><input name="major" type="checkbox"' +(detail.major ? ' checked' : '')+'><span></span></label></td>' +
+        '</tr>';
+        tbody.append(row);
+        
+             // 새로 추가된 row의 각 필드에 대해 change 이벤트를 수동으로 트리거합니다.
+           $(".subjects tbody").find('input[name="name"]').trigger('change');
+           
+           
+			});
+			
+			 $('#importForm').hide();  // 
+   			 $('.modalwrap').remove();  // 
+			
+			
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus + ': ' + errorThrown);
+           alert('Failed to fetch timetable details.');
+        }
+  });
+
+});
+	
+	
+	
+		
+    	
 	// 닫기 버튼을 눌렀을 때
 		$('#importForm .close').click(function(e) {
     		e.preventDefault();
@@ -72,7 +179,8 @@ $(document).ready(function(){
 	  
 	
 	// 메뉴 선택시 기본 semester_detail이랑 semester_id 불러오기
-	var semester_id
+	var semester_id;
+	
 	$(".menu li").click(function(){
 			var $li = $(this);
 			if ($li.data('id')) {
@@ -81,6 +189,8 @@ $(document).ready(function(){
 			}
 			
 		semester_id = $(this).data('id');
+		
+		
 	$.ajax({
 	url: 'getsemester_detail',
 	type: 'GET',
@@ -189,7 +299,7 @@ $(document).ready(function(){
       $.ajax({
           url: 'updatesemester_detail',
           type: 'POST',
-          async: false, // 동기적으로 일어나라 
+          async: true, // 동기적으로 일어나라 
           data: {
         	  semester_detail_id: semester_detail_id,
               semester_id: semester_id,
