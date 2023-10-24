@@ -247,7 +247,11 @@ public class PostServiceImpl implements PostService {
 			PostPhotoDao.deletePhoto(photo_id);
 		}
 	}
-
+	
+	@Override
+	public int getPostReportCount(int post_id) {
+		return postDao.getPostReportCount(post_id);
+	}
 	// ********************************= 윤희 =********************************
 	@Override
 	public List<List<Post>> getPostListByBoard(int[] board_ids) {
@@ -297,5 +301,6 @@ public class PostServiceImpl implements PostService {
 		}
 		return result;
 	}
+
 
 }

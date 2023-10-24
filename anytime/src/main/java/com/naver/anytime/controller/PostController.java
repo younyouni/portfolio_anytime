@@ -575,6 +575,10 @@ public class PostController {
 	    // 유저 닉네임
 	    List<Post> username = postService.getUserNickname();
 	    
+	    
+	    
+	    List<Photo> photolist = postPhotoService.getPhotosPostlist(board_id);
+	    
 	    // 익명성
 	    int anonymous = boardService.getBoardAnonymous(board_id);
 	    
@@ -590,13 +594,14 @@ public class PostController {
 	    				if(memberService.getStatusCheck2(post2.getUSER_ID()) == 1) {
 	    					post.setNICKNAME(post2.getNICKNAME());	    					
 	    				}else {
-	    					post.setNICKNAME("알 수 없음");	
+	    					post.setNICKNAME("(알 수 없음)");	
 	    				}
 	    			}
 	    		}
 	    	} 	
 	    }
-
+	    
+	    
 
 	    mv.setViewName("post/postList");
 	    mv.addObject("page", page);
@@ -606,13 +611,15 @@ public class PostController {
 	    mv.addObject("listcount", listcount);
 	    mv.addObject("postlist", postlist);
 	    mv.addObject("limit", limit);
-
+	    
 	    mv.addObject("un", username);
 	    mv.addObject("boardname", board);
 	    mv.addObject("allsearchcheck", 0);
 	    mv.addObject("emptycheck", 0);
 	    mv.addObject("board_id", board_id);
 	    
+	    mv.addObject("photolist", photolist);
+	    System.out.println("이거되나?" + photolist);
 	    // 글이 없을때 체크 (1= 일반, 2= 검색)
 	    if(postlist != null) {
 	    	mv.addObject("emptycheck", 1);

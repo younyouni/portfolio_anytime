@@ -13,7 +13,7 @@
 		const minutes = date.getMinutes().toString().padStart(2, '0');
 		const seconds = date.getSeconds().toString().padStart(2, '0');
 	  
-	  return `${year}-${month}-${day} (${dayOfWeek}) ${hours}:${minutes}:${seconds}`;
+	  return `${year}-${month}-${day} (${dayOfWeek}) ${hours}:${minutes}`;
 	};
 
 	// YYYY-MM-DD 형식으로 날씨 변환 ( 일정 보기의 종일 )
@@ -30,7 +30,7 @@
 	// YYYY-MM-DD 형식으로 날씨 변환 ( 일정 보기의 종일 )
 	const formatDateAllDayEnd = (date) => {
 
-		//하루를 빼고 포맷
+		//하루를 빼고 포맷 ( end 일자가 + 1 되어 있어서 강제로 - 1 )
 		date.setDate(date.getDate() - 1);
 		
 	  	const year = date.getFullYear();
@@ -75,6 +75,14 @@
 	  	const day = date.getDate().toString().padStart(2, '0');
 	  
 	  return `${year}-${month}-${day}`;
+	};
+	
+	const format00 = (date) => {
+		const hours = date.getHours().toString().padStart(2, '0');
+		const minutes = date.getMinutes().toString().padStart(2, '0');
+
+		
+		return `${hours}:${minutes}`;
 	};
 	
 
@@ -124,17 +132,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		month: 'long',	
     },
     initialView: 'dayGridMonth',
-    displayEventEnd: true,			//시작 ~ 종료 일 까지 표시
-    navLinks: true,					//네비게이션 허용
-    editable: true,					//일정 수정 허용
-    dayMaxEvents: 6,				//하루 최대 일정
-    locale: 'ko',					//지역 한국 설정
-    droppable: true,				//일정 drop 수정 허용
-    selectable: true,				//일정 선택
-    eventResizableFromStart: true,
-    eventResize: function(info) {
-    	console.log(info);
-    },
+    displayEventEnd: true,					//시작 ~ 종료 일 까지 표시
+    navLinks: true,							//네비게이션 허용
+    editable: true,							//일정 수정 허용
+    dayMaxEvents: 3,						//하루 최대 일정
+    locale: 'ko',							//지역 한국 설정
+    droppable: true,						//일정 drop 수정 허용
+    selectable: true,						//일정 선택
+    eventResizableFromStart: true,			//이틀 이상 일정 늘이기 기능
+	defaultTimedEventDuration: '00:00:00',	//start ~ end 기본값
     events: function(info, successCallback, failureCallback) {
       $.ajax({
         url: "calendarlist",
@@ -145,14 +151,19 @@ document.addEventListener('DOMContentLoaded', function() {
           if(Result != null){
 	          	$.each(Result, function(index, data) {	
 	          	
-	          	//종일 일때 하루 +1 표시
+	          	data.end = new Date(data.end);
+	          	 
+	          	//종일 일때, 1일 추가 표시 ( allDay 일때 하루가 모자람 )
 	          	if(data.allday){
-	          		data.end = new Date(data.end);     
-	          		data.end.setDate(data.end.getDate() + 1);	
+	          		//data.end.setDate(data.end.getDate() + 1);	
 	          	}
 	          	
-
-	          			          
+				//자정 일때, 1초 추가 표시 ( end 가 다음날의 00:00:00 일때 익일로 넘어가지 않음 )
+          		var test00 = format00(data.end);
+	          	if(test00 == '00:00'){
+	          		data.end.setSeconds(data.end.getSeconds() + 1);
+	          	}
+        			          
 	          	events.push({
 	        		id: data.id,
 	            	title: data.title,
@@ -162,7 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	            	borderColor: data.color,
 	            	backgroundColor: '#7869e6',
 	            	allDay: data.allday
-	          	});	          		
+	          	});
+	          	         		
 	          });
           }
           console.log(events)
@@ -173,6 +185,22 @@ document.addEventListener('DOMContentLoaded', function() {
           failureCallback(Result);
         }
       });
+    },
+    eventResize: function(info) {
+    	const eventStartDate = new Date(info.event.start);
+    	var formattedStartDate = formatDate2(eventStartDate);
+    	if(info.event.end != null) {
+			const eventEndDate = new Date(info.event.end);
+			var formattedEndDate = formatDate2(eventEndDate);	
+    	}
+		
+    	var data = {
+    		calendar_id: info.event.id,
+    		start: formattedStartDate,
+    		end: formattedEndDate
+    	}
+    	
+    	calendarDropUpdateAjax(data);  	
     },
     eventDrop: function(info){
     	console.log("일정 이동 id" + info.event.id);
@@ -200,32 +228,19 @@ document.addEventListener('DOMContentLoaded', function() {
     select: function(arg){
 		console.log(arg);
 		
-	    // 종료 날짜를 하루 늘려서 선택한 범위를 포함하는 것처럼 표시
+	    // 종료 날짜 - 1일 ( end 가 자동으로 + 1일 추가되어 강제로 - 1일 )
 	    arg.end.setDate(arg.end.getDate() - 1);
 
-		
-/*		
-		// YYYY-MM-DDTHH:MM 형식으로 변환
-		var year = start.getFullYear();
-	    var month = (start.getMonth() + 1).toString().padStart(2, '0');
-	    var day = start.getDate().toString().padStart(2, '0');
-	    var hours = start.getHours().toString().padStart(2, '0');
-	    var minutes = start.getMinutes().toString().padStart(2, '0');
-		console.log(year + month + day + hours + minutes);
-		// YYYY-MM-DD 형식으로 조합
-		var formattedDate = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
-		
-		// 입력 요소에 값을 할당
-		document.getElementsByName('calendar_date').value = formattedDate;
-*/		
 		
 		const selectStart = new Date(arg.start);
 		const selectEnd = new Date(arg.end);
 		var formattedselectStart = formatDate3(selectStart);
-		var formattedselectEnd = formatDate3(selectEnd);			
+		var formattedselectEnd = formatDate3(selectEnd);
+		
+		console.log(arg.start + "////////" + arg.end);		
 		
 		var time = "00:00";
-		var time2 = "23:59";
+		var time2 = "00:00";
 		
 		console.log("스타트=" + formattedselectStart+"T"+time + "// 엔드=" + formattedselectEnd+"T"+time2);
 		
@@ -247,16 +262,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	    console.log("클릭한 일정 시작시간 :" + event.start);
 	    console.log("클릭한 일정 종료시간 :" + event.end);
 	    
-		/*쓰는거
-		event.id
-		event.title
-		event.borderColor
-		formattedStartDate
-		formattedEndDate
-		event.allDay
-		event.extendedProps.description
-		*/
-		
+		/* * * * * * * * * * * * * * * * * 디테일 * * * * * * * * * * * * * * * * */	    
+	    		
 		$("form#calendarDetail").show();
   		$('form#calendarDetail').css('display', 'block');
 		$('form#calendarDetail').before('<div class="modalwrap"></div>');
@@ -297,10 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const calendarDetailSpanStyle = document.querySelector('#calendar_detail_title');
 		calendarDetailSpanStyle.style.borderLeft = '20px solid' + event.borderColor;
 		
-		
-		
-		
-		/* * * * * * * * * * * * * 업데이트 * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * 업데이트 * * * * * * * * * * * * * * * * */
 		
 		//수정 모달창 제목 변경
 		const calendarTitleUpdate = document.getElementById('calendar_title_update');
@@ -362,26 +366,31 @@ document.addEventListener('DOMContentLoaded', function() {
 			$("form#calendarUpdateModal").show();			
 		});
 		
+		
+		/* * * * * * * * * * * * * * * * * 삭제 * * * * * * * * * * * * * * * * */
+		
 		//삭제 실행
-		$("#calendar_delete").click(function(event) {
-			event.preventDefault();
-			if(confirm("일정을 삭제하시겠습니까?")) {
-				calendarDeleteAjax(idcheck);
-			} else {
-				console.log("삭제 취소");
-			}	
+		$("#calendar_delete").click(function() {
+			const test = false;	//confirm 중복 발생 방지
+			if(!test){
+				if(confirm("일정을 삭제하시겠습니까?")) {
+					calendarDeleteAjax(idcheck);
+				} else {
+					console.log("삭제 취소");
+				}
+				test = true;
+			}
 		});
 		
 		
 		
      },
-    
   }); // calendar 끝
   
   
   calendar.render();
-  calendar2.render();
-  
+  calendar2.render(); 	
+  	  	
 	// 종일 선택 여부
 	document.getElementById('allday_check').addEventListener('change', function() {
 	  const datetimeField = document.getElementById('all_check'); // 날짜 및 시간 입력 필드
@@ -396,9 +405,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	    datetimeField.type = 'date';
 	    datetimeField2.type = 'date';
 	
-	    // 이전 값을 복원
-	 //   datetimeField.value = datetimeFieldValue.split("T")[0];
-	  //  datetimeField2.value = datetimeField2Value.split("T")[0];
+	    //	이전 값을 복원
+	 	//  datetimeField.value = datetimeFieldValue.split("T")[0];
+	  	//  datetimeField2.value = datetimeField2Value.split("T")[0];
 	  } else {
 	    datetimeField.type = 'datetime-local';
 	    datetimeField2.type = 'datetime-local';
@@ -622,8 +631,6 @@ function calendarDeleteAjax(id){
 		}
 	});
 }
-
-
 
 
 

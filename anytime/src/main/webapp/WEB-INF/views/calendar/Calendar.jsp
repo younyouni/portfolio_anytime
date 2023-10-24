@@ -27,7 +27,6 @@
   	<jsp:include page="../common/header.jsp" />
   	
   	<div class="container">
-	  <div class="top">상단 내용</div>
 	  <div class="content">
 	  	<div class="left">
 	  		<div id='calendar2'></div> 

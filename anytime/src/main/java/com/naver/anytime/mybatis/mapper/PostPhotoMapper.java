@@ -16,5 +16,7 @@ public interface PostPhotoMapper {
 
 	public Photo getPhotoById(int photo_id);
 	public void deletePhoto(int photo_id);
+	
+	public List<Photo> getPhotosPostlist(int board_id);
 
 }

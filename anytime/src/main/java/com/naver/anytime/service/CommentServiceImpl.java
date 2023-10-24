@@ -48,4 +48,10 @@ public class CommentServiceImpl implements CommentService {
 		return dao.updateCommentStatus(comment_id);
 	}
 	
+	//댓글 신고수
+	@Override
+	public int getCommentReportCount(int comment_id) {
+		return dao.getCommentReportCount(comment_id);
+	}
+	
 }

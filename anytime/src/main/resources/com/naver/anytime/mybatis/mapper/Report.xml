@@ -21,6 +21,13 @@
 		where comment_id = #{comment_id}
 	</update>
 	
+	<select id="isReportCheck" resultType="int">
+		select count(*)
+		from report
+		where reported_origin = #{id} and reporter = #{report_user_id}
+	</select> <!-- id = post_id or comment_id -->
+	
+	
 	<select id ="getReportRequest" resultType="report">
 		SELECT CONTENT.*, REASON.REASON REASON, REASON.NOTE_DATE NOTE_DATE 
 		FROM( 	SELECT 

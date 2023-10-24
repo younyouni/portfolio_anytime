@@ -16,6 +16,8 @@ public interface ReportMapper {
 
 	int updateCommentReportCount(int comment_id);
 
+	int isReportCheck(int id, int report_user_id);
+	
 	/* =============================== 윤희 =============================== */
 
 	List<Report> getReportRequest(int order);
@@ -25,5 +27,6 @@ public interface ReportMapper {
 	List<Report> getReportTotalList(HashMap<String, Object> map);
 
 	int updateReport(HashMap<String, Object> map);
+
 
 }
