@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
@@ -12,6 +13,9 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/subjects.css" rel="stylesheet">
 
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/timetable/timeTable2.js"></script>
+
 
 <!-- <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
 <script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script>
@@ -51,19 +55,22 @@
 					</select>
 			</form>
 			<div class="title">
+				<c:forEach var="timetable" items="${timetable}">
 				<a class="hamburger"></a>
-				<h1 id="tableName">시간표 1</h1>
+				        <h1 id="tableName" data-id="${timetable.TIMETABLE_ID}">${timetable.NAME}</h1>
 				<div class="description">
 					<ul class="info">
-						<li><span id="tableCredit">4.5</span> 학점</li>
-						<li><time id="tableUpdatedAt">18/03/16 15:16</time> 변경</li>
+						<!-- <li><span id="tableCredit">4.5</span> 학점</li> -->
+						<li><time id="tableUpdatedAt">${timetable.TIMETABLE_DATE}</time> 변경</li>
 					</ul>
 				</div>
+				        </c:forEach>
 				<hr>
+				
 				<ol class="buttons threecols">
-					<li data-modal="tableSetting"><a class="light image setting">설정</a></li>
-					<li class="mobileonly"><a id="semestersButton">학기변경</a></li>
+					<li data-modal="tableSetting"><a id="settingBtn" class="light image setting">설정</a></li>
 				</ol>
+				
 				<hr>
 			</div>
 			<div class="menu">
@@ -322,33 +329,13 @@
 				<div class="nontimes"></div>
 			</div>
 		</div>
-		<form id="tableExport" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>시간표 이미지 저장</h3>
-			<p>
-				<label>이미지 옵션</label> <label class="checkbox"><input
-					type="radio" name="is_mobile" value="false" checked=""> PC용</label>
-				<label class="checkbox"><input type="radio" name="is_mobile"
-					value="true"> 모바일용</label>
-			</p>
-			<input type="hidden" name="id"> <input type="submit"
-				value="저장하기" class="button">
-		</form>
-		<form id="tableSetting" class="modal">
+		
+		<form id="tableSetting" class="modal" >
 			<a title="닫기" class="close"></a>
 			<h3>시간표 설정</h3>
 			<p>
 				<label>이름</label> <input type="text" name="name" value=""
 					maxlength="40" class="text">
-			</p>
-			<p>
-				<label>공개 범위</label> <input type="radio" id="tableSetting_priv0"
-					name="priv" value="0"><label for="tableSetting_priv0"
-					class="checkbox">전체공개</label> <input type="radio"
-					id="tableSetting_priv1" name="priv" value="1"><label
-					for="tableSetting_priv1" class="checkbox">친구공개</label> <input
-					type="radio" id="tableSetting_priv2" name="priv" value="2"><label
-					for="tableSetting_priv2" class="checkbox">비공개</label>
 			</p>
 			<p>
 				<label>기본</label> <input type="checkbox"
@@ -358,6 +345,7 @@
 			<input type="button" value="삭제" class="button light floatLeft">
 			<input type="submit" value="설정 저장" class="button">
 		</form>
+		
 		<form id="subjectCampusFilter" class="modal">
 			<a title="닫기" class="close"></a>
 			<h3>캠퍼스</h3>
