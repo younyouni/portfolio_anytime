@@ -12,7 +12,9 @@ public interface TimeTableService {
 
 	public void changeName(int timetable_id, String newName);
 
-    
+	public void changeNameAndTime(int timetable_id, String newName);
+
+	public TimeTable createNewTimeTable(int user_id);
 
 	
 }

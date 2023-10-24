@@ -69,7 +69,7 @@ public class SecurityConfig{
 				
 				.antMatchers("/calculator").permitAll()
 				
-				
+				.antMatchers("/timetable").permitAll()
 				
 				.antMatchers("/gettimetable").permitAll()
 				

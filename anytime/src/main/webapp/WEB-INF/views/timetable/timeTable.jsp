@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
@@ -12,8 +13,10 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/container.table.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/subjects.css" rel="stylesheet">
 
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
+
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/timetable/timeTable2.js"></script>
 
 
@@ -54,6 +57,7 @@
 					<option>2015년 1학기</option>
 					</select>
 			</form>
+			
 			<div class="title">
 				<c:forEach var="timetable" items="${timetable}">
 				<a class="hamburger"></a>
@@ -73,6 +77,7 @@
 				
 				<hr>
 			</div>
+			
 			<div class="menu">
 				<ol>
 					<li class="active"><a href="/timetable/2018/1/8599353"
@@ -344,64 +349,9 @@
 			</p>
 			<input type="button" value="삭제" class="button light floatLeft">
 			<input type="submit" value="설정 저장" class="button">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</form>
 		
-		<form id="subjectCampusFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>캠퍼스</h3>
-			<div class="filter"></div>
-			<input type="submit" value="적용" class="button">
-		</form>
-		<form id="subjectCategoryFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>전공/영역</h3>
-			<div class="filter"></div>
-		</form>
-		<form id="subjectKeywordFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>검색어</h3>
-			<div class="filter"></div>
-			<input type="submit" value="검색" class="button">
-		</form>
-		<form id="subjectOrderFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>정렬</h3>
-			<div class="filter"></div>
-			<input type="submit" value="적용" class="button">
-		</form>
-		<form id="subjectTimeFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>시간</h3>
-			<div class="filter"></div>
-			<input type="submit" value="적용" class="button">
-		</form>
-		<form id="subjectGradeFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>학년</h3>
-			<div class="filter"></div>
-			<input type="button" value="전체 선택" class="button light floatLeft"
-				data-action="select"> <input type="button" value="전체 취소"
-				class="button light floatLeft" data-action="deselect"> <input
-				type="submit" value="적용" class="button">
-		</form>
-		<form id="subjectTypeFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>구분</h3>
-			<div class="filter"></div>
-			<input type="button" value="전체 선택" class="button light floatLeft"
-				data-action="select"> <input type="button" value="전체 취소"
-				class="button light floatLeft" data-action="deselect"> <input
-				type="submit" value="적용" class="button">
-		</form>
-		<form id="subjectCreditFilter" class="modal">
-			<a title="닫기" class="close"></a>
-			<h3>학점</h3>
-			<div class="filter"></div>
-			<input type="button" value="전체 선택" class="button light floatLeft"
-				data-action="select"> <input type="button" value="전체 취소"
-				class="button light floatLeft" data-action="deselect"> <input
-				type="submit" value="적용" class="button">
-		</form>
 		<ul class="floating" style="left: 651px;">
 		<li class="button custom only">새 수업 추가</li>
 		</ul>
@@ -517,34 +467,8 @@
 		<div class="submit">
 			<input type="submit" value="저장" class="button">
 		</div>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</form>
 	<div id="subjects"></div>
-	<!-- <div id="bottom">
-		<ul class="links">
-			<li><a href="/page/serviceagreement">이용약관</a></li>
-			<li><a href="/page/privacy">개인정보처리방침</a></li>
-			<li><a href="/page/rules">커뮤니티이용규칙</a></li>
-			<li><a href="/notice">공지사항</a></li>
-			<li><a href="/page/faq">문의하기</a></li>
-			<li class="copyright"><a href="/">© 에브리타임</a></li>
-		</ul>
-	</div> -->
-
-	<script type="text/javascript">
-    var _serverTime = 1617840659781;
-    var _clientTime = new Date().getTime();
-    var _diffTime = _clientTime - _serverTime;
-    var _apiServerUrl = 'https://api.everytime.kr';
-  </script>
-	<script async=""
-		src="https://www.googletagmanager.com/gtag/js?id=UA-22022140-4"></script>
-	<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-22022140-4');
-  </script>
-
 </body>
-<whale-quicksearch translate="no"></whale-quicksearch>
 </html>

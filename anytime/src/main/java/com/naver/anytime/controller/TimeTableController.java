@@ -61,13 +61,22 @@ public class TimeTableController {
 	@ResponseBody
 	public ResponseEntity<String> changeName(@RequestParam int timetable_id, @RequestParam String newName) {
 	    try {
-	        timeTableService.changeName(timetable_id, newName);
+	        timeTableService.changeNameAndTime(timetable_id, newName);
 	        return new ResponseEntity<>("이름 변경 성공", HttpStatus.OK);
 	    } catch (Exception e) {
 	        logger.error("이름 변경 실패: ", e);
 	        return new ResponseEntity<>("이름 변경 실패", HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
+
+	@RequestMapping(value = "/createNewTimeTable", method = RequestMethod.POST)
+	@ResponseBody
+    public TimeTable createNewTimeTable(Principal userPrincipal) {
+        String id = userPrincipal.getName(); 
+        Member member = memberService.getLoginMember(id);
+        return timeTableService.createNewTimeTable(member.getUser_id());
+    }
+
 	
 	 
 }

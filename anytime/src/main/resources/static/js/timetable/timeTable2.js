@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    // 설정버튼 -> Modal
     $("#settingBtn").click(function() {
         $("#tableSetting").show();
         $('#tableSetting').before('<div class="modalwrap"></div>');
@@ -10,15 +10,18 @@ $(document).ready(function () {
         $(".modalwrap").remove();
     });
 	
-
+    //시간표 이름변경 및 날짜변경
     $("#tableSetting").submit(function(e) {
-        e.preventDefault();  // 폼 제출 방지
+        e.preventDefault();  
 
-        var newName = $("input[name='name']").val();  // 새 이름 가져오기
-        var timetable_id = $("#timetable").data("id");
+        var newName = $("input[name='name']").val();  
+        var timetable_id = $("#tableName").data("id");
 
         console.log("Current timetable ID: " + timetable_id);
         console.log("Current newName: " + newName);
+        
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
 
         $.ajax({
             url: 'changeName',
@@ -27,17 +30,45 @@ $(document).ready(function () {
                 timetable_id: timetable_id,
                 newName: newName
             },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token)
+            },
             success: function(response) {
-                // 요청 성공 시 처리
                 alert('이름 변경 성공');
-                
-                // 필요한 경우 페이지 리로딩 또는 특정 DOM 업데이트 등의 추가 작업 수행
-                
+                console.log(response);
+                $("#tableName").text(newName);
+
+                // 서버에서 보낸 새로운 TIMETABLE_DATE를 화면에 반영
+                //$("#tableUpdatedAt").text(response.newDate);
                 location.reload();
             },
             error: function(error) {
-                // 요청 실패 시 처리
                 alert('이름 변경 실패');
+                console.log(error);
+            }
+        });
+    });
+
+    $(".create").click(function() {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        
+        $.ajax({
+            url: 'createNewTimeTable',
+            type: 'POST',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            success: function(response) {
+                // 서버에서 보낸 새로운 시간표 정보를 화면에 추가
+                var newTimeTable = '<li><a href="/timetable/' + response.year + '/' + response.semester + '/' + response.id + 
+                                   '">' + response.name + '</a></li>';
+                $(".menu ol").append(newTimeTable);
+                alert('새 시간표 생성 성공');
+            },
+            error: function(error) {
+                alert('새 시간표 생성 실패');
+                console.log(error);
             }
         });
     });

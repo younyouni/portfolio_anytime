@@ -20,10 +20,27 @@
 	   </select>
 	   
 	   <update id="changeName" parameterType="map">
-	    UPDATE TIMETABLE 
-	    SET NAME = #{newName} 
-	    WHERE timetable_id = #{timetable_id}
+		    UPDATE TIMETABLE 
+		    SET NAME = #{newName} 
+		    WHERE timetable_id = #{timetable_id}
 	   </update>
+	   
+	   <update id="changeNameAndTime" parameterType="TimeTable">
+	        UPDATE TIMETABLE 
+	        SET NAME = #{NAME}, TIMETABLE_DATE = TO_DATE(#{TIMETABLE_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+	        WHERE TIMETABLE_ID = #{TIMETABLE_ID}
+       </update>
+       
+       <insert id="insert" parameterType="TimeTable">
+	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, STATUS)
+	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, #{NAME}, #{STATUS})
+   	   </insert>
+   	   
+   	   <select id="getLastTimeTableId" resultType="int" parameterType="int">
+	      SELECT MAX(TIMETABLE_ID)
+	      FROM TIMETABLE
+	      WHERE USER_ID = #{USER_ID}
+      </select>
    
 	
 </mapper>
