@@ -103,6 +103,9 @@ public interface PostMapper {
 	
 	//전체 검색용 리스트 총 수
 	public int getAllSearchListCount(int school_id, String search_word);
+	
+	//게시물 신고수
+	public int getPostReportCount(int post_id);
 
 	// ********************************= 윤희 =********************************
 	

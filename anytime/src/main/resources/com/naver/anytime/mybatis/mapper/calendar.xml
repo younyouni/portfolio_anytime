@@ -9,7 +9,6 @@
 		SELECT
 	    CALENDAR_ID AS id,
 	    SUBJECT AS title,
-	    TYPE,
 	    START_TIME AS "start",
 	    END_TIME AS "end",
 	    CONTENT AS description,

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.Report;
 import com.naver.anytime.service.BoardService;
@@ -49,8 +50,12 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public String adminPage() {
-		return "/admin/dashboard";
+	public ModelAndView adminPage(Principal userPrincipal,ModelAndView mv) {
+		String id = userPrincipal.getName();
+		Member m = memberService.getLoginMember(id);
+		mv.addObject("member", m);
+		mv.setViewName("/admin/dashboard");
+		return mv;
 	}
 
 	@RequestMapping(value = "/boardAdmin", method = RequestMethod.GET)
@@ -217,10 +222,15 @@ public class AdminController {
 		logger.info("result : " + result);
 		return result;
 	}
-
+	
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
+	public String getAdminNotice() {
+		return "/admin/adminNotice";
+	}
+
+	@RequestMapping(value = "/adminNoticeList", method = RequestMethod.GET)
 	@ResponseBody
-	public ModelAndView getAdminNotice(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+	public Map<String, Object> getAdminNoticeList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "searchKey", defaultValue = "0", required = false) int searchKey,
 			@RequestParam(value = "keyword", defaultValue = "", required = true) String keyword, ModelAndView mv) {
 
@@ -228,7 +238,7 @@ public class AdminController {
 			keyword = null;
 		}
 
-		int board_id = 0;
+		int board_id = 121;//공지사항 board_id로 변경
 
 		int limit = 10;
 
@@ -248,9 +258,17 @@ public class AdminController {
 
 		List<Post> notice = postService.getPostTotalList(board_id, page, limit, searchKey, keyword);
 
-		mv.addObject("notice", notice);
-		mv.setViewName("/admin/adminNotice");
-		return mv;
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("notice", notice);
+		map.put("page", page);
+		map.put("maxpage", maxpage);
+		map.put("startpage", startpage);
+		map.put("endpage", endpage);
+		map.put("listcount", listcount);
+		map.put("limit", limit);
+		
+		return map;
 	}
 
 }

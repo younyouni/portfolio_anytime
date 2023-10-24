@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.naver.anytime.domain.Semester;
+import com.naver.anytime.domain.Semester_detail;
 import com.naver.anytime.mybatis.mapper.SemesterMapper;
 
 @Service
@@ -30,6 +31,7 @@ public class SemesterServiceImpl implements SemesterService {
 	public List<Semester> getSemesternameByUserId(int user_id) {
 		return dao.getSemesternameByUserId(user_id);
 	}
+	
 	
 
 }

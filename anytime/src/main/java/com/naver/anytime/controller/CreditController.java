@@ -25,11 +25,15 @@ import com.naver.anytime.domain.Credit;
 import com.naver.anytime.domain.School;
 import com.naver.anytime.domain.Semester;
 import com.naver.anytime.domain.Semester_detail;
+import com.naver.anytime.domain.TimeTable;
+import com.naver.anytime.domain.TimeTable_detail;
 import com.naver.anytime.service.CreditService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.service.SemesterService;
 import com.naver.anytime.service.Semester_detailService;
+import com.naver.anytime.service.TimeTableService;
+import com.naver.anytime.service.TimeTable_detailService;
 
 @Controller
 public class CreditController {
@@ -41,16 +45,23 @@ public class CreditController {
 	private CreditService creditservice;
 	private SemesterService semesterservice;
 	private Semester_detailService semester_detailservice;
+	private TimeTableService timetableservice;
+	private TimeTable_detailService timetable_detailservice;
+	
 
 	@Autowired
 	public CreditController(MemberService memberservice, SchoolService schoolservice, CreditService creditservice,
-			SemesterService semesterservice, Semester_detailService semester_detailservice) {
+			SemesterService semesterservice, Semester_detailService semester_detailservice, TimeTableService timetableservice,
+			TimeTable_detailService timetable_detailservice
+			) {
 
 		this.memberservice = memberservice;
 		this.schoolservice = schoolservice;
 		this.creditservice = creditservice;
 		this.semesterservice = semesterservice;
 		this.semester_detailservice = semester_detailservice;
+		this.timetableservice = timetableservice;
+		this.timetable_detailservice =timetable_detailservice;
 
 	}
 
@@ -179,8 +190,7 @@ public class CreditController {
 	@RequestMapping(value = "/getsemester_detail", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Semester_detail> getsemester_detail(Principal principal, int semester_id) {
-		logger.info("ajax 실행");
-		// int user_id = memberservice.getUserId(principal.getName());
+	
 
 		List<Semester_detail> details = creditservice.getSemesterDetailsBySemesterId(semester_id);
 
@@ -315,4 +325,36 @@ public class CreditController {
 			return "error";
 		}
 	}
+	
+	@RequestMapping(value = "/gettimetable",method = RequestMethod.GET)
+	@ResponseBody
+	public List<TimeTable> gettimetable(Principal principal){
+		int user_id = memberservice.getUserId(principal.getName());
+		
+		List<TimeTable> timetable = timetableservice.gettimetable(user_id);
+		
+		return timetable;
+				
+	}
+	
+	@RequestMapping(value = "/gettimetable_detail",method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> gettimetable_detail(@RequestParam("timetable_id") String timetableId, 
+	                                               @RequestParam("semester_id") String semesterId ){
+		
+		 Map<String, Object> response = new HashMap<>();
+		 
+		    // 시간표 상세 정보 조회
+	        List<TimeTable_detail> timetableDetail = timetable_detailservice.getsubject(timetableId);
+	        response.put("timetable_detail", timetableDetail);
+
+	        // 학기 상세 정보 조회
+	        List<Semester_detail> semesterDetail = semester_detailservice.getdetail(semesterId);
+	        response.put("semester_detail", semesterDetail);
+		 
+		 
+		return response;
+				
+	}
+	
 }

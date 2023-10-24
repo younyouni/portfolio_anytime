@@ -10,41 +10,10 @@
 <body>
 	<div id="submenu">
 		<div class="wrap">
-
-			<c:set var="itemsPerGroup" value="3" />
-			<%-- type 1, 2, 3, 4이 순차적으로 변경됨 --%>
-			<c:forEach var="type" begin="1" end="4">
+		
 				<div class="divider"></div>
-				<%-- type을 나누는 구분 --%>
-				<div class="group">
-					<%-- 게시판을 3개씩 출력하기 위한 구분 --%>
-					<ul> 
-						<%-- 게시판을 3줄씩 출력하기 위한 count, 다음 type때 0으로 초기화 --%>
-						<c:set var="itemCount" value="0" />
-						<c:forEach var="menu" items="${boardlist}" varStatus="status">
-							<%-- type이 일치할때, 승인을 받았을때, --%>
-							<c:if test="${menu.type == type && menu.status == 1}">
-								<%-- 게시판 3개 출력했을때, --%>
-								<c:if test="${itemCount % itemsPerGroup == 0 && itemCount != 0}">
-					</ul>
-				</div>
-				<%-- 한 그룹에 3개의 게시판이 출력되면 다음 게시판을 위한 그룹 태그 --%>
-				<div class="group">
-					<ul>
-						</c:if>
-						<li><a href="${pageContext.request.contextPath}/post/list?board_id=${menu.board_id}">${menu.name}</a></li>
-						<c:set var="itemCount" value="${itemCount + 1}" />
-						</c:if>
-			</c:forEach>
-			</ul>
+			<hr>
 		</div>
-		</c:forEach>
-
-
-		<div class="divider"></div>
-		<hr>
-	</div>
-	<input type="hidden" id="communityCampusId" value="37">
 	</div>
 </body>
 <script>
@@ -86,7 +55,7 @@ function sendAjaxRequest() {
 	    		var menu = boardlist[i];
 	    		
 	    		// type이 일치하고 status가 1인 경우
-	    		if (menu.type == type && menu.status == 1){
+	    		if (menu.type == type){
 	                
 	                // itemConut가 3의 배수일 때 ul 요소 닫기
 	                if (itemCount % 3 == 0 && itemCount != 0){

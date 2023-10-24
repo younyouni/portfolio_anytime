@@ -16,4 +16,6 @@ public interface Semester_detailService {
 
 	public List<Object[]> findTop5Grades(int user_id);
 
+	public List<Semester_detail> getdetail(String semesterId);
+
 }

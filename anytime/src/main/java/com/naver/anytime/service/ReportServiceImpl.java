@@ -30,7 +30,12 @@ public class ReportServiceImpl implements ReportService {
 	public int updateCommentReportCount(int comment_id) {
 		return dao.updateCommentReportCount(comment_id);
 	}
-
+	
+	@Override
+	public int isReportCheck(int id, int report_user_id) {
+		return dao.isReportCheck(id, report_user_id);
+	}
+	
 	/* =============================== 윤희 =============================== */
 	@Override
 	public List<Report> getReportRequest(int order) {

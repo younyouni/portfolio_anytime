@@ -71,9 +71,11 @@ $("#writeArticleButton").on("click", function(e) {
 	if(toggle == true){
 		
 		$("#writeBoard").show(); //Show
+		$('#writeArticleButton').hide();
 	}else{		
 		
 		$("#writeBoard").hide(); // Hide
+		$('#writeArticleButton').show();
 	}
 });
 
@@ -146,7 +148,7 @@ $('body').on('click', 'li.new', function() {
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
 
-	    var board_id = document.getElementById('board_id').textContent;
+	    var board_id =$("#board_id").html(); 
 
 	    var formData=new FormData();
 	    formData.append('BOARD_ID', board_id);
@@ -161,7 +163,7 @@ $('body').on('click', 'li.new', function() {
 
 	  	$.ajax({
 	    	type: "POST",
-	    	url: "write",
+	    	url: "/anytime/post/write",
 	    	data: formData,
 	    	processData: false,  
 	  		contentType: false,

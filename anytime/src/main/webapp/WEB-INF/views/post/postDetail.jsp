@@ -253,7 +253,9 @@
 				if(reportResult == 1){
 					alert("신고가 완료되었습니다.");
 					location.reload();	
-				}else{
+				} else if(reportResult == 2) {
+					alert("이미 신고한 항목입니다.");
+				} else {
 					alert("신고 오류가 발생했습니다.")
 				}
 			}

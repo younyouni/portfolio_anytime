@@ -404,9 +404,8 @@
 			<a title="닫기" class="close"></a>
 			<h3>내 시간표 가져오기</h3>
 			<p>
-				<label>시간표 선택</label> <select name="semester"
-					data-gtm-form-interact-field-id="0"><option
-						value="42644511">2023년 겨울학기 (시간표 1)</option>
+				<label>시간표 선택</label> <select name="semester" data-gtm-form-interact-field-id="0">
+				    <option value="42644511">2023년 겨울학기 (시간표 1)</option>
 					<option value="42662455">2023년 2학기 (시간표 1)</option>
 					<option value="40480064">2023년 여름학기 (시간표 1)</option>
 					<option value="40480070">2023년 1학기 (시간표 1)</option>
