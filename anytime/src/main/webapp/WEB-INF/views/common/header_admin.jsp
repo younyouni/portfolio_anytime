@@ -64,7 +64,7 @@ $(function() {
 			</p>
 		</div>
 		<div id="account">
-			<a href="/message" title="쪽지함" class="icon message">쪽지함</a> <a
+			<a href="${pageContext.request.contextPath}/message" title="쪽지함" class="icon message">쪽지함</a>  <a
 				href="account.com" title="내 정보" class="icon my">내 정보</a> <input
 				type="hidden" id="userid" value="${userid}"> 
 		</div>

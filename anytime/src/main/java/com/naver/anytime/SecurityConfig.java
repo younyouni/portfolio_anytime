@@ -59,12 +59,13 @@ public class SecurityConfig{
 				.antMatchers("/member/forgotpwd_resultProcess").permitAll()
 				
 				
-
-				
 				.antMatchers("/certificate").permitAll()
 				.antMatchers("/certificate_mailsend").permitAll()
 				.antMatchers("/certificate_mailcheck").permitAll()
 				.antMatchers("/certificateProcess").permitAll()
+
+				.antMatchers("/boardAdmin").permitAll()
+				.antMatchers("/reportAdmin").permitAll()
 				
 				.antMatchers("/calculator").permitAll()
 				

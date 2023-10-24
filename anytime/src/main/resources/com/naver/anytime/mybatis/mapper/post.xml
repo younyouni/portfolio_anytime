@@ -217,4 +217,31 @@
 		WHERE rn &lt;= 4;
 	</select>
 	
+	<select id="getPostTotalListCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM POST
+		WHERE BOARD_ID = #{board_id}
+		AND STATUS = 1
+		<include refid="search2"/>
+	</select>
+	
+	<select id="getPostTotalList" parameterType="map" resultType="post">
+		SELECT * FROM (
+		    SELECT ROWNUM RNUM, j.* 
+		    FROM (SELECT post.* 
+                FROM post 
+		        	WHERE post.board_id = #{board_id}
+		        	AND post.status = 1
+		        	<include refid="search"/>
+				ORDER BY post.post_id DESC) j
+			         WHERE ROWNUM &lt;= #{end}
+				)
+			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+
+	<select id="getPost" parameterType="int" resultType="int" >
+		select count(*) from post
+		where post_id = #{content_id}
+	</select>
+	
 </mapper>
