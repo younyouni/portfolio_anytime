@@ -3,7 +3,13 @@ $(document).ready(function () {
 	var urlParams = new URLSearchParams(window.location.search);
 	var post_id = urlParams.get('post_id');
 	
-	function reportAjax(post_id){
+	
+	$(document).on("click", ".scrap", function(){
+		scrapAjax(post_id)
+	});
+
+	
+	function scrapAjax(post_id){
 		$.ajax({
 			url: "scrap",
 			data:{
