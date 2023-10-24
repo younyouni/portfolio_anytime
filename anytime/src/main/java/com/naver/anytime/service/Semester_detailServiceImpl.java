@@ -40,4 +40,9 @@ public class Semester_detailServiceImpl implements Semester_detailService {
 	public List<Object[]> findTop5Grades(int user_id) {
 		return dao.findTop5Grades(user_id);
 	}
+
+	@Override
+	public List<Semester_detail> getdetail(String semesterId) {
+		return dao.getdetail(semesterId);
+	}
 }
