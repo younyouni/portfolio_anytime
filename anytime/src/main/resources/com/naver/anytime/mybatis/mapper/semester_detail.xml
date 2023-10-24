@@ -53,4 +53,12 @@
 	</select>
 
 
+	<select id="getdetail" resultType="semester_detail">
+		select semester_detail_id
+		from semester_detail sd
+		join semester s on sd.semester_id = s.semester_id
+		where s.semester_id = #{semesterId}
+
+	</select>
+
 </mapper>

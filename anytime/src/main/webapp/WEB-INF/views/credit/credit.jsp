@@ -189,7 +189,6 @@
         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
        
-        
       }
      	</script>
       </div>
@@ -244,7 +243,7 @@
 			<h3>내 시간표 가져오기</h3>
 			<p>
 				<label>시간표 선택</label> 
-				<select name="semester" ></select> 
+				<select name="semester" value=""></select> 
 			</p>
 			<input type="submit" value="가져오기" class="button">
 		</form>

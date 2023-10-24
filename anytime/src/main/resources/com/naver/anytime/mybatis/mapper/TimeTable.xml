@@ -6,12 +6,13 @@
 	namespace="com.naver.anytime.mybatis.mapper.TimeTableMapper">
 	
 	<select id = "gettimetable" resultType="TimeTable">
-	  select name, timetable_id
+	  select *
 	  from timetable
-	  where user_id = #{user_id}  
-	
-	
+	  where user_id = #{user_id}
+	  and status != 0  
 	</select>
+	
+	
 	
 	
 	
