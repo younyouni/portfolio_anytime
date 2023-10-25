@@ -16,8 +16,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+
 
 import com.naver.security.CustomAccessDeniedHandler;
 import com.naver.security.CustomUserDetailsService;
@@ -64,6 +67,15 @@ public class SecurityConfig{
 				.antMatchers("/certificate_mailcheck").permitAll()
 				.antMatchers("/certificateProcess").permitAll()
 
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				.antMatchers("/boardAdmin").permitAll()
 				.antMatchers("/reportAdmin").permitAll()
 				
@@ -81,6 +93,10 @@ public class SecurityConfig{
 //			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")
 //				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
 		
+	
+		
+		
+		// loginprocess
 		http.formLogin().loginPage("/member/login")
 				        .loginProcessingUrl("/member/loginProcess")
 				        .usernameParameter("login_id")
@@ -110,9 +126,14 @@ public class SecurityConfig{
 		
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 		
+		//reCAPTCHA 
+		http.addFilterBefore(recaptchaValidationFilter(), UsernamePasswordAuthenticationFilter.class);
+		
 		return http.build();
 		
 	}
+	
+	
 	
 
 	//추가
@@ -154,4 +175,12 @@ public class SecurityConfig{
         jdbcTokenRepository.setDataSource(datasource); //dataSource 주입
         return jdbcTokenRepository;
     }
+    
+    //reCAPTCHA
+    @Bean
+    public RecaptchaValidationFilter recaptchaValidationFilter() {
+    	return new RecaptchaValidationFilter();
+    	
+    }
+    
 }

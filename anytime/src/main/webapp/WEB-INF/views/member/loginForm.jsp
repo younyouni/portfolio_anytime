@@ -35,6 +35,16 @@
 			$("#autologin").prop('checked', true);
 		}
 	})
+	
+  function frmSubmit(token) {
+    // reCAPTCHA 응답 토큰을 폼에 추가
+    document.getElementsByName('grecaptcha')[0].value = token;
+
+    // 폼 제출
+    document.forms[0].submit();
+}
+	
+	
 </script>
 
 
@@ -45,6 +55,7 @@
 		<h1 class="logo">
 			<a href="/">애니타임</a>
 		</h1>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 		<form action="${pageContext.request.contextPath}/member/loginProcess"
 			method="post" data-gtm-form-interact-id="0">
 			<p class="input">
@@ -57,8 +68,10 @@
 			</p>
 			<input type="hidden" name="redirect" value="/">
 			<p class="submit">
-				<input type="submit" value="로그인" class="text">
+				<input type="submit" value="로그인" class="g-recaptcha" data-sitekey="6LfKpMkoAAAAAIZoMNWQqdTTbGJnIwD8FLgZ88eL" 
+				data-callback='frmSubmit' data-action="submit" >
 			</p>
+			 <input type="hidden" name="grecaptcha" />
 			<label class="autologin"> <input type="checkbox"
 				name="autologin" id="autologin"><span>로그인 유지</span></label>
 
