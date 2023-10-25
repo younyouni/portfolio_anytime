@@ -84,7 +84,6 @@
 							</div>
 							<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 							<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 							<script>
 								
 							   var labelData = [
@@ -93,7 +92,6 @@
 							        </c:forEach>
 							        ];
 							    
-							
 							   var gpaData = [
 							        <c:forEach var="gpaMap" items="${gpa}" varStatus="i">
 							            ${gpaMap.Gpa}<c:if test="${!i.last}">,</c:if>
