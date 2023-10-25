@@ -100,6 +100,10 @@ public interface PostService {
 	
 	//게시물 신고수
 	public int getPostReportCount(int post_id);
+	
+	//게시물 스크랩
+	public List<Post> getMyScrapList(int page, int limit, int user_id);
+	
 	// ********************************= 윤희 =********************************
 	public List<List<Post>> getPostListByBoard(int[] board_ids);
 
@@ -108,6 +112,7 @@ public interface PostService {
 	public int getPostTotalListCount(int board_id, int searchKey, String keyword);
 
 	public int getPost(int content_id);
+
 
 
 

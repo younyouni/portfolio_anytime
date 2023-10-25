@@ -1,19 +1,26 @@
 $(document).ready(function () {
 
-	var urlParams = new URLSearchParams(window.location.search);
-	var post_id = urlParams.get('post_id');
-	
-	
 	$(document).on("click", ".scrap", function(){
-		scrapAjax(post_id)
+		scrapAjax()
 	});
 
 	
-	function scrapAjax(post_id){
+	function scrapAjax(){
+		
+		var urlParams = new URLSearchParams(window.location.search);
+		var post_id = urlParams.get('post_id');
+		// 보안 토큰
+		const token = $("meta[name='_csrf']").attr("content");
+		const header = $("meta[name='_csrf_header']").attr("content");
 		$.ajax({
-			url: "scrap",
+			url: "../scrap",
+			type: "POST",
 			data:{
 				"post_id": post_id,
+			},
+			beforeSend: function(xhr)
+			{	// 데이터를 전송하기 전에 헤더에 csrf 값을 설정합니다.
+				xhr.setRequestHeader(header, token);
 			},
 			success: function (scrapResult){
 				if(scrapResult == 1){

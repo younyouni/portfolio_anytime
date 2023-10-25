@@ -80,7 +80,7 @@
 		<%-------------------------------- ▼게시물 출력▼ --------------------------------%>
 		
 		<c:choose>
-       	<c:when test="${allsearchcheck == 0}">	
+       	<c:when test="${allsearchcheck == 0}">
 		<c:forEach var="post" items="${postlist}">
          	<article>
          		<a class="article" href="detail?post_id=${post.POST_ID}">
@@ -92,7 +92,6 @@
 						</div>
 					</c:if>
 				</c:forEach>
-				
          			<h2 class="medium">${post.SUBJECT}</h2>
          			<p class="small">${post.CONTENT}</p> 
          			

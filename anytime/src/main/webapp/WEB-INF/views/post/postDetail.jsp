@@ -21,6 +21,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/post/downloadImage.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/postReport.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post/postMessage.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/postScrap.js"></script>
 <script>
 	var userid = $('#login_id').val();
 	var anonymous = ${anonymous};

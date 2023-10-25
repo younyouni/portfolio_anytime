@@ -184,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	            	end: data.end,
 	            	description: data.description,
 	            	borderColor: data.color,
+	            	eventBorderColor: 'white',
 	            	backgroundColor: data.color,
 	            	allDay: data.allday
 	          	});
