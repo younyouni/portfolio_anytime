@@ -36,11 +36,18 @@
 	<script type="text/javascript">
     var _timetableGridInfo = [];
   </script>
+  
 	<div id="container" class="timetable" style="height: 679px;">
 		<hr>
+		
 		<aside>
 			<form class="select">
-				<select id="semesters"><option>2021년 겨울학기</option>
+				<c:forEach var="timetable" items="${timetable}">
+				<select id="semesters">
+					<option value="2023-2">${timetable.SEMESTER}</option>
+					<option value="2023-1">2023년 1학기</option>
+					<option>2022년 2학기</option>
+					<option>2022년 1학기</option>
 					<option>2021년 2학기</option>
 					<option>2021년 1학기</option>
 					<option>2020년 2학기</option>
@@ -56,6 +63,7 @@
 					<option>2015년 2학기</option>
 					<option>2015년 1학기</option>
 					</select>
+					</c:forEach>
 			</form>
 			
 			<div class="title">
@@ -78,15 +86,17 @@
 				<hr>
 			</div>
 			
+			<c:forEach var="timetable" items="${timetable}">
 			<div class="menu">
 				<ol>
 					<li class="active"><a href="/timetable/2018/1/8599353"
-						class="primary">시간표 1</a></li>
-					<li><a href="/timetable/2018/1/8814795">시간표2</a></li>
+						class="primary">${timetable.NAME}</a></li>
 					<li class="extension"><a class="create">새 시간표 만들기</a></li>
 				</ol>
 			</div>
+			</c:forEach>
 		</aside>
+		
 		<div class="wrap" style="width: 80%;">
 			<div class="tablehead">
 				<table class="tablehead">

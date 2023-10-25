@@ -11,7 +11,14 @@
 		  and status != 0  
 		</select>
 	   
-	   <select id = "getTimetableByUserId" resultType="TimeTable">
+	   <select id="getTimetablesBySemester" resultType="TimeTable">
+		    SELECT *
+		    FROM timetable
+		    WHERE semester = #{semester} AND user_id = #{user_id} 
+		    AND status != 0  
+	   </select>
+	   
+	   <!-- <select id = "getTimetableByUserId" resultType="TimeTable">
 	     SELECT TIMETABLE_ID, USER_ID, NAME, SEMESTER, 
 	     		TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS
 	     FROM TIMETABLE
@@ -32,8 +39,8 @@
        </update>
        
        <insert id="insert" parameterType="TimeTable">
-	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, STATUS)
-	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, #{NAME}, #{STATUS})
+	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
+	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, #{NAME}, #{SEMESTER}, SYSDATE, #{STATUS})
    	   </insert>
    	   
    	   <select id="getLastTimeTableId" resultType="int" parameterType="int">
@@ -41,6 +48,19 @@
 	      FROM TIMETABLE
 	      WHERE USER_ID = #{USER_ID}
       </select>
+      
+      <select id="getTimetableByUserIdAndSemester" resultType="TimeTable">
+	    SELECT TIMETABLE_ID, USER_ID, NAME, SEMESTER, 
+	           TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS
+	    FROM TIMETABLE
+	    WHERE user_id = #{user_id} and SEMESTER = #{semester}
+	    AND status != 0  
+	  </select>
+	
+	  <insert id="createDefaultTimeTable" parameterType="TimeTable">
+	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
+	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, '시간표 1', #{SEMESTER}, SYSDATE, #{STATUS})
+	  </insert> -->
    
 	
 </mapper>
