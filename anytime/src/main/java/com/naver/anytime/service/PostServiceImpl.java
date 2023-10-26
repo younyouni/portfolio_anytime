@@ -252,6 +252,50 @@ public class PostServiceImpl implements PostService {
 	public int getPostReportCount(int post_id) {
 		return postDao.getPostReportCount(post_id);
 	}
+	
+	@Override
+	public List<Post> getMyScrapList(int page, int limit, int user_id) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("user_id", user_id);
+		return postDao.getMyScrapList(map);
+	}
+	
+	@Override
+	public int getMyArticlesListCount(int user_id) {
+		return postDao.getMyArticlesListCount(user_id);
+	}
+	
+	@Override
+	public List<Post> getMyArticlesList(int page, int limit, int user_id) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("user_id", user_id);
+		return postDao.getMyArticlesList(map);
+	}
+	
+	@Override
+	public int getMyCommentArticlesListCount(int user_id) {
+		return postDao.getMyCommentArticlesListCount(user_id);
+	}
+	
+	@Override
+	public List<Post> getMyCommentArticlesList(int page, int limit, int user_id) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("start", startrow);
+		map.put("end", endrow);
+		map.put("user_id", user_id);
+		return postDao.getMyCommentArticlesList(map);
+	}
+	
 	// ********************************= 윤희 =********************************
 	@Override
 	public List<List<Post>> getPostListByBoard(int[] board_ids) {
@@ -301,6 +345,5 @@ public class PostServiceImpl implements PostService {
 		}
 		return result;
 	}
-
 
 }

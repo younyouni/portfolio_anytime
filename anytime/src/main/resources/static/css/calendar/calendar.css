@@ -1,4 +1,7 @@
-
+/* 오늘 일자 배경색 */
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: #eeeef7;
+}
 
 .container {
   display: flex;
@@ -39,6 +42,7 @@ body > div {
 	width: 80px;
 	background-color: #7869e6;
 	border-radius: 12px;
+	border-color: #7869e6;
 }
 
 /* 일정등록 버튼 */
@@ -310,10 +314,7 @@ div.fc-event-title-container > div{
     margin-bottom: 0.5em;
 }
 
-/* 오늘 일자 배경색 */
-#calendar > div.fc-view-harness.fc-view-harness-active > div > table > tbody > tr > td > div > div > div > table > tbody > tr:nth-child(4) > td.fc-day.fc-day-tue.fc-day-today.fc-daygrid-day > div {
-    background-color: #d5d5ff;
-}
+
 
 #calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > div > button {
 	background-color: #7869e6;

@@ -85,7 +85,9 @@
 				<a href="${pageContext.request.contextPath}/member/login"
 					class="button">로그인</a> <a
 					href="${pageContext.request.contextPath}/member/register"
-					class="button red">회원가입</a>`
+					class="button red">회원가입</a>
+					<input type="hidden"
+					id="school_id" value="${school.school_id}">
 			</div>
 		</sec:authorize>
 		<ul id="menu">
