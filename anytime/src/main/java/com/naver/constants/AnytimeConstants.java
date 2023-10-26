@@ -42,4 +42,6 @@ public class AnytimeConstants {
 	
 	public static final int IS_POST = 1; 
 	public static final int IS_COMMENT = 2; 
+
+	public static final String CURRENT_SEMESTER = "2023년 2학기"; 
 }

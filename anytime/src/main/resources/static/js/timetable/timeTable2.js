@@ -1,4 +1,13 @@
 $(document).ready(function () {
+    var semester = '2023년 2학기';
+    
+    getTimetableList(semester);
+
+   
+
+
+    // var selectedSemester = $("#semesters option:selected").text();
+
     // 설정버튼 -> Modal
     $("#settingBtn").click(function() {
         $("#tableSetting").show();
@@ -10,132 +19,155 @@ $(document).ready(function () {
         $(".modalwrap").remove();
     });
 
-    $('#semesters').change(function() {
-        var selectedSemester = $(this).val();  // 선택된 학기 값을 가져옴
+    // 시간표 이름 변경 및 날짜 변경
+    $("#tableSetting").submit(function(e) {
+        e.preventDefault();
+
+        var newName = $("input[name='name']").val();
+        var timetable_id = $("#tableName").data("id");
+
+        console.log("Current timetable ID: " + timetable_id);
+        console.log("Current newName: " + newName);
+
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
 
         $.ajax({
-            type: 'GET',
-            url: 'timetable',  // 요청 URL
-            data: { semester: selectedSemester },  // 요청 데이터
-            dataType: 'json',  // 응답 데이터 타입
-            success: function(response) {  
-                if (response.status == "OK") {
-                    var timetables = response.body;
-                    $('.menu ol').empty();  // 기존에 출력되던 시간표 목록 제거
-
-                    for (var i=0; i<timetables.length; i++) {
-                        var timetable = timetables[i];
-                        $('.menu ol').append('<li><a href="/timetable/2018/1/' + timetable.TIMETABLE_ID + '" class="primary">' + timetable.NAME + '</a></li>');
-                        $('#tableName').text(timetable.NAME);
-                        $('#tableUpdatedAt').text(timetable.TIMETABLE_DATE);
-                    }
-                } else {
-                    alert("학기별 시간표 조회 실패");
-                }
+            url: 'changeName',
+            type: 'POST',
+            data: {
+                timetable_id: timetable_id,
+                newName: newName
             },
-            error: function(request, status, error) {  
-                alert("서버와의 통신 중 에러가 발생하였습니다.");
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            success: function(response) {
+                alert('이름 변경 성공');
+                console.log(response);
+                $("#tableName").text(newName);
+
+                // 서버에서 보낸 새로운 TIMETABLE_DATE를 화면에 반영
+                //$("#tableUpdatedAt").text(response.newDate);
+                location.reload();
+            },
+            error: function(error) {
+                alert('이름 변경 실패');
+                console.log(error);
             }
         });
     });
 
-    // // 시간표 이름 변경 및 날짜 변경
-    // $("#tableSetting").submit(function(e) {
-    //     e.preventDefault();
+    $("div.menu ol").on("click","li.extension", function() {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
 
-    //     var newName = $("input[name='name']").val();
-    //     var timetable_id = $("#tableName").data("id");
+        semester = $("#semesters option:selected").text();
+        output = "";
 
-    //     console.log("Current timetable ID: " + timetable_id);
-    //     console.log("Current newName: " + newName);
+        $.ajax({
+            url: 'createNewTimeTable',
+            type: 'POST',
+            data: { 
+                'semester': semester  // 여기에 실제 값을 넣으세요.
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            success: function(response) {
+                if(response != null ){
+                    alert('새 시간표 생성 성공');
 
-    //     let token = $("meta[name='_csrf']").attr("content");
-    //     let header = $("meta[name='_csrf_header']").attr("content");
+                    $('#tableName').text(repsonse.name);
+                    $('#tableUpdatedAt').text(response.timetable_date);
 
-    //     $.ajax({
-    //         url: 'changeName',
-    //         type: 'POST',
-    //         data: {
-    //             timetable_id: timetable_id,
-    //             newName: newName
-    //         },
-    //         beforeSend: function (xhr) {
-    //             xhr.setRequestHeader(header, token)
-    //         },
-    //         success: function(response) {
-    //             alert('이름 변경 성공');
-    //             console.log(response);
-    //             $("#tableName").text(newName);
-
-    //             // 서버에서 보낸 새로운 TIMETABLE_DATE를 화면에 반영
-    //             //$("#tableUpdatedAt").text(response.newDate);
-    //             location.reload();
-    //         },
-    //         error: function(error) {
-    //             alert('이름 변경 실패');
-    //             console.log(error);
-    //         }
-    //     });
-    // });
-
-    // $(".create").click(function() {
-    //     let token = $("meta[name='_csrf']").attr("content");
-    //     let header = $("meta[name='_csrf_header']").attr("content");
-
-    //     $.ajax({
-    //         url: 'createNewTimeTable',
-    //         type: 'POST',
-    //         beforeSend: function(xhr) {
-    //             xhr.setRequestHeader(header, token)
-    //         },
-    //         success: function(response) {
-    //             // 서버에서 보낸 새로운 시간표 정보를 화면에 추가
-    //             var newTimeTable = '<li><a href="/timetable/' + response.semester + '/' + response.id +
-    //                                '">' + response.name + '</a></li>';
-    //             $(".menu ol").append(newTimeTable);
-    //             alert('새 시간표 생성 성공');
-    //         },
-    //         error: function(error) {
-    //             alert('새 시간표 생성 실패');
-    //             console.log(error);
-    //         }
-    //     });
-    // });
-
-    // $("#semesters").change(function () {
-    //     var selectedSemester = $("#semesters option:selected").text();
-    //     let token = $("meta[name='_csrf']").attr("content");
-    //     let header = $("meta[name='_csrf_header']").attr("content");
+                    $('div.menu ol li').removeClass('active');
+                    output += '<li class="active"><a href="/timetable/2018/1/8599353">' + this.name + '</a></li>'                    
+                }
+                $('li.extension').before(output);
+            },
+            error: function(error) {
+                alert('새 시간표 생성 실패');
+                console.log(error);
+            }
+        });
+    });
     
-    //     // AJAX 요청을 통해 선택한 학기와 유저 정보를 서버로 전달
-    //     $.ajax({
-    //         url: 'getTimetableByUserIdAndSemester',
-    //         type: 'POST',
-    //         beforeSend: function(xhr) {
-    //             xhr.setRequestHeader(header, token);
-    //         },
-    //         data: {
-    //             semester: selectedSemester,
-    //         },
-    //         success: function (timetables) {
-    //             var timetableList = $(".menu ol");
-    //             timetableList.empty(); // 시간표 목록을 비워줍니다.
-    //             for (var i = 0; i < timetables.length; i++) {
-    //                 var timetable = timetables[i];
-    //                 console.log("Received timetable ID: " + timetable_id); // 각 시간표의 id를 출력해봅니다.
-    //                 var timetableItem = '<li><a href="/timetable/' + timetable.semester + '/' + timetable.id + '">' + timetable.name + '</a></li>';
-    //                 timetableList.append(timetableItem); // 비어있는 목록에 새로운 항목을 추가합니다.
-    //             }
-    //         },
+
+    $("#semesters").change(function () {
+        var selectedSemester = $("#semesters option:selected").text();
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+    
+        // AJAX 요청을 통해 선택한 학기와 유저 정보를 서버로 전달
+        $.ajax({
+            url: 'getTimetableByUserIdAndSemester',
+            type: 'POST',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: {
+                semester: selectedSemester,
+            },
+            success: function (timetables) {
+                var timetableList = $(".menu ol");
+                timetableList.empty(); // 시간표 목록을 비워줍니다.
+                for (var i = 0; i < timetables.length; i++) {
+                    var timetable = timetables[i];
+                    console.log("Received timetable ID: " + timetable.timetable_ID); // 각 시간표의 id를 출력해봅니다.
+                    var timetableItem = '<li><a href="/timetable/' + timetable.semester + '/' + timetable.id + '">' + timetable.name + '</a></li>';
+                    timetableList.append(timetableItem); // 비어있는 목록에 새로운 항목을 추가합니다.
+                }
+            },
             
             
-    //         error: function (error) {
-    //             console.log(error);
-    //         }
-    //     });
-    // });
-    
-    
-
-
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+  
 });
+
+function getTimetableList(semester){
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: "POST",
+                url: "getTimetableByUserIdAndSemester",
+                data: {
+                    semester : semester
+                },
+                dataType : "json",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success : function(rdata) {
+                    if(rdata!=null){
+                        var output="";
+                        $("div.menu ol").empty();
+                        
+                        $(rdata).each(function() {                        
+                            output += '<li class="active"><a href="/timetable/2018/1/8599353"'
+                            if(this.status ==1){
+                                output += 'class="primary">';
+                                $('#tableUpdatedAt').text(this.timetable_DATE)
+                            }else{
+                                output += '>';
+                            }
+                            output += this.name+'</a></li>'
+                        })
+                        output += '<li class="extension"><a class="create">새 시간표 만들기</a></li>'
+                        
+                        $("div.menu ol").append(output);
+                        $('#tableName').text($("div.menu li.active a").text());
+                        
+
+                }
+            }
+    })
+
+
+
+}

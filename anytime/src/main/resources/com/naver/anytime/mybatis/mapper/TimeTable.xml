@@ -11,14 +11,7 @@
 		  and status != 0  
 		</select>
 	   
-	   <select id="getTimetablesBySemester" resultType="TimeTable">
-		    SELECT *
-		    FROM timetable
-		    WHERE semester = #{semester} AND user_id = #{user_id} 
-		    AND status != 0  
-	   </select>
-	   
-	   <!-- <select id = "getTimetableByUserId" resultType="TimeTable">
+	    <select id = "getTimetableByUserId" resultType="TimeTable">
 	     SELECT TIMETABLE_ID, USER_ID, NAME, SEMESTER, 
 	     		TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS
 	     FROM TIMETABLE
@@ -43,6 +36,25 @@
 	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, #{NAME}, #{SEMESTER}, SYSDATE, #{STATUS})
    	   </insert>
    	   
+   	   <select id="getLastTimeTable" resultType="TimeTable" parameterType="int">
+		    SELECT *
+		    FROM (
+		        SELECT *
+		        FROM TIMETABLE
+		        WHERE USER_ID = #{user_id}
+		        ORDER BY TIMETABLE_DATE DESC
+		    )
+		    WHERE ROWNUM &lt;= 1
+		</select>
+		
+		<insert id="insertNewTimetable" >
+			<selectKey keyProperty="NEW_TIMETABLE_ID" resultType="int" order="AFTER">
+			SELECT 시퀀스이름.CURRVAL FROM DUAL
+			</selectKey>
+		    INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
+		    VALUES (NEXTVAL, #{USER_ID}, #{NEWNAME}, #{SEMESTER}, SYSDATE, 0)
+		</insert>
+   	   
    	   <select id="getLastTimeTableId" resultType="int" parameterType="int">
 	      SELECT MAX(TIMETABLE_ID)
 	      FROM TIMETABLE
@@ -59,8 +71,26 @@
 	
 	  <insert id="createDefaultTimeTable" parameterType="TimeTable">
 	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
-	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, '시간표 1', #{SEMESTER}, SYSDATE, #{STATUS})
-	  </insert> -->
+	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, '시간표1', #{SEMESTER}, SYSDATE, #{STATUS})
+	  </insert> 
+	  
+	  <select id="getLastTimeTableName" resultType="String">
+	    select t.name from (
+			select * from TIMETABLE
+				where name like '시간표%'
+				and user_id = #{user_id}
+				and semester = #{semester}
+			order by name desc
+		) t
+		where rownum =1 
+	  </select>
+	  
+	  <select id="getNewTimetable" parameterType="int">
+	  	select * from 
+	  	timetable
+	  	where timetable_id = #{key}
+	  </select>
+	  
    
 	
 </mapper>

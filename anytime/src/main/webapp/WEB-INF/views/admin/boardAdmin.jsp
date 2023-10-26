@@ -291,8 +291,7 @@
 							let output = "";
 							let rownum = 1;
 							keyword = "'" + keyword + "'";
-							$(rdata.boardTotal)
-									.each(
+							$(rdata.boardTotal).each(
 											function() {
 												let board_type = '';
 												if (this.type == 1) {
