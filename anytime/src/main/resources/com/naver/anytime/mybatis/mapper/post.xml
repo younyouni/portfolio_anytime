@@ -250,6 +250,7 @@
 		where post_id = #{post_id}
 	</select>
 	
+	<!-- 내가 스크랩한 글 리스트 -->
 	<select id="getMyScrapList" parameterType="map" resultType="post">
    		SELECT *
 		FROM (
@@ -273,5 +274,86 @@
 		) 
 		WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
 	</select>
+	
+	<!-- 내가 쓴 글 카운트 -->
+	<select id="getMyArticlesListCount" resultType="int">
+		select count(*) 
+		from post
+		where user_id = #{user_id} AND STATUS = 1
+	</select>
+	
+	<!-- 내가 댓글 단 글 카운트 -->
+	<select id="getMyCommentArticlesListCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM post
+		WHERE post_id IN (SELECT post_id
+		                  FROM comments
+		                  WHERE user_id = #{user_id} and status = 1
+		)
+	</select>
+	
+	<!-- 내가 쓴 글 리스트 -->
+	<select id="getMyArticlesList" parameterType="map" resultType="post">
+   		SELECT * 
+    	FROM (
+      	  SELECT ROWNUM RNUM, j.*
+      	  FROM (
+        	    SELECT post.*, TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE, NVL(cnt, 0) AS COMMENT_COUNT, board.NAME AS BOARDNAME, 
+                CASE
+                    WHEN board.anonymous = 1 THEN '익명'
+                    ELSE member.NICKNAME
+                END AS NICKNAME
+        	    FROM post
+        	    LEFT OUTER JOIN (
+        	        SELECT post_id, COUNT(*) cnt
+        	        FROM comments
+        	        GROUP BY post_id
+       	     ) sub_C
+       	     ON post.post_id = sub_C.post_id
+             LEFT OUTER JOIN board ON post.board_id = board.board_id
+             LEFT OUTER JOIN member ON post.USER_ID = member.user_id
+				WHERE post.user_id = #{user_id} AND post.status = 1
+            	ORDER BY post.post_id DESC
+        	) j 
+		    WHERE ROWNUM &lt;= #{end} 
+		) 
+		WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+	
+	<select id="getMyCommentArticlesList" parameterType="map" resultType="post">
+	    SELECT *
+		FROM (
+			    SELECT ROWNUM RNUM, j.*
+			    FROM (
+			        SELECT 
+			            post.*, 
+			            TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE,
+			            NVL(cnt, 0) AS COMMENT_COUNT, 
+			            board.NAME AS BOARDNAME, 
+			            CASE
+			                WHEN board.anonymous = 1 THEN '익명'
+			                ELSE member.NICKNAME
+			            END AS NICKNAME
+			        FROM post
+			        LEFT OUTER JOIN (
+			            SELECT post_id, COUNT(*) cnt
+			            FROM comments
+			            GROUP BY post_id
+			        ) sub_C ON post.post_id = sub_C.post_id
+			        LEFT OUTER JOIN board ON post.board_id = board.board_id
+			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
+			        WHERE post.status = 1
+			        AND post.post_id IN (
+			            SELECT post_id
+			            FROM comments
+			            WHERE user_id = #{user_id}
+			        )
+			        ORDER BY post.post_id DESC
+			    ) j 
+			    WHERE ROWNUM &lt;= #{end} 
+			) 
+			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+	
 	
 </mapper>
