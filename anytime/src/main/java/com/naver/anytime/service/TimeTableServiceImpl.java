@@ -53,13 +53,20 @@ public class TimeTableServiceImpl implements TimeTableService {
 
 		String newName = "시간표" + (lastIndex + 1);
 		
-		return timeDao.insertNewTimetable(user_id, newName, semester);
+		timeDao.insertNewTimetable(user_id, newName, semester);
+		return timeDao.getLastInsertId();
 		
 	}
-
+	
 	private String getLastTimeTableName(int user_id, String semester) {
 		return timeDao.getLastTimeTableName(user_id, semester);
 	}
+	
+	@Override
+	public TimeTable getNewTimetable(int key) {
+		return timeDao.getNewTimetable(key);
+	}
+
 
 	private TimeTable getLastTimeTable(int user_id) {
 		return timeDao.getLastTimeTable(user_id);
@@ -88,9 +95,6 @@ public class TimeTableServiceImpl implements TimeTableService {
 		return timeDao.getLastTimeTableId(user_id);
 	}
 
-	@Override
-	public TimeTable getNewTimetable(int key) {
-		return timeDao.getNewTimetable(key);
-	}
+	
 
 }

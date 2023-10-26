@@ -75,16 +75,18 @@ $(document).ready(function () {
                 xhr.setRequestHeader(header, token)
             },
             success: function(response) {
+                console.log(response);
                 if(response != null ){
                     alert('새 시간표 생성 성공');
 
-                    $('#tableName').text(repsonse.name);
-                    $('#tableUpdatedAt').text(response.timetable_date);
+                    $('#tableName').text(response.name);
+                    $('#tableUpdatedAt').text(response.timetable_DATE);
 
                     $('div.menu ol li').removeClass('active');
-                    output += '<li class="active"><a href="/timetable/2018/1/8599353">' + this.name + '</a></li>'                    
+                    output += '<li class="active"><a href="/timetable/2018/1/8599353">' + response.name + '</a></li>'                    
                 }
                 $('li.extension').before(output);
+                
             },
             error: function(error) {
                 alert('새 시간표 생성 실패');

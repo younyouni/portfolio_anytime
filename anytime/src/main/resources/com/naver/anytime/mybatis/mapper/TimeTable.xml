@@ -49,10 +49,10 @@
 		
 		<insert id="insertNewTimetable" >
 			<selectKey keyProperty="NEW_TIMETABLE_ID" resultType="int" order="AFTER">
-			SELECT 시퀀스이름.CURRVAL FROM DUAL
+			SELECT timetable_seq.CURRVAL FROM DUAL
 			</selectKey>
 		    INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
-		    VALUES (NEXTVAL, #{USER_ID}, #{NEWNAME}, #{SEMESTER}, SYSDATE, 0)
+		    VALUES (timetable_seq.NEXTVAL, #{user_id}, #{newName}, #{semester}, SYSDATE, 0)
 		</insert>
    	   
    	   <select id="getLastTimeTableId" resultType="int" parameterType="int">
@@ -80,15 +80,25 @@
 				where name like '시간표%'
 				and user_id = #{user_id}
 				and semester = #{semester}
-			order by name desc
+			order by TO_NUMBER(REGEXP_SUBSTR(name, '\d+')) desc
 		) t
 		where rownum =1 
 	  </select>
 	  
-	  <select id="getNewTimetable" parameterType="int">
+	  <select id="getNewTimetable" parameterType="int" resultMap="TimeTableResultMap">
 	  	select * from 
 	  	timetable
 	  	where timetable_id = #{key}
+	  </select>
+	  
+	  <resultMap id="TimeTableResultMap" type="TimeTable">
+	    <id property="TIMETABLE_ID" column="TIMETABLE_ID"/>
+	    <result property="USER_ID" column="USER_ID"/>
+	    <result property="NAME" column="NAME"/>
+	  </resultMap>
+	  
+	  <select id="getLastInsertId" resultType="int">
+    		SELECT timetable_seq.CURRVAL FROM DUAL
 	  </select>
 	  
    

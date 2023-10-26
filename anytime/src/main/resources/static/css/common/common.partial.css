@@ -300,7 +300,7 @@ aside>div.title>ol.buttons>li>a.image.facebook {
 }
 
 aside>div.title>ol.buttons>li>a.image.setting {
-	background-image: url('/images/new/aside.title.button.setting.png');
+	background-image: url('/anytime/resources/image/timetable/setting.png');
 }
 
 /*** common container ***/
@@ -505,7 +505,7 @@ aside>div.title>ol.buttons>li>a.image.setting {
 		text-overflow: ellipsis;
 	}
 	aside>div.menu>ol>li.active>a {
-		color: #c62917;
+		color: #7869e6;
 		font-weight: bold;
 		background-color: #f8f8f8;
 	}
@@ -520,13 +520,14 @@ aside>div.title>ol.buttons>li>a.image.setting {
 	}
 	aside>div.menu>ol>li.extension>a {
 		padding-left: 40px;
-		color: #c62917;
+		color: #7869e6;
 		background-repeat: no-repeat;
 		background-position: 15px center;
 		background-size: 15px 15px;
 	}
 	aside>div.menu>ol>li.extension>a.create {
-		background-image: url('/images/new/aside.menu.extension.create.png');
+		background-image: url('/anytime/resources/image/timetable/create.png');
+		background-size: 24px 24px;
 	}
 	aside>div.menu>ol>li.extension>a.wizard {
 		background-image: url('/images/new/aside.menu.extension.wizard.png');

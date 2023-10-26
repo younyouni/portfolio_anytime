@@ -22,6 +22,8 @@ public interface TimeTableService {
 
 	public TimeTable createDefaultTimeTable(int user_id, String semester);
 
-	TimeTable getNewTimetable(int key);
+	public TimeTable getNewTimetable(int key);
+	
+	
 
 }

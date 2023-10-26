@@ -34,7 +34,11 @@ public interface TimeTableMapper {
 
 	public void createDefaultTimeTable(TimeTable defaultTimeTable);
 
-	public int insertNewTimetable(int user_id, String newName, String semester);
+	public int insertNewTimetable(@Param("user_id") int user_id, 
+								@Param("newName") String newName,
+					            @Param("semester") String semester);
+	
+	public int getLastInsertId();
 
 	public String getLastTimeTableName(int user_id, String semester);
 
