@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
     locale: 'ko',							//지역 한국 설정
     droppable: true,						//일정 drop 수정 허용
     selectable: true,						//일정 선택
+    eventResize: true,
     eventResizableFromStart: true,			//이틀 이상 일정 늘이기 기능
 	defaultTimedEventDuration: '00:00:00',	//start ~ end 기본값
     events: function(info, successCallback, failureCallback) {
@@ -184,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	            	end: data.end,
 	            	description: data.description,
 	            	borderColor: data.color,
+	            	eventBorderColor: 'white',
 	            	backgroundColor: data.color,
 	            	allDay: data.allday
 	          	});

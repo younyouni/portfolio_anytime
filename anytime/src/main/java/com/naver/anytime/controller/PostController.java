@@ -574,9 +574,8 @@ public class PostController {
 	    
 	    // 유저 닉네임
 	    List<Post> username = postService.getUserNickname();
-	    
-	    
-	    
+	       
+	    // 포토
 	    List<Photo> photolist = postPhotoService.getPhotosPostlist(board_id);
 	    
 	    // 익명성

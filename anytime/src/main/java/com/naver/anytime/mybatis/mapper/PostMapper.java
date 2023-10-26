@@ -106,7 +106,10 @@ public interface PostMapper {
 	
 	//게시물 신고수
 	public int getPostReportCount(int post_id);
-
+	
+	//게시물 스크랩 리스트
+	public List<Post> getMyScrapList(HashMap<String, Integer> map);
+	
 	// ********************************= 윤희 =********************************
 	
 	// 메인 커뮤니티 페이지 게시물 리스트 출력 사용X

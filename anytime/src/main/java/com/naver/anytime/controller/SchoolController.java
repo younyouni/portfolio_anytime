@@ -77,8 +77,9 @@ public class SchoolController {
 			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
 			mv.addObject("list", commonPostsByBoard);
 		}
+		
 		School s = schoolService.getSchool(schoolDomain);
-		session.setAttribute("school", s);
+		mv.addObject("school",s);
 
 		return mv;
 	}

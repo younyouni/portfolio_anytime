@@ -24,8 +24,9 @@ public class Post {
 	private String uploadfile;
 	private String POST_ORIGINAL; //첨부될 파일의 이름
 	
-	/* ---------- POST테이블 Getter/Setter ---------- */
+	private String FORMATTED_DATE;
 	
+	/* ---------- POST테이블 Getter/Setter ---------- */
 	public String getUploadfile() {
 		return uploadfile;
 	}
@@ -89,6 +90,14 @@ public class Post {
 	public void setPOST_DATE(String pOST_DATE) {
 		POST_DATE = pOST_DATE;
 	}
+	
+    public String getFormattedPOST_DATE() {
+        if (POST_DATE != null && POST_DATE.length() >= 16) {
+            return POST_DATE.substring(5, 16);
+        }
+        return POST_DATE;
+    }
+	
 	public int getLIKE_COUNT() {
 		return LIKE_COUNT;
 	}
@@ -142,6 +151,15 @@ public class Post {
 				+ LIKE_COUNT + ", SCRAP_COUNT=" + SCRAP_COUNT + ", REPORT_COUNT=" + REPORT_COUNT + ", STATUS=" + STATUS
 				+ ", COMMENT_COUNT=" + COMMENT_COUNT + ", NICKNAME=" + NICKNAME + ", BOARDNAME=" + BOARDNAME
 				+ ", LOGIN_ID=" + LOGIN_ID + ", uploadfile=" + uploadfile + ", POST_ORIGINAL=" + POST_ORIGINAL + "]";
+	}
+	
+	
+	// ' MM-DD HH:MI ' 포맷
+	public String getFORMATTED_DATE() {
+		return FORMATTED_DATE;
+	}
+	public void setFORMATTED_DATE(String fORMATTED_DATE) {
+		FORMATTED_DATE = fORMATTED_DATE;
 	}
 	
 	
