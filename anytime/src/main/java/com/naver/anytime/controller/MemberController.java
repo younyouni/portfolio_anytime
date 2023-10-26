@@ -136,7 +136,7 @@ public class MemberController {
 		session.setAttribute("authCode", authCode);
 
 		// 이메일 발송
-		String subject = "애니타임 가입 인증";
+		String subject = "애니타임 가입 인증번호 입니다. ";
 
 		try {
 			sendMail.sendAuthEmail(email, subject, authCode);
@@ -176,6 +176,24 @@ public class MemberController {
 		return memberservice.isId(id);// WEB-IF/views/member/oinForm.jsp
 	}
 
+
+	// 회원가입폼에서 메일 중복 검사
+	@ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어 HTTP Response BODY에 설정됩니다.
+	@RequestMapping(value = "/mailcheck", method = RequestMethod.GET)
+	public int emailcheck(@RequestParam("email") String email, Principal principal) {
+		int result = memberservice.isEmail(email);
+		logger.info("result :" + result);
+		
+		if (principal != null) {
+			String login_id = principal.getName();
+			String oldEmail = memberservice.getEmail(login_id);
+
+			if (email.equals(oldEmail))
+				result = AnytimeConstants.EMAIL_NOT_EXISTS;
+		}
+		return result;
+	}
+	
 	// 회원가입폼에서 닉네임 중복 검사
 	@ResponseBody // @ResponseBody를 이용해서 각 메서드의 실행 결과는 JSON으로 변환되어
 					// HTTP Response BODY에 설정됩니다.
@@ -193,7 +211,8 @@ public class MemberController {
 
 		return result;
 	}
-
+	
+	
 	// 회원가입 처리
 	@RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
 	public String joinProcess(Member member, Credit credit, RedirectAttributes rattr,
@@ -376,13 +395,6 @@ public class MemberController {
 	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
 	public String certificate() {
 		return "member/memberAuth";// WEB-IF/views/member/memberAuth.jsp
-	}
-
-	// 로그아웃
-	@RequestMapping(value = "/logout", method = RequestMethod.POST)
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/member/login";
 	}
 
 }

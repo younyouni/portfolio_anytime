@@ -133,17 +133,32 @@
 					//+는 1회 이상 반복을 의미하고 {1,}와 동일합니다.
 					//\w+는 [A-Za-z0-9_]를 1개이상 사용하라는 의미입니다.
 					const pattern = /^\w+@\w+[.]\w{3}$/;
-					const email_value = $(this).val();
-
-					if (!pattern.test(email_value)) {
+					const email = $(this).val();
+					
+					if (!pattern.test(email)) {
 						$("#email_message").css('color', '#e54787').html(
 								"&nbsp;&nbsp;&nbsp;이메일형식이 맞지 않습니다.");
 						checkemail = false;
-					} else {
-						$("#email_message").css('color', '#624cff').html(
-								"이메일형식에 맞습니다.");
-						checkemail = true;
-					}
+						return;
+					} 
+					$.ajax({
+						url : "mailcheck",
+						data : {
+							"email" : email
+						},
+						success : function(resp) {
+							if (resp == -1) {//db에 해당 email이  없는 경우
+								$("#email_message").css('color', '#624cff')
+										.html("&nbsp;&nbsp;&nbsp;사용 가능한 이메일 입니다.");
+								checkemail = true;
+							} else { //db에 해당 email이 있는 경우 
+								$("#email_message").css('color', '#e54787')
+										.html("&nbsp;&nbsp;&nbsp;사용중인 이메일 입니다.");
+								checkemail = false;
+							}
+						}
+					});
+					
 				}); //email keyup end
 
 		//닉네임 중복 유효성 검사

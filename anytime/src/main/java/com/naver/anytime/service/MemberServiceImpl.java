@@ -77,6 +77,25 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public String getNickname(String login_id) {
+		return dao.getNickname(login_id);
+	}
+
+	@Override
+	public int isEmail(String email) {
+		Member rmember = dao.isEmail(email);
+		return (rmember == null) ? AnytimeConstants.EMAIL_NOT_EXISTS : AnytimeConstants.EMAIL_EXISTS;
+	}
+
+	
+	@Override
+	public String getEmail(String login_id) {
+		return dao.getEmail(login_id);
+	}
+	
+	
+	
+	@Override
 	public int getSchoolIdByName(String campusName) {
 		return dao.getSchoolIdByName(campusName);
 	}
@@ -187,11 +206,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String getNickname(String login_id) {
-		return dao.getNickname(login_id);
-	}
-
-	@Override
 	public int updateMember(Member member) {
 		return dao.updateMember(member);
 	}
@@ -252,5 +266,7 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getStatusCheck2(user_id);
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
+
+	
 
 }

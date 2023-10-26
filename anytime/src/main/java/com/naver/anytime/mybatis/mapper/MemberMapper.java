@@ -20,6 +20,12 @@ public interface MemberMapper {
 	public Member isId(String id);
 
 	public Member isNickname(String nickname);
+	
+	public String getNickname(String login_id);
+	
+	public Member isEmail(String email);
+	
+	public String getEmail(String login_id);
 
 	public int getSchoolIdByName(String campusName);
 
@@ -53,8 +59,6 @@ public interface MemberMapper {
 	public int updateBoardAdmin(int user_id);
 
 	public String getPwd(String login_id);
-
-	public String getNickname(String login_id);
 
 	public int updateMember(Member member);
 
