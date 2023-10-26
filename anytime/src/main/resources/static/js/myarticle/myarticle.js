@@ -2,16 +2,16 @@ $(document).ready(function () {
 	
 	const page = 1;
 	
-	myScrapListAjax(page)
+	myArticleListAjax(page)
 	
-	function myScrapListAjax(page){
+	function myArticleListAjax(page){
 		
 		// 보안 토큰
 		const token = $("meta[name='_csrf']").attr("content");
 		const header = $("meta[name='_csrf_header']").attr("content");
 		
 		$.ajax({
-			url: "scraplist",
+			url: "myarticlelist",
 			data:{
 				page: page,
 			},
@@ -50,7 +50,7 @@ $(document).ready(function () {
 			
 			if(response.list.length == 0){
 				scrapList += '<article class="list" style="font-size: 34px; text-align: center;">';
-				scrapList += '스크랩한 글이 없습니다.</article>';
+				scrapList += '작성한 글이 없습니다.</article>';
 			}
 			
 			scrapArticles.prepend(scrapList);
@@ -71,7 +71,6 @@ $(document).ready(function () {
 				}else if(a != response.page) {
 					pageination += '<li class="page-item"><a href="#" data-page="'+ a +'" class="page-link">' + a + '</a></li>';
 				}
-				
 			}
 			
 			if(response.page >= response.max) {
@@ -80,12 +79,9 @@ $(document).ready(function () {
 				pageination += '<li class="page-item"><a href="#" data-page="'+ (page+1) +'" class="page-link">다음&nbsp;&nbsp;&nbsp;</a></li>';
 			}
 			
-			
 			pagetag.append(pageination);
 			console.log("ajax 실행 완료");		
-			}
-
-			
+			}		
 		})
 		
 	}
@@ -95,7 +91,7 @@ $(document).ready(function () {
 	   
 	   	var data_page = $(this).data('page');
    		
-    	myScrapListAjax(data_page);
+    	myArticleListAjax(data_page);
     });
     
 

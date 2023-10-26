@@ -10,8 +10,8 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.article.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.community.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/scrap/scrap.css">
-<script src="${pageContext.request.contextPath}/resources/js/scrap/scrap.js"></script>
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myarticle/myarticle.css">
+<script src="${pageContext.request.contextPath}/resources/js/myarticle/scrap.js"></script>
 </head>
 <body>
 	<div id="container" class="article">
@@ -46,8 +46,9 @@
 		
 		<hr>
 	</div>
-	
 		<jsp:include page="../common/rightside3.jsp" />
+	</div>
+	
 
 </body>
 </html>

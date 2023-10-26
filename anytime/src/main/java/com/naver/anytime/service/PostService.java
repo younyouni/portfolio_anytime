@@ -104,6 +104,17 @@ public interface PostService {
 	//게시물 스크랩
 	public List<Post> getMyScrapList(int page, int limit, int user_id);
 	
+	//내가 쓴 글 리스트 총 수
+	public int getMyArticlesListCount(int user_id);
+	
+	//내가 쓴 글 리스트
+	public List<Post> getMyArticlesList(int page, int limit, int user_id);
+	
+	//내가 댓글 단 글 리스트 총 수
+	public int getMyCommentArticlesListCount(int user_id);
+	
+	//내가 댓글 단 글 리스트
+	public List<Post> getMyCommentArticlesList(int page, int limit, int user_id);
 	// ********************************= 윤희 =********************************
 	public List<List<Post>> getPostListByBoard(int[] board_ids);
 
@@ -112,6 +123,11 @@ public interface PostService {
 	public int getPostTotalListCount(int board_id, int searchKey, String keyword);
 
 	public int getPost(int content_id);
+
+
+
+	
+	
 
 
 
