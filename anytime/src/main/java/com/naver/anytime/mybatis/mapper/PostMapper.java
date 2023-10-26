@@ -106,7 +106,21 @@ public interface PostMapper {
 	
 	//게시물 신고수
 	public int getPostReportCount(int post_id);
-
+	
+	//게시물 스크랩 리스트
+	public List<Post> getMyScrapList(HashMap<String, Integer> map);
+	
+	//내가 쓴 글 리스트 총 수
+	public int getMyArticlesListCount(int user_id);
+	
+	//내가 쓴 글 리스트
+	public List<Post> getMyArticlesList(HashMap<String, Integer> map);
+	
+	//내가 댓글 단 글 리스트 총 수
+	public int getMyCommentArticlesListCount(int user_id);
+	
+	//내가 댓글 단 글 리스트
+	public List<Post> getMyCommentArticlesList(HashMap<String, Integer> map);
 	// ********************************= 윤희 =********************************
 	
 	// 메인 커뮤니티 페이지 게시물 리스트 출력 사용X
@@ -119,5 +133,6 @@ public interface PostMapper {
 	public int getPostTotalListCount(HashMap<String, Object> map);
 
 	public int getPost(int content_id);
+
 
 }

@@ -13,6 +13,12 @@ public interface MemberService {
 	public int isId(String id);
 
 	public int isNickname(String nickname);
+	
+	public String getNickname(String login_id);
+	
+	public int isEmail(String email);
+	
+	public String getEmail(String login_id);
 
 	public int getSchoolIdByName(String campusName);
 
@@ -49,8 +55,6 @@ public interface MemberService {
 
 	public String getPwd(String login_id);
 
-	public String getNickname(String login_id);
-
 	public int updateMember(Member member);
 
 	public int updateStatusInactive(String login_id);
@@ -77,6 +81,5 @@ public interface MemberService {
 	
 	public Integer getStatusCheck2(int user_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
-
 
 }

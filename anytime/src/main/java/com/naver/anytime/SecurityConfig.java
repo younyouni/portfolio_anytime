@@ -16,8 +16,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+
 
 import com.naver.security.CustomAccessDeniedHandler;
 import com.naver.security.CustomUserDetailsService;
@@ -37,7 +40,10 @@ public class SecurityConfig{
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests().antMatchers("/resources/**/**").permitAll()
-     			.antMatchers("/main/home").permitAll()
+     			 // Main 
+		        .antMatchers("/main/home").permitAll()
+     			
+     			 // Member
      			.antMatchers("/member/login").permitAll()
      			.antMatchers("/member/loginProcess").permitAll()
 				.antMatchers("/member/register").permitAll()
@@ -46,10 +52,9 @@ public class SecurityConfig{
 				.antMatchers("/member/emailsend").permitAll()
 				.antMatchers("/member/join").permitAll()
 				.antMatchers("/member/idcheck").permitAll()
-				.antMatchers("/member/nickname").permitAll()
+				.antMatchers("/member/mailcheck").permitAll()
+				.antMatchers("/member/nicknamecheck").permitAll()
 				.antMatchers("/member/joinProcess").permitAll()
-	
-				
 				.antMatchers("/member/forgotid").permitAll()
 				.antMatchers("/member/forgotid_email").permitAll()
 				.antMatchers("/member/forgotpwd").permitAll()
@@ -58,29 +63,115 @@ public class SecurityConfig{
 				.antMatchers("/member/forgotpwd_result").permitAll()
 				.antMatchers("/member/forgotpwd_resultProcess").permitAll()
 				
-				
-				.antMatchers("/certificate").permitAll()
-				.antMatchers("/certificate_mailsend").permitAll()
-				.antMatchers("/certificate_mailcheck").permitAll()
-				.antMatchers("/certificateProcess").permitAll()
+				 // Member2
+				.antMatchers("/my").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/password").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/update").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/updateProcess").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/boardlist").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/delete").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/deleteProcess").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/certificate").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/certificate_mailsend").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/certificate_mailcheck").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/certificateProcess").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 
+				/*
+				 // Admin
+				.antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/boardAdmin").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/updateBoardStatus").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/updateBoardStatusImmediately").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/boardtotal").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/reportAdmin").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/reportListAdmin").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/reportTotal").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/reportProcess").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/adminNotice").access("hasRole('ROLE_ADMIN')")  
+			    .antMatchers("/adminNoticeList").access("hasRole('ROLE_ADMIN')")
+			    */
+				
+			     // Board 
+				.antMatchers("/list").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/create").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/getboardcontent").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/updateboardcontent").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/managercheck").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/deleteboard").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/updatemanagerboard").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				
+			    
+			    // Calendar
+				.antMatchers("/calendar").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/calendarlist").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/calendaradd").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/calendarupdate").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/calendardropupdate").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/calendardelete").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+			
+				
+				// Comment
+				.antMatchers("/comment/list").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/comment/add").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/comment/update").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/comment/delete").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/comment/reply").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+			
+				// Credit
+				.antMatchers("/calculator").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/getsemester_detail").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/updatesemester_detail").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/updateGraduateCredit").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/gettimetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/gettimetable_detail").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				
+				// Message
+				.antMatchers("/message").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/messagelist").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/messagelastlist").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/sendmessage").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				
+				
+			    // Post
+				.antMatchers("/post/detail").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/post/write").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/post/updateGet").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/post/updatePost").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/post/delete").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/post/likePost").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/post/list").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/post/search").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				
+				// Report
+				.antMatchers("/report").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+			    
+				// School
+				.antMatchers("/{schoolDomain}").permitAll()
+				
+				
+				// Scrap
+				.antMatchers("/scrap").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				
+				// TimeTable
+				.antMatchers("/timetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/changeName").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				
+				
+				
+				.antMatchers("/admin").permitAll()
 				.antMatchers("/boardAdmin").permitAll()
-				.antMatchers("/reportAdmin").permitAll()
+			    .antMatchers("/updateBoardStatus").permitAll()
+			    .antMatchers("/updateBoardStatusImmediately").permitAll()
+			    .antMatchers("/boardtotal").permitAll()
+			    .antMatchers("/reportAdmin").permitAll()
+			    .antMatchers("/reportListAdmin").permitAll()
+			    .antMatchers("/reportTotal").permitAll()
+			    .antMatchers("/reportProcess").permitAll()
+			    .antMatchers("/adminNotice").permitAll()
+			    .antMatchers("/adminNoticeList").permitAll();
 				
-				.antMatchers("/calculator").permitAll()
-				
-				
-				
-				.antMatchers("/gettimetable").permitAll()
-				
-				.antMatchers("/post/list").permitAll()
-				.antMatchers("/**/**").permitAll()
-		        .antMatchers("/**").permitAll();
-//				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
-//				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
-//			    .antMatchers("/member/list/").access("hasRole('ROLE_ADMIN')")
-//				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
 		
+		// loginprocess
 		http.formLogin().loginPage("/member/login")
 				        .loginProcessingUrl("/member/loginProcess")
 				        .usernameParameter("login_id")
@@ -110,9 +201,14 @@ public class SecurityConfig{
 		
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 		
+		//reCAPTCHA 
+		http.addFilterBefore(recaptchaValidationFilter(), UsernamePasswordAuthenticationFilter.class);
+		
 		return http.build();
 		
 	}
+	
+	
 	
 
 	//추가
@@ -154,4 +250,12 @@ public class SecurityConfig{
         jdbcTokenRepository.setDataSource(datasource); //dataSource 주입
         return jdbcTokenRepository;
     }
+    
+    //reCAPTCHA
+    @Bean
+    public RecaptchaValidationFilter recaptchaValidationFilter() {
+    	return new RecaptchaValidationFilter();
+    	
+    }
+    
 }

@@ -95,9 +95,9 @@
 			<sec:authorize access="isAuthenticated()">
 				<div class="card">
 					<div class="menus">
-						<a href="/myarticle" class="myarticle">내가 쓴 글</a> <a
-							href="/mycommentarticle" class="mycommentarticle">댓글 단 글</a> <a
-							href="/myscrap" class="myscrap">내 스크랩</a>
+						<a href="${pageContext.request.contextPath}/myarticle" class="myarticle">내가 쓴 글</a> <a
+							href="${pageContext.request.contextPath}/mycommentarticle" class="mycommentarticle">댓글 단 글</a> <a
+							href="${pageContext.request.contextPath}/myscrap" class="myscrap">내 스크랩</a>
 						<c:if test="${member.board_admin eq 1}">
 							<a href="${pageContext.request.contextPath}/boardlist"
 								class="myboard">게시판 관리</a>
