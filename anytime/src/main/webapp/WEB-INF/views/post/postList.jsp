@@ -95,7 +95,7 @@
          			<h2 class="medium">${post.SUBJECT}</h2>
          			<p class="small">${post.CONTENT}</p> 
          			
-         			<time class="small">${post.POST_DATE}</time>
+         			<time class="small">${post.FORMATTED_DATE}</time>
 					<h3 class="small">${post.NICKNAME}</h3>
 			<ul class="status">
 				
@@ -121,7 +121,7 @@
 				<a class="article" href="detail?post_id=${post.POST_ID}">
 				<img src="https://cf-fpi.everytime.kr/0.png" class="picture medium">
 				<h3 class="medium">${post.NICKNAME}</h3> 
-				<time class="medium">${post.POST_DATE}</time>
+				<time class="medium">${post.FORMATTED_DATE}</time>
 				<hr>
 				<h2 class="medium bold">${post.SUBJECT}</h2>
 				<p class="medium">

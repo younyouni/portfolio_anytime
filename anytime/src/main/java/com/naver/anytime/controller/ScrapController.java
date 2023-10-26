@@ -40,6 +40,8 @@ public class ScrapController {
 	    this.memberService = memberService;
 	}
 	
+	
+	//스크랩 페이지 보내기
 	@RequestMapping(value = "/myscrap")
 	@ResponseBody
 	public ModelAndView Scrap(
@@ -49,8 +51,7 @@ public class ScrapController {
 		return mv;
 	}
 	
-	
-	
+	//게시글에서 스크랩
 	@RequestMapping(value = "/scrap", method = RequestMethod.POST)
 	@ResponseBody
 	public int insertScrap(
@@ -75,6 +76,7 @@ public class ScrapController {
 		return scrapResult;
 	}
 	
+	//스크랩 리스트 출력
 	@RequestMapping(value = "/scraplist")
 	@ResponseBody
 	public Map<String, Object> getScrapList(
@@ -83,9 +85,7 @@ public class ScrapController {
 			) {
 		String login_id = principal.getName();						//로그인한 유저 login_id
 		int user_id = memberService.getUserId(login_id);		//로그인한 유저 user_id 구하기
-		
-											System.out.println("유저 번호 = " + user_id);
-		
+
 		// 제한 수
 		int limit = 10;
 		
@@ -103,15 +103,15 @@ public class ScrapController {
 
 	    if (endpage > maxpage)
 	       endpage = maxpage;
-		
-										    System.out.println("페이지 수 : " + page);
-										    System.out.println("리스트 수 : " + listcount + "/ 총 페이지 수 : " + maxpage + "/ 시작 페이지 수 : " + startpage);
-		
+
 	    // 스크랩 게시물 리스트
 		List<Post> list = postService.getMyScrapList(page, limit, user_id);
-											logger.info("List size: " + list.size());
 		
-	    // JSON 응답을 구성
+		for(Post post : list) {
+			
+		}
+
+	    // JSON에 추가
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("page", page);
 	    response.put("list", list);

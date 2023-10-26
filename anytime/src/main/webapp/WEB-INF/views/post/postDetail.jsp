@@ -98,7 +98,7 @@
 					<hr>
 					<div class="buttons">
 						<span class="posvote" data-post_id="${postdata.POST_ID}">공감</span>
-						<span class="scrap">스크랩</span>
+						<span class="scrap add">스크랩</span>
 					</div> 
 					<input type="hidden" id="comment_post_id" value="${postdata.POST_ID}">
 				</a>

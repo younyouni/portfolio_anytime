@@ -23,7 +23,7 @@
     	FROM (
       	  SELECT ROWNUM RNUM, j.*
       	  FROM (
-        	    SELECT post.*, NVL(cnt, 0) AS comment_count
+        	    SELECT post.*, TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE, NVL(cnt, 0) AS comment_count
         	    FROM post
         	    LEFT OUTER JOIN (
         	        SELECT post_id, COUNT(*) cnt
@@ -255,7 +255,7 @@
 		FROM (
 		    SELECT ROWNUM RNUM, j.*
 		    FROM (
-		        SELECT post.*, NVL(cnt, 0) AS COMMENT_COUNT, board.NAME AS BOARDNAME, member.NICKNAME AS NICKNAME
+		        SELECT post.*, TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE, NVL(cnt, 0) AS COMMENT_COUNT, board.NAME AS BOARDNAME, member.NICKNAME AS NICKNAME
 		        FROM post
 		        LEFT OUTER JOIN (
 		            SELECT post_id, COUNT(*) cnt
@@ -267,7 +267,7 @@
 		        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
 		        WHERE post.status = 1
 		        AND scrap.user_id = #{user_id}
-		        ORDER BY post.post_id DESC
+		        ORDER BY scrap.scrap_id DESC
 		    ) j 
 		    WHERE ROWNUM &lt;= #{end} 
 		) 

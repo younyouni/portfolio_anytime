@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-	$(document).on("click", ".scrap", function(){
+	$(document).on("click", ".scrap.add", function(){
 		scrapAjax()
 	});
 

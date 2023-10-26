@@ -21,8 +21,13 @@
 	</delete>
 	
 	<select id="getMyScrapCount" resultType="int">
-		select count(*)
-		from scrap
-		where user_id = #{user_id}
+		SELECT COUNT(*)
+		FROM scrap s
+		WHERE user_id = #{user_id}
+		AND s.post_id IN (
+		    SELECT post_id
+		    FROM post
+		    WHERE status = 1
+		)
 	</select>
 </mapper>
