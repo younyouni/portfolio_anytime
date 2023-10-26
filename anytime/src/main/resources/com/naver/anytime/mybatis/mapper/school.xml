@@ -11,6 +11,7 @@
 		LEFT JOIN (
 		SELECT school_id, COUNT(*) cnt
 		FROM member
+		where account_status != 0
 		GROUP BY school_id) b
 		ON SCHOOL.school_id = b.school_id
 	</select>

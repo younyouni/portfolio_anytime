@@ -10,10 +10,12 @@
 		from member where login_id = #{login_id}
 	</select>
 
-	<select id="isLoginId" resultType="member" parameterType="String">
+	<select id="isLoginId" resultType="member"
+		parameterType="String">
 		select *
 		from member where login_id = #{login_id}
-		and account_status = 1
+		and
+		account_status = 1
 	</select>
 
 	<!-- nickname 체크하기 위한 쿼리문 -->
@@ -22,36 +24,59 @@
 		select * from member where nickname = #{nickname}
 	</select>
 
+
+	<select id="getNickname" parameterType="String"
+		resultType="String">
+		SELECT NICKNAME
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
+	</select>
+
+	<!-- email 체크하기 위한 쿼리문 -->
+	<select id="isEmail" resultType="member"
+	     parameterType="String">
+		select *
+		from member where email = #{email}
+	</select>
+
+	<select id="getEmail" parameterType="String"
+		resultType="String">
+		SELECT EMAIL
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
+	</select>
+
+
 	<select id="getSchoolIdByName" resultType="int">
 		SELECT school_id FROM
 		school WHERE name = #{campusName}
 	</select>
 
 
-
 	<insert id="insert" parameterType="member">
-	
-	<selectKey resultType="integer" keyProperty="user_id" order="BEFORE">
-        SELECT member_seq.NEXTVAL FROM dual        
-    </selectKey>    
-	
+
+		<selectKey resultType="integer" keyProperty="user_id"
+			order="BEFORE">
+			SELECT member_seq.NEXTVAL FROM dual
+		</selectKey>
+
 		INSERT INTO member
 		VALUES
-		(#{user_id}, #{school_id}, #{login_id}, #{nickname},
+		(#{user_id}, #{school_id}, #{login_id},
+		#{nickname},
 		#{password},
-		#{email}, #{school_check}, #{address_num}, #{address1},
+		#{email}, #{school_check}, #{address_num},
+		#{address1},
 		#{address2}, #{phone_num}, #{board_admin},
 		#{account_status},
 		#{admission_year}, #{auth})
 	</insert>
 
 
-
 	<select id="findIdByEmail" resultType="String">
 		select login_id from
 		member where email = #{email}
 	</select>
-
 
 	<update id="updateschoolcheck" parameterType="String">
 
@@ -132,12 +157,6 @@
 		WHERE LOGIN_ID = #{login_id}
 	</select>
 
-	<select id="getNickname" parameterType="String"
-		resultType="String">
-		SELECT NICKNAME
-		FROM MEMBER
-		WHERE LOGIN_ID = #{login_id}
-	</select>
 
 	<update id="updateMember" parameterType="member">
 		UPDATE MEMBER
@@ -159,88 +178,95 @@
 		WHERE LOGIN_ID = #{login_id}
 	</update>
 
-	<select id="getBoardAdmin" parameterType="String" resultType="int">
+	<select id="getBoardAdmin" parameterType="String"
+		resultType="int">
 		SELECT BOARD_ADMIN
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
 	</select>
-	
+
 	<update id="updateStatusByContentId">
 		UPDATE MEMBER M
 		SET M.ACCOUNT_STATUS = 0
 		WHERE M.USER_ID IN (
-							<include refid="content"/>
-							#{content_id}
-				 	 		)
+		<include refid="content" />
+		#{content_id}
+		)
 	</update>
-	
+
 	<sql id="content">
-		<if test ='isContent == 1'> <!-- post -->
+		<if test='isContent == 1'> <!-- post -->
 			SELECT P.USER_ID
-	  		FROM REPORT R
-	  		JOIN POST P ON P.POST_ID = R.REPORTED_ORIGIN
-	  		WHERE P.POST_ID = 
+			FROM REPORT R
+			JOIN POST P ON P.POST_ID =
+			R.REPORTED_ORIGIN
+			WHERE P.POST_ID =
 		</if>
-		<if test ='isContent == 2'> <!-- comment -->
+		<if test='isContent == 2'> <!-- comment -->
 			SELECT C.USER_ID
-	    	FROM REPORT R
-	    	JOIN COMMENTS C ON C.COMMENT_ID = R.REPORTED_ORIGIN
-	    	WHERE C.COMMENT_ID = 
+			FROM REPORT R
+			JOIN COMMENTS C ON C.COMMENT_ID =
+			R.REPORTED_ORIGIN
+			WHERE C.COMMENT_ID =
 		</if>
 	</sql>
-	
-	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
-	<select id="getSchoolId2" parameterType="String" resultType="Integer">
+
+	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * 
+		* * * * -->
+	<select id="getSchoolId2" parameterType="String"
+		resultType="Integer">
 		SELECT SCHOOL_ID
 		FROM MEMBER
 		WHERE LOGIN_ID=#{login_id}
 	</select>
-	
+
 	<update id="updateBoardAdminDelete" parameterType="int">
 		update member
 		set
 		board_admin = 0
 		where user_id = #{user_id}
 	</update>
-	
+
 	<update id="updateBoardAdminAdd" parameterType="int">
 		update member
 		set
 		board_admin = 1
 		where user_id = #{user_id}
 	</update>
-	
+
 	<select id="getStatusCheck" resultType="Integer">
 		select account_status
 		from member
 		where login_id = #{login_id}
 	</select>
-	
+
 	<select id="getNickName2" resultType="String">
 		select nickname
 		from member
 		where user_id = #{user_id}
 	</select>
-	
+
 	<select id="getUserIdConversion" resultType="Integer">
 		select user_id
-		from member
-		where user_id = (	select user_id
-							from post
-							where post_id = #{num}
-						)
-		or user_id =	(	select user_id
-							from comments
-							where comment_id = #{num}
-						)
+		from
+		member
+		where user_id = ( select user_id
+		from post
+		where post_id = #{num}
+		)
+		or user_id = ( select user_id
+		from comments
+		where comment_id = #{num}
+		)
 	</select>
-	
+
 	<select id="getStatusCheck2" resultType="Integer">
 		select account_status
 		from member
 		where user_id = #{user_id}
 	</select>
-	
-	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * * * * * -->
+
+	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * 
+		* * * * -->
 
 </mapper>
