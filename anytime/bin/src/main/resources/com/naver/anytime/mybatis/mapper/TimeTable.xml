@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.anytime.mybatis.mapper.TimeTableMapper">
+   
+	   <select id = "gettimetable" resultType="TimeTable">
+		  select *
+		  from timetable
+		  where user_id = #{user_id}
+		  and status != 0  
+		</select>
+	   
+	   <select id = "getTimetableByUserId" resultType="TimeTable">
+	     SELECT TIMETABLE_ID, USER_ID, NAME, SEMESTER, 
+	     		TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS
+	     FROM TIMETABLE
+	     WHERE user_id = #{user_id}
+	     AND status != 0  
+	   </select>
+	   
+	   <update id="changeName" parameterType="map">
+	    UPDATE TIMETABLE 
+	    SET NAME = #{newName} 
+	    WHERE timetable_id = #{timetable_id}
+	   </update>
+   
+	
+</mapper>

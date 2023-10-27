@@ -24,6 +24,7 @@ public class Post {
 	private String uploadfile;
 	private String POST_ORIGINAL; //첨부될 파일의 이름
 	
+	private int school_id;
 	private String FORMATTED_DATE;
 	
 	/* ---------- POST테이블 Getter/Setter ---------- */
@@ -160,6 +161,13 @@ public class Post {
 	}
 	public void setFORMATTED_DATE(String fORMATTED_DATE) {
 		FORMATTED_DATE = fORMATTED_DATE;
+	}
+	// hot, best 용
+	public int getSchool_id() {
+		return school_id;
+	}
+	public void setSchool_id(int school_id) {
+		this.school_id = school_id;
 	}
 	
 	

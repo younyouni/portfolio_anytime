@@ -321,7 +321,7 @@
 	</select>
 	
 	<select id="getMyCommentArticlesList" parameterType="map" resultType="post">
-	    SELECT *
+		SELECT *
 		FROM (
 			    SELECT ROWNUM RNUM, j.*
 			    FROM (
@@ -346,7 +346,7 @@
 			        AND post.post_id IN (
 			            SELECT post_id
 			            FROM comments
-			            WHERE user_id = #{user_id}
+			            WHERE user_id = #{user_id} and status = 1
 			        )
 			        ORDER BY post.post_id DESC
 			    ) j 
@@ -355,5 +355,113 @@
 			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
 	</select>
 	
+	<select id="getHotPostListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM post p
+		JOIN board b ON b.board_id = p.board_id
+		WHERE b.school_id = #{school_id} AND p.like_count &gt;= 10 and p.status = 1
+	</select>
+	
+	<select id="getBestPostListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM post p
+		JOIN board b ON b.board_id = p.board_id
+		WHERE b.school_id = #{school_id} AND p.like_count &gt;= 100 and p.status = 1
+	</select>
+	
+	<select id="getHotPostList" parameterType="map" resultType="post">
+	    SELECT *
+		FROM (
+			    SELECT ROWNUM RNUM, j.*
+			    FROM (
+			        SELECT 
+			            post.*, 
+			            TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE,
+			            NVL(cnt, 0) AS COMMENT_COUNT, 
+			            board.NAME AS BOARDNAME, 
+			            CASE
+			                WHEN board.anonymous = 1 THEN '익명'
+			                ELSE member.NICKNAME
+			            END AS NICKNAME
+			        FROM post
+			        LEFT OUTER JOIN (
+			            SELECT post_id, COUNT(*) cnt
+			            FROM comments
+			            GROUP BY post_id
+			        ) sub_C ON post.post_id = sub_C.post_id
+			        LEFT OUTER JOIN board ON post.board_id = board.board_id
+			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
+			        WHERE post.status = 1 
+			        and post.like_count &gt;= 10
+					and board.school_id = #{school_id}
+			        ORDER BY post.post_id DESC
+			    ) j 
+			    WHERE ROWNUM &lt;= #{end} 
+			) 
+			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+	
+	<select id="getBestPostList" parameterType="map" resultType="post">
+	    SELECT *
+		FROM (
+			    SELECT ROWNUM RNUM, j.*
+			    FROM (
+			        SELECT 
+			            post.*, 
+			            TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE,
+			            NVL(cnt, 0) AS COMMENT_COUNT, 
+			            board.NAME AS BOARDNAME, 
+			            CASE
+			                WHEN board.anonymous = 1 THEN '익명'
+			                ELSE member.NICKNAME
+			            END AS NICKNAME
+			        FROM post
+			        LEFT OUTER JOIN (
+			            SELECT post_id, COUNT(*) cnt
+			            FROM comments
+			            GROUP BY post_id
+			        ) sub_C ON post.post_id = sub_C.post_id
+			        LEFT OUTER JOIN board ON post.board_id = board.board_id
+			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
+			        WHERE post.status = 1 
+			        and post.like_count &gt;= 100
+			        and board.school_id = #{school_id}
+			        ORDER BY post.post_id DESC
+			    ) j 
+			    WHERE ROWNUM &lt;= #{end} 
+			) 
+			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
+	</select>
+	
+	<select id="getHotPostList4" resultType="post">
+	    SELECT *
+		FROM (
+			    SELECT ROWNUM RNUM, j.*
+			    FROM (
+			        SELECT 
+			            post.*, 
+			            TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE,
+			            NVL(cnt, 0) AS COMMENT_COUNT, 
+			            board.NAME AS BOARDNAME, 
+			            CASE
+			                WHEN board.anonymous = 1 THEN '익명'
+			                ELSE member.NICKNAME
+			            END AS NICKNAME
+			        FROM post
+			        LEFT OUTER JOIN (
+			            SELECT post_id, COUNT(*) cnt
+			            FROM comments
+			            GROUP BY post_id
+			        ) sub_C ON post.post_id = sub_C.post_id
+			        LEFT OUTER JOIN board ON post.board_id = board.board_id
+			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
+			        WHERE post.status = 1 
+			        and post.like_count &gt;= 10
+			        and board.school_id = #{school_id}
+			        ORDER BY post.post_id DESC
+			    ) j 
+			    WHERE ROWNUM &lt;= 4 
+			) 
+	</select>
 	
 </mapper>
