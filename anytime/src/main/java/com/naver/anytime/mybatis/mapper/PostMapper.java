@@ -134,5 +134,23 @@ public interface PostMapper {
 
 	public int getPost(int content_id);
 
+	//핫 게시물 리스트 총 수
+	public int getHotPostListCount(int school_id);
+
+	//베스트 게시물 리스트 총 수
+	public int getBestPostListCount(int school_id);
+	
+	//핫 게시물 리스트
+	public List<Post> getHotPostList(HashMap<String, Object> map);
+	
+	//베스트 게시물 리스트
+	public List<Post> getBestPostList(HashMap<String, Object> map);
+	
+	//라이트 사이드 핫 게시물 리스트
+	public List<Post> getHotPostSampleList(int school_id);
+	
+	//라이트 사이드 베스트 게시물 리스트
+	public List<Post> getBestPostSampleList(int school_id);
+
 
 }

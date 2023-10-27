@@ -45,20 +45,19 @@
 
 			<h1>
 				<c:choose>
-					<c:when test="${allsearchcheck == 0}">
+					<c:when test="${allsearchcheck == 0 && searchcheck == 0}">
 						<a href="list?board_id=${board_id}">${boardName}</a>
+						<p id="boardcontent">${boardContent}</p>
 					</c:when>
 					<c:when test="${allsearchcheck == 1}">
-				'${search_word}'에 대한 검색 결과입니다.
-				</c:when>
+						'${search_word}'에 대한 검색 결과입니다.
+					</c:when>
+					<c:when test="${searchcheck == 1}">
+						'${search_word}'에 대한 검색 결과입니다.
+					</c:when>
 				</c:choose>
 			</h1>
-			
-			<!-- 보드 설명이 있을때 출력 -->
-			<c:if test="${boardContent != '없음'}">
-			<p id="boardcontent">${boardContent}</p>
-			</c:if>
-			
+						
 			<hr>
 		</div>
 		
@@ -612,7 +611,7 @@
 			success: function (deleteResult){
 				if(deleteResult == 1){
 					alert("게시판이 삭제되었습니다.");
-					window.location.href = context + "/" + school;
+					window.location.href = context + "/anytime";
 				}else if(deleteResult == 2){
 					alert("게시판 이름이 다릅니다.");
 				}else {

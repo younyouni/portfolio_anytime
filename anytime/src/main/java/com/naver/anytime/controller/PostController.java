@@ -614,6 +614,7 @@ public class PostController {
 	    mv.addObject("un", username);
 	    mv.addObject("boardname", board);
 	    mv.addObject("allsearchcheck", 0);
+	    mv.addObject("searchcheck", 0);
 	    mv.addObject("emptycheck", 0);
 	    mv.addObject("board_id", board_id);
 	    

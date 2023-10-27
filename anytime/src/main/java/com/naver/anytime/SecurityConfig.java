@@ -92,7 +92,7 @@ public class SecurityConfig{
 			    */
 				
 			     // Board 
-				.antMatchers("/list").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/submenulist").permitAll() //바꿀게요
 				.antMatchers("/create").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/getboardcontent").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/updateboardcontent").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
@@ -100,7 +100,11 @@ public class SecurityConfig{
 				.antMatchers("/deleteboard").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/updatemanagerboard").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				
-			    
+				.antMatchers("/hotpost").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/bestpost").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				
+
+				
 			    // Calendar
 				.antMatchers("/calendar").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/calendarlist").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
