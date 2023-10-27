@@ -1,8 +1,10 @@
 package com.naver.anytime.service;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,25 +50,27 @@ public class TimeTableServiceImpl implements TimeTableService {
 	public int createNewTimeTable(int user_id, String semester) {
 
 		String lastName = getLastTimeTableName(user_id, semester);
-		System.out.println(lastName);
-		int lastIndex = Integer.parseInt(lastName.replaceAll("[^0-9]", ""));
+		int lastIndex = 0;
+
+		if (lastName != null) {
+			lastIndex = Integer.parseInt(lastName.replaceAll("[^0-9]", ""));
+		}
 
 		String newName = "시간표" + (lastIndex + 1);
-		
+
 		timeDao.insertNewTimetable(user_id, newName, semester);
 		return timeDao.getLastInsertId();
-		
+
 	}
-	
+
 	private String getLastTimeTableName(int user_id, String semester) {
 		return timeDao.getLastTimeTableName(user_id, semester);
 	}
-	
+
 	@Override
 	public TimeTable getNewTimetable(int key) {
 		return timeDao.getNewTimetable(key);
 	}
-
 
 	private TimeTable getLastTimeTable(int user_id) {
 		return timeDao.getLastTimeTable(user_id);
@@ -78,16 +82,8 @@ public class TimeTableServiceImpl implements TimeTableService {
 	}
 
 	@Override
-	public TimeTable createDefaultTimeTable(int user_id, String semester) {
-		TimeTable defaultTimeTable = new TimeTable();
-		int newTimeTableId = timeDao.getLastTimeTableId(user_id) + 1;
-		defaultTimeTable.setTIMETABLE_ID(newTimeTableId);
-		defaultTimeTable.setUSER_ID(user_id);
-		defaultTimeTable.setNAME("시간표 1");
-		defaultTimeTable.setSEMESTER(semester); // 학기 정보 설정
-		defaultTimeTable.setSTATUS(1);
-		timeDao.createDefaultTimeTable(defaultTimeTable);
-		return defaultTimeTable;
+	public int createDefaultTimeTable(int user_id, String semester) {
+		return timeDao.createDefaultTimeTable(user_id, semester);
 	}
 
 	@Override
@@ -95,6 +91,9 @@ public class TimeTableServiceImpl implements TimeTableService {
 		return timeDao.getLastTimeTableId(user_id);
 	}
 
-	
+	@Override
+	public int checkTimetable(int user_id, String semester) {
+		return timeDao.checkTimetable(user_id, semester);
+	}
 
 }

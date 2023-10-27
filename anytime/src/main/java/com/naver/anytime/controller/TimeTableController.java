@@ -1,6 +1,7 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -44,22 +45,29 @@ public class TimeTableController {
 
 	@RequestMapping(value = "/getTimetableByUserIdAndSemester", method = RequestMethod.POST)
 	@ResponseBody
-	public List<TimeTable> getTimetableBySemester(@RequestParam(value = "semester") String semester,
+	public List<TimeTable> getTimetableBySemester(
+			@RequestParam(value = "semester", defaultValue = "2023년 2학기", required = false) String semester,
 			Principal userPrincipal) {
 		String id = userPrincipal.getName();
+		int user_id = memberService.getUserId(id);
+		logger.info("유저아이디" + user_id);
+
 		if (id == null) {
 			throw new RuntimeException("사용자가 로그인하지 않았습니다.");
 		}
 
-		List<TimeTable> timetable = timeTableService.getTimetableByUserIdAndSemester(memberService.getUserId(id),
-				semester);
+		int timetable_check = timeTableService.checkTimetable(user_id, semester);
+		List<TimeTable> timetable = new ArrayList<TimeTable>();
 
-		if (timetable.isEmpty()) {
-			// DB에 데이터가 없을 경우 기본 시간표를 생성하고 반환
-			TimeTable defaultTimeTable = timeTableService.createDefaultTimeTable(memberService.getUserId(id), semester);
-			timetable.add(defaultTimeTable);
+		if (timetable_check > 0) {
+			timetable = timeTableService.getTimetableByUserIdAndSemester(user_id, semester);
+
+		} else {
+			int key = timeTableService.createDefaultTimeTable(user_id, semester);
+
+			TimeTable new_timetable = timeTableService.getNewTimetable(key);
+			timetable.add(new_timetable);
 		}
-
 		return timetable;
 	}
 
@@ -80,7 +88,7 @@ public class TimeTableController {
 	public TimeTable createNewTimeTable(@RequestParam(value = "semester") String semester, Principal userPrincipal) {
 		String id = userPrincipal.getName();
 		int key = timeTableService.createNewTimeTable(memberService.getUserId(id), semester);
-		
+
 		return timeTableService.getNewTimetable(key);
 	}
 

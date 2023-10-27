@@ -81,7 +81,8 @@ $(document).ready(function () {
 
                     $('#tableName').text(response.name);
                     $('#tableUpdatedAt').text(response.timetable_DATE);
-
+                    alert(response.name);
+                    alert(response.timetable_DATE);
                     $('div.menu ol li').removeClass('active');
                     output += '<li class="active"><a href="/timetable/2018/1/8599353">' + response.name + '</a></li>'                    
                 }
@@ -100,33 +101,10 @@ $(document).ready(function () {
         var selectedSemester = $("#semesters option:selected").text();
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
-    
-        // AJAX 요청을 통해 선택한 학기와 유저 정보를 서버로 전달
-        $.ajax({
-            url: 'getTimetableByUserIdAndSemester',
-            type: 'POST',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(header, token);
-            },
-            data: {
-                semester: selectedSemester,
-            },
-            success: function (timetables) {
-                var timetableList = $(".menu ol");
-                timetableList.empty(); // 시간표 목록을 비워줍니다.
-                for (var i = 0; i < timetables.length; i++) {
-                    var timetable = timetables[i];
-                    console.log("Received timetable ID: " + timetable.timetable_ID); // 각 시간표의 id를 출력해봅니다.
-                    var timetableItem = '<li><a href="/timetable/' + timetable.semester + '/' + timetable.id + '">' + timetable.name + '</a></li>';
-                    timetableList.append(timetableItem); // 비어있는 목록에 새로운 항목을 추가합니다.
-                }
-            },
-            
-            
-            error: function (error) {
-                console.log(error);
-            }
-        });
+
+        semester =  $("#semesters option:selected").text();
+        getTimetableList(semester);
+
     });
   
 });
@@ -134,6 +112,7 @@ $(document).ready(function () {
 function getTimetableList(semester){
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
+    console.log(semester)
 
     $.ajax({
         type: "POST",
@@ -151,14 +130,13 @@ function getTimetableList(semester){
                         $("div.menu ol").empty();
                         
                         $(rdata).each(function() {                        
-                            output += '<li class="active"><a href="/timetable/2018/1/8599353"'
                             if(this.status ==1){
-                                output += 'class="primary">';
+                                output += '<li class="active"><a href="/'+this.timetable_ID+'" class="primary">';
                                 $('#tableUpdatedAt').text(this.timetable_DATE)
                             }else{
-                                output += '>';
+                                output += '<li><a href="/'+this.timetable_ID+'">';
                             }
-                            output += this.name+'</a></li>'
+                            output += this.name+'</a></li>';
                         })
                         output += '<li class="extension"><a class="create">새 시간표 만들기</a></li>'
                         

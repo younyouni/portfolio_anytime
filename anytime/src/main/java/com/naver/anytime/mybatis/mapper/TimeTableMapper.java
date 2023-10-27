@@ -24,24 +24,24 @@ public interface TimeTableMapper {
 
 	public TimeTable createNewTimeTable(int user_id);
 
-	public int getLastTimeTableId(int user_id);
+	public Integer getLastTimeTableId(int user_id);
 
 	public void insert(TimeTable newTimeTable);
 
-	List<TimeTable> getTimetableByUserIdAndSemester(Integer user_id, String semester);
+	List<TimeTable> getTimetableByUserIdAndSemester(int user_id, String semester);
 
-	public TimeTable createDefaultTimeTable(Integer user_id, String semester);
+	public int createDefaultTimeTable(int user_id, String semester);
 
 	public void createDefaultTimeTable(TimeTable defaultTimeTable);
 
-	public int insertNewTimetable(@Param("user_id") int user_id, 
-								@Param("newName") String newName,
-					            @Param("semester") String semester);
+	public int insertNewTimetable(int user_id, String newName, String semester);
 	
 	public int getLastInsertId();
 
 	public String getLastTimeTableName(int user_id, String semester);
 
 	public TimeTable getNewTimetable(int key);
+
+	public int checkTimetable(int user_id, String semester);
 
 }

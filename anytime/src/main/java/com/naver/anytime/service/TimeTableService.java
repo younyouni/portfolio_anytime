@@ -20,9 +20,11 @@ public interface TimeTableService {
 
 	public List<TimeTable> getTimetableByUserIdAndSemester(int user_id, String semester);
 
-	public TimeTable createDefaultTimeTable(int user_id, String semester);
+	public int createDefaultTimeTable(int user_id, String semester);
 
 	public TimeTable getNewTimetable(int key);
+
+	int checkTimetable(int userId, String semester);
 	
 	
 

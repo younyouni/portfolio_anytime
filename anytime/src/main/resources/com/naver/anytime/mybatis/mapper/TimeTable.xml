@@ -30,11 +30,13 @@
 	        SET NAME = #{NAME}, TIMETABLE_DATE = TO_DATE(#{TIMETABLE_DATE}, 'YYYY-MM-DD HH24:MI:SS')
 	        WHERE TIMETABLE_ID = #{TIMETABLE_ID}
        </update>
-       
+      
+      <!-- 
        <insert id="insert" parameterType="TimeTable">
 	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
 	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, #{NAME}, #{SEMESTER}, SYSDATE, #{STATUS})
    	   </insert>
+	       --> 
    	   
    	   <select id="getLastTimeTable" resultType="TimeTable" parameterType="int">
 		    SELECT *
@@ -64,14 +66,24 @@
       <select id="getTimetableByUserIdAndSemester" resultType="TimeTable">
 	    SELECT TIMETABLE_ID, USER_ID, NAME, SEMESTER, 
 	           TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS
+	            from (select *
 	    FROM TIMETABLE
 	    WHERE user_id = #{user_id} and SEMESTER = #{semester}
-	    AND status != 0  
+	    ORDER BY STATUS DESC, timetable_date asc)
+	  </select>
+	  
+	   <select id="checkTimetable" resultType="int">
+	    SELECT COUNT(*) AS CNT
+	    FROM TIMETABLE
+	    WHERE user_id = #{user_id} and SEMESTER = #{semester}
 	  </select>
 	
-	  <insert id="createDefaultTimeTable" parameterType="TimeTable">
+	  <insert id="createDefaultTimeTable" >
+	  <selectKey keyProperty="DEFAULT_TIMETABLE_ID" resultType="int" order="AFTER">
+			SELECT timetable_seq.CURRVAL FROM DUAL
+	  </selectKey>
 	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
-	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, '시간표1', #{SEMESTER}, SYSDATE, #{STATUS})
+	      VALUES (timetable_seq.NEXTVAL, #{user_id}, '시간표 1', #{semester}, SYSDATE, 1)
 	  </insert> 
 	  
 	  <select id="getLastTimeTableName" resultType="String">
@@ -80,9 +92,9 @@
 				where name like '시간표%'
 				and user_id = #{user_id}
 				and semester = #{semester}
-			order by TO_NUMBER(REGEXP_SUBSTR(name, '\d+')) desc
-		) t
-		where rownum =1 
+			order by name desc
+			) t
+		where rownum =1
 	  </select>
 	  
 	  <select id="getNewTimetable" parameterType="int" resultMap="TimeTableResultMap">
