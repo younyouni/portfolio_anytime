@@ -81,8 +81,6 @@ $(document).ready(function () {
 
                     $('#tableName').text(response.name);
                     $('#tableUpdatedAt').text(response.timetable_DATE);
-                    alert(response.name);
-                    alert(response.timetable_DATE);
                     $('div.menu ol li').removeClass('active');
                     output += '<li class="active"><a href="/timetable/2018/1/8599353">' + response.name + '</a></li>'                    
                 }
@@ -131,17 +129,17 @@ function getTimetableList(semester){
                         
                         $(rdata).each(function() {                        
                             if(this.status ==1){
-                                output += '<li class="active"><a href="/'+this.timetable_ID+'" class="primary">';
+                                $('#tableName').text(this.name);
                                 $('#tableUpdatedAt').text(this.timetable_DATE)
+                                output += '<li class="active"><a href="/'+this.timetable_ID+'" class="primary">'+this.name+'</a>';
                             }else{
-                                output += '<li><a href="/'+this.timetable_ID+'">';
+                                output += '<li><a href="/'+this.timetable_ID+'">'+this.name+'</a>';
                             }
-                            output += this.name+'</a></li>';
+                            output += '</li>';
                         })
                         output += '<li class="extension"><a class="create">새 시간표 만들기</a></li>'
                         
                         $("div.menu ol").append(output);
-                        $('#tableName').text($("div.menu li.active a").text());
                         
 
                 }

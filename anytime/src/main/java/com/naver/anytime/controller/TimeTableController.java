@@ -66,6 +66,7 @@ public class TimeTableController {
 			int key = timeTableService.createDefaultTimeTable(user_id, semester);
 
 			TimeTable new_timetable = timeTableService.getNewTimetable(key);
+			logger.info("key 값 출력 : " + key);
 			timetable.add(new_timetable);
 		}
 		return timetable;

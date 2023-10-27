@@ -83,7 +83,8 @@ public class TimeTableServiceImpl implements TimeTableService {
 
 	@Override
 	public int createDefaultTimeTable(int user_id, String semester) {
-		return timeDao.createDefaultTimeTable(user_id, semester);
+		timeDao.createDefaultTimeTable(user_id, semester);
+		return timeDao.getLastInsertId();
 	}
 
 	@Override

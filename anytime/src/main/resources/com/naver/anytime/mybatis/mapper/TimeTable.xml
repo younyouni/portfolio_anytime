@@ -78,12 +78,9 @@
 	    WHERE user_id = #{user_id} and SEMESTER = #{semester}
 	  </select>
 	
-	  <insert id="createDefaultTimeTable" >
-	  <selectKey keyProperty="DEFAULT_TIMETABLE_ID" resultType="int" order="AFTER">
-			SELECT timetable_seq.CURRVAL FROM DUAL
-	  </selectKey>
-	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
-	      VALUES (timetable_seq.NEXTVAL, #{user_id}, '시간표 1', #{semester}, SYSDATE, 1)
+	  <insert id="createDefaultTimeTable">
+		      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
+		      VALUES (timetable_seq.NEXTVAL, #{user_id}, '시간표 1', #{semester}, SYSDATE, 1)
 	  </insert> 
 	  
 	  <select id="getLastTimeTableName" resultType="String">
@@ -98,7 +95,9 @@
 	  </select>
 	  
 	  <select id="getNewTimetable" parameterType="int" resultMap="TimeTableResultMap">
-	  	select * from 
+	  	 SELECT TIMETABLE_ID, USER_ID, NAME, SEMESTER, 
+	           TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS
+	    from 
 	  	timetable
 	  	where timetable_id = #{key}
 	  </select>
