@@ -9,11 +9,11 @@ $(document).ready(function () {
 		// 보안 토큰
 		const token = $("meta[name='_csrf']").attr("content");
 		const header = $("meta[name='_csrf_header']").attr("content");
-		
 		const school_id = $("#school_id").val();
 		
+		console.log("됨이거?" + school_id);
 		$.ajax({
-			url: "/hotpostlist",
+			url: "hotpostlist",
 			data:{
 				page: page,
 				school_id: school_id
