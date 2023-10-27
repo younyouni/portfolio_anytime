@@ -31,18 +31,18 @@ public class TimeTableServiceImpl implements TimeTableService {
 		return timeDao.getTimetableByUserId(user_id);
 	}
 
-	@Override
-	public void changeName(int timetable_id, String newName) {
-		timeDao.changeName(timetable_id, newName);
-
-	}
+//	@Override
+//	public void changeName(int timetable_id, String newName) {
+//		timeDao.changeName(timetable_id, newName);
+//
+//	}
 
 	@Override
 	public void changeNameAndTime(int timetable_id, String newName) {
 		TimeTable timetable = new TimeTable();
 		timetable.setTIMETABLE_ID(timetable_id);
 		timetable.setNAME(newName);
-		timetable.setTIMETABLE_DATE(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+//		timetable.setTIMETABLE_DATE(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		timeDao.changeNameAndTime(timetable);
 	}
 
@@ -56,7 +56,7 @@ public class TimeTableServiceImpl implements TimeTableService {
 			lastIndex = Integer.parseInt(lastName.replaceAll("[^0-9]", ""));
 		}
 
-		String newName = "시간표" + (lastIndex + 1);
+		String newName = "시간표 " + (lastIndex + 1);
 
 		timeDao.insertNewTimetable(user_id, newName, semester);
 		return timeDao.getLastInsertId();
@@ -96,5 +96,11 @@ public class TimeTableServiceImpl implements TimeTableService {
 	public int checkTimetable(int user_id, String semester) {
 		return timeDao.checkTimetable(user_id, semester);
 	}
+	
+//	//시간표 링크진입 실험용
+//	@Override
+//	public TimeTable getTimeTableById(int timetable_id) {
+//		return timeDao.getTimeTableById(timetable_id);
+//	}
 
 }

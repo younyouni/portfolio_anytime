@@ -78,7 +78,7 @@
 				</select>
 			</form>
 			<div class="title">
-						<h1 id="tableName" data-id="77"></h1>
+						<h1 id="tableName" data-id=""></h1>
 					<div class="description">
 						<ul class="info">
 							<li><time id="tableUpdatedAt">시간표 수정날짜</time>
@@ -97,7 +97,7 @@
 
 			<div class="menu">
 				<ol>
-						<li class="active"><a href="/timetable/2018/1/8599353"
+						<li class="active"><a href="/anytime/timetable/8599353"
 							class="primary"></a></li>
 						<li class="extension"><a class="create">새 시간표 만들기</a></li>
 				</ol>
@@ -356,7 +356,7 @@
 			</p>
 			<p>
 				<label>기본</label> <input type="checkbox"
-					id="tableSetting_is_primary" name="is_primary"><label
+					id="tableSetting_is_primary" name="is_primary" disabled><label
 					for="tableSetting_is_primary" class="checkbox">기본시간표 설정</label>
 			</p>
 			<input type="button" value="삭제" class="button light floatLeft">

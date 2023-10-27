@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +44,21 @@ public class TimeTableController {
 	public String timeTable() {
 		return "timetable/timeTable";
 	}
+	
+//	@RequestMapping(value = "/timetable/{timetable_id}", method = RequestMethod.GET)
+//	public String getTimeTable(@RequestParam("timetable_id") Integer timetable_id, Model model) {
+//	    // 시간표 ID에 해당하는 데이터 가져오기
+//	    TimeTable timetable = timeTableService.getTimeTableById(timetable_id);
+//	    
+//	    if (timetable == null) {
+//	        throw new RuntimeException("timetable_ID: " + timetable_id);
+//	    }
+//	    
+//	    // 모델에 데이터 추가
+//	    model.addAttribute("timeTable", timetable);
+//	    
+//	    return "timetable/timeTable";  
+//	}
 
 	@RequestMapping(value = "/getTimetableByUserIdAndSemester", method = RequestMethod.POST)
 	@ResponseBody

@@ -10,7 +10,7 @@ public interface TimeTableService {
 
 	public List<TimeTable> getTimetableByUserId(int user_id);
 
-	public void changeName(int timetable_id, String newName);
+//	public void changeName(int timetable_id, String newName);
 
 	public void changeNameAndTime(int timetable_id, String newName);
 
@@ -25,6 +25,9 @@ public interface TimeTableService {
 	public TimeTable getNewTimetable(int key);
 
 	int checkTimetable(int userId, String semester);
+	
+//	// 시간표 링크진입 실험용
+//	public TimeTable getTimeTableById(int timetable_id);
 	
 	
 

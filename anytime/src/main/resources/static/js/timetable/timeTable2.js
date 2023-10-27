@@ -24,7 +24,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         var newName = $("input[name='name']").val();
-        var timetable_id = $("#tableName").data("id");
+        var timetable_id = $("#tableName").attr("data-id");
 
         console.log("Current timetable ID: " + timetable_id);
         console.log("Current newName: " + newName);
@@ -47,8 +47,10 @@ $(document).ready(function () {
                 console.log(response);
                 $("#tableName").text(newName);
 
-                // 서버에서 보낸 새로운 TIMETABLE_DATE를 화면에 반영
-                //$("#tableUpdatedAt").text(response.newDate);
+                if (response.TIMETABLE_DATE) {
+                    $('#tableUpdatedAt').text(response.TIMETABLE_DATE);
+                }
+                
                 location.reload();
             },
             error: function(error) {
@@ -56,8 +58,26 @@ $(document).ready(function () {
                 console.log(error);
             }
         });
+        
     });
 
+    // 설정 모달창 이름 데이터값 불러오기
+    $("#settingBtn").click(function() {
+        $("input[name='name']").val($("#tableName").text());  
+        $("#tableSetting").show();
+        $('#tableSetting').before('<div class="modalwrap"></div>');
+
+        var isPrimary = $('li.active a').hasClass('primary');
+        if (isPrimary) {
+            $('#tableSetting_is_primary').prop('checked', true);
+            $('#tableSetting_is_primary').attr('disabled', 'disabled');
+        } else {
+            $('#tableSetting_is_primary').prop('checked', false);
+            $('#tableSetting_is_primary').removeAttr('disabled');
+        }
+     });
+
+     // 새 시간표 만들기
     $("div.menu ol").on("click","li.extension", function() {
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
@@ -69,7 +89,7 @@ $(document).ready(function () {
             url: 'createNewTimeTable',
             type: 'POST',
             data: { 
-                'semester': semester  // 여기에 실제 값을 넣으세요.
+                'semester': semester  
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader(header, token)
@@ -92,6 +112,13 @@ $(document).ready(function () {
                 console.log(error);
             }
         });
+    });
+
+    // 시간표 선택 -> 페이지 이동
+    $("div.menu ol").on("click", "li:not(.extension) a", function(e) {
+        e.preventDefault();
+        var timetable_id = $(this).attr('href').split('/').pop();
+        window.location.href = "/anytime/timetable/" + timetable_id;
     });
     
 
@@ -130,6 +157,7 @@ function getTimetableList(semester){
                         $(rdata).each(function() {                        
                             if(this.status ==1){
                                 $('#tableName').text(this.name);
+                                $('#tableName').attr('data-id', this.timetable_ID);
                                 $('#tableUpdatedAt').text(this.timetable_DATE)
                                 output += '<li class="active"><a href="/'+this.timetable_ID+'" class="primary">'+this.name+'</a>';
                             }else{

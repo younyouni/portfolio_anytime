@@ -19,16 +19,17 @@
 	     AND status != 0  
 	   </select>
 	   
-	   <update id="changeName" parameterType="map">
+	   <!-- <update id="changeName" parameterType="map">
 		    UPDATE TIMETABLE 
 		    SET NAME = #{newName} 
 		    WHERE timetable_id = #{timetable_id}
-	   </update>
+	   </update> -->
 	   
 	   <update id="changeNameAndTime" parameterType="TimeTable">
 	        UPDATE TIMETABLE 
-	        SET NAME = #{NAME}, TIMETABLE_DATE = TO_DATE(#{TIMETABLE_DATE}, 'YYYY-MM-DD HH24:MI:SS')
-	        WHERE TIMETABLE_ID = #{TIMETABLE_ID}
+		    	SET NAME = #{NAME},
+		        TIMETABLE_DATE = SYSDATE
+		    WHERE TIMETABLE_ID = #{TIMETABLE_ID}
        </update>
       
       <!-- 
@@ -112,6 +113,11 @@
     		SELECT timetable_seq.CURRVAL FROM DUAL
 	  </select>
 	  
-   
+	  <!-- 시간표 링크진입 실험용 
+    <select id="getTimeTableById" parameterType="int" resultType="TimeTable">
+      SELECT * FROM TIMETABLE WHERE TIMETABLE_ID = #{TIMETABLE_ID}
+  	</select> -->
+	  
+   	
 	
 </mapper>
