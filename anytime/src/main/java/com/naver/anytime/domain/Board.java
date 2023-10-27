@@ -19,6 +19,7 @@ public class Board {
 	private int NEW_BOARD_ID;
 
 	private String SCHOOL_NAME;
+	private int NEW_POST;
 
 	public int getNEW_BOARD_ID() {
 		return NEW_BOARD_ID;
@@ -130,6 +131,14 @@ public class Board {
 
 	public void setBOARD_NAME(String bOARD_NAME) {
 		BOARD_NAME = bOARD_NAME;
+	}
+
+	public int getNEW_POST() {
+		return NEW_POST;
+	}
+
+	public void setNEW_POST(int nEW_POST) {
+		NEW_POST = nEW_POST;
 	}
 
 }

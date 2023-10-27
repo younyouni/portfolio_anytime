@@ -140,7 +140,13 @@
 		SET POST_R_ACTION = #{content_action}
 		, USER_R_ACTION = #{user_action}
 		, ADMIN_ID = #{admin_id}
-		, ADMIN_LOGIN_ID = #{admin_login_id}		
+		, ADMIN_LOGIN_ID = #{admin_login_id}
+		, ACTION_DATE = SYSDATE		
 		WHERE REPORTED_ORIGIN = #{content_id}
 	</update>
+	
+	<select id="getReportCount" resultType="report">
+		SELECT REASON, COUNT(*) COUNT_BY_REASON FROM REPORT
+		GROUP BY REASON
+	</select>
 </mapper>
