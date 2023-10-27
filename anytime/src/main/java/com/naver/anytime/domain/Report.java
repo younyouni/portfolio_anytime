@@ -10,6 +10,7 @@ public class Report {
 	private String ADMIN_LOGIN_ID;
 	private String POST_R_ACTION;
 	private String USER_R_ACTION;
+	private String ACTION_DATE;
 
 	// 신고 관리 페이지
 	private int POST_ID;
@@ -201,6 +202,14 @@ public class Report {
 
 	public void setCOUNT_BY_REASON(int cOUNT_BY_REASON) {
 		COUNT_BY_REASON = cOUNT_BY_REASON;
+	}
+
+	public String getACTION_DATE() {
+		return ACTION_DATE;
+	}
+
+	public void setACTION_DATE(String aCTION_DATE) {
+		ACTION_DATE = aCTION_DATE;
 	}
 
 }

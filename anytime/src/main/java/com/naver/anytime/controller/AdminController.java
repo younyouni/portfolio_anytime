@@ -21,6 +21,7 @@ import com.naver.anytime.domain.DailyData;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.Report;
+import com.naver.anytime.domain.School;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.DailyDataService;
@@ -57,14 +58,32 @@ public class AdminController {
 	public ModelAndView adminPage(Principal userPrincipal, ModelAndView mv) {
 		String id = userPrincipal.getName();
 		Member m = memberService.getLoginMember(id);
-
-		List<DailyData> dailyData = dailyDataService.getDailyData();
+		
+		// 일별 데이터
+		DailyData dataTrend = dailyDataService.getDataTrend();
+		
+		// 회원 가입자 추이 
+		List<DailyData> registrationTrend = dailyDataService.getRegistrationTrend();
 
 		// 신고 사유 데이터
 		List<Report> reportCount = reportService.getReportCount();
+		
+		// 학교 랭킹
+		List<School> schoolRanking = dailyDataService.getSchoolRanking();
+		
+		// 게시판 랭킹
+		List<Board> boardRanking = dailyDataService.getBoardRanking();
+		
+		// 게시판 승인 to do list
+		DailyData todoList =dailyDataService.getTodoList();
 
 		mv.addObject("member", m);
+		mv.addObject("dataTrend", dataTrend);
+		mv.addObject("registrationTrend", registrationTrend);
 		mv.addObject("reportCount", reportCount);
+		mv.addObject("schoolRanking", schoolRanking);
+		mv.addObject("boardRanking", boardRanking);
+		mv.addObject("todoList", todoList);
 		mv.setViewName("/admin/dashboard");
 		return mv;
 	}
