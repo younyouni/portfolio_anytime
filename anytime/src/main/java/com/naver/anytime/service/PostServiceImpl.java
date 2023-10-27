@@ -346,4 +346,41 @@ public class PostServiceImpl implements PostService {
 		return result;
 	}
 
+	@Override
+	public int getHotPostListCount(int school_id) {
+		return postDao.getHotPostListCount(school_id);
+	}
+
+	@Override
+	public int getBestPostListCount(int school_id) {
+		return postDao.getBestPostListCount(school_id);
+	}
+
+	@Override
+	public List<Post> getHotPostList(int page, int limit, int school_id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("school_id", school_id);
+		map.put("start", startrow);
+		map.put("end", endrow);
+		return postDao.getHotPostList(map);
+	}
+
+	@Override
+	public List<Post> getBestPostList(int page, int limit, int school_id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("school_id", school_id);
+		map.put("start", startrow);
+		map.put("end", endrow);
+		return postDao.getBestPostList(map);
+	}
+
+	@Override
+	public List<Post> getHotPostList4(int school_id) {	
+		return postDao.getHotPostList4(school_id);
+	}
+
 }

@@ -123,6 +123,22 @@ public interface PostService {
 	public int getPostTotalListCount(int board_id, int searchKey, String keyword);
 
 	public int getPost(int content_id);
+	// ********************************= 윤희 =********************************
+	
+	//핫 게시물 리스트 카운트
+	public int getHotPostListCount(int school_id);
+	
+	//베스트 게시물 리스트 카운트
+	public int getBestPostListCount(int school_id);
+
+	//핫 게시물 리스트
+	public List<Post> getHotPostList(int page, int limit, int school_id);
+
+	//베스트 게시물 리스트
+	public List<Post> getBestPostList(int page, int limit, int school_id);
+	
+	// 라이트 사이드 핫 게시물
+	public List<Post> getHotPostList4(int school_id);
 
 
 

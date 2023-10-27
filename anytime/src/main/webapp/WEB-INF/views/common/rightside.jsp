@@ -29,7 +29,7 @@ $(function() {
 	        <c:choose>
 	            <c:when test="${not empty userid}">
 	                <h3>
-	                    <a href="/Anytime/HotListView.bo">HOT 게시물<span>더 보기</span></a>
+	                    <a href="${pageContext.request.contextPath}/hotpost">HOT 게시물<span>더 보기</span></a>
 	                </h3>
 	               
 	                <c:forEach var="post" items="${sessionScope.hotlist}" varStatus="status">
@@ -43,7 +43,7 @@ $(function() {
 	            </c:when>
 	            <c:otherwise>
 	                <h3>
-	                    <a href="/Anytime/login.com">HOT 게시물<span>더 보기</span></a>
+	                    <a href="${pageContext.request.contextPath}/hotpost">HOT 게시물<span>더 보기</span></a>
 	                </h3>
 	                <c:forEach var="i" begin="1" end="4">
 	                    <a class="list" href="login.com">
