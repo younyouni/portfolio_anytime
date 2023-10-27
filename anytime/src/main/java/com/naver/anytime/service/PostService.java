@@ -138,7 +138,10 @@ public interface PostService {
 	public List<Post> getBestPostList(int page, int limit, int school_id);
 	
 	// 라이트 사이드 핫 게시물
-	public List<Post> getHotPostList4(int school_id);
+	public List<Post> getHotPostSampleList(int school_id);
+	
+	// 라이트 사이드 베스트 게시물
+	public List<Post> getBestPostSampleList(int school_id);
 
 
 

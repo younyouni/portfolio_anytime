@@ -433,7 +433,7 @@
 			WHERE RNUM &gt;= #{start} AND RNUM &lt;= #{end}
 	</select>
 	
-	<select id="getHotPostList4" resultType="post">
+	<select id="getHotPostSampleList" resultType="post">
 	    SELECT *
 		FROM (
 			    SELECT ROWNUM RNUM, j.*
@@ -457,6 +457,37 @@
 			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
 			        WHERE post.status = 1 
 			        and post.like_count &gt;= 10
+			        and board.school_id = #{school_id}
+			        ORDER BY post.post_id DESC
+			    ) j 
+			    WHERE ROWNUM &lt;= 4 
+			) 
+	</select>
+	
+	<select id="getBestPostSampleList" resultType="post">
+	    SELECT *
+		FROM (
+			    SELECT ROWNUM RNUM, j.*
+			    FROM (
+			        SELECT 
+			            post.*, 
+			            TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE,
+			            NVL(cnt, 0) AS COMMENT_COUNT, 
+			            board.NAME AS BOARDNAME, 
+			            CASE
+			                WHEN board.anonymous = 1 THEN '익명'
+			                ELSE member.NICKNAME
+			            END AS NICKNAME
+			        FROM post
+			        LEFT OUTER JOIN (
+			            SELECT post_id, COUNT(*) cnt
+			            FROM comments
+			            GROUP BY post_id
+			        ) sub_C ON post.post_id = sub_C.post_id
+			        LEFT OUTER JOIN board ON post.board_id = board.board_id
+			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
+			        WHERE post.status = 1 
+			        and post.like_count &gt;= 100
 			        and board.school_id = #{school_id}
 			        ORDER BY post.post_id DESC
 			    ) j 

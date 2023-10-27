@@ -10,10 +10,13 @@ $(document).ready(function () {
 		const token = $("meta[name='_csrf']").attr("content");
 		const header = $("meta[name='_csrf_header']").attr("content");
 		
+		const school_id = $("#school_id").val();
+		
 		$.ajax({
-			url: "hotpostlist",
+			url: "/hotpostlist",
 			data:{
 				page: page,
+				school_id: school_id
 			},
 			dataType: "json",
 			success: function (response){
