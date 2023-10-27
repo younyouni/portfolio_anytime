@@ -43,6 +43,7 @@ $(document).ready(function(){
 			
 	// 이메일을 입력후 발송 버튼을 클릭했을때 발생		
     $("#emailsend").on('click', function(){
+    	   alert('인증번호가 발송되었습니다.'); 
       var email = $("#email").val();
     // 입력받은 이메일을 컨트롤러의 emailsend로 보내줌
     $.ajax({
@@ -54,7 +55,6 @@ $(document).ready(function(){
          xhr.setRequestHeader(header, token);
        },
        success: function (resp) {
-    	   alert('인증번호가 발송되었습니다.'); 
     	  $("#RandNum").val(resp); // 서버로부터 받은 난수 저장
         
     	  

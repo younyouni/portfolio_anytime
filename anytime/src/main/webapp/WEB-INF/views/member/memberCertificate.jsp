@@ -41,6 +41,7 @@ function isValidDomain(webmail, schoolDomain) {
             	alert('학교 웹메일을 입력해주세요.')
             	return;
             }
+             alert('인증메일을 발송하였습니다. 이메일을 확인해주세요.');
             
             // 서버에 인증 메일 전송 요청 보내기
             $.ajax({
@@ -54,7 +55,6 @@ function isValidDomain(webmail, schoolDomain) {
                 },
                 success: function (data) {
                     if (data.verificationCode) {
-                        alert('인증메일을 발송하였습니다. 이메일을 확인해주세요.');
                         location.href = "certificate_mailcheck";
                         // redirect to another page
                         $.ajax({
