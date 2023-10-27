@@ -110,10 +110,7 @@
 			}
 		});
 
-		$('table.list')
-				.on(
-						"click",
-						"td:not(.switch)",
+		$('table.list').on("click","td:not(.switch)",
 						function() {
 							$('form#boardInfo').css('display', 'block');
 							var board_id = $(this).parent().find(
@@ -144,8 +141,7 @@
 								$('form#boardInfo .switch input').prop(
 										'checked', false);
 							}
-							$('form#boardInfo').before(
-									'<div class="modalwrap"></div>');
+							$('form#boardInfo').before('<div class="modalwrap"></div>');
 						});
 
 		$('#boardInfo .switch input')
