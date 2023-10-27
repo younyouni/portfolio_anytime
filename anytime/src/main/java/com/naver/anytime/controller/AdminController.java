@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
+import com.naver.anytime.domain.DailyData;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.Report;
+import com.naver.anytime.domain.School;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
+import com.naver.anytime.service.DailyDataService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.ReportService;
@@ -38,22 +41,49 @@ public class AdminController {
 	private ReportService reportService;
 	private CommentService commentService;
 	private MemberService memberService;
+	private DailyDataService dailyDataService;
 
 	@Autowired
 	public AdminController(BoardService boardService, PostService postService, ReportService reportService,
-			CommentService commentService, MemberService memberService) {
+			CommentService commentService, MemberService memberService, DailyDataService dailyDataService) {
 		this.boardService = boardService;
 		this.postService = postService;
 		this.reportService = reportService;
 		this.commentService = commentService;
 		this.memberService = memberService;
+		this.dailyDataService = dailyDataService;
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public ModelAndView adminPage(Principal userPrincipal,ModelAndView mv) {
+	public ModelAndView adminPage(Principal userPrincipal, ModelAndView mv) {
 		String id = userPrincipal.getName();
 		Member m = memberService.getLoginMember(id);
+		
+		// 일별 데이터
+		DailyData dataTrend = dailyDataService.getDataTrend();
+		
+		// 회원 가입자 추이 
+		List<DailyData> registrationTrend = dailyDataService.getRegistrationTrend();
+
+		// 신고 사유 데이터
+		List<Report> reportCount = reportService.getReportCount();
+		
+		// 학교 랭킹
+		List<School> schoolRanking = dailyDataService.getSchoolRanking();
+		
+		// 게시판 랭킹
+		List<Board> boardRanking = dailyDataService.getBoardRanking();
+		
+		// 게시판 승인 to do list
+		DailyData todoList =dailyDataService.getTodoList();
+
 		mv.addObject("member", m);
+		mv.addObject("dataTrend", dataTrend);
+		mv.addObject("registrationTrend", registrationTrend);
+		mv.addObject("reportCount", reportCount);
+		mv.addObject("schoolRanking", schoolRanking);
+		mv.addObject("boardRanking", boardRanking);
+		mv.addObject("todoList", todoList);
 		mv.setViewName("/admin/dashboard");
 		return mv;
 	}
@@ -222,7 +252,7 @@ public class AdminController {
 		logger.info("result : " + result);
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
 	public String getAdminNotice() {
 		return "/admin/adminNotice";
@@ -230,7 +260,8 @@ public class AdminController {
 
 	@RequestMapping(value = "/adminNoticeList", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getAdminNoticeList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+	public Map<String, Object> getAdminNoticeList(
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "searchKey", defaultValue = "0", required = false) int searchKey,
 			@RequestParam(value = "keyword", defaultValue = "", required = true) String keyword, ModelAndView mv) {
 
@@ -238,7 +269,7 @@ public class AdminController {
 			keyword = null;
 		}
 
-		int board_id = 121;//공지사항 board_id로 변경
+		int board_id = 121;// 공지사항 board_id로 변경
 
 		int limit = 10;
 
@@ -267,7 +298,7 @@ public class AdminController {
 		map.put("endpage", endpage);
 		map.put("listcount", listcount);
 		map.put("limit", limit);
-		
+
 		return map;
 	}
 
