@@ -1,15 +1,15 @@
 package com.naver.anytime.controller;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,9 +63,9 @@ public class TopPicksPostController {
 	@RequestMapping(value = "/hotpostlist")
 	@ResponseBody
 	public Map<String, Object> getMyArticleList(
-			@RequestParam(value = "page", defaultValue = "1") int page
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "school_id") int school_id
 			) {
-		int school_id = 1;
 
 		// 제한 수
 		int limit = 10;
@@ -105,9 +105,9 @@ public class TopPicksPostController {
 	@RequestMapping(value = "/bestpostlist")
 	@ResponseBody
 	public Map<String, Object> getMyCommentArticleList(
-			@RequestParam(value = "page", defaultValue = "1") int page
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "school_id") int school_id
 			) {
-		int school_id = 1;
 
 		// 제한 수
 		int limit = 10;
@@ -142,27 +142,29 @@ public class TopPicksPostController {
 		return response;
 	}
 	
-	@RequestMapping(value = "/hotpostlist_sample")
+	@RequestMapping(value = "/rightsidelist_sample")
 	@ResponseBody
-	public Map<String, Object> getMyArticleList(
-			Principal principal
+	public Map<String, Object> getHotPostSampleList(
+			@RequestParam(value = "login_id", required = false) String login_id,
+			@RequestParam(value = "school_id") int school_id
 			) {
-		String login_id = principal.getName();						//로그인한 유저 login_id
-		int logincheck = 0;
-		if(login_id != "") {
-			logincheck = 1;
-		}
-		
-		int school_id = 1;
 
-		List<Post> list = postService.getHotPostList4(school_id);
+		List<Post> hotlist = postService.getHotPostSampleList(school_id);
+		List<Post> bestlist = postService.getBestPostSampleList(school_id);
 				
 		// JSON에 추가
 	    Map<String, Object> response = new HashMap<>();
-	    response.put("list", list);
-		response.put("logincheck", logincheck);
+	    response.put("hotlist", hotlist);
+	    response.put("bestlist", bestlist);
+	    
+
+	    if(login_id == null) {
+	    	response.put("login_check", 1);
+	    }
+	    
 	    System.out.println("핫 게시글 (4개) 불러오기 체크");
 		return response;
 	}
+	
 
 }

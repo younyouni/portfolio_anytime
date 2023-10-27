@@ -46,10 +46,10 @@ public class BoardController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/submenulist", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Board> getBoardList(@RequestParam("school_id") int school_id) {
-
+		
 		List<Board> responseData = boardService.getBoardList(school_id);
 		// 생성된 JSON 데이터를 클라이언트에 응답으로 전송
 		return responseData;

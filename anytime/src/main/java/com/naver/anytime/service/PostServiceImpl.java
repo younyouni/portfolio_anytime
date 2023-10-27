@@ -379,8 +379,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getHotPostList4(int school_id) {	
-		return postDao.getHotPostList4(school_id);
+	public List<Post> getHotPostSampleList(int school_id) {	
+		return postDao.getHotPostSampleList(school_id);
+	}
+	
+	@Override
+	public List<Post> getBestPostSampleList(int school_id) {	
+		return postDao.getBestPostSampleList(school_id);
 	}
 
 }
