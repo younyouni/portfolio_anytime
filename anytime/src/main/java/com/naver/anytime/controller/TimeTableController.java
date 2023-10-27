@@ -81,8 +81,6 @@ public class TimeTableController {
 		String id = userPrincipal.getName();
 		int key = timeTableService.createNewTimeTable(memberService.getUserId(id), semester);
 		
-		logger.info("Created new timetable with key: {}", key);
-		
 		return timeTableService.getNewTimetable(key);
 	}
 
