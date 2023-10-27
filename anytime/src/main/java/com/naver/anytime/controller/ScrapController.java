@@ -63,13 +63,15 @@ public class ScrapController {
 		
 		int scrapResult = 0;
 		
-		int check = scrapService.isScrap(user_id, post_id);
+		int check = scrapService.isScrap(user_id, post_id);		// 스크랩 여부 확인
 		
 		if(check == 0) {
-			scrapService.insertMyScrap(user_id, post_id);
+			scrapService.insertMyScrap(user_id, post_id);		// 스크램이 안되있을 경우, 스크랩 인서트
+			postService.updateScrapUpCount(post_id);
 			scrapResult = 1;
 		} else if(check == 1) {
-			scrapService.deleteMyScrap(user_id, post_id);
+			scrapService.deleteMyScrap(user_id, post_id);		// 스크랩이 이미 되어 있을 경우, 스크랩 딜리트
+			postService.updateScrapDownCount(post_id);
 			scrapResult = 2;
 		}
 		

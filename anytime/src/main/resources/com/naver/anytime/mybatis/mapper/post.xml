@@ -495,4 +495,16 @@
 			) 
 	</select>
 	
+	<update id="updateScrapUpCount">
+		UPDATE post
+		SET scrap_count = scrap_count + 1
+		WHERE post_id = #{post_id}
+	</update>
+	
+	<update id="updateScrapDownCount">
+		UPDATE post
+		SET scrap_count = scrap_count - 1
+		WHERE post_id = #{post_id}
+	</update>
+	
 </mapper>
