@@ -4,6 +4,7 @@
 <head>
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/rightside2.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/common/rightside.js"></script>
 <script>
 $(function() {
     $("#searchButton").click(function() {
@@ -31,52 +32,9 @@ $(function() {
             </form>
 		
 		</div>
-
-
-		<div class="card">
-            <div class="board">
-            
-            	<c:if test="${!empty userid}">
-                <h3>
-                    <a href="/Anytime/HotListView.bo">HOT 게시물<span>더 보기</span></a>
-                </h3>
-                
-                <c:forEach var="hl" items="${sessionScope.hotlist}" varStatus="status">
-                    <c:if test="${status.index < 4}">
-                        <a class="list" href="PostDetailAction.bo?post_num=${hl.post_num}">
-                            <time>${hl.post_date}</time>
-                            <p>${hl.subject}</p>
-                        </a>
-                    </c:if>
-                </c:forEach>
-                </c:if>
-                
-                <c:if test="${empty userid}">
-                <h3>
-                    <a href="/Anytime/login.com">HOT 게시물<span>더 보기</span></a>
-                </h3>
-                <% if (session.getAttribute("hotlist") == null) {
-                    session.setAttribute("hotlist", request.getAttribute("hotlist"));
-                } %>
-                <c:forEach var="hl" items="${hotlist}" varStatus="status">
-                    <c:if test="${status.index < 4}">
-                        <a class="list" href="#">
-                            <time>${hl.post_date}</time>
-                            <p>로그인 후 이용가능</p>
-                        </a>
-                    </c:if>
-                </c:forEach>
-                </c:if>
-            </div>
-        </div>
-        <div class="card">
-            <div class="board">
-                <h3>
-                    <a href="/Anytime/BestListView.bo">BEST 게시판<span>더 보기</span></a>
-                </h3>
-            </div>
-        </div>
-        
+			<div class="card rightside">
+			
+			</div>
 	</div>
 </body>
 </html>

@@ -147,6 +147,12 @@ public class TopPicksPostController {
 	public Map<String, Object> getMyArticleList(
 			Principal principal
 			) {
+		String login_id = principal.getName();						//로그인한 유저 login_id
+		int logincheck = 0;
+		if(login_id != "") {
+			logincheck = 1;
+		}
+		
 		int school_id = 1;
 
 		List<Post> list = postService.getHotPostList4(school_id);
@@ -154,7 +160,7 @@ public class TopPicksPostController {
 		// JSON에 추가
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("list", list);
-		
+		response.put("logincheck", logincheck);
 	    System.out.println("핫 게시글 (4개) 불러오기 체크");
 		return response;
 	}

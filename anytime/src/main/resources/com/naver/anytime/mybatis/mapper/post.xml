@@ -321,7 +321,7 @@
 	</select>
 	
 	<select id="getMyCommentArticlesList" parameterType="map" resultType="post">
-	    SELECT *
+		SELECT *
 		FROM (
 			    SELECT ROWNUM RNUM, j.*
 			    FROM (
@@ -346,7 +346,7 @@
 			        AND post.post_id IN (
 			            SELECT post_id
 			            FROM comments
-			            WHERE user_id = #{user_id}
+			            WHERE user_id = #{user_id} and status = 1
 			        )
 			        ORDER BY post.post_id DESC
 			    ) j 
@@ -356,25 +356,17 @@
 	</select>
 	
 	<select id="getHotPostListCount" resultType="int">
-		select count(*)
-		from post
-		where post_id in (select post_id
-		                    from board
-		                    where school_id = #{school_id}
-		                 )
-		and status = 1
-		and like_count = 1 		<!--  수정  -->
+		SELECT COUNT(*)
+		FROM post p
+		JOIN board b ON b.board_id = p.board_id
+		WHERE b.school_id = #{school_id} AND p.like_count &gt;= 10 and p.status = 1
 	</select>
 	
 	<select id="getBestPostListCount" resultType="int">
-		select count(*)
-		from post
-		where post_id in (select post_id
-		                    from board
-		                    where school_id = #{school_id}
-		                 )
-		and status = 1
-		and like_count &gt;= 100
+		SELECT COUNT(*)
+		FROM post p
+		JOIN board b ON b.board_id = p.board_id
+		WHERE b.school_id = #{school_id} AND p.like_count &gt;= 100 and p.status = 1
 	</select>
 	
 	<select id="getHotPostList" parameterType="map" resultType="post">
@@ -400,7 +392,7 @@
 			        LEFT OUTER JOIN board ON post.board_id = board.board_id
 			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
 			        WHERE post.status = 1 
-			        and post.like_count = 1			<!--  수정  -->
+			        and post.like_count &gt;= 10
 					and board.school_id = #{school_id}
 			        ORDER BY post.post_id DESC
 			    ) j 
@@ -464,7 +456,7 @@
 			        LEFT OUTER JOIN board ON post.board_id = board.board_id
 			        LEFT OUTER JOIN member ON post.USER_ID = member.user_id
 			        WHERE post.status = 1 
-			        and post.like_count = 1							<!--  수정  -->
+			        and post.like_count &gt;= 10
 			        and board.school_id = #{school_id}
 			        ORDER BY post.post_id DESC
 			    ) j 
