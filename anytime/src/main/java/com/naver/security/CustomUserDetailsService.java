@@ -42,7 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		roles.add(new SimpleGrantedAuthority(users.getAuth()));
 
 		UserDetails user = new UserCustom(username, users.getPassword(), users.getSchool_id(), users.getEmail(),
-				users.getNickname(), users.getBoard_admin(), roles);
+				users.getNickname(), users.getBoard_admin(), users.getAuth(), roles);
 
 		return user;
 	}

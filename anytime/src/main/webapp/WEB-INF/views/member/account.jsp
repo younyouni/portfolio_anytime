@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
@@ -57,23 +58,27 @@ nav {
 							<span>${school.name}</span> <span>${member.admission_year}</span>
 							<span>학번</span>
 						</p>
-					</div>	
+					</div>
 				</sec:authorize>
 			</section>
 			<section>
 				<h2>계정</h2>
-				<a href="${pageContext.request.contextPath}/certificate"
-					class="item">학교 인증</a> <a
-					href="${pageContext.request.contextPath}/password" class="item">비밀번호
-					변경</a> <a href="${pageContext.request.contextPath}/update" class="item">내정보
+					<c:if test="${member.auth eq 'ROLE_MEMBER' }">
+						<a href="${pageContext.request.contextPath}/certificate"
+							class="item">학교 인증</a>
+					</c:if>
+					<a href="${pageContext.request.contextPath}/password" class="item">비밀번호
+					변경</a> 
+					<a href="${pageContext.request.contextPath}/update" class="item">내정보
 					변경</a>
 			</section>
+			<c:if test="${member.auth eq 'ROLE_MEMBER' }">
 			<section>
 				<h2>커뮤니티</h2>
 				<a href="${pageContext.request.contextPath}/boardlist" class="item">게시판
 					관리</a>
 			</section>
-
+			</c:if>
 			<section>
 				<h2>기타</h2>
 				<a href="${pageContext.request.contextPath}/delete" class="item">회원

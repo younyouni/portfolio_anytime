@@ -87,14 +87,11 @@ public class MemberServiceImpl implements MemberService {
 		return (rmember == null) ? AnytimeConstants.EMAIL_NOT_EXISTS : AnytimeConstants.EMAIL_EXISTS;
 	}
 
-	
 	@Override
 	public String getEmail(String login_id) {
 		return dao.getEmail(login_id);
 	}
-	
-	
-	
+
 	@Override
 	public int getSchoolIdByName(String campusName) {
 		return dao.getSchoolIdByName(campusName);
@@ -230,6 +227,11 @@ public class MemberServiceImpl implements MemberService {
 		dao.updateStatusByContentId(content_id, isContent);
 	}
 
+	@Override
+	public String isAdmin(String username) {
+		return dao.isAdmin(username);
+	}
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	@Override
 	public Integer getSchoolId2(String id) {
@@ -266,7 +268,5 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getStatusCheck2(user_id);
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
-
-	
 
 }

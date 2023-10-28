@@ -62,4 +62,9 @@
 		WHERE SCHOOL_ID =#{school_id}
 	</select>
 
+	<select id="isDomain" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM SCHOOL
+		WHERE DOMAIN =#{schoolDomain}
+	</select>
+
 </mapper>

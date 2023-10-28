@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.DailyData;
-import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.Report;
 import com.naver.anytime.domain.School;
@@ -78,8 +77,6 @@ public class AdminController {
 
 		// 게시판 승인 to do list
 		DailyData todoList = dailyDataService.getTodoList();
-		logger.info("로그인아이디 : " + login_id);
-		logger.info("이메일 : " + email);
 
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
@@ -92,8 +89,9 @@ public class AdminController {
 		mv.setViewName("/admin/dashboard");
 		return mv;
 	}
-	
-	@Scheduled(cron = "0 0 * * * ?" /* 매일마다 */)
+
+//	@Scheduled(cron = "0 0/5 * 1/1 * ?" /* 5분마다 */)
+	@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */) // 일일 통계 자료 insert
 	public int insertDailyDataScheduled() {
 		return dailyDataService.insertDailyData();
 	}
@@ -118,7 +116,7 @@ public class AdminController {
 
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
-	@Scheduled(cron = "0 0 * * * ?" /* 매일마다 */)
+	@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
 	public int updateBoardStatusCompleteScheduled() {
 		return boardService.updateBoardStatusComplete();
 	}

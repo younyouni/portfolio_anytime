@@ -26,9 +26,18 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		logger.info("로그인 성공 : LoginSuccessHandler");
+
+		String url = "";
 		String username = authentication.getName();
-		String domain = memberService.getSchoolDomain(username);
-		String url = request.getContextPath() + "/" + domain;
+
+		String isAdmin = memberService.isAdmin(username);
+
+		if (isAdmin.equals("ROLE_MEMBER")) {
+			String domain = memberService.getSchoolDomain(username);
+			url = request.getContextPath() + "/" + domain;
+		} else if (isAdmin.equals("ROLE_ADMIN")) {
+			url = request.getContextPath() + "/admin";
+		}
 		response.sendRedirect(url);
 
 	}

@@ -58,10 +58,15 @@ nav {
 				<c:choose>
 					<c:when test="${boardAdmin == 1 }">
 						<c:forEach var="b" items="${boardlist}">
-							<a href="post/list?board_id=${b.BOARD_ID}">${b.NAME } <c:if
-									test="${b.STATUS == 0 }">
-									<p>승인 심사 진행 중</p>
-								</c:if>
+							<a href="post/list?board_id=${b.BOARD_ID}">${b.NAME }
+								<c:choose>
+									<c:when test="${b.STATUS == 0 || b.STATUS == 3 || b.STATUS == 4 }">
+										<p>승인 심사 진행 중</p>
+									</c:when>
+									<c:when test="${b.STATUS == 2 }">
+										<p class="reject">승인 거부</p>
+									</c:when>
+								</c:choose> 
 							</a>
 							<hr>
 						</c:forEach>

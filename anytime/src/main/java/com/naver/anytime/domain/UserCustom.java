@@ -11,14 +11,16 @@ public class UserCustom extends User {
 	private String email;
 	private String nickname;
 	private int board_admin;
+	private String auth;
 
 	public UserCustom(String username, String password, int school_id, String email, String nickname, int board_admin,
-			Collection<? extends GrantedAuthority> authorities) {
+			String auth, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 		this.school_id = school_id;
 		this.email = email;
 		this.nickname = nickname;
 		this.board_admin = board_admin;
+		this.auth = auth;
 	}
 
 	public int getSchool_id() {
@@ -51,6 +53,14 @@ public class UserCustom extends User {
 
 	public void setBoard_admin(int board_admin) {
 		this.board_admin = board_admin;
+	}
+
+	public String getAuth() {
+		return auth;
+	}
+
+	public void setAuth(String auth) {
+		this.auth = auth;
 	}
 
 }

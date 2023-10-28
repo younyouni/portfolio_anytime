@@ -193,11 +193,10 @@
 											Students Registration Trend <span>| Week</span>
 										</h5>
 										<!-- Stack Chart -->
-										<div id="registrationChart" style="min-height: 365px;">
-											<div id="apexcharts8mbh4kcv"
-												class="apexcharts-canvas apexcharts8mbh4kcv apexcharts-theme-light"
-												style="width: 405px; height: 350px;">
-												<canvas id="stackChart" style="width: 100px; height: 100px;"></canvas>
+										<div id="registrationChart"
+											style="min-height: 365px; text-align: -webkit-center;">
+											<div style="padding: 10px">
+												<canvas id="stackChart" style="width: 110px; height: 50px;"></canvas>
 											</div>
 										</div>
 										<!-- End Stack Chart -->
@@ -234,7 +233,8 @@
 													<h2>
 														게시판 승인 <br> <br>${todoList.DONE_BOARD}/${todoList.TO_DO_BOARD}</h2>
 												</div>
-`												<div class="box">
+												`
+												<div class="box">
 													<div class="chart"
 														data-percent="${todoList.REPORT_PERCENT}"
 														data-scale-color="#ffb400">${todoList.REPORT_PERCENT}%</div>
@@ -321,7 +321,7 @@ $(function() {
 	    labels: labels,
 	    datasets: [
 	      {
-	        label: 'Dataset 1', // 전체 가입자 - 신규가입자
+	        label: '기존 회원 수', // 전체 가입자 - 신규가입자
 	        data: [
 	        	<c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
 	        	  ${registrationTrend.PRE}<c:if test="${!loop.last}">, </c:if>
@@ -331,7 +331,7 @@ $(function() {
 	        stack: 'Stack 0',
 	      },
 	      {
-	        label: 'Dataset 2', //신규 가입자 
+	        label: '신규 회원 수', //신규 가입자 
 	        data: [
 	        	<c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
 		      	  ${registrationTrend.NEW_MEMBERS}<c:if test="${!loop.last}">, </c:if>
@@ -341,7 +341,7 @@ $(function() {
 	        stack: 'Stack 0',
 	      },
 	      {
-	        label: 'Dataset 3',
+	        label: '탈퇴 회원 수',
 	        data:[
 	        	<c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
 		      	  ${registrationTrend.WITHDRAWN_MEMBERS}*-1<c:if test="${!loop.last}">, </c:if>
@@ -361,7 +361,7 @@ $(function() {
 			      title: {
 			        display: false,
 			        text: 'Chart.js Bar Chart - Stacked'
-			      },
+			      }
 			    },
 			    responsive: true,
 			    interaction: {

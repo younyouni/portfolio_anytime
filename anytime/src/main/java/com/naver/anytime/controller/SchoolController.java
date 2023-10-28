@@ -52,39 +52,45 @@ public class SchoolController {
 
 		mv.setViewName("main/community");
 
-		if (user != null) {
-			String id = user.getUsername();
-			logger.info("인증된 사용자 : " + user.getUsername());
-			logger.info("유저 학교 도메인 : " + memberService.getSchoolDomain(id));
+		int isDomain = schoolService.isDomain(schoolDomain);
 
-			if (!schoolDomain.equals(memberService.getSchoolDomain(id))) {
-				mv.setViewName("redirect:/" + memberService.getSchoolDomain(id));
-				logger.info("다른학교 출입");
+		if (isDomain > 0) {
+			if (user != null) {
+				String id = user.getUsername();
+				logger.info("인증된 사용자 : " + user.getUsername());
+				logger.info("유저 학교 도메인 : " + memberService.getSchoolDomain(id));
+
+				if (!schoolDomain.equals(memberService.getSchoolDomain(id))) {
+					mv.setViewName("redirect:/" + memberService.getSchoolDomain(id));
+					logger.info("다른학교 출입");
+				}
+
+				int[] board_ids = boardService.getBoardIds(id);
+				List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
+
+				Member m = memberService.getLoginMember(id);
+
+				school_id = user.getSchool_id();
+
+				mv.addObject("member", m);
+				mv.addObject("list", commonPostsByBoard);
+
+			} else {
+				int[] board_ids = boardService.getBoardIdsByDomain(schoolDomain);
+				List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
+				school_id = schoolService.getSchoolId(schoolDomain);
+				mv.addObject("list", commonPostsByBoard);
 			}
 
-			int[] board_ids = boardService.getBoardIds(id);
-			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
+			Map<String, Object> school = new HashMap<String, Object>();
+			school.put("name", schoolService.getSchoolName(schoolDomain));
+			school.put("id", school_id);
+			school.put("domain", schoolDomain);
 
-			Member m = memberService.getLoginMember(id);
-			
-			school_id = user.getSchool_id();
-
-			mv.addObject("member", m);
-			mv.addObject("list", commonPostsByBoard);
-
-		} else {
-			int[] board_ids = boardService.getBoardIdsByDomain(schoolDomain);
-			List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
-			school_id = schoolService.getSchoolId(schoolDomain);
-			mv.addObject("list", commonPostsByBoard);
+			mv.addObject("school", school);
+		}else {
+			mv.setViewName("redirect:/");
 		}
-
-		Map<String, Object> school = new HashMap<String, Object>();
-		school.put("name", schoolService.getSchoolName(schoolDomain));
-		school.put("id", school_id);
-		school.put("domain", schoolDomain);
-
-		mv.addObject("school", school);
 
 		return mv;
 	}
