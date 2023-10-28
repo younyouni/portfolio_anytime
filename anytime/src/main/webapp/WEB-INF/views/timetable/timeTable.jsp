@@ -368,6 +368,7 @@
 			<li class="button custom only">새 수업 추가</li>
 		</ul>
 	</div>
+	
 	<form id="customsubjects" style="display: none;">
 		<input type="hidden" name="id" value=""> <a title="닫기"
 			class="close"></a>
@@ -420,19 +421,8 @@
 							<option value="20">오후 8시</option>
 							<option value="21">오후 9시</option>
 							<option value="22">오후 10시</option>
-							<option value="23">오후 11시</option></select><select class="startminute"><option
-								value="0">0분</option>
-							<option value="5">5분</option>
-							<option value="10">10분</option>
-							<option value="15">15분</option>
-							<option value="20">20분</option>
-							<option value="25">25분</option>
-							<option value="30">30분</option>
-							<option value="35">35분</option>
-							<option value="40">40분</option>
-							<option value="45">45분</option>
-							<option value="50">50분</option>
-							<option value="55">55분</option></select><span>~</span><select
+							<option value="23">오후 11시</option></select>
+							<span>~</span><select
 							class="endhour"><option value="0">오전 0시</option>
 							<option value="1">오전 1시</option>
 							<option value="2">오전 2시</option>
@@ -456,23 +446,11 @@
 							<option value="20">오후 8시</option>
 							<option value="21">오후 9시</option>
 							<option value="22">오후 10시</option>
-							<option value="23">오후 11시</option></select><select class="endminute"><option
-								value="0">0분</option>
-							<option value="5">5분</option>
-							<option value="10">10분</option>
-							<option value="15">15분</option>
-							<option value="20">20분</option>
-							<option value="25">25분</option>
-							<option value="30">30분</option>
-							<option value="35">35분</option>
-							<option value="40">40분</option>
-							<option value="45">45분</option>
-							<option value="50">50분</option>
-							<option value="55">55분</option></select><input type="text"
+							<option value="23">오후 11시</option></select>
+							<input type="text"
 							placeholder="예) 종303" class="text place">
 					</p>
 				</div>
-				<a class="new"><strong>+</strong> 더 입력</a>
 			</dd>
 		</dl>
 		<div class="clearBothOnly"></div>

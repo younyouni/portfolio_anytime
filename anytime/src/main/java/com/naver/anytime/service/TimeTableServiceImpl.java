@@ -38,12 +38,17 @@ public class TimeTableServiceImpl implements TimeTableService {
 //	}
 
 	@Override
-	public void changeNameAndTime(int timetable_id, String newName) {
+	public void updateTimetable(int user_id, int timetable_id, String newName, int status) {
+		
+		if(status ==1) {
+			timeDao.updateStatus(user_id, timetable_id);
+		}
+		
 		TimeTable timetable = new TimeTable();
 		timetable.setTIMETABLE_ID(timetable_id);
 		timetable.setNAME(newName);
-//		timetable.setTIMETABLE_DATE(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		timeDao.changeNameAndTime(timetable);
+		timetable.setSTATUS(status);
+		timeDao.updateTimetable(timetable);
 	}
 
 	@Override
@@ -97,10 +102,10 @@ public class TimeTableServiceImpl implements TimeTableService {
 		return timeDao.checkTimetable(user_id, semester);
 	}
 	
-//	//시간표 링크진입 실험용
-//	@Override
-//	public TimeTable getTimeTableById(int timetable_id) {
-//		return timeDao.getTimeTableById(timetable_id);
-//	}
+	//시간표 링크진입 실험용
+	@Override
+	public TimeTable getTimeTableById(int timetable_id) {
+		return timeDao.getTimeTableById(timetable_id);
+	}
 
 }

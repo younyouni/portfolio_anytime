@@ -11,6 +11,12 @@
 		join timetable t on td.timetable_id = t.timetable_id
 		where t.timetable_id = #{timetableId}
 	</select>
+	
+	<select id="getTimetableDetails" parameterType="int" resultType="TimeTable_detail">
+		select * 
+		from timetable_detail
+		where timetable_id =#{timetable_id}
+	</select>
 
 
 

@@ -14,11 +14,7 @@ public interface TimeTableMapper {
 
 	public List<TimeTable> getTimetableByUserId(int user_id);
 
-//	public void changeName(int timetable_id, String newName);
-
-	public void changeNameAndTime(int timetable_id, String newName);
-
-	public void changeNameAndTime(TimeTable timetable);
+	public void updateTimetable(TimeTable timetable);
 
 	public TimeTable getLastTimeTable(int user_id);
 
@@ -42,7 +38,9 @@ public interface TimeTableMapper {
 
 	public int checkTimetable(int user_id, String semester);
 	
-//	//시간표링크진입 실험용
-//	TimeTable getTimeTableById(int timetable_id);
+	//시간표링크진입 실험용
+	TimeTable getTimeTableById(int timetable_id);
+
+	public void updateStatus(int user_id, int timetable_id);
 
 }

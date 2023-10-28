@@ -2,7 +2,9 @@ package com.naver.anytime.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.naver.anytime.domain.TimeTable;
+import com.naver.anytime.domain.TimeTable_detail;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.TimeTableService;
 import com.naver.anytime.service.TimeTable_detailService;
@@ -44,15 +45,17 @@ public class TimeTableController {
 	public String timeTable() {
 		return "timetable/timeTable";
 	}
-	
+//	
 //	@RequestMapping(value = "/timetable/{timetable_id}", method = RequestMethod.GET)
-//	public String getTimeTable(@RequestParam("timetable_id") Integer timetable_id, Model model) {
-//	    // 시간표 ID에 해당하는 데이터 가져오기
+//	public String getTimeTable(@PathVariable("timetable_id") int timetable_id, Model model) {
+//		logger.info("입장");
+//		logger.info("시간표 아이디" + timetable_id);
+//		// 시간표 ID에 해당하는 데이터 가져오기
 //	    TimeTable timetable = timeTableService.getTimeTableById(timetable_id);
 //	    
 //	    if (timetable == null) {
 //	        throw new RuntimeException("timetable_ID: " + timetable_id);
-//	    }
+//	    }	
 //	    
 //	    // 모델에 데이터 추가
 //	    model.addAttribute("timeTable", timetable);
@@ -89,11 +92,16 @@ public class TimeTableController {
 		return timetable;
 	}
 
-	@RequestMapping(value = "/changeName", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateTimetable", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> changeName(@RequestParam int timetable_id, @RequestParam String newName) {
+	public ResponseEntity<String> updateTimetable(@RequestParam int timetable_id, 
+											@RequestParam String newName,
+											@RequestParam int  status,
+											Principal userPrincipal) {
 		try {
-			timeTableService.changeNameAndTime(timetable_id, newName);
+			logger.info("기본시간표 : "+status);
+			String id = userPrincipal.getName();
+			timeTableService.updateTimetable(memberService.getUserId(id), timetable_id, newName, status);
 			return new ResponseEntity<>("이름 변경 성공", HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("이름 변경 실패: ", e);
@@ -109,5 +117,33 @@ public class TimeTableController {
 
 		return timeTableService.getNewTimetable(key);
 	}
+	
+	// 생성 시간표 선택 
+	@RequestMapping(value = "/loadTimetableDetails", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> loadTimetableDetails(@RequestParam(value = "timetable_id") int timetable_id) {
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<TimeTable_detail> timetalbeDetails =timeTable_detailService.getTimetableDetails(timetable_id);
+		TimeTable timetable = timeTableService.getTimeTableById(timetable_id);
+		map.put("timetalbeDetails", timetalbeDetails);
+		map.put("timetable", timetable);
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "/createTimetableDetail", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> createTimetableDetail(@RequestParam(value = "timetable_id") int timetable_id) {
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<TimeTable_detail> timetalbeDetails =timeTable_detailService.getTimetableDetails(timetable_id);
+		TimeTable timetable = timeTableService.getTimeTableById(timetable_id);
+		map.put("timetalbeDetails", timetalbeDetails);
+		map.put("timetable", timetable);
+		
+		return map;
+	}
+	
 
 }
