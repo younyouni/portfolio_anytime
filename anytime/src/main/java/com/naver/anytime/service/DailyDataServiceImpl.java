@@ -45,4 +45,9 @@ public class DailyDataServiceImpl implements DailyDataService {
 		return dao.getTodoList();
 	}
 
+	@Override
+	public int insertDailyData() {
+		return dao.insertDailyData();
+	}
+
 }

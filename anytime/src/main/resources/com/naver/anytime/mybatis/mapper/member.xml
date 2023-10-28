@@ -210,6 +210,12 @@
 			WHERE C.COMMENT_ID =
 		</if>
 	</sql>
+	
+	<select id="isAdmin" parameterType="String" resultType="String">
+		SELECT AUTH
+		FROM MEMBER
+		WHERE LOGIN_ID = #{username} 
+	</select>
 
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * 
 		* * * * -->

@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.School;
 
@@ -20,11 +18,11 @@ public interface MemberMapper {
 	public Member isId(String id);
 
 	public Member isNickname(String nickname);
-	
+
 	public String getNickname(String login_id);
-	
+
 	public Member isEmail(String email);
-	
+
 	public String getEmail(String login_id);
 
 	public int getSchoolIdByName(String campusName);
@@ -68,6 +66,8 @@ public interface MemberMapper {
 
 	public void updateStatusByContentId(int content_id, int isContent);
 
+	public String isAdmin(String username);
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	public Integer getSchoolId2(String id);
 
@@ -85,5 +85,4 @@ public interface MemberMapper {
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 	public Member isLoginId(String username);
-
 }
