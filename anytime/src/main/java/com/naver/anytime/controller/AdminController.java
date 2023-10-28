@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.Report;
 import com.naver.anytime.domain.School;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.DailyDataService;
@@ -55,29 +57,32 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public ModelAndView adminPage(Principal userPrincipal, ModelAndView mv) {
-		String id = userPrincipal.getName();
-		Member m = memberService.getLoginMember(id);
-		
+	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+		String email = user.getEmail();
+
 		// 일별 데이터
 		DailyData dataTrend = dailyDataService.getDataTrend();
-		
-		// 회원 가입자 추이 
+
+		// 회원 가입자 추이
 		List<DailyData> registrationTrend = dailyDataService.getRegistrationTrend();
 
 		// 신고 사유 데이터
 		List<Report> reportCount = reportService.getReportCount();
-		
+
 		// 학교 랭킹
 		List<School> schoolRanking = dailyDataService.getSchoolRanking();
-		
+
 		// 게시판 랭킹
 		List<Board> boardRanking = dailyDataService.getBoardRanking();
-		
-		// 게시판 승인 to do list
-		DailyData todoList =dailyDataService.getTodoList();
 
-		mv.addObject("member", m);
+		// 게시판 승인 to do list
+		DailyData todoList = dailyDataService.getTodoList();
+		logger.info("로그인아이디 : " + login_id);
+		logger.info("이메일 : " + email);
+
+		mv.addObject("login_id", login_id);
+		mv.addObject("email", email);
 		mv.addObject("dataTrend", dataTrend);
 		mv.addObject("registrationTrend", registrationTrend);
 		mv.addObject("reportCount", reportCount);
@@ -86,6 +91,11 @@ public class AdminController {
 		mv.addObject("todoList", todoList);
 		mv.setViewName("/admin/dashboard");
 		return mv;
+	}
+	
+	@Scheduled(cron = "0 0 * * * ?" /* 매일마다 */)
+	public int insertDailyDataScheduled() {
+		return dailyDataService.insertDailyData();
 	}
 
 	@RequestMapping(value = "/boardAdmin", method = RequestMethod.GET)

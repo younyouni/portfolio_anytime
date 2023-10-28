@@ -50,4 +50,14 @@ public class SchoolServiceImpl implements SchoolService {
 	public School getSchoolByUserId(int user_id) {
 		return dao.getSchoolByUserId(user_id);
 	}
+
+	@Override
+	public int getSchoolId(String schoolDomain) {
+		return dao.getSchoolId(schoolDomain);
+	}
+
+	@Override
+	public String getSchoolNameById(int school_id) {
+		return dao.getSchoolNameById(school_id);
+	}
 }

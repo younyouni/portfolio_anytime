@@ -25,49 +25,36 @@
 <style type="text/css">
 .container {
 	display: grid;
-	grid-template-columns: repeat(1, 160px);
-	grid-gap: 80px;
+	grid-template-columns: repeat(2, 160px);
+	grid-gap: 28px;
 	margin: auto 0;
 }
 
-@media ( min-width : 420px) and (max-width: 659px) {
-	.container {
-		grid-template-columns: repeat(2, 160px);
-	}
-}
-
-@media ( min-width : 660px) and (max-width: 899px) {
-	.container {
-		grid-template-columns: repeat(3, 160px);
-	}
-}
-
-@media ( min-width : 900px) {
-	.container {
-		grid-template-columns: repeat(4, 160px);
-	}
-}
-
 .container .box {
-	width: 100%;
+	width: 90%;
+	display: flex;
 }
 
 .container .box h2 {
+	margin-left: 70px;
 	display: block;
 	text-align: center;
-	font-size: 13px;
 	color: #666;
-	margin-top: 45px;
+	margin-top: 40px;
+	font-size: 15px;
+	color: #666;
+	display: block;
+	line-height: 15px;
 }
 
 .container .box .chart {
 	position: relative;
-	width: 100%;
+	width: 45%;
 	height: 100%;
 	text-align: center;
 	font-size: 20px;
-	line-height: 100px;
-	height: 100px;
+	line-height: 125px;
+	height: 150px;
 	color: #666;
 }
 
@@ -243,18 +230,16 @@
 											<div class="container">
 												<div class="box">
 													<div class="chart" data-percent="${todoList.BOARD_PERCENT}"
-														data-scale-color="#ffb400">${todoList.DONE_BOARD}/
-														${todoList.TO_DO_BOARD}</div>
-													<h2>게시판 승인</h2>
+														data-scale-color="#ffb400">${todoList.BOARD_PERCENT}%</div>
+													<h2>
+														게시판 승인 <br> <br>${todoList.DONE_BOARD}/${todoList.TO_DO_BOARD}</h2>
 												</div>
-											</div>
-											<div class="container">
-												<div class="box">
+`												<div class="box">
 													<div class="chart"
 														data-percent="${todoList.REPORT_PERCENT}"
-														data-scale-color="#ffb400">${todoList.DONE_REPORT}/
-														${todoList.TO_DO_REPORT}</div>
-													<h2>신고 처리</h2>
+														data-scale-color="#ffb400">${todoList.REPORT_PERCENT}%</div>
+													<h2>
+														신고 처리<br> <br>${todoList.DONE_REPORT}/${todoList.TO_DO_REPORT}</h2>
 												</div>
 											</div>
 										</div>

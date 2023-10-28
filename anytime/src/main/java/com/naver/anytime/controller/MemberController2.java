@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
 import com.naver.anytime.domain.Member;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.MemberService;
+import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.task.SendMail;
 import com.naver.constants.AnytimeConstants;
 
@@ -38,27 +41,39 @@ public class MemberController2 {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController2.class);
 
 	private MemberService memberservice;
+	private SchoolService schoolService;
 
 	private PasswordEncoder passwordEncoder;
 	private SendMail sendMail;
 
 	@Autowired
-	public MemberController2(MemberService memberservice, PasswordEncoder passwordEncoder, SendMail sendMail) {
+	public MemberController2(MemberService memberservice, SchoolService schoolService, PasswordEncoder passwordEncoder,
+			SendMail sendMail) {
 		this.memberservice = memberservice;
+		this.schoolService = schoolService;
 		this.passwordEncoder = passwordEncoder;
 		this.sendMail = sendMail;
 	}
 
 	// 개인계정 페이지 이동
 	@GetMapping(value = "/my")
-	public ModelAndView info(Principal principal, ModelAndView mv) {
-		String id = principal.getName();
+	public ModelAndView info(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
 
-		if (id == null) {
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(login_id));
+
+		mv.addObject("school", school);
+
+		if (login_id == null) {
 			mv.setViewName("redirect:login");
 			logger.info("id is null");
 		} else {
-			Member m = memberservice.getLoginMember(id);
+			Member m = memberservice.getLoginMember(login_id);
 			mv.setViewName("member/account");
 			mv.addObject("member", m);
 		}
@@ -67,8 +82,20 @@ public class MemberController2 {
 
 	// 비밀번호 변경페이지 이동
 	@GetMapping(value = "/password")
-	public String updatePassword() {
-		return "/member/updatePwd";
+	public ModelAndView updatePassword(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(login_id));
+
+		mv.addObject("school", school);
+		mv.setViewName("/member/updatePwd");
+
+		return mv;
 	}
 
 	// 비밀번호 변경 프로세스
@@ -106,14 +133,23 @@ public class MemberController2 {
 	}
 
 	@GetMapping(value = "/update")
-	public ModelAndView updateMember(Principal principal, ModelAndView mv) {
-		String id = principal.getName();
+	public ModelAndView updateMember(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
 
-		if (id == null) {
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(login_id));
+
+		mv.addObject("school", school);
+
+		if (login_id == null) {
 			mv.setViewName("redirect:/member/login");
 			logger.info("id is null");
 		} else {
-			Member m = memberservice.getLoginMember(id);
+			Member m = memberservice.getLoginMember(login_id);
 			mv.setViewName("/member/updateMember");
 			mv.addObject("member", m);
 		}
@@ -153,8 +189,18 @@ public class MemberController2 {
 	}
 
 	@GetMapping(value = "/boardlist")
-	public ModelAndView getBoardlist(Principal principal, ModelAndView mv) {
-		String login_id = principal.getName();
+	public ModelAndView getBoardlist(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(login_id));
+
+		mv.addObject("school", school);
+
 		int boardAdmin = memberservice.isBoardAdmin(login_id);
 		List<Board> boardlist = null;
 
@@ -169,8 +215,20 @@ public class MemberController2 {
 	}
 
 	@GetMapping(value = "/delete")
-	public String deleteMemberProcess() {
-		return "/member/deleteMember";
+	public ModelAndView deleteMemberProcess(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(login_id));
+
+		mv.addObject("school", school);
+		mv.setViewName("/member/deleteMember");
+
+		return mv;
 	}
 
 	@PostMapping(value = "/deleteProcess")
