@@ -13,5 +13,6 @@ public interface TimeTable_detailMapper {
 	List<TimeTable_detail> getsubject(String timetableId);
 
 	List<TimeTable_detail> getTimetableDetails(int timetable_id);
- 
+	
+	public void addSubject(TimeTable_detail detail);
 }

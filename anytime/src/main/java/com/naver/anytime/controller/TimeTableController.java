@@ -132,18 +132,36 @@ public class TimeTableController {
 		return map;
 	}
 	
-	@RequestMapping(value = "/createTimetableDetail", method = RequestMethod.GET)
+	@RequestMapping(value="/addSubject", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> createTimetableDetail(@RequestParam(value = "timetable_id") int timetable_id) {
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		List<TimeTable_detail> timetalbeDetails =timeTable_detailService.getTimetableDetails(timetable_id);
-		TimeTable timetable = timeTableService.getTimeTableById(timetable_id);
-		map.put("timetalbeDetails", timetalbeDetails);
-		map.put("timetable", timetable);
-		
-		return map;
+	public ResponseEntity<String> addSubject(@RequestParam(value = "timetable_id", required = false) Integer timetable_id, 
+                                           @RequestParam(value = "subject") String subject, 
+                                           @RequestParam(value = "professor") String professor, 
+                                           @RequestParam(value = "day") String day, 
+                                           @RequestParam(value = "start_time") int start_time, 
+                                           @RequestParam(value = "end_time") int end_time,
+                                           @RequestParam(value = "classroom") String classroom) {
+	   try {
+	       TimeTable_detail detail=new TimeTable_detail();
+
+	      detail.setTimetable_id(timetable_id);
+	      detail.setSubject(subject);
+	      detail.setProfessor(professor);
+	      detail.setDay(day);
+	      detail.setStart_time(start_time);
+	      detail.setEnd_time(end_time);
+	      detail.setClassroom(classroom);
+
+	      
+	      timeTable_detailService.addSubject(detail); 
+	      
+	     return new ResponseEntity<>("새로운 과목이 성공적으로 추가되었습니다.", HttpStatus.OK);
+	  } catch(Exception e) {
+	     logger.error("과목 추가 실패 : ", e);
+	     return new ResponseEntity<>("과목을 추가하는 동안 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+	  }
 	}
+
 	
 
 }

@@ -124,11 +124,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    // // 시간표 선택 -> 페이지 이동
-    // $("div.menu ol").on("click", "li:not(.extension) a", function(e) {
-      
-    // });
     
 
     $("#semesters").change(function () {
@@ -149,8 +144,57 @@ $(document).ready(function () {
     $(".close").click(function() {
         $("#customsubjects").hide();
     });
-  
+    
+// 새 수업 추가
+$("#customsubjects").submit(function(e) {
+    e.preventDefault();
+
+    var timetable_id = $("#tableName").attr("data-id");
+    var subject = $("input[name='subject']").val();
+    var professor = $("input[name='professor']").val();
+    var day = $(".weeks .active").text(); // 요일은 선택을 해야합니다.
+    var start_time = $(".starthour option:selected").val();
+    var end_time = $(".endhour option:selected").val();
+    var classroom = $(".place").val();
+
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        url: 'addSubject', 
+        type: 'POST',
+        data: {
+            timetable_id: timetable_id,
+            subject: subject,
+            day: day,
+            start_time: start_time,
+            end_time: end_time,
+            classroom : classroom,
+            professor: professor
+        },
+        dataType : "json",
+        beforeSend : function(xhr) {
+                xhr.setRequestHeader(header, token)
+        },
+        success:function(response){
+             alert('수업 추가 성공');
+             console.log(response);
+             location.reload(); 
+         },
+         error:function(error){
+             alert('수업 추가 실패');
+             console.log(error);
+         }
+     });
 });
+
+
+
+
+
+
+}); // (document).ready(function() end
+
 
 function getTimetableList(semester){
     let token = $("meta[name='_csrf']").attr("content");
@@ -224,5 +268,4 @@ function loadTimetableDetails(timetable_id){
     })
 }
 
-// 새 수업 추가
 

@@ -376,7 +376,7 @@
 		<dl>
 			<dt>과목명 (필수)</dt>
 			<dd>
-				<input type="text" name="name" placeholder="예) 경제학입문" maxlength="40"
+				<input type="text" name="subject" placeholder="예) 경제학입문" maxlength="40"
 					class="text">
 			</dd>
 			<dt>교수명</dt>

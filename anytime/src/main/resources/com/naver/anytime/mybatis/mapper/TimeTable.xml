@@ -55,12 +55,23 @@
 		    WHERE ROWNUM &lt;= 1
 		</select>
 		
-		<insert id="insertNewTimetable" >
-			<selectKey keyProperty="NEW_TIMETABLE_ID" resultType="int" order="AFTER">
-			SELECT timetable_seq.CURRVAL FROM DUAL
-			</selectKey>
+		<insert id="insertNewTimetable" parameterType="map">
+		    <selectKey keyProperty="NEW_TIMETABLE_ID" order="AFTER" resultType="int">
+		        SELECT timetable_seq.CURRVAL FROM DUAL
+		    </selectKey>
 		    INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
-		    VALUES (timetable_seq.NEXTVAL, #{user_id}, #{newName}, #{semester}, SYSDATE, 0)
+			VALUES (
+			    timetable_seq.NEXTVAL,
+			    #{user_id}, 
+			    '시간표 ' || (
+			        SELECT NVL(MAX(TO_NUMBER(REGEXP_SUBSTR(NAME,'[0-9]+'))), 0) + 1
+			        FROM TIMETABLE 
+			        WHERE USER_ID = #{user_id} AND SEMESTER = #{semester}
+			    ),
+			    #{semester},
+			    SYSDATE,
+			    0
+			)
 		</insert>
    	   
    	   <select id="getLastTimeTableId" resultType="int" parameterType="int">
