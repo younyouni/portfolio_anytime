@@ -62,6 +62,9 @@
 						 <c:if test="${boardtest.ANONYMOUS eq 1}"> 
 							<h3 class="large">익명</h3>
 						 </c:if> 
+						 <c:if test="${postdata.USER_STATUS eq 0}"> 
+							<h3 class="large">(알 수 없음)</h3>
+						 </c:if> 
 						<time class="large">${postdata.POST_DATE}</time>
 					</div>
 					<ul class="status">

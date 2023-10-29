@@ -27,9 +27,10 @@ public class Post {
 	private int school_id;
 	private String FORMATTED_DATE;
 
-	// 보드 타입 & 보드 익명
+	// 보드 타입 & 보드 익명 & 작성자 탈퇴 여부
 	private int BOARD_TYPE;
 	private int BOARD_ANONYMOUS;
+	private int USER_STATUS;
 
 	/* ---------- POST테이블 Getter/Setter ---------- */
 	public String getUploadfile() {
@@ -217,6 +218,14 @@ public class Post {
 
 	public void setSchool_id(int school_id) {
 		this.school_id = school_id;
+	}
+
+	public int getUSER_STATUS() {
+		return USER_STATUS;
+	}
+
+	public void setUSER_STATUS(int uSER_STATUS) {
+		USER_STATUS = uSER_STATUS;
 	}
 
 }

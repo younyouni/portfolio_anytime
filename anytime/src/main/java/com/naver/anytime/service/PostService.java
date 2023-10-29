@@ -142,7 +142,12 @@ public interface PostService {
 	
 	// 라이트 사이드 베스트 게시물
 	public List<Post> getBestPostSampleList(int school_id);
-
+	
+	// 스크랩 카운트 업
+	public void updateScrapUpCount(int post_id);
+	
+	// 스크랩 카운트 다운
+	public void updateScrapDownCount(int post_id);
 
 
 	

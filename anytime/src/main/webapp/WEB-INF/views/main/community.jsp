@@ -29,6 +29,11 @@
 </head>
 
 <script>
+	if ("${result}" == 'SchoolCk_fail') {
+		alert("학교 승인을 받아야 볼 수 있습니다.");
+	}else if("${result}" == 'postStatus_fail'){
+		alert("삭제된 게시물입니다.");
+	}
 	$(function() {
 		$("#logout").click(function(event) {
 			event.preventDefault();

@@ -184,4 +184,9 @@ public class BoardServiceImpl implements BoardService {
 		return dao.isBoardStatusCheck(board_id);
 	}
 
+	@Override
+	public int getBoardTypeCheck(int board_id) {
+		return dao.getBoardTypeCheck(board_id);
+	}
+
 }

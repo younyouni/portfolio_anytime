@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -40,7 +41,6 @@ import com.naver.anytime.domain.Post;
 import com.naver.anytime.domain.PostLike;
 import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.BoardService;
-import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostLikeService;
 import com.naver.anytime.service.PostPhotoService;
@@ -98,23 +98,32 @@ public class PostController {
 		int currentUserId = member.getUser_id();
 
 		Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		// post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
 		if (post == null || post.getSTATUS() == 0) {
 			if (post != null && post.getSTATUS() == 0) {
-				redirectAttrs.addFlashAttribute("error", "권한이 없는 게시물입니다.");
-				mv.setViewName("error/noAuthority");
-				mv.addObject("redirectUrl", "/anytime/post/list?board_id=" + post.getBOARD_ID());
+				redirectAttrs.addFlashAttribute("result","postStatus_fail");
+				mv.setViewName("redirect:/"+schoolService.getSchoolDomain(school_name));
+//				mv.setViewName("error/noAuthority");
+//				mv.addObject("redirectUrl", "/anytime/post/list?board_id=" + post.getBOARD_ID());
 				return mv;
 			}
 			logger.info("상세보기 실패");
 			mv.setViewName("error/error");
 			mv.addObject("url", request.getRequestURL());
 			mv.addObject("message", "상세보기 실패입니다.");
-		}else if(member.getSchool_check() == 0 && (post.getBOARD_TYPE()== 4 || post.getBOARD_ANONYMOUS() == 0)) {
-			
+		} else if (member.getSchool_check() == 0 && (post.getBOARD_TYPE() == 4 || post.getBOARD_ANONYMOUS() == 1)) {
+			redirectAttrs.addFlashAttribute("result","SchoolCk_fail");
+			mv.setViewName("redirect:/"+schoolService.getSchoolDomain(school_name));
 		}
-		
+
 		else {
 			logger.info("★ 상세보기 성공 ★");
 
@@ -131,13 +140,8 @@ public class PostController {
 					mv.addObject("nickname", nickname);
 				}
 			}
-			
-			Map<String, Object> school = new HashMap<String, Object>();
-			String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
-			school.put("id", user.getSchool_id());
-			school.put("name", school_name);
-			school.put("domain", schoolService.getSchoolDomain(school_name));
+			
 
 			mv.setViewName("post/postDetail");
 			mv.addObject("postdata", post);
@@ -145,7 +149,7 @@ public class PostController {
 			mv.addObject("currentUserId", currentUserId);
 			mv.addObject("anonymous", board.getANONYMOUS());
 			mv.addObject("photos", photos);
-			mv.addObject("school",school);
+			mv.addObject("school", school);
 
 			logger.info(photos.toString());
 
@@ -549,16 +553,39 @@ public class PostController {
 	 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	// 게시물 리스트 출력
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView postlist(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-			@RequestParam(value = "board_id", required = false) int board_id, HttpSession session, ModelAndView mv) {
+			@RequestParam(value = "board_id", required = false) int board_id, HttpSession session, Principal principal,
+			ModelAndView mv) {
+		int check = 0;
 
+		int user_id = memberService.getUserId(principal.getName());
+
+		// 보드 승인 체크
 		int statuscheck = boardService.isBoardStatusCheck(board_id);
 
-		if (statuscheck == 1) {
+		// 익명 게시판 체크
+		int anonymous = boardService.getBoardAnonymous(board_id);
+
+		// 게시판 타입 체크
+		int customcheck = boardService.getBoardTypeCheck(board_id);
+
+		// 학교 인증 체크
+		int schoolcheck = memberService.getUserSchoolCheck(user_id);
+
+		if (anonymous == 1 || customcheck == 4) {
+			if (schoolcheck == 1) {
+				check = 1;
+			}
+		} else {
+			check = 2;
+		}
+
+		if (statuscheck == 1 && check > 0) {
+
 			session.setAttribute("board_id", board_id);
+
 			int limit = 10;
 
 			// 총 리스트 수
@@ -587,9 +614,6 @@ public class PostController {
 
 			// 포토
 			List<Photo> photolist = postPhotoService.getPhotosPostlist(board_id);
-
-			// 익명성
-			int anonymous = boardService.getBoardAnonymous(board_id);
 
 			// 익명성 체크
 			if (anonymous == 1) {
@@ -638,11 +662,16 @@ public class PostController {
 				System.out.println("postlist 값 존재");
 			}
 
-		} else {
+		} else if (statuscheck == 0 && check > 0) {
 			mv.setViewName("post/postList");
 			mv.addObject("statuscheck", 1);
 			System.out.println("status 0 인 페이지 접근");
+		} else {
+			mv.setViewName("post/postList");
+			mv.addObject("schoolcheck", 1);
+			System.out.println("스쿨확인이 제한된 페이지 접근");
 		}
+
 		return mv;
 	}
 
@@ -653,16 +682,21 @@ public class PostController {
 			@RequestParam(value = "search_word", defaultValue = "") String search_word, HttpSession session,
 			ModelAndView mv, Principal principal) {
 
-//	   session.setAttribute("board_id", board_id);
+//		   session.setAttribute("board_id", board_id);
 		session.setAttribute("search_word", search_word);
-//	   session.setAttribute("search_field", search_field);
+//		   session.setAttribute("search_field", search_field);
 		int board_id = (int) session.getAttribute("board_id");
-//	   search_field = (int) session.getAttribute("search_field");
+//		   search_field = (int) session.getAttribute("search_field");
 		search_word = (String) session.getAttribute("search_word");
 
 		String login_id = principal.getName();
 
 		int school_id = memberService.getSchoolId(login_id);
+
+		int user_id = memberService.getUserId(principal.getName());
+
+		// 학교 인증 체크
+		int schoolcheck = memberService.getUserSchoolCheck(user_id);
 
 		int limit = 10;
 		int listcount = 0;
@@ -723,6 +757,18 @@ public class PostController {
 					if (post.getUSER_ID() == post2.getUSER_ID()) {
 						post.setNICKNAME(post2.getNICKNAME());
 					}
+				}
+			}
+		}
+
+		if (schoolcheck != 1) {
+			Iterator<Post> iterator = postlist.iterator();
+			while (iterator.hasNext()) {
+				Post post = iterator.next();
+				int statuscheck = boardService.isBoardStatusCheck(post.getBOARD_ID());
+				int customcheck = boardService.getBoardTypeCheck(post.getBOARD_ID());
+				if (statuscheck == 1 && customcheck == 4) {
+					iterator.remove();
 				}
 			}
 		}

@@ -98,9 +98,6 @@
 					<h3 class="small">${post.NICKNAME}</h3>
 			<ul class="status">
 				
-			
-				
-                
 				<li title="공감" class="vote">${post.LIKE_COUNT}</li>
 				<li title="댓글" class="comment">${post.COMMENT_COUNT}</li>
 			</ul>
@@ -431,6 +428,11 @@
 	//board status 체크
 	if("${statuscheck}" == 1){
 		alert("승인되지 않은 게시판입니다.");
+		history.back();
+	}
+	
+	if("${schoolcheck}" == 1){
+		alert("학교 승인을 받아야 볼 수 있습니다.");
 		history.back();
 	}
 	

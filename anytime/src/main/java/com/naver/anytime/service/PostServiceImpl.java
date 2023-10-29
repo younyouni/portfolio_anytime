@@ -388,4 +388,14 @@ public class PostServiceImpl implements PostService {
 		return postDao.getBestPostSampleList(school_id);
 	}
 
+	@Override
+	public void updateScrapUpCount(int post_id) {
+		postDao.updateScrapUpCount(post_id);
+	}
+
+	@Override
+	public void updateScrapDownCount(int post_id) {
+		postDao.updateScrapDownCount(post_id);
+	}
+
 }
