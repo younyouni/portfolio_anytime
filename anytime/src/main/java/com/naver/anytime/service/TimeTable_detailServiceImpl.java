@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.naver.anytime.domain.TimeTable_detail;
-import com.naver.anytime.mybatis.mapper.TimeTableMapper;
 import com.naver.anytime.mybatis.mapper.TimeTable_detailMapper;
 
 @Service
@@ -22,4 +21,16 @@ public class TimeTable_detailServiceImpl implements TimeTable_detailService{
 	public List<TimeTable_detail> getsubject(String timetableId) {
 		return timeDetailDao.getsubject(timetableId);
 	}
+
+	@Override
+	public List<TimeTable_detail> getTimetableDetails(int timetable_id) {
+		return timeDetailDao.getTimetableDetails(timetable_id);
+	}
+
+	@Override
+	public void addSubject(TimeTable_detail detail) {
+		timeDetailDao.addSubject(detail);
+	}
+
+	
 }
