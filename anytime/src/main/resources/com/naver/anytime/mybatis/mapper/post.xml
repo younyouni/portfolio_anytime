@@ -82,7 +82,7 @@
 		FROM (
 		    SELECT ROWNUM RNUM, j.* 
 		    FROM (
-		        SELECT post.*, NVL(cnt, 0) AS COMMENT_COUNT 
+		        SELECT post.*, TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE, NVL(cnt, 0) AS COMMENT_COUNT 
 		        FROM post 
 		        LEFT OUTER JOIN (
 		            SELECT post_id, COUNT(*) cnt 
@@ -139,7 +139,7 @@
 			FROM (
 			    SELECT ROWNUM RNUM, j.*, b.name AS boardname
 			    FROM (
-			        SELECT post.*, NVL(cnt, 0) AS comment_count
+			        SELECT post.*, TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE, NVL(cnt, 0) AS comment_count
 			        FROM post
 			        LEFT OUTER JOIN (
 			            SELECT post_id, COUNT(*) cnt
@@ -149,7 +149,7 @@
 			        WHERE post.board_id IN (
 			            SELECT board_id
 			            FROM board
-			            WHERE school_id = #{school_id}
+			            WHERE school_id = #{school_id} and status = 1
 			        )
 			        AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
 			        AND post.status = 1
