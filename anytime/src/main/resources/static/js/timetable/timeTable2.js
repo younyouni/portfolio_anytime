@@ -19,6 +19,46 @@ $(document).ready(function () {
         $(".modalwrap").remove();
     });
 
+    // 삭제 버튼 클릭 이벤트
+    $("#deleteBtn").click(function() {
+        var timetable_id = $("#tableName").attr("data-id");
+
+        if (confirm("시간표를 삭제하시겠습니까?")) {
+            deleteTimetable(timetable_id);
+        }
+    });
+
+    // 시간표 삭제 함수
+    function deleteTimetable(timetable_id) {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        var user_id = $('body').data('user-id');
+
+        $.ajax({
+            url: 'deleteTimetable', 
+            type: 'POST',
+            data: {
+                timetable_id: timetable_id,
+                user_id: user_id
+            },
+            dataType : "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            success: function(response) {
+                alert(response.message);  
+                console.log(response);
+                if (response.message == '시간표 삭제 성공') 
+                location.reload(); 
+            },
+            error: function(error) {
+                alert('시간표 삭제 실패');
+                console.log(error.responseJSON.message);  
+            }
+        });
+    }
+
     // 시간표 이름 변경 및 날짜 변경
     $("#tableSetting").submit(function(e) {
         e.preventDefault();

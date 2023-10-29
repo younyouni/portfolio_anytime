@@ -42,5 +42,13 @@ public interface TimeTableMapper {
 	TimeTable getTimeTableById(int timetable_id);
 
 	public void updateStatus(int user_id, int timetable_id);
+	
+	public void deleteTimetable(int user_id, int timetable_id);
+
+	public int findPrimary(int user_id);
+
+	public int findNextTimetable(int user_id);
+
+	public void updateToPrimary(int user_id);
 
 }

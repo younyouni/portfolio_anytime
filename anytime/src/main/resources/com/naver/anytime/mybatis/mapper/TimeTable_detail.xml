@@ -22,6 +22,10 @@
         INSERT INTO TIMETABLE_DETAIL (SUBJECT_ID, timetable_id, DAY , START_TIME , END_TIME , CLASSROOM , SUBJECT , PROFESSOR)
         VALUES (timetable_detail_seq.NEXTVAL, #{timetable_id}, #{day}, #{start_time}, #{end_time}, #{classroom}, #{subject}, #{professor})
     </insert>
-
+	
+	<delete id="deleteTimetableDetail" parameterType="int">
+	    DELETE FROM TIMETABLE_DETAIL WHERE TIMETABLE_ID = #{timetable_id}
+	</delete>
+	
 
 </mapper>

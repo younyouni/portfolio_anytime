@@ -1,24 +1,23 @@
 package com.naver.anytime.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.naver.anytime.domain.TimeTable;
 import com.naver.anytime.mybatis.mapper.TimeTableMapper;
+import com.naver.anytime.mybatis.mapper.TimeTable_detailMapper;
 
 @Service
 public class TimeTableServiceImpl implements TimeTableService {
 	private TimeTableMapper timeDao;
+	private TimeTable_detailMapper timeDetailDao;
 
 	@Autowired
-	public TimeTableServiceImpl(TimeTableMapper timeDao) {
+	public TimeTableServiceImpl(TimeTableMapper timeDao, TimeTable_detailMapper timeDetailDao) {
 		this.timeDao = timeDao;
+		this.timeDetailDao = timeDetailDao;
 	}
 
 	@Override
@@ -107,5 +106,15 @@ public class TimeTableServiceImpl implements TimeTableService {
 	public TimeTable getTimeTableById(int timetable_id) {
 		return timeDao.getTimeTableById(timetable_id);
 	}
+	
+	@Override
+    public void deleteTimetable(int user_id, int timetable_id) {
+		timeDetailDao.deleteTimetableDetail(timetable_id);
+		timeDao.deleteTimetable(user_id, timetable_id);
+		
+	        int nextId  = timeDao.findNextTimetable(user_id);
+	        	timeDao.updateToPrimary(nextId);
+	    }
+    
 
 }

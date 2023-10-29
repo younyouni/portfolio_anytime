@@ -135,7 +135,30 @@
 	           TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS 
        FROM TIMETABLE WHERE TIMETABLE_ID = #{TIMETABLE_ID}
   	</select> 
-	  
-   	
+  	
+	<!-- 삭제시 권한 0시간표를 1로 바꿈 -->
+   	<delete id="deleteTimetable" parameterType="map">
+	  	DELETE FROM TIMETABLE WHERE USER_ID = #{user_id} AND TIMETABLE_ID = #{timetable_id}
+	</delete>
+	
+	
+	<select id="findPrimary" parameterType="int" resultType="int">
+	    SELECT TIMETABLE_ID FROM (
+	        SELECT TIMETABLE_ID, ROW_NUMBER() OVER (ORDER BY TO_NUMBER(REGEXP_SUBSTR(NAME, '\d+')) DESC) rn
+	        FROM TIMETABLE WHERE USER_ID = #{user_id} AND STATUS = 1
+	    ) WHERE rn = 1
+	</select>
+
+
+	<select id="findNextTimetable" parameterType="int" resultType="int">
+	    SELECT TIMETABLE_ID FROM (
+	        SELECT TIMETABLE_ID, ROW_NUMBER() OVER (ORDER BY NAME DESC) rn 
+	        FROM TIMETABLE WHERE USER_ID = #{user_id} AND STATUS = 0
+	    ) WHERE rn = 1
+	</select>
+
+	<update id="updateToPrimary" parameterType="int">
+	   UPDATE TIMETABLE SET STATUS = 1 WHERE TIMETABLE_ID = #{timetable_id}
+	</update>
 	
 </mapper>

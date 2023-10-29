@@ -161,6 +161,26 @@ public class TimeTableController {
 	     return new ResponseEntity<>("과목을 추가하는 동안 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 	  }
 	}
+	
+	@RequestMapping(value = "/deleteTimetable", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Map<String, String>> deleteTimetable(@RequestParam(value = "timetable_id") int timetable_id, 
+																Principal userPrincipal) {
+	    HashMap<String, String> result = new HashMap<>();
+	    try {
+	    	String id = userPrincipal.getName();
+	         timeTableService.deleteTimetable(memberService.getUserId(id), timetable_id);
+	        
+	        result.put("message", "시간표 삭제 성공");
+	        return new ResponseEntity<>(result, HttpStatus.OK);
+	    } catch (Exception e) {
+	        logger.error("시간표 삭제 실패: ", e);
+	        
+	        result.put("message", "시간표 삭제 실패");
+	        return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+
 
 	
 

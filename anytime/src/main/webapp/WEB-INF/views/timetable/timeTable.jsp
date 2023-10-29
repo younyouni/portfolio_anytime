@@ -359,7 +359,7 @@
 					id="tableSetting_is_primary" name="is_primary" disabled><label
 					for="tableSetting_is_primary" class="checkbox">기본시간표 설정</label>
 			</p>
-			<input type="button" value="삭제" class="button light floatLeft">
+			<input type="button" value="삭제" id="deleteBtn" class="button light floatLeft">
 			<input type="submit" value="설정 저장" class="button"> <input
 				type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</form>
