@@ -15,6 +15,11 @@ public interface SchoolService {
 	School getSchool(String schoolDomain);
 
 	School getSchoolByUserId(int user_id);
-	
+
+	int getSchoolId(String schoolDomain);
+
+	String getSchoolNameById(int school_id);
+
+	int isDomain(String schoolDomain);
 	
 }

@@ -13,11 +13,11 @@ public interface MemberService {
 	public int isId(String id);
 
 	public int isNickname(String nickname);
-	
+
 	public String getNickname(String login_id);
-	
+
 	public int isEmail(String email);
-	
+
 	public String getEmail(String login_id);
 
 	public int getSchoolIdByName(String campusName);
@@ -65,20 +65,22 @@ public interface MemberService {
 
 	public void updateStatusByContentId(int content_id, int isContent);
 
+	public String isAdmin(String username);
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	// 기존 getSchoolId 가 integer가 아니라 새로 생성
 	public Integer getSchoolId2(String id);
-	
+
 	public int updateBoardAdminDelete(int user_id);
-	
+
 	public int updateBoardAdminAdd(int user_id);
-	
+
 	public Integer getStatusCheck(String userid);
-	
+
 	public String getNickName2(int user_id);
-	
-	public int getUserIdConversion(int num); //num = post_id or comment_id
-	
+
+	public int getUserIdConversion(int num); // num = post_id or comment_id
+
 	public Integer getStatusCheck2(int user_id);
 	
 	public int getUserSchoolCheck(int user_id);

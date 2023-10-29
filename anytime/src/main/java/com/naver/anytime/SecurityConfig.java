@@ -159,6 +159,8 @@ public class SecurityConfig{
 				// TimeTable
 				.antMatchers("/timetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/changeName").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/getTimetableByUserIdAndSemester").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/createNewTimeTable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				
 				
 				

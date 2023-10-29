@@ -21,4 +21,6 @@ public interface DailyDataMapper {
 
 	DailyData getTodoList();
 
+	int insertDailyData();
+
 }

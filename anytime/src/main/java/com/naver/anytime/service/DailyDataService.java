@@ -18,4 +18,6 @@ public interface DailyDataService {
 
 	DailyData getTodoList();
 
+	int insertDailyData();
+
 }
