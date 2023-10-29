@@ -68,6 +68,8 @@ public interface MemberMapper {
 
 	public String isAdmin(String username);
 
+	public int IsBoard_admin(String login_id);
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	public Integer getSchoolId2(String id);
 
@@ -85,4 +87,5 @@ public interface MemberMapper {
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 	public Member isLoginId(String username);
+
 }

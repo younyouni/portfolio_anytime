@@ -247,11 +247,16 @@ public class MemberController2 {
 			// 비밀번호가 일치하는 경우
 			int result = memberservice.updateStatusInactive(login_id);
 
-			// 회원 정보 수정 실행
-			if (result == AnytimeConstants.DELETE_COMPLETE) {
+			int IsBoard_admin = memberservice.IsBoard_admin(login_id);
+
+			// 회원 탈퇴 실행_account_status
+			if (result == AnytimeConstants.DELETE_COMPLETE && IsBoard_admin == AnytimeConstants.NOT_BOARD_ADMIN) {
 				logger.info("회원탈퇴 성공");
 				session.invalidate();
 				url = "redirect:/";
+			} else if (result == AnytimeConstants.DELETE_COMPLETE && IsBoard_admin == AnytimeConstants.BOARD_ADMIN) {
+				rattr.addFlashAttribute("result", "Is_boardAdmin_deleteFail");
+				url = "redirect:boardlist";
 			} else {
 				rattr.addFlashAttribute("result", "deleteFail");
 				url = "redirect:delete";
