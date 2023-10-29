@@ -6,10 +6,17 @@
 <mapper namespace="com.naver.anytime.mybatis.mapper.PostMapper">
 
 	<select id="getDetail" parameterType="int" resultType="post">
-		select POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE, 
-			   TO_CHAR(POST_DATE,'MM/DD HH24:MI') as POST_DATE,
-               LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT, STATUS
-        from post
+        select p.POST_ID, p.BOARD_ID, p.USER_ID, p.SUBJECT, p.CONTENT, 
+        	   p.POST_FILE, TO_CHAR(p.POST_DATE,'MM/DD HH24:MI') as POST_DATE,
+               p.LIKE_COUNT, p.SCRAP_COUNT, p.REPORT_COUNT, p.STATUS, 
+               b.type BOARD_TYPE ,b.anonymous BOARD_ANONYMOUS, p.account_status USER_STATUS
+        from ( 	select p.*, m.account_status 
+        		from post p 
+       			join
+        		member m
+        		on p.user_id = m.user_id )p
+        join board b
+        on p.board_id = b.board_id
         where POST_ID = #{post_id}
 	</select>
 
@@ -82,7 +89,7 @@
 		FROM (
 		    SELECT ROWNUM RNUM, j.* 
 		    FROM (
-		        SELECT post.*, NVL(cnt, 0) AS COMMENT_COUNT 
+		        SELECT post.*, TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE, NVL(cnt, 0) AS COMMENT_COUNT 
 		        FROM post 
 		        LEFT OUTER JOIN (
 		            SELECT post_id, COUNT(*) cnt 
@@ -139,7 +146,7 @@
 			FROM (
 			    SELECT ROWNUM RNUM, j.*, b.name AS boardname
 			    FROM (
-			        SELECT post.*, NVL(cnt, 0) AS comment_count
+			        SELECT post.*, TO_CHAR(post_date, 'MM-DD HH:MI') AS FORMATTED_DATE, NVL(cnt, 0) AS comment_count
 			        FROM post
 			        LEFT OUTER JOIN (
 			            SELECT post_id, COUNT(*) cnt
@@ -149,7 +156,7 @@
 			        WHERE post.board_id IN (
 			            SELECT board_id
 			            FROM board
-			            WHERE school_id = #{school_id}
+			            WHERE school_id = #{school_id} and status = 1
 			        )
 			        AND (subject LIKE '%' || #{search_word} || '%' OR content LIKE '%' || #{search_word} || '%')
 			        AND post.status = 1
@@ -495,5 +502,17 @@
 			    WHERE ROWNUM &lt;= 4 
 			) 
 	</select>
+	
+	<update id="updateScrapUpCount">
+		UPDATE post
+		SET scrap_count = scrap_count + 1
+		WHERE post_id = #{post_id}
+	</update>
+	
+	<update id="updateScrapDownCount">
+		UPDATE post
+		SET scrap_count = scrap_count - 1
+		WHERE post_id = #{post_id}
+	</update>
 	
 </mapper>

@@ -238,4 +238,10 @@
 		where board_id = #{board_id}
 	</select>
 	
+	<select id="getBoardTypeCheck" resultType="int">
+		select type
+		from board
+		where board_id = #{board_id}
+	</select>
+	
 </mapper>

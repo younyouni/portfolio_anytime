@@ -29,6 +29,11 @@
 </head>
 
 <script>
+	if ("${result}" == 'SchoolCk_fail') {
+		alert("학교 승인을 받아야 볼 수 있습니다.");
+	}else if("${result}" == 'postStatus_fail'){
+		alert("삭제된 게시물입니다.");
+	}
 	$(function() {
 		$("#logout").click(function(event) {
 			event.preventDefault();
@@ -100,14 +105,23 @@
 							class="mycommentarticle">댓글 단 글</a> <a
 							href="${pageContext.request.contextPath}/myscrap" class="myscrap">내
 							스크랩</a>
-						<c:if test="${member.board_admin eq 1}">
+						<c:if
+							test="${member.board_admin eq 1 && member.school_check eq 1}">
 							<a href="${pageContext.request.contextPath}/boardlist"
 								class="myboard">게시판 관리</a>
 						</c:if>
-						<c:if test="${member.board_admin eq 0}">
+						<c:if
+							test="${member.board_admin eq 0 && member.school_check eq 1}">
 							<p>
 								새로운 게시판을<br>생성할수 있어요! <a class="button createboard"
 									data-toggle="modal">게시판 생성하기</a>
+							</p>
+						</c:if>
+						<c:if
+							test="${member.board_admin eq 0 && member.school_check eq 0}">
+							<p>
+								학교 인증 후<br>이용할 수 있어요! <a class="button"
+									href="${pageContext.request.contextPath}/my">학교 인증하기</a>
 							</p>
 						</c:if>
 						<hr>

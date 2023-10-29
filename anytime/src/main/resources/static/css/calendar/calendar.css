@@ -16,7 +16,6 @@
 
 .left {
   flex: 1;
-  background-color: #eeeef7;
   text-align: left !important;
   margin-right: 20px;
   margin-bottom: 30px;
@@ -35,6 +34,9 @@ body > div {
     height: 90%;
 }
 
+div#calendar2 {
+	margin-top: 27px;
+}
 
 
 /* today ¹öÆ° */
@@ -311,7 +313,7 @@ div.fc-event-title-container > div{
 }
 
 .fc .fc-toolbar.fc-header-toolbar {
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
 }
 
 

@@ -67,6 +67,8 @@ public interface MemberService {
 
 	public String isAdmin(String username);
 
+	public int IsBoard_admin(String login_id);
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	// 기존 getSchoolId 가 integer가 아니라 새로 생성
 	public Integer getSchoolId2(String id);
@@ -82,6 +84,8 @@ public interface MemberService {
 	public int getUserIdConversion(int num); // num = post_id or comment_id
 
 	public Integer getStatusCheck2(int user_id);
+	
+	public int getUserSchoolCheck(int user_id);
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
 }

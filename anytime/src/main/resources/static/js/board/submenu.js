@@ -7,8 +7,6 @@ function sendAjaxRequest(school_id) {
 	const school_id2 = $("#school_id").val();
 	var contextPath = window.location.origin + '/anytime';
 	
-	console.log("이거 머에요 " + school_id2);
-	
 	  $.ajax({
 	    url: contextPath + "/submenulist",
 	    data: {
