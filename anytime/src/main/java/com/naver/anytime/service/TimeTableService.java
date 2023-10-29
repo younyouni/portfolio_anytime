@@ -29,7 +29,7 @@ public interface TimeTableService {
 	// 시간표 링크진입 실험용
 	public TimeTable getTimeTableById(int timetable_id);
 	
-	public void deleteTimetable(int user_id, int timetable_id);
+	public void deleteTimetable(int userId, int timetable_id, Integer status);
 	
 	
 

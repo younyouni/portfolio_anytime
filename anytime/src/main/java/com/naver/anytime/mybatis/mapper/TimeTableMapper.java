@@ -43,7 +43,7 @@ public interface TimeTableMapper {
 
 	public void updateStatus(int user_id, int timetable_id);
 	
-	public void deleteTimetable(int user_id, int timetable_id);
+	public void deleteTimetable(int user_id, int timetable_id, int status);
 
 	public int findPrimary(int user_id);
 

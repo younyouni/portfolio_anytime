@@ -134,24 +134,8 @@ public class TimeTableController {
 	
 	@RequestMapping(value="/addSubject", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> addSubject(@RequestParam(value = "timetable_id", required = false) Integer timetable_id, 
-                                           @RequestParam(value = "subject") String subject, 
-                                           @RequestParam(value = "professor") String professor, 
-                                           @RequestParam(value = "day") String day, 
-                                           @RequestParam(value = "start_time") int start_time, 
-                                           @RequestParam(value = "end_time") int end_time,
-                                           @RequestParam(value = "classroom") String classroom) {
+	public ResponseEntity<String> addSubject(TimeTable_detail detail) {
 	   try {
-	       TimeTable_detail detail=new TimeTable_detail();
-
-	      detail.setTimetable_id(timetable_id);
-	      detail.setSubject(subject);
-	      detail.setProfessor(professor);
-	      detail.setDay(day);
-	      detail.setStart_time(start_time);
-	      detail.setEnd_time(end_time);
-	      detail.setClassroom(classroom);
-
 	      
 	      timeTable_detailService.addSubject(detail); 
 	      
@@ -164,12 +148,13 @@ public class TimeTableController {
 	
 	@RequestMapping(value = "/deleteTimetable", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Map<String, String>> deleteTimetable(@RequestParam(value = "timetable_id") int timetable_id, 
+	public ResponseEntity<Map<String, String>> deleteTimetable(@RequestParam(value = "timetable_id") int timetable_id,
+																@RequestParam(value = "status") int status,
 																Principal userPrincipal) {
 	    HashMap<String, String> result = new HashMap<>();
 	    try {
 	    	String id = userPrincipal.getName();
-	         timeTableService.deleteTimetable(memberService.getUserId(id), timetable_id);
+	         timeTableService.deleteTimetable(memberService.getUserId(id), timetable_id, status);
 	        
 	        result.put("message", "시간표 삭제 성공");
 	        return new ResponseEntity<>(result, HttpStatus.OK);

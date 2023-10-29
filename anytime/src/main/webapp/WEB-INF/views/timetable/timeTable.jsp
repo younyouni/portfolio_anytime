@@ -29,8 +29,8 @@
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/timetable/timeTable2.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/timetable/timeTable2.js"></script>
+<script	src="${pageContext.request.contextPath}/resources/js/timetable/timetable.imagegenerator.js"></script>
 
 
 <!-- <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>

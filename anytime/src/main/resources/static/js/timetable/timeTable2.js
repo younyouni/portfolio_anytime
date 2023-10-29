@@ -34,13 +34,20 @@ $(document).ready(function () {
         let header = $("meta[name='_csrf_header']").attr("content");
 
         var user_id = $('body').data('user-id');
+        var status;
+        if( $("#tableSetting_is_primary").is(':checked')){
+            status = 1;
+        }else{
+            status = 0;
+        }
 
         $.ajax({
             url: 'deleteTimetable', 
             type: 'POST',
             data: {
                 timetable_id: timetable_id,
-                user_id: user_id
+                user_id: user_id,
+                status: status
             },
             dataType : "json",
             beforeSend: function (xhr) {

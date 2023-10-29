@@ -108,12 +108,14 @@ public class TimeTableServiceImpl implements TimeTableService {
 	}
 	
 	@Override
-    public void deleteTimetable(int user_id, int timetable_id) {
+    public void deleteTimetable(int user_id, int timetable_id, Integer status) {
 		timeDetailDao.deleteTimetableDetail(timetable_id);
-		timeDao.deleteTimetable(user_id, timetable_id);
-		
+		timeDao.deleteTimetable(user_id, timetable_id, status);
+			
+			if(status == 1) {
 	        int nextId  = timeDao.findNextTimetable(user_id);
 	        	timeDao.updateToPrimary(nextId);
+			}
 	    }
     
 
