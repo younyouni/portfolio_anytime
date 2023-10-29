@@ -33,20 +33,18 @@
 <%-- <script src="${pageContext.request.contextPath}/resources/js/timetable/timeTable2.js"></script> --%> 
  
  
-<!--  
-<script 
-	src="${pageContext.request.contextPath}/resources/js/timetable/timetable.imagegenerator.js"></script> 
-<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script> 
-<script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script> 
-<script type="text/javascript" src="/js/extensions.underscore-min.js"></script> 
-<script type="text/javascript" src="/js/common.js"></script> 
-<script type="text/javascript" src="/js/timetable.tableload.js"></script> 
-<script type="text/javascript" src="/js/timetable.tablesave.js"></script> 
-<script type="text/javascript" src="/js/timetable.subjects.js"></script> 
-<script type="text/javascript" src="/js/timetable.customsubjects.js"></script> 
-<script type="text/javascript" src="/js/timetable.index.js"></script> 
-<script type="text/javascript" src="/js/timetable.subjectcolumninfo.js"></script> 
-<script type="text/javascript" src="/js/timetable.imagegenerator.js"></script> --> 
+  
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/extensions.jquery-1.10.2.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/extensions.underscore-min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/common.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tableload.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tablesave.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.subjects.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.customsubjects.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.index.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.subjectcolumninfo.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.imagegenerator.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.js"></script> --%> 
  
 </head> 
 <body style=""> 
@@ -312,8 +310,6 @@
 						<li>수</li> 
 						<li>목</li> 
 						<li>금</li> 
-						<li>토</li> 
-						<li>일</li> 
 					</ol> 
 					<p> 
 						<select class="starthour"><option value="0">오전 

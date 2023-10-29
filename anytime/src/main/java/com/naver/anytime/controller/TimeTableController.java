@@ -134,17 +134,26 @@ public class TimeTableController {
 	
 	@RequestMapping(value="/addSubject", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> addSubject(TimeTable_detail detail) {
+	public ResponseEntity<Map<String, Object>> addSubject(TimeTable_detail detail) {
+	   Map<String, Object> result = new HashMap<>();
 	   try {
 	      
 	      timeTable_detailService.addSubject(detail); 
 	      
-	     return new ResponseEntity<>("새로운 과목이 성공적으로 추가되었습니다.", HttpStatus.OK);
+	      result.put("newClass", detail);
+	      
+	      result.put("message", "새로운 과목이 성공적으로 추가되었습니다.");
+	      result.put("status", "success");
+	      return new ResponseEntity<>(result, HttpStatus.OK);
 	  } catch(Exception e) {
 	     logger.error("과목 추가 실패 : ", e);
-	     return new ResponseEntity<>("과목을 추가하는 동안 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+	     result.put("message", "과목을 추가하는 동안 오류가 발생했습니다.");
+	     result.put("status", "error");
+	     return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 	  }
 	}
+
 	
 	@RequestMapping(value = "/deleteTimetable", method = RequestMethod.POST)
 	@ResponseBody
