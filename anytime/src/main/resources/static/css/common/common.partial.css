@@ -148,7 +148,6 @@ body.appwebview nav {
 	display: inline-block;
 	vertical-align: top;
 	box-sizing: border-box;
-	text-align: left;
 }
 
 #submenu>div.wrap>div.group.hidden {
@@ -393,7 +392,6 @@ aside>div.title>ol.buttons>li>a.image.setting {
 	}
 	#submenu>div.wrap>div.group {
 		margin-right: 15px;
-		width: 130px;
 	}
 	#submenu>div.wrap>div.group>h3, #submenu>div.wrap>div.group>ul>li>a {
 		font-size: 13px;

@@ -64,4 +64,6 @@ public interface BoardService {
 
 	public int getBoardStatus(int board_id);
 
+	public int getBoardTypeCheck(int board_id);
+
 }

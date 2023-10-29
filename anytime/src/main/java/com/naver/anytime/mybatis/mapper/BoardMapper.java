@@ -70,4 +70,6 @@ public interface BoardMapper {
 
 	public int updateBoardStatusComplete();
 
+	public int getBoardTypeCheck(int board_id);
+
 }

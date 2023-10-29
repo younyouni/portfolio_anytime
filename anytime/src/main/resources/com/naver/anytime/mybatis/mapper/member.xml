@@ -272,6 +272,11 @@
 		where user_id = #{user_id}
 	</select>
 
+	<select id="getUserSchoolCheck" resultType="int">
+		select school_check
+		from member
+		where user_id = #{user_id}
+	</select>
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * 
 		* * * * -->
 

@@ -51,7 +51,7 @@ $(document).ready(function () {
 			
 		}
 		
-		rightsideList += '<h3><a href="' + contextPath + '/bestpost">BEST 게시판<span>더 보기</span></a></h3>';
+		rightsideList += '<h3 style="border-top: 1px solid #d6d6d6;"><a href="' + contextPath + '/bestpost">BEST 게시판<span>더 보기</span></a></h3>';
 
 		if(response.login_check != 1){
 		
