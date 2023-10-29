@@ -3,8 +3,6 @@ $(document).ready(function () {
     
     getTimetableList(semester);
 
-   
-
 
     // var selectedSemester = $("#semesters option:selected").text();
 
@@ -207,6 +205,8 @@ $("#customsubjects").submit(function(e) {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
+    
+
     $.ajax({
         url: 'addSubject', 
         type: 'POST',
@@ -224,6 +224,13 @@ $("#customsubjects").submit(function(e) {
                 xhr.setRequestHeader(header, token)
         },
         success:function(response){
+
+            // 추가: 시간표 데이터에 새 수업 정보 추가
+            timetableData.push(data);
+
+            // 추가: Canvas에 시간표 다시 그리기
+            drawTimetable(timetableData);
+
              alert('수업 추가 성공');
              console.log(response);
              location.reload(); 
@@ -234,6 +241,7 @@ $("#customsubjects").submit(function(e) {
          }
      });
 });
+
 
 
 
@@ -297,8 +305,6 @@ function loadTimetableDetails(timetable_id){
         $(this).parent().addClass('active');
     });
 
-    
-    
 
     $.ajax({
         type:"GET",
@@ -311,8 +317,33 @@ function loadTimetableDetails(timetable_id){
             $('#tableName').text(rdata.timetable.name);
             $('#tableUpdatedAt').text(rdata.timetable.timetable_DATE);
             $('#tableName').attr('data-id',rdata.timetable.timetable_ID);
+            
+
         }
     })
 }
+
+
+// canvas 작업코드 진행중
+const canvas =  document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function draw(timestamp){
+    // const x = timestamp / 10 % 600;
+    ctx.clearRect(0, 0, 600, 50);
+    ctx.fillStyle = 'green';
+    ctx.fillRect(0, 0, 100, 50);
+    window.requestAnimationFrame(draw); 
+}
+
+window.requestAnimationFrame(draw);
+
+
+
+
+
+
+
+
 
 

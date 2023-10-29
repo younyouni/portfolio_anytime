@@ -160,11 +160,15 @@ body {
 
 @media only screen and (min-width: 641px) {
 	#container div.tablehead {
-		position: fixed; z-index: 90; margin-top: -52px; padding-top: 15px; width: 62.4%;
-		background-color: #f8f8f8;
+		position: fixed;
+    z-index: 90;
+    margin-top: -494px;
+    padding-top: 15px;
+    width: 62.4%;
+    background-color: #fff;
 	}
 	#container div.tablebody {
-		margin-top: 39px; width: inherit;
+		margin-top: 63px; width: inherit;
 	}
 }
 
