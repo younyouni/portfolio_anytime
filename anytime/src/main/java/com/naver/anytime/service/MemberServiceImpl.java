@@ -232,6 +232,11 @@ public class MemberServiceImpl implements MemberService {
 		return dao.isAdmin(username);
 	}
 
+	@Override
+	public int IsBoard_admin(String login_id) {
+		return dao.IsBoard_admin(login_id);
+	}
+
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 	@Override
 	public Integer getSchoolId2(String id) {

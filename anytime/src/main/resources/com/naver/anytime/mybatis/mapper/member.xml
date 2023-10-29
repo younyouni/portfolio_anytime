@@ -33,15 +33,14 @@
 	</select>
 
 	<!-- email 체크하기 위한 쿼리문 -->
-	<select id="isEmail" resultType="member"
-	     parameterType="String">
+	<select id="isEmail" resultType="member" parameterType="String">
 		select *
 		from member where email = #{email}
 	</select>
 
-	<select id="getEmail" parameterType="String"
-		resultType="String">
-		SELECT EMAIL
+	<select id="getEmail" parameterType="String" resultType="String">
+		SELECT
+		EMAIL
 		FROM MEMBER
 		WHERE LOGIN_ID = #{login_id}
 	</select>
@@ -174,7 +173,8 @@
 	<update id="updateStatusInactive" parameterType="String">
 		UPDATE MEMBER
 		SET
-		ACCOUNT_STATUS = 0
+		ACCOUNT_STATUS = 0,
+		EMAIL = '탈퇴'
 		WHERE LOGIN_ID = #{login_id}
 	</update>
 
@@ -210,11 +210,19 @@
 			WHERE C.COMMENT_ID =
 		</if>
 	</sql>
-	
+
 	<select id="isAdmin" parameterType="String" resultType="String">
-		SELECT AUTH
+		SELECT
+		AUTH
 		FROM MEMBER
-		WHERE LOGIN_ID = #{username} 
+		WHERE LOGIN_ID = #{username}
+	</select>
+
+	<select id="IsBoard_admin" parameterType="String"
+		resultType="int">
+		SELECT BOARD_ADMIN
+		FROM MEMBER
+		WHERE LOGIN_ID = #{login_id}
 	</select>
 
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * 

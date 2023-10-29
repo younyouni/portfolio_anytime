@@ -65,7 +65,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 
@@ -83,14 +83,13 @@ public class MemberController2 {
 	// 비밀번호 변경페이지 이동
 	@GetMapping(value = "/password")
 	public ModelAndView updatePassword(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
-		String login_id = user.getUsername();
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 		mv.setViewName("/member/updatePwd");
@@ -141,7 +140,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 
@@ -197,7 +196,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 
@@ -223,7 +222,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 		mv.setViewName("/member/deleteMember");
@@ -247,11 +246,16 @@ public class MemberController2 {
 			// 비밀번호가 일치하는 경우
 			int result = memberservice.updateStatusInactive(login_id);
 
-			// 회원 정보 수정 실행
-			if (result == AnytimeConstants.DELETE_COMPLETE) {
+			int IsBoard_admin = memberservice.IsBoard_admin(login_id);
+
+			// 회원 탈퇴 실행_account_status
+			if (result == AnytimeConstants.DELETE_COMPLETE && IsBoard_admin == AnytimeConstants.NOT_BOARD_ADMIN) {
 				logger.info("회원탈퇴 성공");
 				session.invalidate();
 				url = "redirect:/";
+			} else if (result == AnytimeConstants.DELETE_COMPLETE && IsBoard_admin == AnytimeConstants.BOARD_ADMIN) {
+				rattr.addFlashAttribute("result", "Is_boardAdmin_deleteFail");
+				url = "redirect:boardlist";
 			} else {
 				rattr.addFlashAttribute("result", "deleteFail");
 				url = "redirect:delete";

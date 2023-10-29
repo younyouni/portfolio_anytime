@@ -12,37 +12,31 @@
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/modal.css"
 	rel="stylesheet">
-<!-- 
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css"
-	rel="stylesheet">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/container.community.css"
-	rel="stylesheet">
- -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/member/info/total.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/member/info/boardlist.css">
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script>
 	if ("${result}" == "insertBoardSuccess") {
 		alert("게시판이 생성되었습니다. 단체/학과 게시판은, 승인 심사에 통과되면 바로 이용가능합니다.");
+	} else if ("${result}" == "Is_boardAdmin_deleteFail") {
+		alert("회원 탈퇴를 위해서는 게시판 양도가 진행되어야 합니다. \n게시판 양도 완료 후, 재진행 부탁드립니다.");
+
 	}
 </script>
 <style>
 body {
 	background-color: #EEEEF6 !important;
 }
+
 nav {
 	border-bottom: 0 !important;
 }
-
 </style>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
 <style>
 </style>
 </head>
@@ -58,15 +52,15 @@ nav {
 				<c:choose>
 					<c:when test="${boardAdmin == 1 }">
 						<c:forEach var="b" items="${boardlist}">
-							<a href="post/list?board_id=${b.BOARD_ID}">${b.NAME }
-								<c:choose>
-									<c:when test="${b.STATUS == 0 || b.STATUS == 3 || b.STATUS == 4 }">
+							<a href="post/list?board_id=${b.BOARD_ID}">${b.NAME } <c:choose>
+									<c:when
+										test="${b.STATUS == 0 || b.STATUS == 3 || b.STATUS == 4 }">
 										<p>승인 심사 진행 중</p>
 									</c:when>
 									<c:when test="${b.STATUS == 2 }">
 										<p class="reject">승인 거부</p>
 									</c:when>
-								</c:choose> 
+								</c:choose>
 							</a>
 							<hr>
 						</c:forEach>
@@ -112,7 +106,8 @@ nav {
 			class="custom-checkbox-image"></span>
 		</label> <input type="submit" value="완료" class="button">
 	</form>
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+	<input type="hidden" name="${_csrf.parameterName}"
+		value="${_csrf.token}">
 	<jsp:include page="../common/footer2.jsp" />
 </body>
 </html>
