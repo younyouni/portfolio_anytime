@@ -65,7 +65,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 
@@ -83,14 +83,13 @@ public class MemberController2 {
 	// 비밀번호 변경페이지 이동
 	@GetMapping(value = "/password")
 	public ModelAndView updatePassword(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
-		String login_id = user.getUsername();
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 		mv.setViewName("/member/updatePwd");
@@ -141,7 +140,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 
@@ -197,7 +196,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 
@@ -223,7 +222,7 @@ public class MemberController2 {
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
-		school.put("domain", schoolService.getSchoolDomain(login_id));
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		mv.addObject("school", school);
 		mv.setViewName("/member/deleteMember");

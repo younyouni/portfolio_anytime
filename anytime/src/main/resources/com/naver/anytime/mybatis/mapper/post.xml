@@ -6,10 +6,13 @@
 <mapper namespace="com.naver.anytime.mybatis.mapper.PostMapper">
 
 	<select id="getDetail" parameterType="int" resultType="post">
-		select POST_ID, BOARD_ID, USER_ID, SUBJECT, CONTENT, POST_FILE, 
-			   TO_CHAR(POST_DATE,'MM/DD HH24:MI') as POST_DATE,
-               LIKE_COUNT, SCRAP_COUNT, REPORT_COUNT, STATUS
-        from post
+        select p.POST_ID, p.BOARD_ID, p.USER_ID, p.SUBJECT, p.CONTENT, 
+        	   p.POST_FILE, TO_CHAR(p.POST_DATE,'MM/DD HH24:MI') as POST_DATE,
+               p.LIKE_COUNT, p.SCRAP_COUNT, p.REPORT_COUNT, p.STATUS, 
+               b.type board_type ,b.anonymous board_anonymous
+        from post p
+        join board b
+        on p.board_id = b.board_id
         where POST_ID = #{post_id}
 	</select>
 

@@ -97,7 +97,12 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/boardAdmin", method = RequestMethod.GET)
-	public ModelAndView getBoardAdmin(ModelAndView mv) {
+	public ModelAndView getBoardAdmin(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+		String email = user.getEmail();
+		mv.addObject("login_id", login_id);
+		mv.addObject("email", email);
+
 		List<Board> boardrequest = null;
 		boardrequest = boardService.getBoardRequest();
 
@@ -176,8 +181,15 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/reportAdmin", method = RequestMethod.GET)
-	public String getReportAdmin() {
-		return "/admin/reportAdmin";
+	public ModelAndView getReportAdmin(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+		String email = user.getEmail();
+		mv.addObject("login_id", login_id);
+		mv.addObject("email", email);
+
+		mv.setViewName("/admin/reportAdmin");
+
+		return mv;
 	}
 
 	@RequestMapping(value = "/reportListAdmin", method = RequestMethod.GET)
@@ -262,8 +274,15 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
-	public String getAdminNotice() {
-		return "/admin/adminNotice";
+	public ModelAndView getAdminNotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+		String email = user.getEmail();
+		mv.addObject("login_id", login_id);
+		mv.addObject("email", email);
+
+		mv.setViewName("/admin/adminNotice");
+
+		return mv;
 	}
 
 	@RequestMapping(value = "/adminNoticeList", method = RequestMethod.GET)
