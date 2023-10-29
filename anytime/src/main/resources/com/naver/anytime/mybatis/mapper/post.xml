@@ -183,7 +183,8 @@
 				ON B.BOARD_ID = P.BOARD_ID				
 				WHERE B.BOARD_ID = #{BOARD_ID}					
 				AND B.TYPE = 1 
-				AND B.STATUS = 1									
+				AND B.STATUS = 1		
+				AND P.STATUS =1							
 				ORDER BY P.POST_DATE DESC										
 	 		 ) 																	
 		WHERE ROWNUM &lt;= 4

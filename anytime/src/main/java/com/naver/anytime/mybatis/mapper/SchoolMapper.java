@@ -23,5 +23,11 @@ public interface SchoolMapper {
 	public School getSchool(String schoolDomain);
 	
 	public School getSchoolByUserId(int user_id);
+
+	public int getSchoolId(String schoolDomain);
+
+	public String getSchoolNameById(int school_id);
+
+	public int isDomain(String schoolDomain);
 	
 }

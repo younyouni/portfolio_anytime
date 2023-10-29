@@ -64,6 +64,10 @@ form.modal .button {
 	cursor: pointer !important;
 }
 
+#boardSection>a>p.reject {
+	color: rgb(229, 71, 135);
+}
+
 #boardSection>a>p {
 	color: #7869e6;
 }

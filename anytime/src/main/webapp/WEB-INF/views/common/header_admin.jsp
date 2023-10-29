@@ -70,6 +70,7 @@
 			</div>
 		</sec:authorize>
 			<ul id="menu">
+				<li class="active"><a href="${pageContext.request.contextPath}/admin">대시보드</a></li>
 				<li><a href="${pageContext.request.contextPath}/boardAdmin">게시판
 						관리</a></li>
 				<li><a href="${pageContext.request.contextPath}/reportAdmin">신고

@@ -29,6 +29,7 @@
 
 		function sendEmail() {
 
+					 alert('아이디 정보가 정상 발송되었습니다.'); 
 			var email = $('#email').val();
 
 			$.ajax({
@@ -41,7 +42,6 @@
 					xhr.setRequestHeader(header, token);
 				},
 				 success: function (response) {
-					 alert('아이디 정보가 정상 발송되었습니다.'); 
 					 location.href = "login";
 		            },
 		            error: function () {

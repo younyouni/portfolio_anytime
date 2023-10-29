@@ -102,7 +102,7 @@ public class SecurityConfig{
 				
 				.antMatchers("/hotpost").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/bestpost").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
-				
+			
 
 				
 			    // Calendar

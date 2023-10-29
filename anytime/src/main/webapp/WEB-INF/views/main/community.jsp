@@ -7,7 +7,8 @@
 <html>
 <head>
 <title>애니타임</title>
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
+<link rel="shortcut icon" type="image/x-icon"
+	href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/common.css"
 	rel="stylesheet">
@@ -35,8 +36,6 @@
 		})
 	})
 </script>
-
-
 <body style="">
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/submenu.jsp" />
@@ -95,9 +94,12 @@
 			<sec:authorize access="isAuthenticated()">
 				<div class="card">
 					<div class="menus">
-						<a href="${pageContext.request.contextPath}/myarticle" class="myarticle">내가 쓴 글</a> <a
-							href="${pageContext.request.contextPath}/mycommentarticle" class="mycommentarticle">댓글 단 글</a> <a
-							href="${pageContext.request.contextPath}/myscrap" class="myscrap">내 스크랩</a>
+						<a href="${pageContext.request.contextPath}/myarticle"
+							class="myarticle">내가 쓴 글</a> <a
+							href="${pageContext.request.contextPath}/mycommentarticle"
+							class="mycommentarticle">댓글 단 글</a> <a
+							href="${pageContext.request.contextPath}/myscrap" class="myscrap">내
+							스크랩</a>
 						<c:if test="${member.board_admin eq 1}">
 							<a href="${pageContext.request.contextPath}/boardlist"
 								class="myboard">게시판 관리</a>
@@ -125,7 +127,7 @@
 									${board.BOARDNAME}</a>
 							</h3>
 							<c:choose>
-								<c:when test="${board.BOARDNAME eq '한국대 비밀게시판(익명)' }">
+								<c:when test="${board.BOARDNAME eq '익명 게시판' }">
 									<sec:authorize access="isAnonymous()">
 										<div class="needauth">
 											<p>
