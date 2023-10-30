@@ -1,21 +1,19 @@
-var timetables = {};
+var timetables = {}; // 시간표 데이터를 학기별로 저장할 객체
 var selectedDay = '월';
+var defalut_id = 1;
+var timetableData = {};
 
 $(document).ready(function () {
     var semester = '2023년 2학기';
 
     getTimetableList(semester);
 
-    const savedTimetableData = JSON.parse(localStorage.getItem('timetableData'));
-    if (savedTimetableData) {
-        timetableData = savedTimetableData;
-        drawTimetable(timetableData);
-    }
+    timetables = JSON.parse(localStorage.getItem('timetables')) || {};
 
     $('.weeks li').click(function() {
-        selectedDay = $(this).text();  // 클릭한 요일의 텍스트 값을 가져옵니다.
-        $('.weeks li').removeClass('active');  // 모든 요일에서 active 클래스를 제거합니다.
-        $(this).addClass('active');  // 클릭한 요일에만 active 클래스를 추가합니다.
+        selectedDay = $(this).text();
+        $('.weeks li').removeClass('active');
+        $(this).addClass('active');
     });
 
 
@@ -210,27 +208,41 @@ $(document).ready(function () {
     });
     
 // 새 수업 추가
-$("#customsubjects").submit(function(e) {
+$("#customsubjects").submit(function (e) {
     e.preventDefault();
 
     var timetable_id = $("#tableName").attr("data-id");
     var subject = $("input[name='subject']").val();
     var professor = $("input[name='professor']").val();
-    var day = $(".weeks .active").text(); // 요일은 선택을 해야합니다.
-    var start_time = $(".starthour option:selected").val();
-    var end_time = $(".endhour option:selected").val();
+    var day = $(".weeks .active").text();
+    var start_time = parseInt($(".starthour option:selected").val(), 10);
+    var end_time = parseInt($(".endhour option:selected").val(), 10);
     var classroom = $(".place").val();
 
-    console.log('수업 추가 요청 전, timetable_id:', timetable_id);
-    console.log('수업 추가 요청 전, timetables 상태:', timetables);
+    var newClass = {
+        subject: subject,
+        professor: professor,
+        day: day,
+        start_time: start_time,
+        end_time: end_time,
+        classroom: classroom,
+    };
 
+    // 현재 선택한 시간표에 수업 추가
+    if (timetable_id in timetableData) {
+        timetableData[timetable_id].push(newClass);
+    } else {
+        timetableData[timetable_id] = [newClass];
+    }
+    // Canvas에 시간표 다시 그리기
+    drawTimetable(timetableData[timetable_id]);
+
+    // 기존 저장 방식에 따라 저장
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
 
-    
-
     $.ajax({
-        url: 'addSubject', 
+        url: 'addSubject',
         type: 'POST',
         data: {
             timetable_id: timetable_id,
@@ -238,67 +250,31 @@ $("#customsubjects").submit(function(e) {
             day: day,
             start_time: start_time,
             end_time: end_time,
-            classroom : classroom,
+            classroom: classroom,
             professor: professor
         },
-        dataType : "json",
-        beforeSend : function(xhr) {
-                xhr.setRequestHeader(header, token)
+        dataType: "json",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token)
         },
-    //     success:function(response){
-
-    //         var newClass ={
-    //             subject: subject,
-    //             professor: professor,
-    //             day: day,
-    //             start_time: start_time,
-    //             end_time: end_time,
-    //             classroom : classroom,
-    //          }
-
-    //         // 추가: 시간표 데이터에 새 수업 정보 추가
-    //         timetableData.push(newClass);
-
-    //         // 추가: Canvas에 시간표 다시 그리기
-    //         drawTimetable(timetableData);
-
-    //          alert('수업 추가 성공');
-    //          console.log(response);
-    //         //  location.reload(); // canvas 로직을 방해할 위험이 있습니다.
-    //      },
-    //      error:function(error){
-    //          alert('수업 추가 실패');
-    //          console.log(error);
-    //      }
-    //  });
-    success:function(response){
-        if (response.status === 'success') {
-
-            var newClass = response.newClass;
-
-            if (!timetables[timetable_id]) {  // 추가: timetableData 배열 초기화 코드
-                     timetables[timetable_id] = [];
+        success: function (response) {
+            if (response.status === 'success') {
+                alert('수업 추가 성공');
+            } else {
+                alert('수업 추가 실패');
             }
-
-            timetables[timetable_id].push(newClass);
-
-            drawTimetable(timetables[timetable_id]);
-
-            alert('수업 추가 성공');
-        } else {
+            console.log(response.message);
+        },
+        error: function (error) {
             alert('수업 추가 실패');
+            console.log(error);
         }
-        console.log(response.message);
-    },
-});
+    });
 });
 
 
 
-
-
-
-
+loadTimetableDetails(defalut_id);
 }); // (document).ready(function() end
 
 
@@ -313,6 +289,7 @@ function getTimetableList(semester){
                 data: {
                     semester : semester
                 },
+                async: false,
                 dataType : "json",
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(header, token);
@@ -326,6 +303,8 @@ function getTimetableList(semester){
                             if(this.status == 1){
                                 $('#tableName').text(this.name);
                                 $('#tableName').attr('data-id', this.timetable_ID);
+                                defalut_id = this.timetable_ID;
+                                console.log("2 = "+defalut_id);
                                 $('#tableUpdatedAt').text(this.timetable_DATE)
                                 output += '<li class="active"><a href="javascript:loadTimetableDetails('+this.timetable_ID+')" class="primary">'+this.name+'</a>';
                             }else{
@@ -334,7 +313,7 @@ function getTimetableList(semester){
                             output += '</li>';
                         })
                         output += '<li class="extension"><a class="create">새 시간표 만들기</a></li>'
-                        
+                        console.log("3 = "+output);
                         $("div.menu ol").append(output);
                         
 
@@ -344,103 +323,132 @@ function getTimetableList(semester){
 
 }
 
-
+// var timetableData = {};
 
 // 생성 시간표 클릭시 정보 가져오기
-function loadTimetableDetails(timetable_id){
-    
+function loadTimetableDetails(timetable_id) {
     // 시간표 클릭시 active 효과 변경
-    $("div.menu ol").on("click", "li:not(.extension) a", function(e) {
-        $('div.menu ol li.active').removeClass('active');
-    
-        $(this).parent().addClass('active');
+    $("div.menu ol li:not(.extension) a").on("click", function (e) {
+        $("div.menu ol li.active").removeClass("active");
+        $(this).parent().addClass("active");
     });
 
-
     $.ajax({
-        type:"GET",
+        type: "GET",
         url: "loadTimetableDetails",
         data: {
-            timetable_id : timetable_id
+            timetable_id: timetable_id,
         },
-        dataType : "json",
-        success : function(rdata) {
-            console.log('응답 데이터:', rdata);
+        async: false,
+        dataType: "json",
+        success: function (rdata) {
+            console.log("응답 데이터:", rdata);
 
-            $('#tableName').text(rdata.timetable.name);
-            $('#tableUpdatedAt').text(rdata.timetable.timetable_DATE);
-            $('#tableName').attr('data-id',rdata.timetable.timetable_ID);
-            
-            var classes  = rdata.timetableDetails;
+            $("#tableName").text(rdata.timetable.name);
+            $("#tableUpdatedAt").text(rdata.timetable.timetable_DATE);
+            $("#tableName").attr("data-id", rdata.timetable.timetable_ID);
 
-            timetables[timetable_id] = [];
+            // var newClass = rdata.timetalbeDetails;
 
-            if (!timetables[timetable_id]) {  
-                timetables[timetable_id] = [];
-            }
+            // // DB에서 가져온 데이터를 직접 drawTimetable() 함수에 전달합니다.
+            // drawTimetable(newClass); 
 
-            if (Array.isArray(classes)) {  // 추가: classes가 배열인지 확인
-                timetables[timetable_id].push(...classes);
-                drawTimetable(timetables[timetable_id]);
-            }
+            // DB에서 가져온 데이터를 직접 drawTimetable() 함수에 전달합니다.
+            drawTimetable(rdata.timetalbeDetails); 
 
-            drawTimetable(timetables[timetable_id]);
-
-        }
-    })
+            // 가져온 시간표 데이터를 timetableData에 저장합니다.
+            timetableData[timetable_id] = rdata.timetalbeDetails;
+        },
+    });
 }
 
 
-// // canvas 작업코드 진행중
-// const canvas =  document.getElementById('canvas');
-// const ctx = canvas.getContext('2d');
 
-// function draw(timestamp){
-//     // const x = timestamp / 10 % 600;
-//     ctx.clearRect(0, 0, 600, 50);
-//     ctx.fillStyle = 'green';
-//     ctx.fillRect(0, 0, 100, 50);
-//     window.requestAnimationFrame(draw); 
-// }
 
-// window.requestAnimationFrame(draw);
 
-// * 캔버스 진행중 *
+// 시간표별로 캔버스 그리기
 function drawTimetable(timetableData) {
     // Canvas 설정
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
     // 캔버스 초기화
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // 일주일 동안의 요일 설정
-    const daysOfWeek = ['월', '화', '수', '목', '금'];
+    const daysOfWeek = ["월", "화", "수", "목", "금"];
 
     // 각 요일에 대한 배경색 지정
-	const subjectColors = ['#f2e8e8', '#ffe9e9', '#eff9cc', '#dcf2e9', '#dee8f6'];
+    const subjectColors = ["#f2e8e8", "#ffe9e9", "#eff9cc", "#dcf2e9", "#dee8f6"];
 
-    // 모든 수업 데이터를 반복하여 캔버스에 그림
-    timetableData.forEach((classItem) => {
-        // 요일별로 x좌표 설정 (여기서는 단순화하기 위해 요일마다 동일 간격으로 배치)
-        const x = daysOfWeek.indexOf(classItem.day) * (canvas.width / daysOfWeek.length);
+    // 요일과 시간 텍스트 크기 및 글꼴 설정
+    ctx.font = '12px "맑은 고딕", 돋움,  "Apple SD Gothic Neo", tahoma';
+    ctx.textBaseline = "middle";
 
-        // 시작 및 종료 시간 기준으로 y좌표 설정 (8시~20시 사이라고 가정)
-        const yStart = (classItem.start_time - 8) * (canvas.height / 12);
-        const yEnd = (classItem.end_time - 8) * (canvas.height / 12);
+    // 요일별 선 그리기
+    for (let i = 0; i <= daysOfWeek.length; i++) {
+        let x = (i + 1) * (canvas.width / (daysOfWeek.length + 1));
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
 
-        // 배경색상 설정 후 사각형 그리기
-        ctx.fillStyle = subjectColors[daysOfWeek.indexOf(classItem.day)];
-        ctx.fillRect(x + 10, yStart +10 , canvas.width/daysOfWeek.length -20 , yEnd-yStart -20);
+        if (i < daysOfWeek.length) {
+            ctx.fillText(daysOfWeek[i], x + 10, 20);
+        }
+    }
 
-        // 텍스트 색상 설정 후 텍스트 그리기
-        ctx.fillStyle = '#000000';
-        
-		// 과목명, 교수 이름 및 장소 출력 
-		ctx.fillText(classItem.subject, x + 20, yStart + 30);
-		ctx.fillText(classItem.professor, x + 20, yStart + 50);
-		ctx.fillText(classItem.classroom, x + 20, yStart + 70);
-		
-        localStorage.setItem('timetableData', JSON.stringify(timetableData));
-    });
+    for (let j = 0; j <= 14; j++) {
+        let y = (j + 1) * (canvas.height / (21 - 7));
+        ctx.moveTo(50, y);
+        ctx.lineTo(canvas.width, y);
+
+        if (j < 14) {
+            let hour = j + 8;
+            let ampm = hour >= 12 ? "오후" : "오전";
+            hour = hour > 12 ? hour - 12 : hour;
+            ctx.fillText(ampm + " " + hour + "시", 50, y + 15);
+        }
+    }
+
+    // 왼쪽 경계선 추가
+    ctx.moveTo(50, 0);
+    ctx.lineTo(50, canvas.height);
+
+    ctx.strokeStyle = "grey";
+    ctx.stroke();
+
+    // 더 많은 라인을 추가하여 맨 위 라인을 막습니다.
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(canvas.width, 0);
+    ctx.strokeStyle = "grey";
+    ctx.stroke();
+
+    ctx.closePath();
+
+    console.log(timetableData);
+    if (timetableData) {
+        timetableData.forEach((classItem) => {
+            const dayIndex = daysOfWeek.indexOf(classItem.day);
+
+            // 요일에 따른 가로 위치 계산
+            const xStart = (dayIndex + 1) * (canvas.width / (daysOfWeek.length + 1)) + 1.25;
+
+            // 시간에 따른 세로 위치 계산
+            const yStart = (classItem.start_time - 8) * (canvas.height / 14) + 30 + 18 + 15;
+
+            const blockHeight = (classItem.end_time - classItem.start_time) * (canvas.height / 14) - 3;
+
+            ctx.fillStyle = subjectColors[dayIndex];
+            ctx.fillRect(xStart, yStart, (canvas.width / (daysOfWeek.length + 1)) - 2, blockHeight);
+
+            ctx.fillStyle = "#000";
+
+            // 과목명, 교수 이름 및 장소 출력
+            ctx.fillText(classItem.subject, xStart + 10, yStart + 10);
+            ctx.fillText(classItem.professor, xStart + 10, yStart + 28);
+            ctx.fillText(classItem.classroom, xStart + 10, yStart + 45);
+        });
+    }
 }
+
+

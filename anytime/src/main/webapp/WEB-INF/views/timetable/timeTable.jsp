@@ -47,6 +47,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.js"></script> --%> 
  
 </head> 
+<style>
+    #canvas {
+        margin-top: 23px;  
+    }
+</style>	
 <body style=""> 
 	<!-- <script type="text/javascript"> 
 		var _timetableGridInfo = []; 
@@ -103,8 +108,8 @@
 				</ol> 
 			</div> 
 		</aside> 
- 
-		<div class="wrap" style="margin-top: 133.5px; width: 79%;"> 
+ 		<canvas id="canvas" width="1200" height="860"></canvas>
+		<%-- <div class="wrap" style="margin-top: 133.5px; width: 79%;"> 
 			<div class="tablehead"> 
 				<table class="tablehead"> 
 					<tbody> 
@@ -261,7 +266,7 @@
 				</table> 
 				<div class="nontimes"></div> 
 			</div> 
-		</div> 
+		</div>  --%>
  
 		<form id="tableSetting" class="modal"> 
 			<a title="닫기" class="close"></a> 
@@ -312,15 +317,7 @@
 						<li>금</li> 
 					</ol> 
 					<p> 
-						<select class="starthour"><option value="0">오전 
-								0시</option> 
-							<option value="1">오전 1시</option> 
-							<option value="2">오전 2시</option> 
-							<option value="3">오전 3시</option> 
-							<option value="4">오전 4시</option> 
-							<option value="5">오전 5시</option> 
-							<option value="6">오전 6시</option> 
-							<option value="7">오전 7시</option> 
+						<select class="starthour">
 							<option value="8">오전 8시</option> 
 							<option value="9" selected="selected">오전 9시</option> 
 							<option value="10">오전 10시</option> 
@@ -334,17 +331,8 @@
 							<option value="18">오후 6시</option> 
 							<option value="19">오후 7시</option> 
 							<option value="20">오후 8시</option> 
-							<option value="21">오후 9시</option> 
-							<option value="22">오후 10시</option> 
-							<option value="23">오후 11시</option></select> <span>~</span><select 
-							class="endhour"><option value="0">오전 0시</option> 
-							<option value="1">오전 1시</option> 
-							<option value="2">오전 2시</option> 
-							<option value="3">오전 3시</option> 
-							<option value="4">오전 4시</option> 
-							<option value="5">오전 5시</option> 
-							<option value="6">오전 6시</option> 
-							<option value="7">오전 7시</option> 
+							</select> <span>~</span>
+							<select class="endhour">
 							<option value="8">오전 8시</option> 
 							<option value="9">오전 9시</option> 
 							<option value="10" selected="selected">오전 10시</option> 
@@ -358,10 +346,8 @@
 							<option value="18">오후 6시</option> 
 							<option value="19">오후 7시</option> 
 							<option value="20">오후 8시</option> 
-							<option value="21">오후 9시</option> 
-							<option value="22">오후 10시</option> 
-							<option value="23">오후 11시</option></select> <input type="text" 
-							placeholder="예) 종303" class="text place"> 
+							</select> 
+							<input type="text" placeholder="예) 종303" class="text place"> 
 					</p> 
 				</div> 
 			</dd> 
