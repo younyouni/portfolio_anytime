@@ -97,7 +97,7 @@ public class TopPicksPostController {
 		if(schoolcheck == 1) {
 			mv.addObject("school", school);
 		}
-		mv.addObject("school_check2", schoolcheck);
+		mv.addObject("school_check", schoolcheck);
 		return mv;
 	}
 	
@@ -190,11 +190,12 @@ public class TopPicksPostController {
 			@RequestParam(value = "school_id") int school_id,
 			Principal principal
 			) {
+		int schoolcheck = 0;
 		// 학교 인증 체크
-		int user_id = memberService.getUserId(principal.getName());
-		
-		int schoolcheck = memberService.getUserSchoolCheck(user_id);
-			
+		if(login_id != null) {
+			int user_id = memberService.getUserId(login_id);
+			schoolcheck = memberService.getUserSchoolCheck(user_id);
+		}
 
 		List<Post> hotlist = postService.getHotPostSampleList(school_id);
 		List<Post> bestlist = postService.getBestPostSampleList(school_id);
@@ -203,8 +204,7 @@ public class TopPicksPostController {
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("hotlist", hotlist);
 	    response.put("bestlist", bestlist);
-	    response.put("school_check", schoolcheck);
-	    
+	    response.put("school_check", schoolcheck);    
 
 	    if(login_id == null) {
 	    	response.put("login_check", 1);

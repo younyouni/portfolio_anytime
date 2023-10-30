@@ -50,6 +50,11 @@
 		<jsp:include page="../common/rightside3.jsp" />
 	</div>
 	
-
+<script>
+if(${school_check == 0}){
+	alert("학교 인증 후 사용 가능합니다.");
+	history.back();
+}
+</script>
 </body>
 </html>
