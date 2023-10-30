@@ -27,7 +27,8 @@
 		<div class="wrap title">
 				<h1>
 					<a href="${pageContext.request.contextPath}/bestpost">베스트 게시판</a>
-				</h1>				
+				</h1>
+				<p>공감을 100개 이상 받은 게시물 랭킹입니다.</p>
 			<hr>
 		</div>
 		<div class="wrap bubbles none"></div>

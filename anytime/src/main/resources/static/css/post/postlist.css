@@ -145,3 +145,16 @@
 	background-size: cover;
 	background-position: top center;
 }
+/*----------------------------------------------------------- 모달 테두리 강조  ----------------------------------------------------------- */
+
+#transferMoimForm > p > input:focus {
+  border: 2px solid black !important;
+}
+
+#manageMoimForm > p > input:focus {
+  border: 2px solid black !important;
+}
+
+#deleteCheckForm > p > input[name="TruedeleteCheck"]:focus {
+  border: 2px solid black !important;
+}

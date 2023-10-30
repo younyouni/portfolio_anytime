@@ -49,7 +49,7 @@ $(document).ready(function () {
 			});
 			
 			if(response.list.length == 0){
-				scrapList += '<article class="list" style="font-size: 34px; text-align: center;">';
+				scrapList += '<article class="list empty">';
 				scrapList += '글에 작성한 댓글이 없습니다.</article>';
 			}
 			

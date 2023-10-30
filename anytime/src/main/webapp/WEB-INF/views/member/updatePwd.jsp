@@ -15,6 +15,12 @@
 body {
 	background-color: #EEEEF6 !important;
 }
+input[type=password]{
+	background-color: #f6f6ff !important;
+}
+input[type=password]:focus{
+	background-color: #fff !important;
+}
 
 nav {
 	border-bottom: 0 !important;
