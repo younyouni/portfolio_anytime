@@ -271,8 +271,19 @@ public class MemberController2 {
 	// --------------------------------지원-----------------------------------------
 
 	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
-	public String certificate() {
-		return "/member/memberCertificate";
+	public ModelAndView certificate(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		school.put("address", schoolService.getAddress(school_name));
+		mv.addObject("school", school);
+		mv.setViewName("/member/memberCertificate");
+
+		return mv;
 	}
 
 	@ResponseBody
