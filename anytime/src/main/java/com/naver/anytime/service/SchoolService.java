@@ -23,5 +23,7 @@ public interface SchoolService {
 	int isDomain(String schoolDomain);
 
 	String getAddress(String school_name);
+
+	float getCredit(String school_name);
 	
 }

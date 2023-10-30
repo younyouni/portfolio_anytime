@@ -31,6 +31,8 @@ public interface SchoolMapper {
 	public int isDomain(String schoolDomain);
 
 	public String getAddress(String school_name);
+
+	public float getCredit(String school_name);
 	
 	
 }
