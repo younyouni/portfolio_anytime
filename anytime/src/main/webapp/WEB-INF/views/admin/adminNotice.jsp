@@ -142,16 +142,8 @@
 				<div class="wrap bubbles none"></div>
 				<article class="list">
 				</article>
-
-				<div class="wrap articles">
-
-					<div class="clearBothOnly"></div>
-					<div class="pagination">
-					</div>
-				</div>
-				<hr>
 			</div>
-			<div class="center-block">
+			<div class="center-block" style="margin-left: -385px;">
 				<ul class="pagination justify-content-center">
 				</ul>
 			</div>

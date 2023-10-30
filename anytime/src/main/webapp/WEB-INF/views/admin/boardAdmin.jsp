@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
@@ -22,10 +23,6 @@
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
-<!-- 
-<script
-	src="${pageContext.request.contextPath}/resources/js/admin/boardAdmin.js"></script>
- -->
 <script>
 	$(function() {
 		let token = $("meta[name='_csrf']").attr("content");
@@ -49,10 +46,15 @@
 			$("table.request").show();
 			$("table.list").hide();
 			$("form#searchBoard").hide();
+			$("#search_word").val('');
 			$('ul.pagination').empty();
 		});
 
 		$(".menu li.boardlist").click(function() {
+			page = 1; //페이지 변수를 1로 초기화
+			searchKey = 0;//검색기능을 위해 검색 변수 초기화
+			keyword = 'null';
+
 			$("table.list").show();
 			$("table.request").hide();
 			$("form#searchBoard").show();
@@ -94,6 +96,7 @@
 			if (clickFlag) {
 				clickFlag = false; // 클릭 이벤트 비활성화
 				var board_id = $(this).children().find('input.approval').val();
+				alert(board_id);
 
 				$.ajax({
 					type : "get",
@@ -110,7 +113,10 @@
 			}
 		});
 
-		$('table.list').on("click","td:not(.switch)",
+		$('table.list')
+				.on(
+						"click",
+						"td:not(.switch)",
 						function() {
 							$('form#boardInfo').css('display', 'block');
 							var board_id = $(this).parent().find(
@@ -141,7 +147,8 @@
 								$('form#boardInfo .switch input').prop(
 										'checked', false);
 							}
-							$('form#boardInfo').before('<div class="modalwrap"></div>');
+							$('form#boardInfo').before(
+									'<div class="modalwrap"></div>');
 						});
 
 		$('#boardInfo .switch input')
@@ -287,7 +294,8 @@
 							let output = "";
 							let rownum = 1;
 							keyword = "'" + keyword + "'";
-							$(rdata.boardTotal).each(
+							$(rdata.boardTotal)
+									.each(
 											function() {
 												let board_type = '';
 												if (this.type == 1) {
@@ -380,6 +388,8 @@
 						}//if (rdata.boardTotal.length > 0) {
 						else {
 							$('table.list tbody').empty();
+							output = '<tr><td class="empty" colspan="9">검색된 결과가 없습니다</td></tr>';
+							$('table.list tbody').append(output);
 							$('ul.pagination').empty();
 						}
 					}
@@ -422,50 +432,57 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="request" items="${boardrequest}">
+						<c:if test="${fn:length(boardrequest) == 0}">
 							<tr>
-								<td><c:choose>
-										<c:when test="${request.STATUS ==3 }">
-											<label class="switch"> <input type="checkbox"
-												class="approval" value="${request.BOARD_ID }" checked>
-												<span class="slider round"></span>
-											</label>
-										</c:when>
-										<c:when test="${request.STATUS !=3 }">
-											<label class="switch"> <input type="checkbox"
-												class="approval" value="${request.BOARD_ID }"> <span
-												class="slider round"></span>
-											</label>
-										</c:when>
-									</c:choose></td>
-								<td>${request.SCHOOL_NAME}</td>
-								<td><c:choose>
-										<c:when test="${request.TYPE ==2}">
+								<td class="empty" colspan="9">게시판 승인 요청이 없습니다</td>
+							</tr>
+						</c:if>
+						<c:if test="${fn:length(boardrequest) > 0}">
+							<c:forEach var="request" items="${boardrequest}">
+								<tr>
+									<td><c:choose>
+											<c:when test="${request.STATUS ==3 }">
+												<label class="switch"> <input type="checkbox"
+													class="approval" value="${request.BOARD_ID }" checked>
+													<span class="slider round"></span>
+												</label>
+											</c:when>
+											<c:when test="${request.STATUS !=3 }">
+												<label class="switch"> <input type="checkbox"
+													class="approval" value="${request.BOARD_ID }"> <span
+													class="slider round"></span>
+												</label>
+											</c:when>
+										</c:choose></td>
+									<td>${request.SCHOOL_NAME}</td>
+									<td><c:choose>
+											<c:when test="${request.TYPE ==2}">
 											단체
 										</c:when>
-										<c:when test="${request.TYPE ==3}">
+											<c:when test="${request.TYPE ==3}">
 											학과
 										</c:when>
-									</c:choose></td>
-								<td>${request.NAME}</td>
-								<td>${request.PURPOSE}</td>
-								<td>${request.LOGIN_ID}</td>
-								<c:choose>
-									<c:when test="${request.STATUS ==3 }">
-										<td class="approvalprocess complete"><p>승인완료</p></td>
-									</c:when>
-									<c:when test="${request.STATUS ==0 }">
-										<td class="approvalprocess pending"><p>
-												승인보류<a class="approval"><img
-													src="${pageContext.request.contextPath}/resources/image/admin/approval.cancel.png"></a>
-											</p></td>
-									</c:when>
-									<c:when test="${request.STATUS == 4 }">
-										<td class="approvalprocess reject"><p>승인거부</p></td>
-									</c:when>
-								</c:choose>
-							</tr>
-						</c:forEach>
+										</c:choose></td>
+									<td>${request.NAME}</td>
+									<td>${request.PURPOSE}</td>
+									<td>${request.LOGIN_ID}</td>
+									<c:choose>
+										<c:when test="${request.STATUS ==3 }">
+											<td class="approvalprocess complete"><p>승인완료</p></td>
+										</c:when>
+										<c:when test="${request.STATUS ==0 }">
+											<td class="approvalprocess pending"><p>
+													승인보류<a class="approval"><img
+														src="${pageContext.request.contextPath}/resources/image/admin/approval.cancel.png"></a>
+												</p></td>
+										</c:when>
+										<c:when test="${request.STATUS == 4 }">
+											<td class="approvalprocess reject"><p>승인거부</p></td>
+										</c:when>
+									</c:choose>
+								</tr>
+							</c:forEach>
+						</c:if>
 					</tbody>
 				</table>
 				<table class="list" style="display: none;">
@@ -485,7 +502,7 @@
 				</table>
 			</div>
 			<%-------------------------------- ▼페이지네이션▼ --------------------------------%>
-			<div class="center-block">
+			<div class="center-block" style="margin-left: -210px;">
 				<ul class="pagination justify-content-center">
 				</ul>
 			</div>
