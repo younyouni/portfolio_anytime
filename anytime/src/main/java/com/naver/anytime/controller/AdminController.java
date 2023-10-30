@@ -27,6 +27,7 @@ import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.DailyDataService;
 import com.naver.anytime.service.MemberService;
+import com.naver.anytime.service.MessageService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.ReportService;
 import com.naver.constants.AnytimeConstants;
@@ -43,16 +44,19 @@ public class AdminController {
 	private CommentService commentService;
 	private MemberService memberService;
 	private DailyDataService dailyDataService;
+	private MessageService messageService;
 
 	@Autowired
 	public AdminController(BoardService boardService, PostService postService, ReportService reportService,
-			CommentService commentService, MemberService memberService, DailyDataService dailyDataService) {
+			CommentService commentService, MemberService memberService, DailyDataService dailyDataService,
+			MessageService messageService) {
 		this.boardService = boardService;
 		this.postService = postService;
 		this.reportService = reportService;
 		this.commentService = commentService;
 		this.memberService = memberService;
 		this.dailyDataService = dailyDataService;
+		this.messageService = messageService;
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -116,14 +120,45 @@ public class AdminController {
 	public int updateBoardStatus(@RequestParam("board_id") int board_id,
 			@RequestParam("approvalStatus") int approvalStatus,
 			@RequestParam("rejectionreason") String rejectionreason) {
+		if (approvalStatus == 2) {
+			rejectionreason = "[게시판 신청 거부] " + rejectionreason + " 와 같은 사유로 게시판 신청이 거부되었습니다.";
+		}
 		return boardService.updateApprovalStatus(board_id, approvalStatus, rejectionreason);
 	}
 
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
-	@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
+	// @Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
+	 //@Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
 	public int updateBoardStatusCompleteScheduled() {
-		return boardService.updateBoardStatusComplete();
+		int admin_id = AnytimeConstants.ADMIN_ID;
+		int[] updatedBoardInfos = boardService.getBoardIdsBoardRequest();
+		int message_result = 0;
+
+		int result = boardService.updateBoardStatusComplete();
+
+		if (result > 0) {
+			// 메세지 보내기
+			if (updatedBoardInfos.length > 0) {
+				for (int i = 0; i < updatedBoardInfos.length; i++) {
+					int board_user_id = memberService.getuserIdByBoardId(updatedBoardInfos[i]);
+					int status = boardService.getBoardStatus(updatedBoardInfos[i]);
+					
+					if (status == 2) {
+						int check = messageService.isMessageAllIdPresent(admin_id, board_user_id);
+
+						if (check == 0) {
+							messageService.insertMessageAllWithSenderAndReceiver(admin_id, board_user_id);
+						}
+						int messageall_id = messageService.isMessageAllIdPresent2(admin_id, board_user_id);
+						message_result = messageService.insertMessage2(messageall_id, admin_id, board_user_id,
+								boardService.getRejectionReason(updatedBoardInfos[i]));
+					}
+					
+				}
+			}
+		}
+		return message_result;
 	}
 
 	@RequestMapping(value = "/updateBoardStatusImmediately", method = RequestMethod.GET)
@@ -131,13 +166,35 @@ public class AdminController {
 	public int updateBoardStatusImmediately(@RequestParam("board_id") int board_id) {
 		int approvalStatus = 0;
 		int currentStatus = boardService.getBoardStatus(board_id);
+		String rejectionreason = null;
+
+		int admin_id = AnytimeConstants.ADMIN_ID;
+		int reported_user_id = memberService.getuserIdByBoardId(board_id);
 
 		if (currentStatus == 1) {
 			approvalStatus = 2;
+			String board_name = boardService.getBoardnameByBoardId(board_id);
+			rejectionreason = "[게시판 비활성화] " + board_name + ": 해당 게시판이 비활성화 처리되었습니다.";
 		} else {
 			approvalStatus = 1;
 		}
-		return boardService.updateBoardStatusImmediately(board_id, approvalStatus);
+
+		int update_result = boardService.updateBoardStatusImmediately(board_id, approvalStatus, rejectionreason);
+
+		// 메세지 보내기
+		int message_result = 0;
+
+		if (currentStatus == 1 && update_result > 0) {
+			int check = messageService.isMessageAllIdPresent(admin_id, reported_user_id);
+
+			if (check == 0) {
+				messageService.insertMessageAllWithSenderAndReceiver(admin_id, reported_user_id);
+			}
+			int messageall_id = messageService.isMessageAllIdPresent2(admin_id, reported_user_id);
+			message_result = messageService.insertMessage2(messageall_id, admin_id, reported_user_id, rejectionreason);
+		}
+
+		return message_result;
 	}
 
 	@RequestMapping(value = "/boardtotal", method = RequestMethod.GET)
@@ -239,11 +296,16 @@ public class AdminController {
 
 	@RequestMapping(value = "/reportProcess", method = RequestMethod.POST)
 	@ResponseBody
-	public int reportProcess(int content_id, String content_action, String user_action, Principal principal) {
+	public int reportProcess(int content_id, String content_action, String user_action, String reported_id,
+			Principal principal) {
 		int admin_id = memberService.getUserId(principal.getName());
 		String admin_login_id = principal.getName();
+		int reported_user_id = memberService.getUserId(reported_id);
+
 		int isContent = 0;
 		int result = 0;
+		String instro = "[경고 안내] 신고 접수되어 경고 조치 되었습니다.";
+		String message = instro;
 
 		if (postService.getPost(content_id) != 0) {
 			isContent = AnytimeConstants.IS_POST;
@@ -259,16 +321,31 @@ public class AdminController {
 				// 코멘트 신고
 				commentService.updateCommentStatus(content_id);
 			}
+			message = "해당 게시물 또는 댓글은 " + content_action + " 사유로 삭제되었습니다.\n경고 누적 시 접근 제한 등의 조치가 취해질 수 있습니다.";
 		}
-
 		if (!user_action.equals("반려")) {
 			// 멤버 정지
 			memberService.updateStatusByContentId(content_id, isContent);
+			message += user_action + " 사유로 접근 제한 조치되었습니다.";
 		}
 		logger.info(Integer.toString(admin_id));
 		result = reportService.updateReport(content_id, content_action, user_action, admin_id, admin_login_id);// 반려인 경우
-																												// 아닌 경우
-																												// 모두 처리
+
+		// 신고 당한 경우
+		if (!message.equals(instro)) {
+			int check = messageService.isMessageAllIdPresent(admin_id, reported_user_id);
+
+			if (check == 0) {
+				messageService.insertMessageAllId(content_id, admin_id, reported_user_id);
+			}
+			int messageall_id = messageService.isMessageAllIdPresent2(admin_id, reported_user_id);
+			int message_result = messageService.insertMessage2(messageall_id, admin_id, reported_user_id, message);
+
+			if (message_result > 0) {
+				logger.info("메세지 전송 완료");
+			}
+		}
+		// 모두 처리
 		logger.info("result : " + result);
 		return result;
 	}
@@ -296,7 +373,7 @@ public class AdminController {
 			keyword = null;
 		}
 
-		int board_id = 121;// 공지사항 board_id로 변경
+		int board_id = AnytimeConstants.ADMIN_NOTICE;// 공지사항 board_id로 변경
 
 		int limit = 10;
 

@@ -45,4 +45,9 @@ public class AnytimeConstants {
 
 	public static final int IS_POST = 1;
 	public static final int IS_COMMENT = 2;
+
+	public static final int ADMIN_NOTICE = 1;
+	public static final int ADMIN_ID = 1;
+	
+	
 }

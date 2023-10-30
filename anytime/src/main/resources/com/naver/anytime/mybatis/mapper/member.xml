@@ -225,6 +225,16 @@
 		WHERE LOGIN_ID = #{login_id}
 	</select>
 
+	<select id="getUserIdByBoardId" parameterType="int"
+		resultType="int">
+		SELECT M.USER_ID
+		FROM MEMBER M
+		JOIN BOARD B
+		ON M.USER_ID =
+		B.USER_ID
+		WHERE B.BOARD_ID = #{board_id}
+	</select>
+
 	<!-- * * * * * * * * * * * * * * * * * * ok * * * * * * * * * * * * * * 
 		* * * * -->
 	<select id="getSchoolId2" parameterType="String"

@@ -34,6 +34,10 @@ body {
 nav {
 	border-bottom: 0 !important;
 }
+
+#boardSection {
+	margin-top: -76px;
+}
 </style>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
@@ -47,31 +51,38 @@ nav {
 			<h1>게시판 관리</h1>
 		</div>
 		<div class="container">
-			<section id="boardSection">
-				<h1>관리 중인 게시판</h1>
-				<c:choose>
-					<c:when test="${boardAdmin == 1 }">
-						<c:forEach var="b" items="${boardlist}">
-							<a href="post/list?board_id=${b.BOARD_ID}">${b.NAME } <c:choose>
-									<c:when
-										test="${b.STATUS == 0 || b.STATUS == 3 || b.STATUS == 4 }">
-										<p>승인 심사 진행 중</p>
-									</c:when>
-									<c:when test="${b.STATUS == 2 }">
-										<p class="reject">승인 거부</p>
-									</c:when>
-								</c:choose>
-							</a>
-							<hr>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<p class="noboard">관리 중인 게시판이 없어요</p>
-					</c:otherwise>
-				</c:choose>
-				<a class="button createboard" href="#createboard"
-					data-toggle="modal">게시판 생성하기</a>
-			</section>
+			<c:if test="${school_check == 1 }">
+				<section id="boardSection">
+					<h1>관리 중인 게시판</h1>
+					<c:choose>
+						<c:when test="${boardAdmin == 1 }">
+							<c:forEach var="b" items="${boardlist}">
+								<a href="post/list?board_id=${b.BOARD_ID}">${b.NAME } <c:choose>
+										<c:when
+											test="${b.STATUS == 0 || b.STATUS == 3 || b.STATUS == 4 }">
+											<p>승인 심사 진행 중</p>
+										</c:when>
+										<c:when test="${b.STATUS == 2 }">
+											<p class="reject">승인 거부</p>
+										</c:when>
+									</c:choose>
+								</a>
+								<hr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<p class="noboard">관리 중인 게시판이 없어요</p>
+						</c:otherwise>
+					</c:choose>
+					<a class="button createboard" href="#createboard"
+						data-toggle="modal">게시판 생성하기</a>
+				</section>
+			</c:if>
+			<c:if test="${school_check == 0 }">
+				<section id="boardSection" class="empty">
+					<p>학교 인증을 거친 학생들만 이용할 수 있어요!</p>
+				</section>
+			</c:if>
 		</div>
 	</div>
 

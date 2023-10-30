@@ -261,11 +261,6 @@ public class PostController {
 	public Map<String, Object> updateGet(@RequestParam(value = "post_id", required = false) Integer post_id,
 			HttpServletRequest request, Principal userPrincipal) {
 
-		// 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
-		String id = userPrincipal.getName();
-		Member member = memberService.getLoginMember(id);
-		int currentUserId = member.getUser_id();
-
 		Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
 
 		List<Photo> photos = postPhotoService.getPhotosByPostId(post_id);

@@ -3,16 +3,13 @@ package com.naver.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import com.naver.anytime.domain.Member;
 import com.naver.anytime.domain.UserCustom;
@@ -42,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		roles.add(new SimpleGrantedAuthority(users.getAuth()));
 
 		UserDetails user = new UserCustom(username, users.getPassword(), users.getSchool_id(), users.getEmail(),
-				users.getNickname(), users.getBoard_admin(), users.getAuth(), roles);
+				users.getNickname(), users.getBoard_admin(), users.getAuth(), users.getSchool_check(), roles);
 
 		return user;
 	}
