@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
 	mainRightSideAjax();
 	
 	function mainRightSideAjax(){
@@ -31,7 +32,7 @@ $(document).ready(function () {
 		rightsideList += '<h3><a href="' + contextPath + '/hotpost">HOT 게시물<span>더 보기</span></a></h3>';
 		
 		
-		if(response.login_check != 1){
+		if(response.school_check == 1){
 		
 			$.each(response.hotlist, function (index, hot) {	
 				if(index < 4){
@@ -46,14 +47,16 @@ $(document).ready(function () {
 		    rightsideList += '<a class="list">핫 게시물이 없습니다</a>';
 		} 
 		
-		} else {
+		} else if(response.login_check == 1){
 			rightsideList += '<a class="list">로그인 후 이용 가능합니다.</a>';
 			
+		} else if(response.school_check == 0){
+			rightsideList += '<a class="list">학교인증 후 이용 가능합니다.</a>';
 		}
 		
 		rightsideList += '<h3 style="border-top: 1px solid #d6d6d6;"><a href="' + contextPath + '/bestpost">BEST 게시판<span>더 보기</span></a></h3>';
 
-		if(response.login_check != 1){
+		if(response.school_check == 1){
 		
 
 			$.each(response.bestlist, function (index, hot) {	
@@ -69,8 +72,11 @@ $(document).ready(function () {
 			    rightsideList += '<a class="list">핫 게시물이 없습니다</a>';
 			}
 		
-		} else {
+		} else if(response.login_check == 1){
 			rightsideList += '<a class="list">로그인 후 이용 가능합니다.</a>';
+			
+		} else if(response.school_check == 0){
+			rightsideList += '<a class="list">학교인증 후 이용 가능합니다.</a>';
 		}
 		
 		rightsideList += '</div>';

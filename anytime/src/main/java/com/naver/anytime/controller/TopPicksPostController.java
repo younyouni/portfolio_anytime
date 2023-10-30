@@ -1,5 +1,6 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +49,13 @@ public class TopPicksPostController {
 	@ResponseBody
 	public ModelAndView MyArticle(
 			@AuthenticationPrincipal UserCustom user,
-			ModelAndView mv
+			ModelAndView mv,
+			Principal principal
 			) {
+		// 학교 인증 체크
+		int user_id = memberService.getUserId(principal.getName());
+		
+		int schoolcheck = memberService.getUserSchoolCheck(user_id);
 		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -59,7 +65,10 @@ public class TopPicksPostController {
 		school.put("domain", schoolService.getSchoolDomain(school_name));
 		
 		mv.setViewName("post/hotPostList");
-		mv.addObject("school", school);
+		if(schoolcheck == 1) {
+			mv.addObject("school", school);
+		}
+		mv.addObject("school_check", schoolcheck);
 		return mv;
 	}
 	
@@ -68,8 +77,14 @@ public class TopPicksPostController {
 	@ResponseBody
 	public ModelAndView MyCommentArticle(
 			@AuthenticationPrincipal UserCustom user,
-			ModelAndView mv
+			ModelAndView mv,
+			Principal principal
 			) {
+		// 학교 인증 체크
+		int user_id = memberService.getUserId(principal.getName());
+		
+		int schoolcheck = memberService.getUserSchoolCheck(user_id);
+
 		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -79,7 +94,10 @@ public class TopPicksPostController {
 		school.put("domain", schoolService.getSchoolDomain(school_name));
 		
 		mv.setViewName("post/bestPostList");
-		mv.addObject("school", school);
+		if(schoolcheck == 1) {
+			mv.addObject("school", school);
+		}
+		mv.addObject("school_check2", schoolcheck);
 		return mv;
 	}
 	
@@ -169,8 +187,14 @@ public class TopPicksPostController {
 	@ResponseBody
 	public Map<String, Object> getHotPostSampleList(
 			@RequestParam(value = "login_id", required = false) String login_id,
-			@RequestParam(value = "school_id") int school_id
+			@RequestParam(value = "school_id") int school_id,
+			Principal principal
 			) {
+		// 학교 인증 체크
+		int user_id = memberService.getUserId(principal.getName());
+		
+		int schoolcheck = memberService.getUserSchoolCheck(user_id);
+			
 
 		List<Post> hotlist = postService.getHotPostSampleList(school_id);
 		List<Post> bestlist = postService.getBestPostSampleList(school_id);
@@ -179,6 +203,7 @@ public class TopPicksPostController {
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("hotlist", hotlist);
 	    response.put("bestlist", bestlist);
+	    response.put("school_check", schoolcheck);
 	    
 
 	    if(login_id == null) {
