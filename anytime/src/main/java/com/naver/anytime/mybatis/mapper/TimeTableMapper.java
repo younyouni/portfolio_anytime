@@ -47,7 +47,7 @@ public interface TimeTableMapper {
 
 	public int findPrimary(int user_id);
 
-	public int findNextTimetable(int user_id);
+	public Integer findNextTimetable(int user_id);
 
 	public void updateToPrimary(int user_id);
 

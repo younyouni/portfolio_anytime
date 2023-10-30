@@ -113,8 +113,10 @@ public class TimeTableServiceImpl implements TimeTableService {
 		timeDao.deleteTimetable(user_id, timetable_id, status);
 			
 			if(status == 1) {
-	        int nextId  = timeDao.findNextTimetable(user_id);
-	        	timeDao.updateToPrimary(nextId);
+	        Integer nextId  = timeDao.findNextTimetable(user_id);
+	        if (nextId != null) { // null 체크 
+	            timeDao.updateToPrimary(nextId);
+	        }
 			}
 	    }
     
