@@ -20,14 +20,15 @@
 			<div class="title">
 				<a class="hamburger"></a>
 					<h1>
-						<a href="${pageContext.request.contextPath}/hotpost">핫 게시물</a>
+						<a href="${pageContext.request.contextPath}/hotpost">HOT 게시물</a>
 					</h1>	
 			</div>
 		</aside>
 		<div class="wrap title">
 				<h1>
-					<a href="${pageContext.request.contextPath}/hotpost">핫 게시물</a>
-				</h1>				
+					<a href="${pageContext.request.contextPath}/hotpost">HOT 게시물</a>
+				</h1>
+				<p>공감 10개를 받으면 HOT 게시물로 자동 선정됩니다.</p>
 			<hr>
 		</div>
 		<div class="wrap bubbles none"></div>
@@ -49,6 +50,11 @@
 		<jsp:include page="../common/rightside3.jsp" />
 	</div>
 	
-
+<script>
+if(${school_check == 0}){
+	alert("학교 인증 후 사용 가능합니다.");
+	history.back();
+}
+</script>
 </body>
 </html>

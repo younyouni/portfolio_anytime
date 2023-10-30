@@ -25,4 +25,6 @@ public interface MessageMapper {
 
 	public int isMessageAllIdPresent2(int sender_user_id, int receiver_user_id);
 
+	public void insertMessageAllWithSenderAndReceiver(int admin_id, int reported_user_id);
+
 }

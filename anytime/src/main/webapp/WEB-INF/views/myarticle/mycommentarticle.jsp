@@ -10,7 +10,7 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.article.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.community.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/scrap/scrap.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myarticle/myarticle.css">
 <script src="${pageContext.request.contextPath}/resources/js/myarticle/mycommentarticle.js"></script>
 </head>
 <body>

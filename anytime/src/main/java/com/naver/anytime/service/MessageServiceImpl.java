@@ -8,10 +8,10 @@ import com.naver.anytime.domain.Message;
 import com.naver.anytime.mybatis.mapper.MessageMapper;
 
 @Service
-public class MessageServiceImpl implements MessageService{
-	
+public class MessageServiceImpl implements MessageService {
+
 	private MessageMapper dao;
-	
+
 	public MessageServiceImpl(MessageMapper dao) {
 		this.dao = dao;
 	}
@@ -54,5 +54,11 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public Integer isMessageAllIdPresent2(int sender_user_id, int receiver_user_id) {
 		return dao.isMessageAllIdPresent2(sender_user_id, receiver_user_id);
+	}
+
+	@Override
+	public void insertMessageAllWithSenderAndReceiver(int admin_id, int reported_user_id) {
+		dao.insertMessageAllWithSenderAndReceiver(admin_id, reported_user_id);
+
 	}
 }

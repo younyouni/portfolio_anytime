@@ -42,9 +42,11 @@ public interface BoardMapper {
 
 	public int getListCount(HashMap<String, Object> map);
 
-	public int updateBoardStatusImmediately(int board_id, int approvalStatus);
+	public int updateBoardStatusImmediately(int board_id, int approvalStatus, String rejectionreason);
 
 	public int getBoardStatus(int board_id);
+
+	public String getBoardnameByBoardId(int board_id);
 
 	// ********************************= 윤희 =********************************
 
@@ -71,5 +73,11 @@ public interface BoardMapper {
 	public int updateBoardStatusComplete();
 
 	public int getBoardTypeCheck(int board_id);
+
+	public int[] getBoardIdsBoardRequest();
+
+	public int getUserIdByBoardId(int board_id);
+
+	public String getRejectionReason(int board_id);
 
 }

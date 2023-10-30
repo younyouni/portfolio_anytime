@@ -1,14 +1,14 @@
 package com.naver.anytime.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Post;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
+import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.service.ScrapService;
 
 
@@ -30,13 +32,15 @@ public class TopPicksPostController {
 	private PostService postService;	   
 	private BoardService boardService;
 	private MemberService memberService;
+	private SchoolService schoolService;
 	
 	@Autowired
-	public TopPicksPostController(ScrapService scrapService, PostService postService, BoardService boardService, MemberService memberService) {
+	public TopPicksPostController(ScrapService scrapService, PostService postService, BoardService boardService, MemberService memberService, SchoolService schoolService) {
 
 		this.postService = postService;
 	    this.boardService = boardService;
 	    this.memberService = memberService;
+	    this.schoolService = schoolService;
 	}
 	
 	
@@ -44,9 +48,27 @@ public class TopPicksPostController {
 	@RequestMapping(value = "/hotpost")
 	@ResponseBody
 	public ModelAndView MyArticle(
-			ModelAndView mv
+			@AuthenticationPrincipal UserCustom user,
+			ModelAndView mv,
+			Principal principal
 			) {
+		// 학교 인증 체크
+		int user_id = memberService.getUserId(principal.getName());
+		
+		int schoolcheck = memberService.getUserSchoolCheck(user_id);
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		
 		mv.setViewName("post/hotPostList");
+		if(schoolcheck == 1) {
+			mv.addObject("school", school);
+		}
+		mv.addObject("school_check", schoolcheck);
 		return mv;
 	}
 	
@@ -54,9 +76,28 @@ public class TopPicksPostController {
 	@RequestMapping(value = "/bestpost")
 	@ResponseBody
 	public ModelAndView MyCommentArticle(
-			ModelAndView mv
+			@AuthenticationPrincipal UserCustom user,
+			ModelAndView mv,
+			Principal principal
 			) {
+		// 학교 인증 체크
+		int user_id = memberService.getUserId(principal.getName());
+		
+		int schoolcheck = memberService.getUserSchoolCheck(user_id);
+
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		
 		mv.setViewName("post/bestPostList");
+		if(schoolcheck == 1) {
+			mv.addObject("school", school);
+		}
+		mv.addObject("school_check", schoolcheck);
 		return mv;
 	}
 	
@@ -146,8 +187,15 @@ public class TopPicksPostController {
 	@ResponseBody
 	public Map<String, Object> getHotPostSampleList(
 			@RequestParam(value = "login_id", required = false) String login_id,
-			@RequestParam(value = "school_id") int school_id
+			@RequestParam(value = "school_id") int school_id,
+			Principal principal
 			) {
+		int schoolcheck = 0;
+		// 학교 인증 체크
+		if(login_id != null) {
+			int user_id = memberService.getUserId(login_id);
+			schoolcheck = memberService.getUserSchoolCheck(user_id);
+		}
 
 		List<Post> hotlist = postService.getHotPostSampleList(school_id);
 		List<Post> bestlist = postService.getBestPostSampleList(school_id);
@@ -156,7 +204,7 @@ public class TopPicksPostController {
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("hotlist", hotlist);
 	    response.put("bestlist", bestlist);
-	    
+	    response.put("school_check", schoolcheck);    
 
 	    if(login_id == null) {
 	    	response.put("login_check", 1);

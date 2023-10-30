@@ -190,6 +190,7 @@ public class MemberController2 {
 	@GetMapping(value = "/boardlist")
 	public ModelAndView getBoardlist(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
+		int school_check = user.getSchool_check();
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -209,13 +210,13 @@ public class MemberController2 {
 		mv.setViewName("/member/boardlist");
 		mv.addObject("boardlist", boardlist);
 		mv.addObject("boardAdmin", boardAdmin);
+		mv.addObject("school_check", school_check);
 
 		return mv;
 	}
 
 	@GetMapping(value = "/delete")
 	public ModelAndView deleteMemberProcess(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
-		String login_id = user.getUsername();
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -271,8 +272,19 @@ public class MemberController2 {
 	// --------------------------------지원-----------------------------------------
 
 	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
-	public String certificate() {
-		return "/member/memberCertificate";
+	public ModelAndView certificate(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		school.put("address", schoolService.getAddress(school_name));
+		mv.addObject("school", school);
+		mv.setViewName("/member/memberCertificate");
+
+		return mv;
 	}
 
 	@ResponseBody

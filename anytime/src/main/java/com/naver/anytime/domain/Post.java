@@ -1,7 +1,5 @@
 package com.naver.anytime.domain;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class Post {
 	private int POST_ID; // 게시물 고유번호
 	private int BOARD_ID; // 게시판 고유번호

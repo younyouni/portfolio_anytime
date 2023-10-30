@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naver.anytime.domain.Board;
-import com.naver.anytime.domain.Calendar;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.constants.AnytimeConstants;

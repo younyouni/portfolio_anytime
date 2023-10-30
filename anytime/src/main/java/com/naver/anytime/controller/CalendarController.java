@@ -1,11 +1,14 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Calendar;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.CalendarService;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.ReportService;
+import com.naver.anytime.service.SchoolService;
 
 @RestController
 public class CalendarController {
@@ -32,23 +37,35 @@ public class CalendarController {
 	private BoardService boardService;
 	private CommentService commentService;
 	private MemberService memberService;
+	private SchoolService schoolService;
 	
 	@Autowired
-	public CalendarController(CalendarService calendarService, ReportService reportService, PostService postService, BoardService boardService, CommentService commentService, MemberService memberService) {
+	public CalendarController(CalendarService calendarService, ReportService reportService, PostService postService, BoardService boardService, CommentService commentService, MemberService memberService, SchoolService schoolService) {
 		this.calendarService = calendarService;
 		this.reportService = reportService;
 		this.postService = postService;
 	    this.boardService = boardService;
 	    this.commentService = commentService;
 	    this.memberService = memberService;
+	    this.schoolService = schoolService;
 	}
 	
 	@RequestMapping(value = "/calendar")
 	@ResponseBody
 	public ModelAndView Calendar(
+			@AuthenticationPrincipal UserCustom user,
 			ModelAndView mv
 			) {
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		
 		mv.setViewName("calendar/Calendar");
+		mv.addObject("school", school);
 		return mv;
 	}
 	

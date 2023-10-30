@@ -306,11 +306,3 @@
 	background-color: #a6a6a6;
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * *  /  mobile only  /  * * * * * * * * * * * * * * * * * * * * * * * * */
-@media only screen and (max-width: 640px) {
-	#container form.modal {
-		width: 95%;
-		max-height: 95% !important;
-		overflow: auto;
-	}
-}

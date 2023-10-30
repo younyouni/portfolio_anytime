@@ -35,7 +35,7 @@
     <div class="messages visible">
     	<div class="title">
     		<a class="back">뒤로</a>
-    			<h2>익명</h2>
+    			<h2></h2>
     				<a class="send" data-modal="messageSend">쪽지 보내기</a>
     				<a class="refresh">새로고침</a>
     				<!-- <a class="more">더보기</a> -->
