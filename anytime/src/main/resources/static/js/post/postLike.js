@@ -2,9 +2,6 @@ $(document).ready(function () {
     $(".posvote").on('click', function(e) { 
         e.preventDefault();
 		
-		var confirmResult = confirm('이 글에 공감하십니까?');
-		
-		if(confirmResult){
         var post_id= $(this).data('post_id');
 
         let token = $("meta[name='_csrf']").attr("content");
@@ -19,10 +16,10 @@ $(document).ready(function () {
             },
             success:function(data){
 			    if(data.statusCode == 1){
-			        alert('공감 완료!');
+			        alert('공감이 완료 되었습니다.');
 			        $('.vote').text(data.like_count); // 서버로부터 받은 공감 수를 표시
 			    } else if(data.statusCode == 2){
-			        alert('공감 취소!');
+			        alert('공감이 취소 되었습니다.');
 			        $('.vote').text(data.like_count); // 서버로부터 받은 공감 수를 표시
 			    } else{
 			        alert('오류 발생 : ' + data.errorMessage);
@@ -33,6 +30,5 @@ $(document).ready(function () {
                 alert('오류 발생!');
             }
         });
-        }
     });
 });

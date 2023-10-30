@@ -67,15 +67,25 @@ $(document).ready(function () {
             success: function(response) {
                 alert(response.message);  
                 console.log(response);
-                if (response.message == '시간표 삭제 성공') 
-                location.reload(); 
-            },
-            error: function(error) {
-                alert('시간표 삭제 실패');
-                console.log(error.responseJSON.message);  
+                if (response.message == '시간표 삭제 성공') {
+                // 페이지를 새로 고치지 않고 UI 업데이트하기
+                // 기본 시간표가 삭제된 경우 새 기본 시간표를 업데이트합니다.
+                if (status == 1 && response.newPrimaryId) {
+                    $('div.menu ol li.active a').removeClass('primary');
+                    $('div.menu ol li a[data-id="' + response.newPrimaryId + '"]').addClass('primary');
+                    
+                }
+                // 삭제된 시간표 항목을 제거합니다.
+                $('div.menu ol li a[data-id="' + timetable_id + '"]').parent().remove();
             }
-        });
-    }
+            location.reload();
+        },
+        error: function(error) {
+            alert('시간표 삭제 실패');
+            console.log(error.responseJSON.message);  
+        }
+    });
+}
 
     // 시간표 이름 변경 및 날짜 변경
     $("#tableSetting").submit(function(e) {
