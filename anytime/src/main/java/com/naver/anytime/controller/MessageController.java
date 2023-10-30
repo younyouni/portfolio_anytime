@@ -1,11 +1,14 @@
 package com.naver.anytime.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Message;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.MessageService;
+import com.naver.anytime.service.SchoolService;
 
 @RestController
 public class MessageController {
@@ -25,21 +30,32 @@ public class MessageController {
 	private MessageService messageService;
 	private MemberService memberService;
 	private BoardService boardService;
+	private SchoolService schoolService;
 	
 	@Autowired
-	public MessageController(MessageService messageService, MemberService memberService, BoardService boardService) {
+	public MessageController(MessageService messageService, MemberService memberService, BoardService boardService, SchoolService schoolService) {
 		this.messageService = messageService;
 		this.memberService = memberService;
 		this.boardService = boardService;
+		this.schoolService = schoolService;
 	}
 	
 	@RequestMapping(value = "/message")
 	@ResponseBody
 	public ModelAndView message(
+			@AuthenticationPrincipal UserCustom user,
 			ModelAndView mv	
 			) {
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		
 		mv.setViewName("message/Message");
+		mv.addObject("school", school);
 		return mv;
 	}
 	
