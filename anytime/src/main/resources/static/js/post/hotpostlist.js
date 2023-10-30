@@ -38,7 +38,7 @@ $(document).ready(function () {
 				scrapList += '<div class="desc">';
 				scrapList += '<p class="boardname" href="post/list?board_id=' + s.board_ID + '">' + s.boardname + '</p>';
 				scrapList += '<h2 class="medium bold">' + s.subject + '</h2>';
-				scrapList += '<p class="medium">' + s.content + '</p>';
+				scrapList += '<p class="small">' + s.content + '</p>';
 				scrapList += '<div class="info">';
 				scrapList += '<ul class="status">';
 				scrapList += '<li title="공감" class="vote">' + s.like_COUNT + '</li>';

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +28,7 @@ import com.naver.anytime.domain.Semester;
 import com.naver.anytime.domain.Semester_detail;
 import com.naver.anytime.domain.TimeTable;
 import com.naver.anytime.domain.TimeTable_detail;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.CreditService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.SchoolService;
@@ -47,13 +49,11 @@ public class CreditController {
 	private Semester_detailService semester_detailservice;
 	private TimeTableService timetableservice;
 	private TimeTable_detailService timetable_detailservice;
-	
 
 	@Autowired
 	public CreditController(MemberService memberservice, SchoolService schoolservice, CreditService creditservice,
-			SemesterService semesterservice, Semester_detailService semester_detailservice, TimeTableService timetableservice,
-			TimeTable_detailService timetable_detailservice
-			) {
+			SemesterService semesterservice, Semester_detailService semester_detailservice,
+			TimeTableService timetableservice, TimeTable_detailService timetable_detailservice) {
 
 		this.memberservice = memberservice;
 		this.schoolservice = schoolservice;
@@ -61,14 +61,22 @@ public class CreditController {
 		this.semesterservice = semesterservice;
 		this.semester_detailservice = semester_detailservice;
 		this.timetableservice = timetableservice;
-		this.timetable_detailservice =timetable_detailservice;
+		this.timetable_detailservice = timetable_detailservice;
 
 	}
 
 	@RequestMapping(value = "/calculator", method = RequestMethod.GET)
 	@ResponseBody
-	public ModelAndView main(ModelAndView mv, Principal principal) {
-		int user_id = memberservice.getUserId(principal.getName());
+	public ModelAndView main(ModelAndView mv, @AuthenticationPrincipal UserCustom user) {
+		int user_id = memberservice.getUserId(user.getUsername());
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolservice.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolservice.getSchoolDomain(school_name));
+		school.put("credit", schoolservice.getCredit(school_name));
 
 		List<Semester> semesters = semesterservice.getSemestersByUserId(user_id);
 		List<Semester_detail> details = creditservice.getSemesterDetailsByUserId(user_id);
@@ -77,7 +85,6 @@ public class CreditController {
 		mv.addObject("totalAcquisition", totalAcquisition);
 		mv.addObject("semesters", semesters);
 
-		School school = schoolservice.getSchoolByUserId(user_id);
 		Credit credit = creditservice.getCreditByUserId(user_id);
 
 		if (school != null) {
@@ -133,7 +140,6 @@ public class CreditController {
 		mv.addObject("totalgpa", formattedTotalGpa);
 		mv.addObject("totalmajor", formattedMajorGpa);
 
-		
 		// 각 학기별 성적 계산 로직 시작(chart1 학기별 전체 평점, 전공 평점 조회)
 		List<Map<String, String>> maplist = new ArrayList<>();
 
@@ -170,34 +176,31 @@ public class CreditController {
 				maplist.add(map);
 			}
 
-		} 
+		}
 		// 학기별 전체평점, 전공평범 list를 mv에 넣기
 		mv.addObject("gpa", maplist);
 		mv.setViewName("credit/credit");
-        // chart1 x축 라벨 이름 출력
+		// chart1 x축 라벨 이름 출력
 		List<Semester> semestername = semesterservice.getSemesternameByUserId(user_id);
 		mv.addObject("semestername", semestername);
 
-		// chart2 상위 5개 성적 출력하기 
+		// chart2 상위 5개 성적 출력하기
 		List<Object[]> gradeData = semester_detailservice.findTop5Grades(user_id);
 		mv.addObject("gradeData", gradeData);
-		
-		
+
 		return mv;
 	}
 
-	
 	@RequestMapping(value = "/getsemester_detail", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Semester_detail> getsemester_detail(Principal principal, int semester_id) {
-	
 
 		List<Semester_detail> details = creditservice.getSemesterDetailsBySemesterId(semester_id);
 
 		return details;
 	}
 
-	// update 경우 비동기되는 값 불러오기 
+	// update 경우 비동기되는 값 불러오기
 	@RequestMapping(value = "/updatesemester_detail", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> updatesemester_detail(@ModelAttribute Semester_detail semester_detail, ModelAndView mv,
@@ -299,9 +302,8 @@ public class CreditController {
 
 			map.put("semestername", semesters);
 			map.put("gpa", maplist);
-			
-			
-			// chart2 상위 5개 성적 출력하기 
+
+			// chart2 상위 5개 성적 출력하기
 			List<Object[]> gradeData = semester_detailservice.findTop5Grades(user_id);
 			map.put("gradeData", gradeData);
 
@@ -325,36 +327,35 @@ public class CreditController {
 			return "error";
 		}
 	}
-	
-	@RequestMapping(value = "/gettimetable",method = RequestMethod.GET)
-	@ResponseBody
-	public List<TimeTable> gettimetable(Principal principal){
-		int user_id = memberservice.getUserId(principal.getName());
-		
-		List<TimeTable> timetable = timetableservice.gettimetable(user_id);
-		
-		return timetable;
-				
-	}
-	
-	@RequestMapping(value = "/gettimetable_detail",method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> gettimetable_detail(@RequestParam("timetable_id") String timetableId, 
-	                                               @RequestParam("semester_id") String semesterId ){
-		
-		 Map<String, Object> response = new HashMap<>();
-		 
-		    // 시간표 상세 정보 조회
-	        List<TimeTable_detail> timetableDetail = timetable_detailservice.getsubject(timetableId);
-	        response.put("timetable_detail", timetableDetail);
 
-	        // 학기 상세 정보 조회
-	        List<Semester_detail> semesterDetail = semester_detailservice.getdetail(semesterId);
-	        response.put("semester_detail", semesterDetail);
-		 
-		 
-		return response;
-				
+	@RequestMapping(value = "/gettimetable", method = RequestMethod.GET)
+	@ResponseBody
+	public List<TimeTable> gettimetable(Principal principal) {
+		int user_id = memberservice.getUserId(principal.getName());
+
+		List<TimeTable> timetable = timetableservice.gettimetable(user_id);
+
+		return timetable;
+
 	}
-	
+
+	@RequestMapping(value = "/gettimetable_detail", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> gettimetable_detail(@RequestParam("timetable_id") String timetableId,
+			@RequestParam("semester_id") String semesterId) {
+
+		Map<String, Object> response = new HashMap<>();
+
+		// 시간표 상세 정보 조회
+		List<TimeTable_detail> timetableDetail = timetable_detailservice.getsubject(timetableId);
+		response.put("timetable_detail", timetableDetail);
+
+		// 학기 상세 정보 조회
+		List<Semester_detail> semesterDetail = semester_detailservice.getdetail(semesterId);
+		response.put("semester_detail", semesterDetail);
+
+		return response;
+
+	}
+
 }

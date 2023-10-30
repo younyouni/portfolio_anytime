@@ -98,7 +98,7 @@ public class PostController {
 		int currentUserId = member.getUser_id();
 
 		Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
-		
+
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
@@ -109,8 +109,8 @@ public class PostController {
 		// post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
 		if (post == null || post.getSTATUS() == 0) {
 			if (post != null && post.getSTATUS() == 0) {
-				redirectAttrs.addFlashAttribute("result","postStatus_fail");
-				mv.setViewName("redirect:/"+schoolService.getSchoolDomain(school_name));
+				redirectAttrs.addFlashAttribute("result", "postStatus_fail");
+				mv.setViewName("redirect:/" + schoolService.getSchoolDomain(school_name));
 //				mv.setViewName("error/noAuthority");
 //				mv.addObject("redirectUrl", "/anytime/post/list?board_id=" + post.getBOARD_ID());
 				return mv;
@@ -120,8 +120,8 @@ public class PostController {
 			mv.addObject("url", request.getRequestURL());
 			mv.addObject("message", "상세보기 실패입니다.");
 		} else if (member.getSchool_check() == 0 && (post.getBOARD_TYPE() == 4 || post.getBOARD_ANONYMOUS() == 1)) {
-			redirectAttrs.addFlashAttribute("result","SchoolCk_fail");
-			mv.setViewName("redirect:/"+schoolService.getSchoolDomain(school_name));
+			redirectAttrs.addFlashAttribute("result", "SchoolCk_fail");
+			mv.setViewName("redirect:/" + schoolService.getSchoolDomain(school_name));
 		}
 
 		else {
@@ -140,8 +140,6 @@ public class PostController {
 					mv.addObject("nickname", nickname);
 				}
 			}
-
-			
 
 			mv.setViewName("post/postDetail");
 			mv.addObject("postdata", post);
@@ -552,7 +550,15 @@ public class PostController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView postlist(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "board_id", required = false) int board_id, HttpSession session, Principal principal,
-			ModelAndView mv) {
+			@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+
 		int check = 0;
 
 		int user_id = memberService.getUserId(principal.getName());
@@ -630,6 +636,7 @@ public class PostController {
 			}
 
 			mv.setViewName("post/postList");
+			mv.addObject("school", school);
 			mv.addObject("page", page);
 			mv.addObject("maxpage", maxpage);
 			mv.addObject("startpage", startpage);
@@ -675,7 +682,15 @@ public class PostController {
 	public ModelAndView postsearch(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "search_field", defaultValue = "0") int search_field,
 			@RequestParam(value = "search_word", defaultValue = "") String search_word, HttpSession session,
-			ModelAndView mv, Principal principal) {
+			@AuthenticationPrincipal UserCustom user,ModelAndView mv, Principal principal) {
+		
+
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 //		   session.setAttribute("board_id", board_id);
 		session.setAttribute("search_word", search_word);
@@ -769,6 +784,7 @@ public class PostController {
 		}
 
 		mv.setViewName("post/postList");
+		mv.addObject("school", school);
 		mv.addObject("page", page);
 		mv.addObject("maxpage", maxpage);
 		mv.addObject("startpage", startpage);

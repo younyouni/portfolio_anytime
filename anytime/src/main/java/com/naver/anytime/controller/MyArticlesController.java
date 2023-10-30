@@ -8,17 +8,19 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.Post;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.BoardService;
 import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.PostService;
+import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.service.ScrapService;
 
 
@@ -30,13 +32,15 @@ public class MyArticlesController {
 	private PostService postService;	   
 	private BoardService boardService;
 	private MemberService memberService;
+	private SchoolService schoolService;
 	
 	@Autowired
-	public MyArticlesController(ScrapService scrapService, PostService postService, BoardService boardService, MemberService memberService) {
+	public MyArticlesController(ScrapService scrapService, PostService postService, BoardService boardService, MemberService memberService ,SchoolService schoolService) {
 
 		this.postService = postService;
 	    this.boardService = boardService;
 	    this.memberService = memberService;
+	    this.schoolService = schoolService;
 	}
 	
 	
@@ -44,9 +48,19 @@ public class MyArticlesController {
 	@RequestMapping(value = "/myarticle")
 	@ResponseBody
 	public ModelAndView MyArticle(
+			@AuthenticationPrincipal UserCustom user,
 			ModelAndView mv
 			) {
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		
 		mv.setViewName("myarticle/myarticle");
+		mv.addObject("school", school);
 		return mv;
 	}
 	
@@ -54,9 +68,19 @@ public class MyArticlesController {
 	@RequestMapping(value = "/mycommentarticle")
 	@ResponseBody
 	public ModelAndView MyCommentArticle(
+			@AuthenticationPrincipal UserCustom user,
 			ModelAndView mv
 			) {
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		
 		mv.setViewName("myarticle/mycommentarticle");
+		mv.addObject("school", school);
 		return mv;
 	}
 	

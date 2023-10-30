@@ -83,6 +83,7 @@ public class ReportController {
 				if(statuscheck >= 10) {
 					commentService.updateCommentStatus(comment_id);
 				}
+				
 		}
 		
 		return reportResult;

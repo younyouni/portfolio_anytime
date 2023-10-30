@@ -20,16 +20,16 @@ public class SchoolServiceImpl implements SchoolService {
 	}
 
 	@Override
-    public List<School> getSchoolList() {
-        List<School> schools = dao.getSchoolList();
-        
-        // 에러 출력용
-        for (School school : schools) {
-            logger.info("Name: {}, Total Count: {}", school.getName(), school.getTotal_count());
-        }
-        
-        return schools;
-    }
+	public List<School> getSchoolList() {
+		List<School> schools = dao.getSchoolList();
+
+		// 에러 출력용
+		for (School school : schools) {
+			logger.info("Name: {}, Total Count: {}", school.getName(), school.getTotal_count());
+		}
+
+		return schools;
+	}
 
 	@Override
 	public String getSchoolDomain(String SchoolName) {
@@ -64,5 +64,15 @@ public class SchoolServiceImpl implements SchoolService {
 	@Override
 	public int isDomain(String schoolDomain) {
 		return dao.isDomain(schoolDomain);
+	}
+
+	@Override
+	public String getAddress(String school_name) {
+		return dao.getAddress(school_name);
+	}
+
+	@Override
+	public float getCredit(String school_name) {
+		return dao.getCredit(school_name);
 	}
 }
