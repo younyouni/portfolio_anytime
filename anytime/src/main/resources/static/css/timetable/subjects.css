@@ -111,7 +111,8 @@
 
 @media only screen and (min-width: 641px) {
   #customsubjects {
-    display: none; position: absolute; z-index: 97; left: 430px; bottom: 0; padding: 25px; border: 1px solid #d6d6d6; border-bottom: 0; box-shadow: 0 0 24px rgba(0, 0, 0, 0.2); background-color: #fff;
+    display: none; position: absolute; z-index: 97; left: 430px; bottom: 0; padding: 25px; border: 1px solid #d6d6d6; border-bottom: 0; box-shadow: 0 0 24px rgba(0, 0, 0, 0.2); background-color: #fff; 
+    margin-left: 200px;
   }
   #customsubjects h2 {
     margin-bottom: 20px; color: #292929; font-size: 18px; font-weight: bold;
@@ -139,14 +140,14 @@
     font-size: 18px;
   }
   #customsubjects dl dd.timeplaces div.timeplace {
-    margin-bottom: 5px; padding: 5px; width: 400px; border: 1px solid #d6d6d6;
+    margin-bottom: 5px; padding: 5px; width: 389px; border: 1px solid #d6d6d6;
   }
   #customsubjects dl dd.timeplaces div.timeplace ol.weeks li {
     float: left; margin-right: 1px; width: 25px; height: 25px; line-height: 25px; cursor: pointer;
     color: #a6a6a6; font-size: 12px; font-weight: bold; background-color: #f2f2f2; text-align: center;
   }
   #customsubjects dl dd.timeplaces div.timeplace ol.weeks li.active {
-    color: #fff; background-color: #c62917;
+    color: #fff; background-color: #7869e6;
   }
   #customsubjects dl dd.timeplaces div.timeplace p {
     clear: left; padding-top: 5px;
@@ -164,14 +165,14 @@
     text-align: right;
   }
   #customsubjects .button {
-    padding: 0 10px; border: 0; height: 30px; line-height: 30px; color: #fff; font-size: 12px; font-weight: bold; background-color: #c62917; cursor: pointer;
+    padding: 0 10px; border: 0; height: 30px; line-height: 30px; color: #fff; font-size: 12px; font-weight: bold; background-color: #7869e6; cursor: pointer;
   }
   #customsubjects a.close {
     position: absolute; z-index: 99; right: 10px; top: 0; margin-top: -20px; border-radius: 20px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); width: 40px; height: 40px;
-    background: #a6a6a6 url('/images/subjects.close.icon.png') no-repeat center center; cursor: pointer;
+    background: #a6a6a6 url('/anytime/resources/image/timetable/subjects.close.icon.png') no-repeat center center; cursor: pointer;
   }
   #customsubjects a.close:hover {
-    background-color: #c62917;
+    background-color: #7869e6;
   }
 }
 

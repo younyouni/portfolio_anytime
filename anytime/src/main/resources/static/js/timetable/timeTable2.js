@@ -175,8 +175,6 @@ $(document).ready(function () {
             success: function(response) {
                 console.log('새 시간표 생성 응답:', response);
                 if(response != null ){
-                    alert('새 시간표 생성 성공');
-
                     $('#tableName').text(response.name);
                     $('#tableUpdatedAt').text(response.timetable_DATE);
                     $('#tableName').attr('data-id', response.timetable_ID);
@@ -188,7 +186,6 @@ $(document).ready(function () {
                     output += '<li class="active"><a href="javascript:loadTimetableDetails('+response.timetable_ID+')">' + response.name + '</a></li>'                    
                 }
                 $('li.extension').before(output);
-                
             },
             error: function(error) {
                 alert('새 시간표 생성 실패');
@@ -270,6 +267,7 @@ $("#customsubjects").submit(function (e) {
         success: function (response) {
             if (response.status === 'success') {
                 alert('수업 추가 성공');
+                location.reload();
             } else {
                 alert('수업 추가 실패');
             }
@@ -392,7 +390,7 @@ function drawTimetable(timetableData) {
     const subjectColors = ["#f2e8e8", "#ffe9e9", "#eff9cc", "#dcf2e9", "#dee8f6"];
 
     // 요일과 시간 텍스트 크기 및 글꼴 설정
-    ctx.font = '12px "맑은 고딕", 돋움,  "Apple SD Gothic Neo", tahoma';
+    ctx.font = '13px "맑은 고딕", 돋움,  "Apple SD Gothic Neo", tahoma';
     ctx.textBaseline = "middle";
 
     // 요일별 선 그리기
@@ -423,14 +421,14 @@ function drawTimetable(timetableData) {
     ctx.moveTo(50, 0);
     ctx.lineTo(50, canvas.height);
 
-    ctx.strokeStyle = "grey";
+    ctx.strokeStyle = "#a6a6a6";
     ctx.stroke();
 
     // 더 많은 라인을 추가하여 맨 위 라인을 막습니다.
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(canvas.width, 0);
-    ctx.strokeStyle = "grey";
+    ctx.strokeStyle = "#a6a6a6";
     ctx.stroke();
 
     ctx.closePath();
@@ -460,5 +458,3 @@ function drawTimetable(timetableData) {
         });
     }
 }
-
-

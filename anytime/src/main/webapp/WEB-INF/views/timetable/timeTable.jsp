@@ -51,6 +51,13 @@
     #canvas {
         margin-top: 23px;  
     }
+    #tableSetting, #customsubjects {
+    	border-radius: 12px;
+	}
+	#container form.modal{
+		margin-left: -200px;
+	    margin-top: -153px;
+	}
 </style>	
 <body style=""> 
 	<!-- <script type="text/javascript"> 
@@ -108,7 +115,9 @@
 				</ol> 
 			</div> 
 		</aside> 
+		
  		<canvas id="canvas" width="1200" height="860"></canvas>
+ 		
 		<%-- <div class="wrap" style="margin-top: 133.5px; width: 79%;"> 
 			<div class="tablehead"> 
 				<table class="tablehead"> 
@@ -280,10 +289,9 @@
 					id="tableSetting_is_primary" name="is_primary" disabled><label 
 					for="tableSetting_is_primary" class="checkbox">기본시간표 설정</label> 
 			</p> 
-			<input type="button" value="삭제" id="deleteBtn" 
-				class="button light floatLeft"> <input type="submit" 
-				value="설정 저장" class="button"> <input type="hidden" 
-				name="${_csrf.parameterName}" value="${_csrf.token}"> 
+			<input type="button" value="삭제" id="deleteBtn" class="button light floatLeft"> 
+			<input type="submit" value="설정 저장" class="button"> 
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
 		</form> 
  
 		<ul class="floating" style="left: 651px;"> 
@@ -294,11 +302,11 @@
 	<form id="customsubjects" style="display: none;"> 
 		<input type="hidden" name="id" value=""> <a title="닫기" 
 			class="close"></a> 
-		<h2></h2> 
+		<h2>새 수업 추가</h2> 
 		<dl> 
 			<dt>과목명 (필수)</dt> 
 			<dd> 
-				<input type="text" name="subject" placeholder="예) 경제학입문" 
+				<input type="text" name="subject" placeholder="예) 자료구조" 
 					maxlength="40" class="text"> 
 			</dd> 
 			<dt>교수명</dt> 
@@ -347,7 +355,7 @@
 							<option value="19">오후 7시</option> 
 							<option value="20">오후 8시</option> 
 							</select> 
-							<input type="text" placeholder="예) 종303" class="text place"> 
+							<input type="text" placeholder="예) L3" class="text place"> 
 					</p> 
 				</div> 
 			</dd> 
