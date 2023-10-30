@@ -120,14 +120,45 @@ public class AdminController {
 	public int updateBoardStatus(@RequestParam("board_id") int board_id,
 			@RequestParam("approvalStatus") int approvalStatus,
 			@RequestParam("rejectionreason") String rejectionreason) {
+		if (approvalStatus == 2) {
+			rejectionreason = "[게시판 신청 거부] " + rejectionreason + " 와 같은 사유로 게시판 신청이 거부되었습니다.";
+		}
 		return boardService.updateApprovalStatus(board_id, approvalStatus, rejectionreason);
 	}
 
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
-	@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
+	// @Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
+	 //@Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
 	public int updateBoardStatusCompleteScheduled() {
-		return boardService.updateBoardStatusComplete();
+		int admin_id = AnytimeConstants.ADMIN_ID;
+		int[] updatedBoardInfos = boardService.getBoardIdsBoardRequest();
+		int message_result = 0;
+
+		int result = boardService.updateBoardStatusComplete();
+
+		if (result > 0) {
+			// 메세지 보내기
+			if (updatedBoardInfos.length > 0) {
+				for (int i = 0; i < updatedBoardInfos.length; i++) {
+					int board_user_id = memberService.getuserIdByBoardId(updatedBoardInfos[i]);
+					int status = boardService.getBoardStatus(updatedBoardInfos[i]);
+					
+					if (status == 2) {
+						int check = messageService.isMessageAllIdPresent(admin_id, board_user_id);
+
+						if (check == 0) {
+							messageService.insertMessageAllWithSenderAndReceiver(admin_id, board_user_id);
+						}
+						int messageall_id = messageService.isMessageAllIdPresent2(admin_id, board_user_id);
+						message_result = messageService.insertMessage2(messageall_id, admin_id, board_user_id,
+								boardService.getRejectionReason(updatedBoardInfos[i]));
+					}
+					
+				}
+			}
+		}
+		return message_result;
 	}
 
 	@RequestMapping(value = "/updateBoardStatusImmediately", method = RequestMethod.GET)
@@ -135,13 +166,35 @@ public class AdminController {
 	public int updateBoardStatusImmediately(@RequestParam("board_id") int board_id) {
 		int approvalStatus = 0;
 		int currentStatus = boardService.getBoardStatus(board_id);
+		String rejectionreason = null;
+
+		int admin_id = AnytimeConstants.ADMIN_ID;
+		int reported_user_id = memberService.getuserIdByBoardId(board_id);
 
 		if (currentStatus == 1) {
 			approvalStatus = 2;
+			String board_name = boardService.getBoardnameByBoardId(board_id);
+			rejectionreason = "[게시판 비활성화] " + board_name + ": 해당 게시판이 비활성화 처리되었습니다.";
 		} else {
 			approvalStatus = 1;
 		}
-		return boardService.updateBoardStatusImmediately(board_id, approvalStatus);
+
+		int update_result = boardService.updateBoardStatusImmediately(board_id, approvalStatus, rejectionreason);
+
+		// 메세지 보내기
+		int message_result = 0;
+
+		if (currentStatus == 1 && update_result > 0) {
+			int check = messageService.isMessageAllIdPresent(admin_id, reported_user_id);
+
+			if (check == 0) {
+				messageService.insertMessageAllWithSenderAndReceiver(admin_id, reported_user_id);
+			}
+			int messageall_id = messageService.isMessageAllIdPresent2(admin_id, reported_user_id);
+			message_result = messageService.insertMessage2(messageall_id, admin_id, reported_user_id, rejectionreason);
+		}
+
+		return message_result;
 	}
 
 	@RequestMapping(value = "/boardtotal", method = RequestMethod.GET)

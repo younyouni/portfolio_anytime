@@ -116,14 +116,35 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int updateBoardStatusImmediately(int board_id, int approvalStatus) {
-		return dao.updateBoardStatusImmediately(board_id, approvalStatus);
+	public int updateBoardStatusImmediately(int board_id, int approvalStatus, String rejectionreason) {
+		return dao.updateBoardStatusImmediately(board_id, approvalStatus, rejectionreason);
 	}
 
 	@Override
 	public int getBoardStatus(int board_id) {
 		return dao.getBoardStatus(board_id);
 	}
+
+	@Override
+	public String getBoardnameByBoardId(int board_id) {
+		return dao.getBoardnameByBoardId(board_id);
+	}
+
+	@Override
+	public int[] getBoardIdsBoardRequest() {
+		return dao.getBoardIdsBoardRequest();
+	}
+
+	@Override
+	public int getUserIdByBoardId(int board_id) {
+		return dao.getUserIdByBoardId(board_id);
+	}
+
+	@Override
+	public String getRejectionReason(int board_id) {
+		return dao.getRejectionReason(board_id);
+	}
+
 	// ********************************= 윤희 =********************************
 
 	@Override

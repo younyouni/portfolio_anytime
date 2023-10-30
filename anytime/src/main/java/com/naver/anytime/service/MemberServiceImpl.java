@@ -166,6 +166,11 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateschoolcheck(id);
 	}
 
+	@Override
+	public int getuserIdByBoardId(int board_id) {
+		return dao.getUserIdByBoardId(board_id);
+	}
+
 	// ----------------------------윤희----------------------------
 
 	@Override
@@ -272,12 +277,11 @@ public class MemberServiceImpl implements MemberService {
 	public Integer getStatusCheck2(int user_id) {
 		return dao.getStatusCheck2(user_id);
 	}
+
 	@Override
 	public int getUserSchoolCheck(int user_id) {
 		return dao.getUserSchoolCheck(user_id);
 	}
 	// * * * * * * * * * * * * * * * < ok > * * * * * * * * * * * * * * * * * *
 
-	
-	
 }

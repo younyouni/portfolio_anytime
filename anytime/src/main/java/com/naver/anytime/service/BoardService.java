@@ -32,6 +32,12 @@ public interface BoardService {
 
 	public int getListCount(int searchKey, String keyword);
 
+	public int[] getBoardIdsBoardRequest();
+
+	public int getUserIdByBoardId(int i);
+
+	public String getRejectionReason(int i);
+	
 	// ********************************= 윤희 =********************************
 
 	public List<Board> getBoardContent(int board_id);
@@ -60,10 +66,12 @@ public interface BoardService {
 
 	public int updateBoardStatusComplete();
 
-	public int updateBoardStatusImmediately(int board_id, int approvalStatus);
+	public int updateBoardStatusImmediately(int board_id, int approvalStatus, String rejectionreason);
 
 	public int getBoardStatus(int board_id);
 
 	public int getBoardTypeCheck(int board_id);
+
+	public String getBoardnameByBoardId(int board_id);
 
 }
