@@ -21,5 +21,7 @@ public interface SchoolService {
 	String getSchoolNameById(int school_id);
 
 	int isDomain(String schoolDomain);
+
+	String getAddress(String school_name);
 	
 }

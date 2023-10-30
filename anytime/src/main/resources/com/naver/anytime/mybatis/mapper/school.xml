@@ -67,4 +67,12 @@
 		WHERE DOMAIN =#{schoolDomain}
 	</select>
 
+  <select id="getAddress" parameterType="String"
+		resultType="String">
+		select address
+		from school
+		where name = #{SchoolName}
+	</select>
+
+
 </mapper>
