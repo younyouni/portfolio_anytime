@@ -17,6 +17,13 @@ body {
 	display: flex;
 }
 
+.empty {
+	padding: 180px;
+	color: #a2a2a2;
+	font-size: 22px;
+	font-weight: bold;
+}
+
 .left_admin .card {
 	background-color: #eeeef7;
 	width: 14rem;
@@ -318,7 +325,6 @@ input:checked+.slider:before {
 }
 
 /* ========================== */
-
 td.complete p {
 	color: #35AA86;
 }
@@ -497,9 +503,9 @@ table.request a.article p.last {
 
 form.notice {
 	margin-top: 20px;
-	margin-bottom:-15px !important;
+	margin-bottom: -15px !important;
 }
 
-article.list a{
+article.list a {
 	border: 1px solid #e3e3e3 !important;
 }
