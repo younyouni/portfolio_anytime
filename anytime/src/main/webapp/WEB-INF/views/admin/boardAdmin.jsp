@@ -96,7 +96,6 @@
 			if (clickFlag) {
 				clickFlag = false; // 클릭 이벤트 비활성화
 				var board_id = $(this).children().find('input.approval').val();
-				alert(board_id);
 
 				$.ajax({
 					type : "get",
