@@ -11,15 +11,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.anytime.domain.TimeTable;
 import com.naver.anytime.domain.TimeTable_detail;
+import com.naver.anytime.domain.UserCustom;
 import com.naver.anytime.service.MemberService;
+import com.naver.anytime.service.SchoolService;
 import com.naver.anytime.service.TimeTableService;
 import com.naver.anytime.service.TimeTable_detailService;
 
@@ -31,19 +35,32 @@ public class TimeTableController {
 	private TimeTableService timeTableService;
 	private TimeTable_detailService timeTable_detailService;
 	private MemberService memberService;
+	private SchoolService schoolService;
 
 	@Autowired
 	public TimeTableController(TimeTableService timeTableService, TimeTable_detailService timeTable_detailService,
-			MemberService memberService) {
+			MemberService memberService, SchoolService schoolService) {
 		this.timeTableService = timeTableService;
 		this.timeTable_detailService = timeTable_detailService;
 		this.memberService = memberService;
+		this.schoolService = schoolService;
 	}
 
 	// 시간표 View 출력
 	@RequestMapping(value = "/timetable", method = RequestMethod.GET)
-	public String timeTable() {
-		return "timetable/timeTable";
+	public ModelAndView timeTable(
+			@AuthenticationPrincipal UserCustom user,
+			ModelAndView mv) {
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		mv.setViewName("timetable/timeTable");
+		mv.addObject("school", school);
+		return mv;
+		
 	}
 //	
 //	@RequestMapping(value = "/timetable/{timetable_id}", method = RequestMethod.GET)

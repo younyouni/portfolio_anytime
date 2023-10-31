@@ -152,9 +152,9 @@
 
 	<select id="findNextTimetable" parameterType="int" resultType="int">
 	    SELECT TIMETABLE_ID FROM (
-	        SELECT TIMETABLE_ID, ROW_NUMBER() OVER (ORDER BY NAME DESC) rn 
-	        FROM TIMETABLE WHERE USER_ID = #{user_id} AND STATUS = 0
-	    ) WHERE rn = 1
+        	SELECT TIMETABLE_ID, ROW_NUMBER() OVER (ORDER BY NAME ASC) rn 
+        	FROM TIMETABLE WHERE USER_ID = #{user_id} AND STATUS = 0
+    	) WHERE rn = 1
 	</select>
 
 	<update id="updateToPrimary" parameterType="int">

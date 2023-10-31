@@ -111,14 +111,13 @@ public class TimeTableServiceImpl implements TimeTableService {
     public void deleteTimetable(int user_id, int timetable_id, Integer status) {
 		timeDetailDao.deleteTimetableDetail(timetable_id);
 		timeDao.deleteTimetable(user_id, timetable_id, status);
-			
-			if(status == 1) {
-	        Integer nextId  = timeDao.findNextTimetable(user_id);
-	        if (nextId != null) { // null 체크 
-	            timeDao.updateToPrimary(nextId);
-	        }
-			}
-	    }
-    
-
+		
+		if (status == 1) {
+            Integer nextId = timeDao.findNextTimetable(user_id);
+            if (nextId != null) {
+                // 다음 시간표를 기본 시간표로 업데이트
+                timeDao.updateToPrimary(nextId);
+            }
+        }
+    }
 }
