@@ -16,9 +16,6 @@ $(document).ready(function () {
         $(this).addClass('active');
     });
 
-
-    // var selectedSemester = $("#semesters option:selected").text();
-
     // 설정버튼 -> Modal
     $("#settingBtn").click(function() {
         $("#tableSetting").show();
@@ -122,12 +119,6 @@ $(document).ready(function () {
             success: function(response) {
                 alert('이름 변경 성공');
                 console.log(response);
-                // $("#tableName").text(newName);
-
-                // if (response.TIMETABLE_DATE) {
-                //     $('#tableUpdatedAt').text(response.TIMETABLE_DATE);
-                // }
-                
                 location.reload();
             },
             error: function(error) {
@@ -182,6 +173,7 @@ $(document).ready(function () {
                     console.log('새 시간표 생성 후 timetables 상태:', timetables);
 
                     $('div.menu ol li').removeClass('active');
+                    loadTimetableDetails(response.timetable_ID);
                     output += '<li class="active"><a href="javascript:loadTimetableDetails('+response.timetable_ID+')">' + response.name + '</a></li>'                    
                 }
                 $('li.extension').before(output);
@@ -224,6 +216,18 @@ $("#customsubjects").submit(function (e) {
     var start_time = parseInt($(".starthour option:selected").val(), 10);
     var end_time = parseInt($(".endhour option:selected").val(), 10);
     var classroom = $(".place").val();
+
+    // 과목명이 비어 있는지 확인
+    if (subject.trim() == "") {
+        alert("과목명을 입력하세요!");
+        return;
+    }
+
+    // 교수명이 비어 있는지 확인
+    if (professor.trim() == "") {
+        alert("교수명을 입력하세요!");
+        return;
+    }
 
     var newClass = {
         subject: subject,
@@ -350,8 +354,6 @@ function getTimetableList(semester){
 
 }
 
-// var timetableData = {};
-
 // 생성 시간표 클릭시 정보 가져오기
 function loadTimetableDetails(timetable_id) {
     // 시간표 클릭시 active 효과 변경
@@ -374,11 +376,6 @@ function loadTimetableDetails(timetable_id) {
             $("#tableName").text(rdata.timetable.name);
             $("#tableUpdatedAt").text(rdata.timetable.timetable_DATE);
             $("#tableName").attr("data-id", rdata.timetable.timetable_ID);
-
-            // var newClass = rdata.timetalbeDetails;
-
-            // // DB에서 가져온 데이터를 직접 drawTimetable() 함수에 전달합니다.
-            // drawTimetable(newClass); 
 
             // DB에서 가져온 데이터를 직접 drawTimetable() 함수에 전달합니다.
             drawTimetable(rdata.timetalbeDetails); 
@@ -413,10 +410,6 @@ function drawTimetable(timetableData) {
         let x = (i + 1) * (canvas.width / (daysOfWeek.length + 1));
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
-
-        if (i < daysOfWeek.length) {
-            ctx.fillText(daysOfWeek[i], x + 10, 20);
-        }
     }
 
     for (let j = 0; j <= 14; j++) {
@@ -424,13 +417,44 @@ function drawTimetable(timetableData) {
         ctx.moveTo(50, y);
         ctx.lineTo(canvas.width, y);
 
+        if (j == 0) { // 첫 번째 행인 경우
+            ctx.fillStyle = "#f8f8f8"; 
+            ctx.fillRect(50, 0, canvas.width, y); // 첫 번째 행에 색상 적용
+        }
+
         if (j < 14) {
             let hour = j + 8;
             let ampm = hour >= 12 ? "오후" : "오전";
             hour = hour > 12 ? hour - 12 : hour;
-            ctx.fillText(ampm + " " + hour + "시", 50, y + 15);
+            ctx.fillStyle = "#000"; // 텍스트 색상변경
+            ctx.fillText(ampm + " " + hour + "시", 100, y + 32);
         }
     }
+
+    // 요일 텍스트 그리기
+    for (let i = 0; i < daysOfWeek.length; i++) {
+        let x = (i + 1) * (canvas.width / (daysOfWeek.length + 1));
+        ctx.fillStyle = "#000";
+        ctx.fillText(daysOfWeek[i], x + 93, 32);
+    }
+
+            // 열 백그라운드 적용할때 사용하기 위해 임시주석 //
+    // // 첫 번째 열 배경색 적용
+    // ctx.fillStyle = "#eeeef7";
+    // ctx.fillRect(50, 0, 150, canvas.height);
+
+    // // 시간 표시
+    // for (let j = 0; j <= 14; j++) {
+    //     let y = (j + 1) * (canvas.height / (21 - 7));
+
+    //     if (j < 14) {
+    //         let hour = j + 8;
+    //         let ampm = hour >= 12 ? "오후" : "오전";
+    //         hour = hour > 12 ? hour - 12 : hour;
+    //         ctx.fillStyle = "#000"; // 다음에 그릴 텍스트의 색상을 검은색으로 변경
+    //         ctx.fillText(ampm + " " + hour + "시", 100, y + 32);
+    //     }
+    // }
 
     // 왼쪽 경계선 추가
     ctx.moveTo(50, 0);
@@ -467,18 +491,27 @@ function drawTimetable(timetableData) {
             ctx.fillStyle = "#000";
 
             // 과목명, 교수 이름 및 장소 출력
-            ctx.fillText(classItem.subject, xStart + 10, yStart + 10);
-            ctx.fillText(classItem.professor, xStart + 10, yStart + 28);
-            ctx.fillText(classItem.classroom, xStart + 10, yStart + 45);
+            ctx.font = 'bold 15px "맑은 고딕"'; 
+            ctx.fillStyle = '#292929'; 
+            ctx.fillText(classItem.subject, xStart + 10, yStart + 15);
+
+            ctx.font = '13px "맑은 고딕"';
+            ctx.fillText(classItem.professor, xStart + 10, yStart + 33);
+
+            // 강의장 정보가 null인 경우 빈 문자열로 대체
+            const classroomText = classItem.classroom === null ? '' : classItem.classroom;
+            ctx.font = '12px "맑은 고딕"';
+            ctx.fillText(classroomText, xStart + 10, yStart + 50);
 
             // 과목 삭제 버튼 그리기
-            ctx.font = 'bold 16px Arial';
+            ctx.font = '16px';
             ctx.fillStyle = '#808080'; 
             ctx.fillText('Ｘ', xStart + 180, yStart + 10);
             
         });
     }
 
+    canvas.removeEventListener('click', addEventListener);
     // 캔버스에 클릭 이벤트 리스너를 추가
     canvas.addEventListener('click', function(e) {
     const rect = canvas.getBoundingClientRect();
@@ -496,7 +529,6 @@ function drawTimetable(timetableData) {
                 mouseX >= xStart + 175 && mouseX <= xStart + 205 &&
                 mouseY >= yStart + 5 && mouseY <= yStart + 25
             ) {
-                if (confirm('이 수업을 삭제하시겠습니까?')) {
                 // 클릭한 시간표를 배열에서 삭제
                 const deletedClass = timetableData.splice(i, 1)[0];
     
@@ -519,7 +551,6 @@ function drawTimetable(timetableData) {
                     },
                     success: function(response) {
                         if (response.message == '수업 삭제 성공') {
-                            location.reload();
                         } else {
                             alert('수업 삭제 실패');
                         }
@@ -530,10 +561,8 @@ function drawTimetable(timetableData) {
                         console.log(error);
                     }
                 });
-            }
                 break; // 반복문 종료
             }
         }
     });
 }
-

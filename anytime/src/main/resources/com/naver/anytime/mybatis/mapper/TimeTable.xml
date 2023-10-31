@@ -36,13 +36,6 @@
 		        STATUS = #{STATUS}
 		    WHERE TIMETABLE_ID = #{TIMETABLE_ID}
        </update>
-      
-      <!-- 
-       <insert id="insert" parameterType="TimeTable">
-	      INSERT INTO TIMETABLE (TIMETABLE_ID, USER_ID, NAME, SEMESTER, TIMETABLE_DATE, STATUS)
-	      VALUES (#{TIMETABLE_ID}, #{USER_ID}, #{NAME}, #{SEMESTER}, SYSDATE, #{STATUS})
-   	   </insert>
-	       --> 
    	   
    	   <select id="getLastTimeTable" resultType="TimeTable" parameterType="int">
 		    SELECT *
@@ -129,7 +122,6 @@
     		SELECT timetable_seq.CURRVAL FROM DUAL
 	  </select>
 	  
-	  <!-- 시간표 링크진입 실험용 -->
     <select id="getTimeTableById" parameterType="int" resultType="TimeTable">
       SELECT TIMETABLE_ID, USER_ID, NAME, SEMESTER, 
 	           TO_CHAR(TIMETABLE_DATE,'MM/DD HH24:MI') as TIMETABLE_DATE, STATUS 

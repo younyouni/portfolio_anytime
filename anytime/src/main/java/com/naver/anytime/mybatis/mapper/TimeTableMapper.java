@@ -1,10 +1,7 @@
 package com.naver.anytime.mybatis.mapper;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import com.naver.anytime.domain.TimeTable;
 
 @Mapper
@@ -38,7 +35,6 @@ public interface TimeTableMapper {
 
 	public int checkTimetable(int user_id, String semester);
 	
-	//시간표링크진입 실험용
 	TimeTable getTimeTableById(int timetable_id);
 
 	public void updateStatus(int user_id, int timetable_id);

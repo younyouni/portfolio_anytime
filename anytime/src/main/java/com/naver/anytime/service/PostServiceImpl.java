@@ -187,7 +187,7 @@ public class PostServiceImpl implements PostService {
 		return postDao.updatePostStatus(post_id);
 	}
 
-	// 글쓰기 실험용
+	// 글쓰기 
 	@Override
 	public void insertPost(Post post) {
 		if (post.getSUBJECT() == null || post.getSUBJECT().isEmpty()) {
@@ -197,16 +197,11 @@ public class PostServiceImpl implements PostService {
 
 	}
 
-	// 글수정 실험용
+	// 글수정 
 	@Override
 	public void updatePost(Post post) {
 		postDao.updatePost(post);
 	}
-
-//	@Override
-//	public int increaseLike(Integer post_id, int currentUserId) {
-//		return postDao.increaseLike(post_id, currentUserId);
-//	}
 
 	@Override
 	public int getPostLikes(int post_id) {
