@@ -62,6 +62,7 @@ public class AdminController {
 	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
+		String auth = user.getAuth();
 
 		// 일별 데이터
 		DailyData dataTrend = dailyDataService.getDataTrend();
@@ -83,6 +84,7 @@ public class AdminController {
 
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
+		mv.addObject("auth", auth);
 		mv.addObject("dataTrend", dataTrend);
 		mv.addObject("registrationTrend", registrationTrend);
 		mv.addObject("reportCount", reportCount);
@@ -103,6 +105,8 @@ public class AdminController {
 	public ModelAndView getBoardAdmin(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
 
@@ -127,7 +131,7 @@ public class AdminController {
 
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
-	// @Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
+	@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
 	// @Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
 	public int updateBoardStatusCompleteScheduled() {
 		return boardService.updateBoardStatusComplete();
@@ -197,6 +201,8 @@ public class AdminController {
 	public ModelAndView getReportAdmin(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
 
@@ -310,6 +316,8 @@ public class AdminController {
 	public ModelAndView getAdminNotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
 

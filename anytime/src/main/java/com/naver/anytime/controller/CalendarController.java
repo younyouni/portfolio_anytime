@@ -56,6 +56,8 @@ public class CalendarController {
 			@AuthenticationPrincipal UserCustom user,
 			ModelAndView mv
 			) {
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
