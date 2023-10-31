@@ -129,36 +129,9 @@ public class AdminController {
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
 	// @Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
-	 //@Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
+	// @Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
 	public int updateBoardStatusCompleteScheduled() {
-		int admin_id = AnytimeConstants.ADMIN_ID;
-		int[] updatedBoardInfos = boardService.getBoardIdsBoardRequest();
-		int message_result = 0;
-
-		int result = boardService.updateBoardStatusComplete();
-
-		if (result > 0) {
-			// 메세지 보내기
-			if (updatedBoardInfos.length > 0) {
-				for (int i = 0; i < updatedBoardInfos.length; i++) {
-					int board_user_id = memberService.getuserIdByBoardId(updatedBoardInfos[i]);
-					int status = boardService.getBoardStatus(updatedBoardInfos[i]);
-					
-					if (status == 2) {
-						int check = messageService.isMessageAllIdPresent(admin_id, board_user_id);
-
-						if (check == 0) {
-							messageService.insertMessageAllWithSenderAndReceiver(admin_id, board_user_id);
-						}
-						int messageall_id = messageService.isMessageAllIdPresent2(admin_id, board_user_id);
-						message_result = messageService.insertMessage2(messageall_id, admin_id, board_user_id,
-								boardService.getRejectionReason(updatedBoardInfos[i]));
-					}
-					
-				}
-			}
-		}
-		return message_result;
+		return boardService.updateBoardStatusComplete();
 	}
 
 	@RequestMapping(value = "/updateBoardStatusImmediately", method = RequestMethod.GET)
@@ -167,9 +140,6 @@ public class AdminController {
 		int approvalStatus = 0;
 		int currentStatus = boardService.getBoardStatus(board_id);
 		String rejectionreason = null;
-
-		int admin_id = AnytimeConstants.ADMIN_ID;
-		int reported_user_id = memberService.getuserIdByBoardId(board_id);
 
 		if (currentStatus == 1) {
 			approvalStatus = 2;
@@ -181,20 +151,7 @@ public class AdminController {
 
 		int update_result = boardService.updateBoardStatusImmediately(board_id, approvalStatus, rejectionreason);
 
-		// 메세지 보내기
-		int message_result = 0;
-
-		if (currentStatus == 1 && update_result > 0) {
-			int check = messageService.isMessageAllIdPresent(admin_id, reported_user_id);
-
-			if (check == 0) {
-				messageService.insertMessageAllWithSenderAndReceiver(admin_id, reported_user_id);
-			}
-			int messageall_id = messageService.isMessageAllIdPresent2(admin_id, reported_user_id);
-			message_result = messageService.insertMessage2(messageall_id, admin_id, reported_user_id, rejectionreason);
-		}
-
-		return message_result;
+		return update_result;
 	}
 
 	@RequestMapping(value = "/boardtotal", method = RequestMethod.GET)
