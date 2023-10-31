@@ -23,44 +23,50 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style type="text/css">
 .container {
+	font-family: "맑은 고딕", 돋움, "Apple SD Gothic Neo", tahoma;
 	display: grid;
-	grid-template-columns: repeat(2, 160px);
-	grid-gap: 28px;
-	margin: auto 0;
+	grid-template-columns: repeat(1, 160px);
+	grid-gap: 47px;
+	margin: auto 0 20px;
 }
 
 .container .box {
-	width: 176%;
+	font-family: "맑은 고딕", 돋움, "Apple SD Gothic Neo", tahoma;
+	width: 225%;
 	display: flex;
+	margin-left: 25px;
 }
 
 .container .box h2 {
-	margin-left: 70px;
+	font-family: "맑은 고딕", 돋움, "Apple SD Gothic Neo", tahoma;
+	margin-left: 100px;
 	display: block;
 	text-align: center;
 	color: #666;
-	margin-top: 40px;
-	font-size: 15px;
+	margin-top: 45px;
+	font-size: 18px;
 	color: #666;
 	display: block;
-	line-height: 15px;
+	line-height: 25px;
 }
 
 .container .box .chart {
+	font-family: "맑은 고딕", 돋움, "Apple SD Gothic Neo", tahoma;
 	position: relative;
 	width: 45%;
 	height: 100%;
 	text-align: center;
-	font-size: 20px;
-	line-height: 130px;
+	font-size: 27px;
+	line-height: 162px;
 	height: 150px;
 	color: #666;
 }
 
 .container .box canvas {
+	font-family: "맑은 고딕", 돋움, "Apple SD Gothic Neo", tahoma;
 	position: absolute;
 	top: 0;
-	left: 0;
+	left: -3px;
 	width: 100%;
 	width: 100%;
 }
@@ -68,6 +74,11 @@
 .daily {
 	width: 60px;
 	margin-bottom: 3px;
+}
+
+a:link, a:visited, a:active, a:hover {
+	text-decoration: none; /* 밑줄 제거 */
+	color: inherit; /* 기본 텍스트 컬러로 유지 */
 }
 </style>
 </head>
@@ -238,15 +249,20 @@
 													<div class="chart" data-percent="${todoList.BOARD_PERCENT}"
 														data-scale-color="#ffb400">${todoList.BOARD_PERCENT}%</div>
 													<h2>
-														게시판 승인 <br> <br>${todoList.DONE_BOARD}/${todoList.TO_DO_BOARD}</h2>
+														<a href="${pageContext.request.contextPath}/boardAdmin">
+															게시판 승인 <br> <br>${todoList.DONE_BOARD}/${todoList.TO_DO_BOARD}
+														</a>
+													</h2>
 												</div>
-												`
 												<div class="box">
 													<div class="chart"
 														data-percent="${todoList.REPORT_PERCENT}"
 														data-scale-color="#ffb400">${todoList.REPORT_PERCENT}%</div>
 													<h2>
-														신고 처리<br> <br>${todoList.DONE_REPORT}/${todoList.TO_DO_REPORT}</h2>
+														<a href="${pageContext.request.contextPath}/reportAdmin">
+															신고 처리<br> <br>${todoList.DONE_REPORT}/${todoList.TO_DO_REPORT}
+														</a>
+													</h2>
 												</div>
 											</div>
 										</div>
@@ -284,7 +300,8 @@
 									<div id="reportChart"
 										style="min-height: 365px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
 										class="echart" _echarts_instance_="ec_1698273089873">
-										<div id="piechart" style="width: 500px; height: 500px;"></div>
+										<div id="piechart"
+											style="width: 100%; height: 480px; margin-top: -20px;"></div>
 									</div>
 								</div>
 							</div>
@@ -300,7 +317,6 @@
 
 <script type="text/javascript">
 $(function() {
-   
 	google.charts.load('current', {'packages':['corechart', 'table']});
 	google.charts.setOnLoadCallback(function() {
 	    drawTable();
@@ -318,7 +334,7 @@ $(function() {
 	        ]);
 
 	        var table_school = new google.visualization.Table(document.getElementById('table_school'));
-	        table_school.draw(data_school, {showRowNumber: true, width: '100%', height: '110%', interactivity: 'none'});
+	        table_school.draw(data_school, {showRowNumber: true, width: '100%', height: '110%'});
 	        
 
 	        var data_table = new google.visualization.DataTable();
@@ -346,6 +362,7 @@ $(function() {
 	    lineCap: "circle",
 	    animate: 2000,
 	  });
+    
     
     // Students Registration Trend - Stack Chart
     var stackChartCanvas = document.getElementById('stackChart');
@@ -454,6 +471,11 @@ $(function() {
           </c:forEach>
         ]);
         var reportReasonOptions = {
+        		chartArea:{
+        			top:40,
+        			left:40,
+        			right:40,
+        		},
          		title: {
         			display: false,
          		},
