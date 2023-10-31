@@ -36,9 +36,9 @@ import com.naver.anytime.task.SendMail;
 import com.naver.constants.AnytimeConstants;
 
 @Controller
-public class MemberController2 {
+public class MemberLoginController {
 
-	private static final Logger logger = LoggerFactory.getLogger(MemberController2.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemberLoginController.class);
 
 	private MemberService memberservice;
 	private SchoolService schoolService;
@@ -47,7 +47,7 @@ public class MemberController2 {
 	private SendMail sendMail;
 
 	@Autowired
-	public MemberController2(MemberService memberservice, SchoolService schoolService, PasswordEncoder passwordEncoder,
+	public MemberLoginController(MemberService memberservice, SchoolService schoolService, PasswordEncoder passwordEncoder,
 			SendMail sendMail) {
 		this.memberservice = memberservice;
 		this.schoolService = schoolService;

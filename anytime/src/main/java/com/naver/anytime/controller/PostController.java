@@ -682,8 +682,7 @@ public class PostController {
 	public ModelAndView postsearch(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "search_field", defaultValue = "0") int search_field,
 			@RequestParam(value = "search_word", defaultValue = "") String search_word, HttpSession session,
-			@AuthenticationPrincipal UserCustom user,ModelAndView mv, Principal principal) {
-		
+			@AuthenticationPrincipal UserCustom user, ModelAndView mv, Principal principal) {
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.naver.anytime.domain.Comments;
 import com.naver.anytime.service.CommentService;
 import com.naver.anytime.service.MemberService;
-import com.naver.constants.AnytimeConstants;
 
 @RestController // @Controller + @ResponseBody
 @RequestMapping(value = "/comment")
@@ -70,5 +69,4 @@ public class CommentController {
 		result = commentService.insertReplyComment(co);
 		return result;
 	}
-
 }
