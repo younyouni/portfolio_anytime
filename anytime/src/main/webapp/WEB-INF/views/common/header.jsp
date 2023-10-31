@@ -22,14 +22,15 @@
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
 	rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script>
 	$(function() {
 
 		var currentPage = location.pathname;
-		var newPath = currentPage.replace('/anytime/', ''); // 나중에 설정 바꾸고서 날리기
+		var newPath = currentPage.replace('/anytime/', '');
 		console.log("currentPage" + currentPage);
 
 		$("#menu li a").each(function() {
@@ -48,27 +49,19 @@
 		$(".my").on("click", function() {
 			$("#menu > li").removeClass("active");
 		})
-		/*$("li").on("click", function() {
-			if (!userid) {
-				event.preventDefault();
-				alert("로그인이 필요합니다.");
-				location.href = "${pageContext.request.contextPath}/member/login";
-			}
-		});*/
+
 	});
 </script>
 
-
-<nav>
+<c:if test="${auth eq 'ROLE_MEMBER' || member.auth eq 'ROLE_MEMBER' }">
+	<nav>
 		<div class="wrap">
 			<div id="logo">
 				<a href="${pageContext.request.contextPath}/${school.domain}"><img
 					src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
 				<p>
-					<span class="name multiple">애니타임</span>
-					<span class="subname">
-						${school.name}
-					</span>
+					<span class="name multiple">애니타임</span> <span class="subname">
+						${school.name} </span>
 				</p>
 			</div>
 			<sec:authorize access="isAuthenticated()">
@@ -101,3 +94,37 @@
 			</ul>
 		</div>
 	</nav>
+</c:if>
+<c:if test="${auth eq 'ROLE_ADMIN' || member.auth eq 'ROLE_ADMIN'}">
+	<nav>
+		<div class="wrap">
+			<div id="logo">
+				<a href="${pageContext.request.contextPath}/admin"><img
+					src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
+				<p>
+					<span class="name multiple">애니타임</span><span class="subname">Anytime</span>
+				</p>
+			</div>
+			<sec:authorize access="isAuthenticated()">
+				<sec:authentication property="principal" var="pinfo" />
+				<div id="account">
+					<a href="${pageContext.request.contextPath}/message" title="쪽지함"
+						class="icon message">쪽지함</a> <a
+						href="${pageContext.request.contextPath}/my" title="내 정보"
+						class="icon my">내 정보</a> <input type="hidden" id="login_id"
+						value="${pinfo.username}"> <input type="hidden"
+						id="school_id" value="${school.school_id}">
+				</div>
+			</sec:authorize>
+			<ul id="menu">
+				<li class="active"><a
+					href="${pageContext.request.contextPath}/admin">대시보드</a></li>
+				<li><a href="${pageContext.request.contextPath}/boardAdmin">게시판
+						관리</a></li>
+				<li><a href="${pageContext.request.contextPath}/reportAdmin">신고
+						관리</a></li>
+				<li><a href="${pageContext.request.contextPath}/adminNotice">공지사항</a></li>
+			</ul>
+		</div>
+	</nav>
+</c:if>

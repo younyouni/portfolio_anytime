@@ -47,8 +47,8 @@ public class MemberLoginController {
 	private SendMail sendMail;
 
 	@Autowired
-	public MemberLoginController(MemberService memberservice, SchoolService schoolService, PasswordEncoder passwordEncoder,
-			SendMail sendMail) {
+	public MemberLoginController(MemberService memberservice, SchoolService schoolService,
+			PasswordEncoder passwordEncoder, SendMail sendMail) {
 		this.memberservice = memberservice;
 		this.schoolService = schoolService;
 		this.passwordEncoder = passwordEncoder;
@@ -59,6 +59,8 @@ public class MemberLoginController {
 	@GetMapping(value = "/my")
 	public ModelAndView info(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -83,6 +85,8 @@ public class MemberLoginController {
 	// 비밀번호 변경페이지 이동
 	@GetMapping(value = "/password")
 	public ModelAndView updatePassword(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -134,6 +138,8 @@ public class MemberLoginController {
 	@GetMapping(value = "/update")
 	public ModelAndView updateMember(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -191,6 +197,8 @@ public class MemberLoginController {
 	public ModelAndView getBoardlist(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		int school_check = user.getSchool_check();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -217,6 +225,8 @@ public class MemberLoginController {
 
 	@GetMapping(value = "/delete")
 	public ModelAndView deleteMemberProcess(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -273,7 +283,9 @@ public class MemberLoginController {
 
 	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
 	public ModelAndView certificate(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
-
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
+		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
