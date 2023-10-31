@@ -1,8 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" 
-	pageEncoding="UTF-8"%> 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
-<%@ taglib prefix="sec" 
-	uri="http://www.springframework.org/security/tags"%> 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> 
 <html> 
 <head> 
 <link rel="shortcut icon" type="image/x-icon" 
@@ -10,41 +8,15 @@
 <title>애니타임</title> 
 <jsp:include page="../common/header.jsp" /> 
  
-<link type="text/css" 
-	href="${pageContext.request.contextPath}/resources/css/common/common.css" 
-	rel="stylesheet"> 
-<link type="text/css" 
-	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" 
-	rel="stylesheet"> 
-<link type="text/css" 
-	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" 
-	rel="stylesheet"> 
-<link type="text/css" 
-	href="${pageContext.request.contextPath}/resources/css/timetable/container.table.css" 
-	rel="stylesheet"> 
-<link type="text/css" 
-	href="${pageContext.request.contextPath}/resources/css/timetable/subjects.css" 
-	rel="stylesheet"> 
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet"> 
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet"> 
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet"> 
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/container.table.css" rel="stylesheet"> 
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/subjects.css" rel="stylesheet"> 
  
 <meta name="_csrf" content="${_csrf.token}"> 
 <meta name="_csrf_header" content="${_csrf.headerName}"> 
- 
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
-<%-- <script src="${pageContext.request.contextPath}/resources/js/timetable/timeTable2.js"></script> --%> 
- 
- 
-  
-<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/extensions.jquery-1.10.2.min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/extensions.underscore-min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/common.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tableload.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.tablesave.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.subjects.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.customsubjects.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.index.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.subjectcolumninfo.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.imagegenerator.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timetable/timetable.js"></script> --%> 
  
 </head> 
 <style>
@@ -60,9 +32,6 @@
 	}
 </style>	
 <body style=""> 
-	<!-- <script type="text/javascript"> 
-		var _timetableGridInfo = []; 
-	</script> --> 
  
 	<div id="container" class="timetable" style="height: 679px;"> 
 		<hr> 
@@ -116,166 +85,7 @@
 			</div> 
 		</aside> 
 		
- 		<canvas id="canvas" width="1200" height="860"></canvas>
- 		
-		<%-- <div class="wrap" style="margin-top: 133.5px; width: 79%;"> 
-			<div class="tablehead"> 
-				<table class="tablehead"> 
-					<tbody> 
-						<tr> 
-							<th></th> 
-							<td>월</td> 
-							<td>화</td> 
-							<td>수</td> 
-							<td>목</td> 
-							<td>금</td> 
-							<td style="display: none;">토</td> 
-							<td style="display: none;">일</td> 
-						</tr> 
-					</tbody> 
-				</table> 
-			</div> 
-			 
-			<div class="tablebody"> 
-				<canvas id="canvas" width="958" height="600">캔버스 API</canvas> 
-				<table class="tablebody" style="margin-top: -542px; width: 958.5px;"> 
-					<tbody> 
-						<tr> 
-							<th><div class="times"> 
-									<div class="time">오전 8시</div> 
-									<div class="time">오전 9시</div> 
-									<div class="time">오전 10시</div> 
-									<div class="time">오전 11시</div> 
-									<div class="time">오후 12시</div> 
-									<div class="time">오후 1시</div> 
-									<div class="time">오후 2시</div> 
-									<div class="time">오후 3시</div> 
-									<div class="time">오후 4시</div> 
-									<div class="time">오후 5시</div> 
-									<div class="time">오후 6시</div> 
-									<div class="time">오후 7시</div> 
-									<div class="time">오후 8시</div> 
-								</div></th> 
-							<td><div class="cols" style="width: 203px;"> 
-								</div> 
-								<div class="grids"> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-								</div></td> 
-							<td><div class="cols" style="width: 203px;"></div> 
-								<div class="grids"> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-								</div></td> 
-							<td><div class="cols" style="width: 204px;"></div> 
-								<div class="grids"> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-								</div></td> 
-							<td> 
-								<div class="grids"> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-								</div> 
-							</td> 
-							<td><div class="cols" style="width: 204px;"></div> 
-								<div class="grids"> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-								</div></td> 
-							<td style="display: none;"><div class="cols"></div> 
-								<div class="grids"> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-								</div></td> 
-							<td style="display: none;"><div class="cols"></div> 
-								<div class="grids"> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-									<div class="grid"></div> 
-								</div></td> 
-						</tr> 
-					</tbody> 
-				</table> 
-				<div class="nontimes"></div> 
-			</div> 
-		</div>  --%>
+ 		<canvas id="canvas" width="1200" height="860"></canvas> 
  
 		<form id="tableSetting" class="modal"> 
 			<a title="닫기" class="close"></a> 
