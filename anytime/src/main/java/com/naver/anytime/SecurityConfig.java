@@ -63,7 +63,7 @@ public class SecurityConfig{
 				.antMatchers("/member/forgotpwd_result").permitAll()
 				.antMatchers("/member/forgotpwd_resultProcess").permitAll()
 				
-				 // Member2
+				 // Member_after_login
 				.antMatchers("/my").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/password").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/update").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
@@ -76,7 +76,6 @@ public class SecurityConfig{
 				.antMatchers("/certificate_mailcheck").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/certificateProcess").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 
-				/*
 				 // Admin
 				.antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/boardAdmin").access("hasRole('ROLE_ADMIN')")
@@ -89,7 +88,6 @@ public class SecurityConfig{
 			    .antMatchers("/reportProcess").access("hasRole('ROLE_ADMIN')")
 			    .antMatchers("/adminNotice").access("hasRole('ROLE_ADMIN')")  
 			    .antMatchers("/adminNoticeList").access("hasRole('ROLE_ADMIN')")
-			    */
 				
 			     // Board 
 				.antMatchers("/submenulist").permitAll() //바꿀게요
@@ -164,21 +162,8 @@ public class SecurityConfig{
 				.antMatchers("/updateTimetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/loadTimetableDetails").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/addSubject").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
-				.antMatchers("/deleteTimetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/deleteTimetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
 				
-				
-				
-				.antMatchers("/admin").permitAll()
-				.antMatchers("/boardAdmin").permitAll()
-			    .antMatchers("/updateBoardStatus").permitAll()
-			    .antMatchers("/updateBoardStatusImmediately").permitAll()
-			    .antMatchers("/boardtotal").permitAll()
-			    .antMatchers("/reportAdmin").permitAll()
-			    .antMatchers("/reportListAdmin").permitAll()
-			    .antMatchers("/reportTotal").permitAll()
-			    .antMatchers("/reportProcess").permitAll()
-			    .antMatchers("/adminNotice").permitAll()
-			    .antMatchers("/adminNoticeList").permitAll();
 				
 		
 		// loginprocess

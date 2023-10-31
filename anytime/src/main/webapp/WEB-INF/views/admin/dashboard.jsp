@@ -31,7 +31,7 @@
 }
 
 .container .box {
-	width: 90%;
+	width: 176%;
 	display: flex;
 }
 
@@ -53,7 +53,7 @@
 	height: 100%;
 	text-align: center;
 	font-size: 20px;
-	line-height: 125px;
+	line-height: 130px;
 	height: 150px;
 	color: #666;
 }
@@ -64,6 +64,11 @@
 	left: 0;
 	width: 100%;
 	width: 100%;
+}
+
+.daily {
+	width: 60px;
+	margin-bottom: 3px;
 }
 </style>
 </head>
@@ -87,7 +92,8 @@
 										<div class="d-flex align-items-center">
 											<div
 												class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-												<i class="bi bi-cart"></i>
+												<img class="daily"
+													src="${pageContext.request.contextPath}/resources/image/admin/school.png"></img>
 											</div>
 											<div class="ps-3">
 												<h6>${dataTrend.SCHOOLS}</h6>
@@ -124,7 +130,8 @@
 										<div class="d-flex align-items-center">
 											<div
 												class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-												<i class="bi bi-currency-dollar"></i>
+												<img class="daily"
+													src="${pageContext.request.contextPath}/resources/image/admin/post.png"></img>
 											</div>
 											<div class="ps-3">
 												<h6>${dataTrend.POSTS}</h6>
@@ -160,7 +167,8 @@
 										<div class="d-flex align-items-center">
 											<div
 												class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-												<i class="bi bi-people"></i>
+												<img class="daily"
+													src="${pageContext.request.contextPath}/resources/image/admin/user.png"></img>
 											</div>
 											<div class="ps-3">
 												<h6>${dataTrend.MEMBERS}</h6>
@@ -316,68 +324,84 @@ $(function() {
     	  	"${registrationTrend.DAY_STRING}"<c:if test="${!loop.last}">, </c:if>
     	  </c:forEach>
     	  ]; //day
-    	    
-	  const stackdata = {
-	    labels: labels,
-	    datasets: [
-	      {
-	        label: '기존 회원 수', // 전체 가입자 - 신규가입자
-	        data: [
-	        	<c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
-	        	  ${registrationTrend.PRE}<c:if test="${!loop.last}">, </c:if>
-	        	</c:forEach>
-	        	], //주간
-	        backgroundColor: '#FF6384',
-	        stack: 'Stack 0',
-	      },
-	      {
-	        label: '신규 회원 수', //신규 가입자 
-	        data: [
-	        	<c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
-		      	  ${registrationTrend.NEW_MEMBERS}<c:if test="${!loop.last}">, </c:if>
-		      	</c:forEach>
-		      	],
-	        backgroundColor: '#36A2EB',
-	        stack: 'Stack 0',
-	      },
-	      {
-	        label: '탈퇴 회원 수',
-	        data:[
-	        	<c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
-		      	  ${registrationTrend.WITHDRAWN_MEMBERS}*-1<c:if test="${!loop.last}">, </c:if>
-		      	</c:forEach>
-		      	],
-	        backgroundColor: '#4BC0C0',
-	        stack: 'Stack 1',
-	      },
-	    ]
-	  };
-	
-		  const stackChart = new Chart(stackChartCanvas, {
-			  type: 'bar',
-			  data: stackdata,
-			  options: {
-			    plugins: {
-			      title: {
-			        display: false,
-			        text: 'Chart.js Bar Chart - Stacked'
-			      }
-			    },
-			    responsive: true,
-			    interaction: {
-			      intersect: false,
-			    },
-			    scales: {
-			      x: {
-			        stacked: true,
-			      },
-			      y: {
-			        stacked: true
-			      }
-			    }
-			  }
-			});
-	  
+      const stackdata = {
+    		  labels: labels,
+    		  datasets: [
+    		    {
+    		      label: '기존 회원 수',
+    		      data: [
+    		        <c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
+    		          ${registrationTrend.PRE}<c:if test="${!loop.last}">, </c:if>
+    		        </c:forEach>
+    		      ],
+    		      backgroundColor: '#7F82FF',
+    		      borderColor: '#fff',
+    		      borderWidth: 3,
+    		      stack: 'Stack 0',
+    		    },
+    		    {
+    		      label: '신규 회원 수',
+    		      data: [
+    		        <c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
+    		          ${registrationTrend.NEW_MEMBERS}<c:if test="${!loop.last}">, </c:if>
+    		        </c:forEach>
+    		      ],
+    		      backgroundColor: '#29CCEF',
+    		      borderColor: '#fff',
+    		      borderWidth: 3,
+    		      stack: 'Stack 0',
+    		    },
+    		    {
+    		      label: '탈퇴 회원 수',
+    		      data: [
+    		        <c:forEach items="${registrationTrend}" var="registrationTrend" varStatus="loop">
+    		          ${registrationTrend.WITHDRAWN_MEMBERS * -1}<c:if test="${!loop.last}">, </c:if>
+    		        </c:forEach>
+    		      ],
+    		      backgroundColor: '#00DFA2',
+    		      borderColor: '#fff',
+    		      borderWidth: 3,
+    		      stack: 'Stack 1',
+    		    },
+    		  ],
+    		};
+      const stackChart = new Chart(stackChartCanvas, {
+    	  type: 'bar',
+    	  data: stackdata,
+    	  options: {
+    	    plugins: {
+    	      title: {
+    	        display: false,
+    	        text: 'Chart.js Bar Chart - Stacked',
+    	      },
+    	    },
+    	    responsive: true,
+    	    interaction: {
+    	      intersect: false,
+    	    },
+    	    scales: {
+    	      x: {
+    	        stacked: true,
+    	        grid: {
+    	          display: false,
+    	        },
+    	      },
+    	      y: {
+    	        stacked: true,
+    	        grid: {
+    	          display: true,
+    	          drawTicks: true,
+    	        },
+    	        ticks: {
+    	          stepSize: 3,
+    	        },
+    	      },
+    	    },
+    	    maxBarThickness: 25,
+    	    categorySpacing: 10,
+    	  },
+    	});
+
 	});
 
    ////////////////////////////////////////////////////////////////////////////////////////////////
