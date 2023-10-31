@@ -3,8 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> 
 <html> 
 <head> 
-<link rel="shortcut icon" type="image/x-icon" 
-	href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"> 
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"> 
 <title>애니타임</title> 
 <jsp:include page="../common/header.jsp" /> 
  
@@ -12,7 +11,7 @@
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.partial.css" rel="stylesheet"> 
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/container.modal.css" rel="stylesheet"> 
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/container.table.css" rel="stylesheet"> 
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/subjects.css" rel="stylesheet"> 
+<link type="text/css" href="${pageContext.request.contextPath}/resources/css/timetable/subjects.css" rel="stylesheet">
  
 <meta name="_csrf" content="${_csrf.token}"> 
 <meta name="_csrf_header" content="${_csrf.headerName}"> 
@@ -31,9 +30,9 @@
 	    margin-top: -153px;
 	}
 </style>	
-<body style=""> 
+<body style="height: 850px;"> 
  
-	<div id="container" class="timetable" style="height: 679px;"> 
+	<div id="container" class="timetable"> 
 		<hr> 
  
 		<aside style="margin-top: 23px;"> 

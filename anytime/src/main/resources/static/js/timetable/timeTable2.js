@@ -225,6 +225,18 @@ $("#customsubjects").submit(function (e) {
     var end_time = parseInt($(".endhour option:selected").val(), 10);
     var classroom = $(".place").val();
 
+    // 과목명이 비어 있는지 확인
+    if (subject.trim() == "") {
+        alert("과목명을 입력하세요!");
+        return;
+    }
+
+    // 교수명이 비어 있는지 확인
+    if (professor.trim() == "") {
+        alert("교수명을 입력하세요!");
+        return;
+    }
+
     var newClass = {
         subject: subject,
         professor: professor,
@@ -413,10 +425,6 @@ function drawTimetable(timetableData) {
         let x = (i + 1) * (canvas.width / (daysOfWeek.length + 1));
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
-
-        if (i < daysOfWeek.length) {
-            ctx.fillText(daysOfWeek[i], x + 10, 20);
-        }
     }
 
     for (let j = 0; j <= 14; j++) {
@@ -424,13 +432,45 @@ function drawTimetable(timetableData) {
         ctx.moveTo(50, y);
         ctx.lineTo(canvas.width, y);
 
+        if (j == 0) { // 첫 번째 행인 경우
+            ctx.fillStyle = "#f8f8f8"; 
+            ctx.fillRect(50, 0, canvas.width, y); // 첫 번째 행에 색상 적용
+        }
+
         if (j < 14) {
             let hour = j + 8;
             let ampm = hour >= 12 ? "오후" : "오전";
             hour = hour > 12 ? hour - 12 : hour;
-            ctx.fillText(ampm + " " + hour + "시", 50, y + 15);
+            ctx.fillStyle = "#000"; // 텍스트 색상변경
+            ctx.fillText(ampm + " " + hour + "시", 100, y + 32);
         }
     }
+
+    // 요일 텍스트 그리기
+    for (let i = 0; i < daysOfWeek.length; i++) {
+        let x = (i + 1) * (canvas.width / (daysOfWeek.length + 1));
+        ctx.fillStyle = "#000";
+        ctx.fillText(daysOfWeek[i], x + 93, 32);
+    }
+
+    // // 첫 번째 열 배경색 적용
+    // ctx.fillStyle = "#eeeef7";
+    // ctx.fillRect(50, 0, 150, canvas.height);
+
+    // // 시간 표시
+    // for (let j = 0; j <= 14; j++) {
+    //     let y = (j + 1) * (canvas.height / (21 - 7));
+
+    //     if (j < 14) {
+    //         let hour = j + 8;
+    //         let ampm = hour >= 12 ? "오후" : "오전";
+    //         hour = hour > 12 ? hour - 12 : hour;
+    //         ctx.fillStyle = "#000"; // 다음에 그릴 텍스트의 색상을 검은색으로 변경
+    //         ctx.fillText(ampm + " " + hour + "시", 100, y + 32);
+    //     }
+    // }
+
+
 
     // 왼쪽 경계선 추가
     ctx.moveTo(50, 0);
@@ -469,10 +509,13 @@ function drawTimetable(timetableData) {
             // 과목명, 교수 이름 및 장소 출력
             ctx.fillText(classItem.subject, xStart + 10, yStart + 10);
             ctx.fillText(classItem.professor, xStart + 10, yStart + 28);
-            ctx.fillText(classItem.classroom, xStart + 10, yStart + 45);
+
+            // 강의장 정보가 null인 경우 빈 문자열로 대체
+            const classroomText = classItem.classroom === null ? '' : classItem.classroom;
+            ctx.fillText(classroomText, xStart + 10, yStart + 45);
 
             // 과목 삭제 버튼 그리기
-            ctx.font = 'bold 16px Arial';
+            ctx.font = '16px';
             ctx.fillStyle = '#808080'; 
             ctx.fillText('Ｘ', xStart + 180, yStart + 10);
             
@@ -496,7 +539,6 @@ function drawTimetable(timetableData) {
                 mouseX >= xStart + 175 && mouseX <= xStart + 205 &&
                 mouseY >= yStart + 5 && mouseY <= yStart + 25
             ) {
-                if (confirm('이 수업을 삭제하시겠습니까?')) {
                 // 클릭한 시간표를 배열에서 삭제
                 const deletedClass = timetableData.splice(i, 1)[0];
     
@@ -519,7 +561,6 @@ function drawTimetable(timetableData) {
                     },
                     success: function(response) {
                         if (response.message == '수업 삭제 성공') {
-                            location.reload();
                         } else {
                             alert('수업 삭제 실패');
                         }
@@ -530,7 +571,6 @@ function drawTimetable(timetableData) {
                         console.log(error);
                     }
                 });
-            }
                 break; // 반복문 종료
             }
         }
