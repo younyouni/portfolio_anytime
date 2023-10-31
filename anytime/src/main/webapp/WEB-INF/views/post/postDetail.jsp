@@ -56,10 +56,10 @@
 				<a class="article"> <img src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 					class="picture large">
 					<div class="profile">
-						 <c:if test="${boardtest.ANONYMOUS eq 0}">
+						 <c:if test="${boardtest.ANONYMOUS eq 0 && postdata.USER_STATUS eq 1}">
 							<h3 class="large">${nickname}</h3>
 						</c:if> 
-						 <c:if test="${boardtest.ANONYMOUS eq 1}"> 
+						 <c:if test="${boardtest.ANONYMOUS eq 1 && postdata.USER_STATUS eq 1}"> 
 							<h3 class="large">익명</h3>
 						 </c:if> 
 						 <c:if test="${postdata.USER_STATUS eq 0}"> 

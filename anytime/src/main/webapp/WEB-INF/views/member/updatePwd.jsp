@@ -1,31 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>비밀번호 변경 - 애니타임</title>
-<script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
+<c:if test="${auth eq 'ROLE_MEMBER'}">
+	<jsp:include page="../common/header.jsp" />
+</c:if>
+<c:if test="${auth eq 'ROLE_ADMIN'}">
+	<jsp:include page="../common/header_admin.jsp" />
+</c:if>
 <link data-vue-meta="ssr" rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/member/info/body.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/member/info/changePwd.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/member/info/total.css">
-<style>
-body {
-	background-color: #EEEEF6 !important;
-}
-input[type=password]{
-	background-color: #f6f6ff !important;
-}
-input[type=password]:focus{
-	background-color: #fff !important;
-}
-
-nav {
-	border-bottom: 0 !important;
-}
-</style>
+<script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
 </head>
 <script>
 	if ("${changePassword}" == "Fail") {
@@ -110,7 +102,23 @@ nav {
 		});
 	});
 </script>
-<jsp:include page="../common/header.jsp" />
+<style>
+body {
+	background-color: #EEEEF6 !important;
+}
+
+input[type=password] {
+	background-color: #f6f6ff !important;
+}
+
+input[type=password]:focus {
+	background-color: #fff !important;
+}
+
+nav {
+	border-bottom: 0 !important;
+}
+</style>
 <body id="my">
 	<div>
 		<form action="${pageContext.request.contextPath}/pwdProcess"
