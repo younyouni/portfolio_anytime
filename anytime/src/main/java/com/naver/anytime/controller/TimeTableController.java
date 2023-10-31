@@ -51,8 +51,6 @@ public class TimeTableController {
 	public ModelAndView timeTable(
 			@AuthenticationPrincipal UserCustom user,
 			ModelAndView mv) {
-		String auth = user.getAuth();
-		mv.addObject("auth", auth);
 		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());

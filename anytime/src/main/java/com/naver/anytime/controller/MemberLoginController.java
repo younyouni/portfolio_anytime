@@ -87,7 +87,6 @@ public class MemberLoginController {
 	public ModelAndView updatePassword(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String auth = user.getAuth();
 		mv.addObject("auth", auth);
-
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
@@ -197,8 +196,6 @@ public class MemberLoginController {
 	public ModelAndView getBoardlist(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		int school_check = user.getSchool_check();
-		String auth = user.getAuth();
-		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -225,9 +222,10 @@ public class MemberLoginController {
 
 	@GetMapping(value = "/delete")
 	public ModelAndView deleteMemberProcess(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+
 		String auth = user.getAuth();
 		mv.addObject("auth", auth);
-
+		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
@@ -283,9 +281,7 @@ public class MemberLoginController {
 
 	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
 	public ModelAndView certificate(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
-		String auth = user.getAuth();
-		mv.addObject("auth", auth);
-		
+
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 

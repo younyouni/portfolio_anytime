@@ -126,8 +126,8 @@ p.email {
 }
 
 div.boardadmin, div.reportadmin {
-	margin: 100px auto 0 60px;
-	width: 100%;
+	margin: 100px auto 0 105px;
+	width: 75%;
 }
 
 div.reportadmin div.menu>ol {
@@ -508,4 +508,45 @@ form.notice {
 
 article.list a {
 	border: 1px solid #e3e3e3 !important;
+}
+
+a.page-link.last {
+	border: 1px solid #fff0;
+	background-image:
+		url(/anytime/resources/image/post/container.articles.pagination.next.png);
+	background-position: left 52px center;
+	margin-top: 5px;
+	margin-left: 5px;
+	padding: 10px 25px 10px 15px;
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #7869e6;
+	border-radius: 5px;
+	color: #7869e6;
+	font-size: 14px;
+	font-weight: bold;
+	background-repeat: no-repeat;
+	background-size: 10px 15px;
+	cursor: pointer;
+}
+	
+a.page-link.first {
+	border: 1px solid #fff0;
+	background-image:
+		url(/anytime/resources/image/post/container.articles.pagination.before.png);
+	background-position: right 1px center;
+	margin-top: 5px;
+	margin-left: 5px;
+	padding: 10px 15px 10px 25px;
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #7869e6;
+	border-radius: 5px;
+	color: #7869e6;
+	font-size: 14px;
+	font-weight: bold;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	background-size: 10px 15px;
+	cursor: pointer;
 }

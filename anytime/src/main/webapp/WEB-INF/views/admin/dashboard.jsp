@@ -4,8 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="../common/header.jsp" />
-<head>
+<jsp:include page="../common/header_admin.jsp" />
 <title>관리자 페이지 - 애니타임</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
@@ -285,7 +284,7 @@
 									<div id="reportChart"
 										style="min-height: 365px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
 										class="echart" _echarts_instance_="ec_1698273089873">
-										<div id="piechart"></div>
+										<div id="piechart" style="width: 500px; height: 500px;"></div>
 									</div>
 								</div>
 							</div>
@@ -301,12 +300,43 @@
 
 <script type="text/javascript">
 $(function() {
+   
+	google.charts.load('current', {'packages':['corechart', 'table']});
+	google.charts.setOnLoadCallback(function() {
+	    drawTable();
+	    drawReportReasonChart();
+	    
+	    function drawTable() {
+	        var data_school = new google.visualization.DataTable();
+	        data_school.addColumn('string', '학교명');
+	        data_school.addColumn('number', '가입 학생 수');
+	        data_school.addRows([
+	            <c:forEach items="${schoolRanking}" var="schoolRanking" varStatus="loop">
+	            ["${schoolRanking.name}",  {v: ${schoolRanking.total_count}, f: '${schoolRanking.total_count} 명 '}]
+	             <c:if test="${!loop.last}">, </c:if>
+	            </c:forEach> 
+	        ]);
 
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawReportReasonChart);
-    google.charts.load('current', {'packages':['table']});
-    google.charts.setOnLoadCallback(drawTable);
-	 
+	        var table_school = new google.visualization.Table(document.getElementById('table_school'));
+	        table_school.draw(data_school, {showRowNumber: true, width: '100%', height: '110%', interactivity: 'none'});
+	        
+
+	        var data_table = new google.visualization.DataTable();
+	        data_table.addColumn('string', '학교명');
+	        data_table.addColumn('string', '게시판명');
+	        data_table.addColumn('number', '새 게시물');
+	        data_table.addRows([
+	            <c:forEach items="${boardRanking}" var="boardRanking" varStatus="loop">
+	            ["${boardRanking.SCHOOL_NAME}", "${boardRanking.NAME}",${boardRanking.NEW_POST}]
+	             <c:if test="${!loop.last}">, </c:if>
+	            </c:forEach> 
+	        ]);
+
+	        var table_board = new google.visualization.Table(document.getElementById('table_board'));
+	        table_board.draw(data_table, {showRowNumber: true, width: '100%', height: '100%'});
+        }
+    });
+    
     $('.chart').easyPieChart({
 	    size: 130,
 	    barColor: "#7868E6",
@@ -316,6 +346,7 @@ $(function() {
 	    lineCap: "circle",
 	    animate: 2000,
 	  });
+    
     // Students Registration Trend - Stack Chart
     var stackChartCanvas = document.getElementById('stackChart');
 
@@ -397,16 +428,14 @@ $(function() {
     	        },
     	      },
     	    },
-    	    maxBarThickness: 25,
+    	    maxBarThickness: 30,
     	    categorySpacing: 10,
     	  },
     	});
 
 	});
-
    ////////////////////////////////////////////////////////////////////////////////////////////////
       function drawReportReasonChart() {
-
         var reportReasonData = google.visualization.arrayToDataTable([
           ['신고 사유', '일별 신고 건수'],
         	<c:forEach items="${reportCount}" var="reportData" varStatus="loop">
@@ -424,48 +453,20 @@ $(function() {
         	] <c:if test="${!loop.last}">, </c:if>
           </c:forEach>
         ]);
-
         var reportReasonOptions = {
          		title: {
         			display: false,
-         		}
+         		},
+         		 colors: ['#7C83FD','#829DFF', '#96BAFF', '#7DEDFF', '#88FFF7', '#91FFE6','#87FFCE'],
+         		legend: {
+         		    position: 'bottom', // 범례 위치를 바닥으로 설정
+         		    maxLines:4,
+         		  }
         };
 
         var reportReasonChart = new google.visualization.PieChart(document.getElementById('piechart'));
 
         reportReasonChart.draw(reportReasonData, reportReasonOptions);
       }
-      
-	     ////////////////////////////////////////////////////////////////////////////////////////////////
-	  function drawTable() {
-	        var data_school = new google.visualization.DataTable();
-	        data_school.addColumn('string', 'School');
-	        data_school.addColumn('number', 'Number of Registrants');
-	        data_school.addRows([
-	        	<c:forEach items="${schoolRanking}" var="schoolRanking" varStatus="loop">
-	        	["${schoolRanking.name}", ${schoolRanking.total_count}]
-	        	 <c:if test="${!loop.last}">, </c:if>
-	        	</c:forEach> 
-	        ]);
-	
-	        var table_school = new google.visualization.Table(document.getElementById('table_school'));
-	        table_school.draw(data_school, {showRowNumber: true, width: '100%', height: '100%'});
-
-	        
-	        var data_table = new google.visualization.DataTable();
-	        data_table.addColumn('string', 'School');
-	        data_table.addColumn('string', 'Board');
-	        data_table.addColumn('number', 'Number of New Posts');
-	        data_table.addRows([
-	        	<c:forEach items="${boardRanking}" var="boardRanking" varStatus="loop">
-	        	["${boardRanking.SCHOOL_NAME}", "${boardRanking.NAME}",${boardRanking.NEW_POST}]
-	        	 <c:if test="${!loop.last}">, </c:if>
-	        	</c:forEach> 
-	        ]);
-	        
-	        var table_board = new google.visualization.Table(document.getElementById('table_board'));
-	        table_board.draw(data_table, {showRowNumber: true, width: '100%', height: '100%'});
-	      }
-  
     </script>
 </html>
