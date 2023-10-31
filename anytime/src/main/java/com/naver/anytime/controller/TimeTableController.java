@@ -62,23 +62,6 @@ public class TimeTableController {
 		return mv;
 		
 	}
-//	
-//	@RequestMapping(value = "/timetable/{timetable_id}", method = RequestMethod.GET)
-//	public String getTimeTable(@PathVariable("timetable_id") int timetable_id, Model model) {
-//		logger.info("입장");
-//		logger.info("시간표 아이디" + timetable_id);
-//		// 시간표 ID에 해당하는 데이터 가져오기
-//	    TimeTable timetable = timeTableService.getTimeTableById(timetable_id);
-//	    
-//	    if (timetable == null) {
-//	        throw new RuntimeException("timetable_ID: " + timetable_id);
-//	    }	
-//	    
-//	    // 모델에 데이터 추가
-//	    model.addAttribute("timeTable", timetable);
-//	    
-//	    return "timetable/timeTable";  
-//	}
 
 	@RequestMapping(value = "/getTimetableByUserIdAndSemester", method = RequestMethod.POST)
 	@ResponseBody
@@ -189,6 +172,25 @@ public class TimeTableController {
 	        
 	        result.put("message", "시간표 삭제 실패");
 	        return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
+	@RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> deleteSubject(@RequestParam("timetable_id") int timetable_id, 
+											@RequestParam("subject_id") int subject_id,
+											Principal userPrincipal) {
+		try {
+	        String id = userPrincipal.getName();
+	        timeTable_detailService.deleteSubject(memberService.getUserId(id), timetable_id, subject_id);
+	        
+	        Map<String, String> response = new HashMap<>();
+	        response.put("message", "수업 삭제 성공");
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } catch (Exception e) {
+	        Map<String, String> response = new HashMap<>();
+	        response.put("message", "수업 삭제 실패");
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
 

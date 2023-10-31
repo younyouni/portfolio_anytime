@@ -162,7 +162,8 @@ public class SecurityConfig{
 				.antMatchers("/updateTimetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/loadTimetableDetails").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				.antMatchers("/addSubject").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
-				.antMatchers("/deleteTimetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
+				.antMatchers("/deleteTimetable").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+				.antMatchers("/deleteSubject").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')");
 				
 				
 		
