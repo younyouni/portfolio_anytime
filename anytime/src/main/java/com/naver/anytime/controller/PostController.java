@@ -78,16 +78,8 @@ public class PostController {
 		this.postLikeService = postLikeService;
 		this.postPhotoService = postPhotoService;
 	}
-
-	/*
-	 * -------------------------------------------------------------- ▼Created By
-	 * UniUni▼ --------------------------------------------------------------
-	 */
-
-	/*
-	 * -------------------------------- ▼post/detail 상세페이지▼
-	 * --------------------------------
-	 */
+	
+	// 게시판 상세페이지
 	@GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
 	public ModelAndView postDetail(@RequestParam(value = "post_id", required = false) Integer post_id, ModelAndView mv,
 			HttpServletRequest request, @AuthenticationPrincipal UserCustom user, RedirectAttributes redirectAttrs) {
@@ -156,11 +148,8 @@ public class PostController {
 
 		return mv;
 	}
-
-	/*
-	 * -------------------------------- ▼post/write 글 작성 액션 첨부파일 포함 실험용▼
-	 * --------------------------------
-	 */
+	
+	// 게시판 글쓰기
 	@ResponseBody
 	@PostMapping(value = "/write")
 	public ResponseEntity<Map<String, Object>> writePost(
@@ -195,12 +184,9 @@ public class PostController {
 
 						// 파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
 						String saveFolder = "c:/upload/";
-
 						String fileDBName = fileDBName(originalFilename, saveFolder);
-
 						file.transferTo(new File(saveFolder + fileDBName));
-
-//                        photo.setPATH(saveFolder+fileDBName);
+//                      photo.setPATH(saveFolder+fileDBName);
 						photo.setPATH(fileDBName);
 
 						postPhotoService.insertPhoto(photo);
@@ -224,7 +210,8 @@ public class PostController {
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-
+	
+	// 업로드시 저장되는 파일명
 	private String fileDBName(String fileName, String saveFolder) {
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);// 오늘 년도 구합니다.
@@ -240,31 +227,22 @@ public class PostController {
 
 		Random r = new Random();
 		int random = r.nextInt(100000000);
-
 		int index = fileName.lastIndexOf(".");
-
 		String fileExtension = fileName.substring(index + 1);
-
 		String refileName = "anytime" + year + month + date + random + "." + fileExtension;
-
 		String fileDBName = "/" + year + "-" + month + "-" + date + "/" + refileName;
 
 		return fileDBName;
 	}
-
-	/*
-	 * -------------------------------- ▼post/updateGet 상세페이지-수정_데이터값받기(GET방식)▼
-	 * --------------------------------
-	 */
+	
+	// 게시판 글수정 데이터값 받기
 	@ResponseBody
 	@GetMapping("/updateGet")
 	public Map<String, Object> updateGet(@RequestParam(value = "post_id", required = false) Integer post_id,
 			HttpServletRequest request, Principal userPrincipal) {
 
 		Post post = postService.getDetail(post_id); // post테이블 정보 가져오기위한 메소드입니다.
-
 		List<Photo> photos = postPhotoService.getPhotosByPostId(post_id);
-
 		List<String> photoPaths = photos.stream().map(Photo::getPATH).collect(Collectors.toList());
 
 		if (post == null) {
@@ -276,31 +254,24 @@ public class PostController {
 			Map<String, Object> responseMap = new HashMap<>();
 			responseMap.put("SUBJECT", post.getSUBJECT());
 			responseMap.put("CONTENT", post.getCONTENT());
-
 			responseMap.put("FILES", photoPaths);
 
 			return responseMap;
 		}
 	}
-
-	/*
-	 * -------------------------------- ▼post/updatePost 상세페이지-수정_데이터값출력(POST방식)▼
-	 * --------------------------------
-	 */
+	
+	// 게시판 글수정 데이터값 보내기
 	@ResponseBody
 	@PostMapping("/updatePost")
 	public Map<String, Object> updatePost(@RequestParam(value = "LOGIN_ID", required = false) String USER_ID,
 			@RequestParam(value = "POST_ID") Integer post_id, @RequestParam(value = "SUBJECT") String subject,
 			@RequestParam(value = "CONTENT") String content,
-
 			// 새롭게 추가된 파일들
 			@RequestPart(value = "file[]", required = false) MultipartFile[] newFiles,
-
 			// 기존에 업로드된 파일들
 			@RequestPart(value = "existingFile[]", required = false) List<MultipartFile> existingFiles,
 			// 삭제될 파일들
 			@RequestParam(value = "deleteFile[]", required = false) String[] deleteFiles,
-
 			HttpServletRequest request, Principal userPrincipal) {
 
 		// 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
@@ -308,7 +279,7 @@ public class PostController {
 		Member member = memberService.getLoginMember(id);
 		int currentUserId = member.getUser_id();
 
-		Post postToUpdate = postService.getDetail(post_id); // 수정 안된상태인
+		Post postToUpdate = postService.getDetail(post_id); 
 
 		if (USER_ID != null) {
 			int userId = memberService.getUserId(USER_ID);
@@ -437,11 +408,8 @@ public class PostController {
 			return result;
 		}
 	}
-
-	/*
-	 * -------------------------------- ▼post/delete 글 삭제 액션▼
-	 * --------------------------------
-	 */
+	
+	// 게시판 글삭제
 	@ResponseBody
 	@GetMapping("/delete")
 	public ResponseEntity<?> deletePost(@RequestParam("post_id") int post_id) {
@@ -453,48 +421,7 @@ public class PostController {
 		}
 	}
 
-//   /* -------------------------------- ▼post/postLike 글 공감 액션▼ -------------------------------- */
-//   @ResponseBody
-//   @PostMapping("/likePost")
-//   public ResponseEntity<Map<String, Object>> likePost(
-//       @RequestParam(value = "post_id") Integer post_id,
-//       HttpServletRequest request, Principal userPrincipal) {
-//
-//       String id = userPrincipal.getName();
-//       Member member = memberService.getLoginMember(id);
-//       int currentUserId = member.getUser_id();
-//
-//       Map<String, Object> result = new HashMap<>();
-//       
-//       PostLike existingLike = postLikeService.findExistingLike(post_id, currentUserId);
-//
-//       if(existingLike == null) {
-//           try {
-//               postService.increaseLike(post_id, currentUserId); 
-//
-//               Post post= postService.getDetail(post_id); // 게시글 상세 정보 다시 조회
-//               int like_count = post.getLIKE_COUNT(); // 최신의 공감 수 가져오기
-//
-//               result.put("statusCode", 1);
-//               result.put("like_count", like_count); 
-//           } catch(Exception e) {
-//               result.put("statusCode", -1);
-//               result.put("errorMessage", e.getMessage());
-//           }
-//      } else { 
-//          // 이미 공감한 경우
-//          result.put("statusCode", 3);
-//          return new ResponseEntity<>(result, HttpStatus.OK);
-//      }
-//
-//      return new ResponseEntity<>(result, HttpStatus.OK);
-//   }
-
-	/*
-	 * -------------------------------- ▼post/postLike 글 공감 액션 실험용▼
-	 * --------------------------------
-	 */
-
+	// 게시판 글 공감
 	@PostMapping("/likePost")
 	public ResponseEntity<Map<String, Object>> likePost(
 			@RequestParam(value = "POST_ID", required = false) Integer post_id, Principal userPrincipal) {
@@ -539,11 +466,6 @@ public class PostController {
 
 		return new ResponseEntity<>(resultMap, HttpStatus.OK);
 	}
-
-	/*
-	 * -------------------------------------------------------------- ▲Created By
-	 * UniUni▲ --------------------------------------------------------------
-	 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 게시물 리스트 출력

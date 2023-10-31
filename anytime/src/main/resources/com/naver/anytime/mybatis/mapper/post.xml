@@ -68,12 +68,6 @@
 		    POST_FILE = #{POST_FILE}
 	    WHERE POST_ID = #{POST_ID} 
 	</update>
-	
-	<!-- <update id="increaseLike">
-	      UPDATE POST 
-	      SET LIKE_COUNT = LIKE_COUNT + 1 
-	      WHERE POST_ID = #{post_id}
-   </update> -->
 
    <select id="getPostLikes" parameterType="int" resultType="int">
       SELECT COUNT(*) FROM POST_LIKE WHERE POST_ID = #{post_id}

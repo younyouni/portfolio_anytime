@@ -16,9 +16,6 @@ $(document).ready(function () {
         $(this).addClass('active');
     });
 
-
-    // var selectedSemester = $("#semesters option:selected").text();
-
     // 설정버튼 -> Modal
     $("#settingBtn").click(function() {
         $("#tableSetting").show();
@@ -122,12 +119,6 @@ $(document).ready(function () {
             success: function(response) {
                 alert('이름 변경 성공');
                 console.log(response);
-                // $("#tableName").text(newName);
-
-                // if (response.TIMETABLE_DATE) {
-                //     $('#tableUpdatedAt').text(response.TIMETABLE_DATE);
-                // }
-                
                 location.reload();
             },
             error: function(error) {
@@ -182,6 +173,7 @@ $(document).ready(function () {
                     console.log('새 시간표 생성 후 timetables 상태:', timetables);
 
                     $('div.menu ol li').removeClass('active');
+                    loadTimetableDetails(response.timetable_ID);
                     output += '<li class="active"><a href="javascript:loadTimetableDetails('+response.timetable_ID+')">' + response.name + '</a></li>'                    
                 }
                 $('li.extension').before(output);
@@ -362,8 +354,6 @@ function getTimetableList(semester){
 
 }
 
-// var timetableData = {};
-
 // 생성 시간표 클릭시 정보 가져오기
 function loadTimetableDetails(timetable_id) {
     // 시간표 클릭시 active 효과 변경
@@ -386,11 +376,6 @@ function loadTimetableDetails(timetable_id) {
             $("#tableName").text(rdata.timetable.name);
             $("#tableUpdatedAt").text(rdata.timetable.timetable_DATE);
             $("#tableName").attr("data-id", rdata.timetable.timetable_ID);
-
-            // var newClass = rdata.timetalbeDetails;
-
-            // // DB에서 가져온 데이터를 직접 drawTimetable() 함수에 전달합니다.
-            // drawTimetable(newClass); 
 
             // DB에서 가져온 데이터를 직접 drawTimetable() 함수에 전달합니다.
             drawTimetable(rdata.timetalbeDetails); 
@@ -453,6 +438,7 @@ function drawTimetable(timetableData) {
         ctx.fillText(daysOfWeek[i], x + 93, 32);
     }
 
+            // 열 백그라운드 적용할때 사용하기 위해 임시주석 //
     // // 첫 번째 열 배경색 적용
     // ctx.fillStyle = "#eeeef7";
     // ctx.fillRect(50, 0, 150, canvas.height);
@@ -469,8 +455,6 @@ function drawTimetable(timetableData) {
     //         ctx.fillText(ampm + " " + hour + "시", 100, y + 32);
     //     }
     // }
-
-
 
     // 왼쪽 경계선 추가
     ctx.moveTo(50, 0);
@@ -507,12 +491,17 @@ function drawTimetable(timetableData) {
             ctx.fillStyle = "#000";
 
             // 과목명, 교수 이름 및 장소 출력
-            ctx.fillText(classItem.subject, xStart + 10, yStart + 10);
-            ctx.fillText(classItem.professor, xStart + 10, yStart + 28);
+            ctx.font = 'bold 15px "맑은 고딕"'; 
+            ctx.fillStyle = '#292929'; 
+            ctx.fillText(classItem.subject, xStart + 10, yStart + 15);
+
+            ctx.font = '13px "맑은 고딕"';
+            ctx.fillText(classItem.professor, xStart + 10, yStart + 33);
 
             // 강의장 정보가 null인 경우 빈 문자열로 대체
             const classroomText = classItem.classroom === null ? '' : classItem.classroom;
-            ctx.fillText(classroomText, xStart + 10, yStart + 45);
+            ctx.font = '12px "맑은 고딕"';
+            ctx.fillText(classroomText, xStart + 10, yStart + 50);
 
             // 과목 삭제 버튼 그리기
             ctx.font = '16px';
@@ -522,6 +511,7 @@ function drawTimetable(timetableData) {
         });
     }
 
+    canvas.removeEventListener('click', addEventListener);
     // 캔버스에 클릭 이벤트 리스너를 추가
     canvas.addEventListener('click', function(e) {
     const rect = canvas.getBoundingClientRect();
@@ -576,4 +566,3 @@ function drawTimetable(timetableData) {
         }
     });
 }
-

@@ -147,7 +147,7 @@
 							<option value="17">오후 5시</option> 
 							<option value="18">오후 6시</option> 
 							<option value="19">오후 7시</option> 
-							<option value="20">오후 8시</option> 
+							<option value="20">오후 8시</option>
 							</select> <span>~</span>
 							<select class="endhour">
 							<option value="8">오전 8시</option> 
@@ -162,7 +162,7 @@
 							<option value="17">오후 5시</option> 
 							<option value="18">오후 6시</option> 
 							<option value="19">오후 7시</option> 
-							<option value="20">오후 8시</option> 
+							<option value="20">오후 8시</option>
 							</select> 
 							<input type="text" placeholder="예) L3" class="text place"> 
 					</p> 
@@ -177,6 +177,6 @@
 			value="${_csrf.token}"> 
 	</form> 
 	<div id="subjects"></div> 
-	<script src="${pageContext.request.contextPath}/resources/js/timetable/timeTable2.js"></script> 
+	<script src="${pageContext.request.contextPath}/resources/js/timetable/timeTable.js"></script> 
 </body> 
 </html>
