@@ -32,5 +32,12 @@ public class TimeTable_detailServiceImpl implements TimeTable_detailService{
 		timeDetailDao.addSubject(detail);
 	}
 
+
+	@Override
+	public void deleteSubject(int userId, int timetable_id, int subject_id) {
+		timeDetailDao.deleteSubject(userId, timetable_id, subject_id);
+		
+	}
+
 	
 }

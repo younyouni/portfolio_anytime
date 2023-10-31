@@ -236,6 +236,12 @@ $("#customsubjects").submit(function (e) {
         classroom: classroom,
     };
 
+    // 현재 선택한 시간표에 수업 추가 전에 확인
+    if (checkClassOverlap(timetableData[timetable_id], newClass)) {
+        alert('같은 시간에 이미 수업이 있습니다!');
+        return;
+    }
+
     // 현재 선택한 시간표에 수업 추가
     if (timetable_id in timetableData) {
         timetableData[timetable_id].push(newClass);
@@ -285,6 +291,20 @@ $("#customsubjects").submit(function (e) {
 
 loadTimetableDetails(defalut_id);
 }); // (document).ready(function() end
+
+
+function checkClassOverlap(timetable, newClass) {
+    for (let classItem of timetable) {
+        if (classItem.day === newClass.day) {
+            if (newClass.start_time < classItem.end_time && newClass.end_time > classItem.start_time) {
+                // 새 수업의 시작 시간이 기존 수업의 종료 시간보다 이르고,
+                // 새 수업의 종료 시간이 기존 수업의 시작 시간보다 늦으면 겹친다고 판단
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 
 function getTimetableList(semester){
@@ -371,10 +391,6 @@ function loadTimetableDetails(timetable_id) {
     });
 }
 
-
-
-
-
 // 시간표별로 캔버스 그리기
 function drawTimetable(timetableData) {
     // Canvas 설정
@@ -427,14 +443,14 @@ function drawTimetable(timetableData) {
 
     // 더 많은 라인을 추가하여 맨 위 라인을 막습니다.
     ctx.beginPath();
-    ctx.moveTo(0, 0);
+    ctx.lineTo(0, 50);
+    ctx.moveTo(50, 0);
     ctx.lineTo(canvas.width, 0);
     ctx.strokeStyle = "#a6a6a6";
     ctx.stroke();
 
     ctx.closePath();
 
-    console.log(timetableData);
     if (timetableData) {
         timetableData.forEach((classItem) => {
             const dayIndex = daysOfWeek.indexOf(classItem.day);
@@ -456,6 +472,70 @@ function drawTimetable(timetableData) {
             ctx.fillText(classItem.subject, xStart + 10, yStart + 10);
             ctx.fillText(classItem.professor, xStart + 10, yStart + 28);
             ctx.fillText(classItem.classroom, xStart + 10, yStart + 45);
+
+            // 과목 삭제 버튼 그리기
+            ctx.font = 'bold 16px Arial';
+            ctx.fillStyle = '#808080'; 
+            ctx.fillText('Ｘ', xStart + 180, yStart + 10);
+            
         });
     }
+
+    // 캔버스에 클릭 이벤트 리스너를 추가
+    canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+        for (let i = 0; i < timetableData.length; i++) {
+            const classItem = timetableData[i];
+            const dayIndex = daysOfWeek.indexOf(classItem.day);
+            const xStart = (dayIndex + 1) * (canvas.width / (daysOfWeek.length + 1)) + 1.25;
+            const yStart = (classItem.start_time - 8) * (canvas.height / 14) + 30 + 18 + 15;
+
+            // 클릭한 좌표와 'X' 버튼의 위치를 비교하여 클릭 여부를 확인
+            if (
+                mouseX >= xStart + 175 && mouseX <= xStart + 205 &&
+                mouseY >= yStart + 5 && mouseY <= yStart + 25
+            ) {
+                if (confirm('이 수업을 삭제하시겠습니까?')) {
+                // 클릭한 시간표를 배열에서 삭제
+                const deletedClass = timetableData.splice(i, 1)[0];
+    
+                // 캔버스를 다시 그림
+                drawTimetable(timetableData);
+
+                // 서버에 삭제 요청을 전송
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+
+                $.ajax({
+                    url: 'deleteSubject',
+                    type: 'POST',
+                    data: {
+                        timetable_id: $("#tableName").attr("data-id"),
+                        subject_id: deletedClass.subject_id
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token)
+                    },
+                    success: function(response) {
+                        if (response.message == '수업 삭제 성공') {
+                            location.reload();
+                        } else {
+                            alert('수업 삭제 실패');
+                        }
+                        console.log(response.message);
+                    },
+                    error: function(error) {
+                        alert('수업 삭제 실패');
+                        console.log(error);
+                    }
+                });
+            }
+                break; // 반복문 종료
+            }
+        }
+    });
 }
+

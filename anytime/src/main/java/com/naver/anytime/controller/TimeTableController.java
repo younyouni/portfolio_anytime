@@ -191,6 +191,25 @@ public class TimeTableController {
 	        return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
+	
+	@RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> deleteSubject(@RequestParam("timetable_id") int timetable_id, 
+											@RequestParam("subject_id") int subject_id,
+											Principal userPrincipal) {
+		try {
+	        String id = userPrincipal.getName();
+	        timeTable_detailService.deleteSubject(memberService.getUserId(id), timetable_id, subject_id);
+	        
+	        Map<String, String> response = new HashMap<>();
+	        response.put("message", "수업 삭제 성공");
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } catch (Exception e) {
+	        Map<String, String> response = new HashMap<>();
+	        response.put("message", "수업 삭제 실패");
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 
 
 	
