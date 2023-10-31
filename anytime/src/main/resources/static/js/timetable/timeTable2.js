@@ -65,7 +65,6 @@ $(document).ready(function () {
                 xhr.setRequestHeader(header, token)
             },
             success: function(response) {
-                alert(response.message);  
                 console.log(response);
                 if (response.message == '시간표 삭제 성공') {
                 // 페이지를 새로 고치지 않고 UI 업데이트하기
@@ -193,7 +192,6 @@ $(document).ready(function () {
             }
         });
     });
-    
 
     $("#semesters").change(function () {
         var selectedSemester = $("#semesters option:selected").text();

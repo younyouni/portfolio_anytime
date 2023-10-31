@@ -62,23 +62,6 @@ public class TimeTableController {
 		return mv;
 		
 	}
-//	
-//	@RequestMapping(value = "/timetable/{timetable_id}", method = RequestMethod.GET)
-//	public String getTimeTable(@PathVariable("timetable_id") int timetable_id, Model model) {
-//		logger.info("입장");
-//		logger.info("시간표 아이디" + timetable_id);
-//		// 시간표 ID에 해당하는 데이터 가져오기
-//	    TimeTable timetable = timeTableService.getTimeTableById(timetable_id);
-//	    
-//	    if (timetable == null) {
-//	        throw new RuntimeException("timetable_ID: " + timetable_id);
-//	    }	
-//	    
-//	    // 모델에 데이터 추가
-//	    model.addAttribute("timeTable", timetable);
-//	    
-//	    return "timetable/timeTable";  
-//	}
 
 	@RequestMapping(value = "/getTimetableByUserIdAndSemester", method = RequestMethod.POST)
 	@ResponseBody
