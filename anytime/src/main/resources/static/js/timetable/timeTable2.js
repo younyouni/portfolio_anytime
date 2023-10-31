@@ -203,6 +203,7 @@ $(document).ready(function () {
         semester =  $("#semesters option:selected").text();
         getTimetableList(semester);
 
+        loadTimetableDetails(defalut_id);
     });
 
     // 새 수업추가버튼 -> Modal
