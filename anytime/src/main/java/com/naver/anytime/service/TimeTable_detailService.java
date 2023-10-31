@@ -12,5 +12,7 @@ public interface TimeTable_detailService {
 	List<TimeTable_detail> getTimetableDetails(int timetable_id);
 
 	public void addSubject(TimeTable_detail detail);
+
+	void deleteSubject(int userId, int timetable_id, int subject_id);
     
 }

@@ -27,5 +27,9 @@
 	    DELETE FROM TIMETABLE_DETAIL WHERE TIMETABLE_ID = #{timetable_id}
 	</delete>
 	
+	<delete id="deleteSubject" parameterType="int">
+	    DELETE FROM TIMETABLE_DETAIL WHERE TIMETABLE_ID = #{timetable_id} AND SUBJECT_ID = #{subject_id}
+	</delete>
+	
 
 </mapper>
