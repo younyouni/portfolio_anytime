@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class UserCustom extends User {
+	private static final long serialVersionUID = 1L;
 
 	private int school_id;
 	private String email;

@@ -1,10 +1,7 @@
 package com.naver.anytime.mybatis.mapper;
 
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
-
 import com.naver.anytime.domain.School;
 
 /*
@@ -18,10 +15,10 @@ public interface SchoolMapper {
 
 	public String getSchoolDomain(String SchoolName);
 
-    public String getSchoolName(String schoolDomain);
+	public String getSchoolName(String schoolDomain);
 
 	public School getSchool(String schoolDomain);
-	
+
 	public School getSchoolByUserId(int user_id);
 
 	public int getSchoolId(String schoolDomain);
@@ -33,6 +30,5 @@ public interface SchoolMapper {
 	public String getAddress(String school_name);
 
 	public float getCredit(String school_name);
-	
-	
+
 }

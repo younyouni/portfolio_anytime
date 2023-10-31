@@ -36,9 +36,9 @@ import com.naver.anytime.task.SendMail;
 import com.naver.constants.AnytimeConstants;
 
 @Controller
-public class MemberController2 {
+public class MemberLoginController {
 
-	private static final Logger logger = LoggerFactory.getLogger(MemberController2.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemberLoginController.class);
 
 	private MemberService memberservice;
 	private SchoolService schoolService;
@@ -47,8 +47,8 @@ public class MemberController2 {
 	private SendMail sendMail;
 
 	@Autowired
-	public MemberController2(MemberService memberservice, SchoolService schoolService, PasswordEncoder passwordEncoder,
-			SendMail sendMail) {
+	public MemberLoginController(MemberService memberservice, SchoolService schoolService,
+			PasswordEncoder passwordEncoder, SendMail sendMail) {
 		this.memberservice = memberservice;
 		this.schoolService = schoolService;
 		this.passwordEncoder = passwordEncoder;
@@ -59,6 +59,8 @@ public class MemberController2 {
 	@GetMapping(value = "/my")
 	public ModelAndView info(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -83,6 +85,8 @@ public class MemberController2 {
 	// 비밀번호 변경페이지 이동
 	@GetMapping(value = "/password")
 	public ModelAndView updatePassword(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -134,6 +138,8 @@ public class MemberController2 {
 	@GetMapping(value = "/update")
 	public ModelAndView updateMember(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -191,6 +197,8 @@ public class MemberController2 {
 	public ModelAndView getBoardlist(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		int school_check = user.getSchool_check();
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -217,6 +225,8 @@ public class MemberController2 {
 
 	@GetMapping(value = "/delete")
 	public ModelAndView deleteMemberProcess(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
@@ -273,7 +283,9 @@ public class MemberController2 {
 
 	@RequestMapping(value = "/certificate", method = RequestMethod.GET)
 	public ModelAndView certificate(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
-
+		String auth = user.getAuth();
+		mv.addObject("auth", auth);
+		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 

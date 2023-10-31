@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="../common/header_admin.jsp" />
+<jsp:include page="../common/header.jsp" />
 <head>
 <title>관리자 페이지 - 애니타임</title>
 <link rel="stylesheet"
