@@ -69,8 +69,6 @@ public class CreditController {
 	@ResponseBody
 	public ModelAndView main(ModelAndView mv, @AuthenticationPrincipal UserCustom user) {
 		int user_id = memberservice.getUserId(user.getUsername());
-		String auth = user.getAuth();
-		mv.addObject("auth", auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolservice.getSchoolNameById(user.getSchool_id());

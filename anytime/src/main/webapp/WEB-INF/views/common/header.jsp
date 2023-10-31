@@ -53,78 +53,43 @@
 	});
 </script>
 
-<c:if test="${auth eq 'ROLE_MEMBER' || member.auth eq 'ROLE_MEMBER' }">
-	<nav>
-		<div class="wrap">
-			<div id="logo">
-				<a href="${pageContext.request.contextPath}/${school.domain}"><img
-					src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
-				<p>
-					<span class="name multiple">애니타임</span> <span class="subname">
-						${school.name} </span>
-				</p>
-			</div>
-			<sec:authorize access="isAuthenticated()">
-				<sec:authentication property="principal" var="pinfo" />
-				<div id="account">
-					<a href="${pageContext.request.contextPath}/message" title="쪽지함"
-						class="icon message">쪽지함</a> <a
-						href="${pageContext.request.contextPath}/my" title="내 정보"
-						class="icon my">내 정보</a> <input type="hidden" id="login_id"
-						value="${pinfo.username}"> <input type="hidden"
-						id="school_id" value="${school.id}">
-				</div>
-			</sec:authorize>
-			<sec:authorize access="isAnonymous()">
-				<div id="account">
-					<a href="${pageContext.request.contextPath}/member/login"
-						class="button">로그인</a> <a
-						href="${pageContext.request.contextPath}/member/register"
-						class="button red">회원가입</a> <input type="hidden" id="school_id"
-						value="${school.id}">
-				</div>
-			</sec:authorize>
-			<ul id="menu">
-				<li class="board"><a
-					href="${pageContext.request.contextPath}/${school.domain}">게시판</a></li>
-				<li><a href="${pageContext.request.contextPath}/timetable">시간표</a></li>
-				<li><a href="${pageContext.request.contextPath}/calculator">학점계산기</a></li>
-				<li><a href="${pageContext.request.contextPath}/calendar">캘린더
-				</a></li>
-			</ul>
+<nav>
+	<div class="wrap">
+		<div id="logo">
+			<a href="${pageContext.request.contextPath}/${school.domain}"><img
+				src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
+			<p>
+				<span class="name multiple">애니타임</span> <span class="subname">
+					${school.name} </span>
+			</p>
 		</div>
-	</nav>
-</c:if>
-<c:if test="${auth eq 'ROLE_ADMIN' || member.auth eq 'ROLE_ADMIN'}">
-	<nav>
-		<div class="wrap">
-			<div id="logo">
-				<a href="${pageContext.request.contextPath}/admin"><img
-					src="${pageContext.request.contextPath}/resources/image/common/nav.logo.png"></a>
-				<p>
-					<span class="name multiple">애니타임</span><span class="subname">Anytime</span>
-				</p>
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="pinfo" />
+			<div id="account">
+				<a href="${pageContext.request.contextPath}/message" title="쪽지함"
+					class="icon message">쪽지함</a> <a
+					href="${pageContext.request.contextPath}/my" title="내 정보"
+					class="icon my">내 정보</a> <input type="hidden" id="login_id"
+					value="${pinfo.username}"> <input type="hidden"
+					id="school_id" value="${school.id}">
 			</div>
-			<sec:authorize access="isAuthenticated()">
-				<sec:authentication property="principal" var="pinfo" />
-				<div id="account">
-					<a href="${pageContext.request.contextPath}/message" title="쪽지함"
-						class="icon message">쪽지함</a> <a
-						href="${pageContext.request.contextPath}/my" title="내 정보"
-						class="icon my">내 정보</a> <input type="hidden" id="login_id"
-						value="${pinfo.username}"> <input type="hidden"
-						id="school_id" value="${school.school_id}">
-				</div>
-			</sec:authorize>
-			<ul id="menu">
-				<li class="active"><a
-					href="${pageContext.request.contextPath}/admin">대시보드</a></li>
-				<li><a href="${pageContext.request.contextPath}/boardAdmin">게시판
-						관리</a></li>
-				<li><a href="${pageContext.request.contextPath}/reportAdmin">신고
-						관리</a></li>
-				<li><a href="${pageContext.request.contextPath}/adminNotice">공지사항</a></li>
-			</ul>
-		</div>
-	</nav>
-</c:if>
+		</sec:authorize>
+		<sec:authorize access="isAnonymous()">
+			<div id="account">
+				<a href="${pageContext.request.contextPath}/member/login"
+					class="button">로그인</a> <a
+					href="${pageContext.request.contextPath}/member/register"
+					class="button red">회원가입</a> <input type="hidden" id="school_id"
+					value="${school.id}">
+			</div>
+		</sec:authorize>
+		<ul id="menu">
+			<li class="board"><a
+				href="${pageContext.request.contextPath}/${school.domain}">게시판</a></li>
+			<li><a href="${pageContext.request.contextPath}/timetable">시간표</a></li>
+			<li><a href="${pageContext.request.contextPath}/calculator">학점계산기</a></li>
+			<li><a href="${pageContext.request.contextPath}/calendar">캘린더
+			</a></li>
+		</ul>
+	</div>
+</nav>

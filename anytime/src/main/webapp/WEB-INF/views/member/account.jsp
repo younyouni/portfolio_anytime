@@ -7,23 +7,25 @@
 <html>
 <head>
 <title>내 정보 - 애니타임</title>
+<c:if test="${auth eq 'ROLE_MEMBER'}">
+	<jsp:include page="../common/header.jsp" />
+</c:if>
+<c:if test="${auth eq 'ROLE_ADMIN'}">
+	<jsp:include page="../common/header_admin.jsp" />
+</c:if>
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/member/info/total.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/member/info/body.css">
+
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
-<style>
-nav {
-	border-bottom: 0 !important;
-}
-</style>
 <sec:authorize access="isAnonymous()">
 	<script>
 		location.href = "${pageContext.request.contextPath}/member/login";
 	</script>
 </sec:authorize>
-<jsp:include page="../common/header.jsp" />
 <script>
 	$(function() {
 		$("#logout").click(function(event) {
@@ -32,8 +34,13 @@ nav {
 		})
 	})
 </script>
+<style>
+nav {
+	border-bottom: 0 !important;
+}
+</style>
 </head>
-<body id="my">
+<body>
 	<div>
 		<div class="container">
 			<section>
@@ -63,21 +70,20 @@ nav {
 			</section>
 			<section>
 				<h2>계정</h2>
-					<c:if test="${member.auth eq 'ROLE_MEMBER' }">
-						<a href="${pageContext.request.contextPath}/certificate"
-							class="item">학교 인증</a>
-					</c:if>
-					<a href="${pageContext.request.contextPath}/password" class="item">비밀번호
-					변경</a> 
-					<a href="${pageContext.request.contextPath}/update" class="item">내정보
+				<c:if test="${member.auth eq 'ROLE_MEMBER' }">
+					<a href="${pageContext.request.contextPath}/certificate"
+						class="item">학교 인증</a>
+				</c:if>
+				<a href="${pageContext.request.contextPath}/password" class="item">비밀번호
+					변경</a> <a href="${pageContext.request.contextPath}/update" class="item">내정보
 					변경</a>
 			</section>
 			<c:if test="${member.auth eq 'ROLE_MEMBER' }">
-			<section>
-				<h2>커뮤니티</h2>
-				<a href="${pageContext.request.contextPath}/boardlist" class="item">게시판
-					관리</a>
-			</section>
+				<section>
+					<h2>커뮤니티</h2>
+					<a href="${pageContext.request.contextPath}/boardlist" class="item">게시판
+						관리</a>
+				</section>
 			</c:if>
 			<section>
 				<h2>기타</h2>

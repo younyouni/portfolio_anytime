@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="../common/header.jsp" />
 <title>게시판 관리 - 애니타임</title>
+<jsp:include page="../common/header.jsp" />
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
 	rel="stylesheet">
@@ -18,6 +18,8 @@
 	href="${pageContext.request.contextPath}/resources/css/member/info/boardlist.css">
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
 <script>
 	if ("${result}" == "insertBoardSuccess") {
 		alert("게시판이 생성되었습니다. 단체/학과 게시판은, 승인 심사에 통과되면 바로 이용가능합니다.");
@@ -39,12 +41,8 @@ nav {
 	margin-top: -76px;
 }
 </style>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/common/modal.js"></script>
-<style>
-</style>
 </head>
-<body id="my">
+<body>
 	<div class="boardcontrol">
 		<div class="navbar">
 			<a class="hamburger">메뉴 열기</a>
