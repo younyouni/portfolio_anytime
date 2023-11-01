@@ -1,32 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="../common/header_admin.jsp" />
-<head>
-<title>관리자 페이지 - 애니타임</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/common/common.css">
-<link type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/common/modal.css">
+<title>애니타임</title>
+<jsp:include page="../common/header.jsp" />
+<jsp:include page="../common/submenu.jsp" />
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common/common.css">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common/common.partial.css">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common/container.article.css">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common/container.community.css">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common/modal.css">
+<link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
-
+<script src="https://code.jquery.com/jquery-latest.js"></script>
 <script
-	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/post/write2.js"></script>
+	src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
 </head>
 <script>
 	$(function() {
@@ -42,7 +41,7 @@
 		$
 				.ajax({
 					type : 'get',
-					url : 'adminNoticeList',
+					url : 'noticeList',
 					data : {
 						page : page,
 						searchKey : searchKey,
@@ -58,7 +57,7 @@
 							$(rdata.notice)
 									.each(
 											function() {
-												output += '<a class="article" href="post/detail?post_id='
+												output += '<article><a class="article" href="post/detail?post_id='
 														+ this.post_ID
 														+ '"><div class="desc">'
 														+ '<h2 class="medium bold">'
@@ -69,9 +68,9 @@
 														+ this.like_COUNT
 														+ '</li></ul><time class="small">'
 														+ this.post_DATE
-														+ '</time><h3 class="admin bold small">애니타임</h3></div><hr></div></a>'
+														+ '</time><h3 class="admin bold small">애니타임</h3></div><hr></div></a></article>'
 											})//each end
-							$('.articles  article.list').append(output)
+											 $("div.wrap.bubbles").before(output);
 
 							let maxpage = rdata.maxpage;
 							let startpage = rdata.startpage;
@@ -132,37 +131,42 @@
 	}
 </script>
 <style>
-#container>div.articles>article {
-	border: 0px solid #e3e3e3 !important;
+#container>div.rightside {
+    right: 370px;
+    top: 288px;
 }
 </style>
 <body>
-	<div id="wrapper">
-		<jsp:include page="../common/left_admin.jsp" />
-		<div id="container" class="article notice"
-			style="margin-top: 85px; margin-left: 55px;">
-			<input type="hidden" id="isUser" value="1"> <input
-				type="hidden" id="boardId" value="1">
-			<div class="wrap title">
-				<h1>
-					<a href="${pageContext.request.contextPath}/notice">공지사항</a>
-				</h1>
-				<hr>
-			</div>
-			<div id="board_id" style="display: none;">1</div>
-			<div class="wrap articles" id="writeBoardContainer">
-				<label class="postwriteform"> </label> <a id="writeArticleButton">새
-					글을 작성해주세요! <img
-					src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
-				</a>
-				<div class="wrap bubbles none"></div>
-				<article class="list"></article>
-			</div>
-			<div class="center-block" style="margin-left: -385px;">
-				<ul class="pagination justify-content-center">
-				</ul>
+	<div id="container" style="margin-top: -60px;">
+		<div id="wrapper">
+			<div id="container" class="article notice"
+				style="margin-top: 85px; margin-left: 20px;">
+				<input type="hidden" id="isUser" value="1"> <input
+					type="hidden" id="boardId" value="1">
+				<div class="wrap title">
+					<h1>
+						<a href="/1">공지사항</a>
+					</h1>
+					<hr>
+				</div>
+				<div id="board_id" style="display: none;">1</div>
+				<div class="wrap articles" id="writeBoardContainer">
+					<c:if test="${auth eq 'ROLE_ADMIN'} ">
+						<label class="postwriteform"> </label>
+						<a id="writeArticleButton">새 글을 작성해주세요! <img
+							src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
+						</a>
+					</c:if>
+					<div class="wrap bubbles none"></div>
+					<article class="list"></article>
+				</div>
+				<div class="center-block" style="margin-left: -385px;">
+					<ul class="pagination justify-content-center">
+					</ul>
+				</div>
 			</div>
 		</div>
+		<jsp:include page="../common/rightside3.jsp" />
 	</div>
 </body>
 </html>

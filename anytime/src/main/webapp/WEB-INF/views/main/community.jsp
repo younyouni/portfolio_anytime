@@ -225,6 +225,6 @@
 			</label> <input type="submit" value="완료" class="button">
 		</form>
 	</div>
-	<!--<jsp:include page="../common/footer.jsp" />-->
+	<jsp:include page="../common/footer2.jsp" />
 </body>
 </html>

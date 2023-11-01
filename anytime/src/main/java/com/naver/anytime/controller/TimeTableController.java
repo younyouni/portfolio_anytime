@@ -183,8 +183,8 @@ public class TimeTableController {
 	// 추가수업 삭제
 	@RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> deleteSubject(@RequestParam("timetable_id") int timetable_id, 
-											@RequestParam("subject_id") int subject_id,
+	public ResponseEntity<?> deleteSubject(@RequestParam("timetable_id") Integer timetable_id, 
+											@RequestParam("subject_id") Integer subject_id,
 											Principal userPrincipal) {
 		try {
 	        String id = userPrincipal.getName();

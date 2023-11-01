@@ -30,6 +30,7 @@ import com.naver.anytime.service.MemberService;
 import com.naver.anytime.service.MessageService;
 import com.naver.anytime.service.PostService;
 import com.naver.anytime.service.ReportService;
+import com.naver.anytime.service.SchoolService;
 import com.naver.constants.AnytimeConstants;
 
 @Controller
@@ -44,11 +45,12 @@ public class AdminController {
 	private MemberService memberService;
 	private DailyDataService dailyDataService;
 	private MessageService messageService;
+	private SchoolService schoolService;
 
 	@Autowired
 	public AdminController(BoardService boardService, PostService postService, ReportService reportService,
 			CommentService commentService, MemberService memberService, DailyDataService dailyDataService,
-			MessageService messageService) {
+			MessageService messageService, SchoolService schoolService) {
 		this.boardService = boardService;
 		this.postService = postService;
 		this.reportService = reportService;
@@ -56,6 +58,7 @@ public class AdminController {
 		this.memberService = memberService;
 		this.dailyDataService = dailyDataService;
 		this.messageService = messageService;
+		this.schoolService = schoolService;
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -127,7 +130,7 @@ public class AdminController {
 
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
-	 @Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
+	@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
 	// @Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
 	public int updateBoardStatusCompleteScheduled() {
 		return boardService.updateBoardStatusComplete();
@@ -359,6 +362,75 @@ public class AdminController {
 		map.put("listcount", listcount);
 		map.put("limit", limit);
 
+		return map;
+	}
+
+	@RequestMapping(value = "/notice", method = RequestMethod.GET)
+	public ModelAndView getnotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+		String login_id = user.getUsername();
+		String email = user.getEmail();
+		String auth = user.getAuth();
+		
+		Map<String, Object> school = new HashMap<String, Object>();
+		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
+
+		school.put("id", user.getSchool_id());
+		school.put("name", school_name);
+		school.put("domain", schoolService.getSchoolDomain(school_name));
+		
+		mv.addObject("school", school);
+		mv.addObject("login_id", login_id);
+		mv.addObject("email", email);
+		mv.addObject("auth", auth);
+
+		mv.setViewName("/post/noticeList");
+
+		return mv;
+	}
+	
+	@RequestMapping(value = "/noticeList", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getNoticeList(
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+			@RequestParam(value = "searchKey", defaultValue = "0", required = false) int searchKey,
+			@RequestParam(value = "keyword", defaultValue = "", required = true) String keyword, ModelAndView mv) {
+		
+		if (keyword.equals("null")) {
+			keyword = null;
+		}
+		
+		int board_id = 23;// 공지사항 board_id로 변경
+		
+		int limit = 10;
+		
+		int listcount = postService.getPostTotalListCount(board_id, searchKey, keyword);
+		
+		// 총 페이지 수
+		int maxpage = (listcount + limit - 1) / limit;
+		
+		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
+		int startpage = ((page - 1) / 10) * 10 + 1;
+		
+		// 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
+		int endpage = startpage + 10 - 1;
+		
+		if (endpage > maxpage)
+			endpage = maxpage;
+		
+		logger.info("maxpage:"+maxpage);
+		
+		List<Post> notice = postService.getPostTotalList(board_id, page, limit, searchKey, keyword);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("notice", notice);
+		map.put("page", page);
+		map.put("maxpage", maxpage);
+		map.put("startpage", startpage);
+		map.put("endpage", endpage);
+		map.put("listcount", listcount);
+		map.put("limit", limit);
+		
 		return map;
 	}
 

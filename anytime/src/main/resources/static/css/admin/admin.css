@@ -137,7 +137,7 @@ div.reportadmin div.menu>ol {
 div.reportadmin div.menu>div.order {
 	display: inline-block;
 	float: right;
-	margin-right: 230px;
+	margin-right: -315px;
 	margin-top: 15px;
 }
 
@@ -147,7 +147,7 @@ div.menu ol>li.menu {
 
 div.menu ol>li.search {
 	float: right;
-	margin-right: 230px;
+	margin-right: -310px;
 }
 
 div.menu ol>li {
@@ -175,7 +175,7 @@ div.menu ol li a.active {
 
 div.section {
 	margin-top: -25px;
-	margin-right: 220px;
+	margin-right: -320px;
 }
 
 table.request, table.list {
