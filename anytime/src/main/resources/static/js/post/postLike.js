@@ -20,7 +20,7 @@ $(document).ready(function () {
 			        $('.vote').text(data.like_count); // 서버로부터 받은 공감 수를 표시
 			    } else if(data.statusCode == 2){
 			        alert('공감이 취소 되었습니다.');
-			        $('.vote').text(data.like_count); // 서버로부터 받은 공감 수를 표시
+			        $('.vote').text(data.like_count); 
 			    } else{
 			        alert('오류 발생 : ' + data.errorMessage);
 			    }

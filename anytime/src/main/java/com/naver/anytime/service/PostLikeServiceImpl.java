@@ -28,35 +28,19 @@ public class PostLikeServiceImpl implements PostLikeService{
         try {
         	postLikeDao.addNewlike(postLikе);
             postDao.incrementLikes(postLikе.getPOST_ID());
-            
-            // commit transaction if no error occurred
-            
-            
         } catch (Exception e) {
-            // rollback transaction if any error occurred
-            
-            
-            throw e;  // re-throw the exception to let the caller know about the error.
+            throw e;  
         }
-        
      } 
 
     @Override 
     public void removeExistinglike(PostLike postLikе) { 
-       
         // 공감을 제거하고 POST 테이블의 LIKE_COUNT 컬럼 값을 감소시킴
         try {
         	postLikeDao.removeExistinglike(postLikе);
         	postDao.decrementLikes(postLikе.getPOST_ID());
-            
-            // commit transaction if no error occurred
-           
-            
         } catch (Exception e) {
-            // rollback transaction if any error occurred
-           
-            
-            throw e;  // re-throw the exception to let the caller know about the error.
+            throw e;  
         }
     }
 
@@ -64,7 +48,6 @@ public class PostLikeServiceImpl implements PostLikeService{
     public int checkIfUserAlreadyLiked(PostLike postLikе) {  
         return postLikeDao.checkIfUserAlreadyLiked(postLikе);  
    }
-
 	
 	
 	
