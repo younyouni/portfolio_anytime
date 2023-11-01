@@ -54,7 +54,7 @@
 <body style="">
 	<div id="container" class="login">
 		<h1 class="logo">
-			<a href="/">애니타임</a>
+			<a href="${pageContext.request.contextPath}/main/home">애니타임</a>
 		</h1>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 		<form action="${pageContext.request.contextPath}/member/loginProcess"

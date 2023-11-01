@@ -32,13 +32,12 @@
 <body>
 	<aside>
 		<div class="login">
-			<a href="/" class="logo"><img
-				src="${pageContext.request.contextPath}/resources/image/common/logo.png"
-				alt="에브리타임" width="28px" height="40px"></a> <a
-				href="${pageContext.request.contextPath}/member/login"
-				class="button login">로그인</a> <a
-				href="${pageContext.request.contextPath}/member/register"
-				class="button register"> 애니타임 회원가입</a>
+
+			<a href="${pageContext.request.contextPath}/main/home" class="logo"><img src="${pageContext.request.contextPath}/resources/image/common/logo.png"
+				alt="에브리타임" width="28px" height="40px"></a>
+				<a href="${pageContext.request.contextPath}/member/login" class="button login">로그인</a>
+				<a href="${pageContext.request.contextPath}/member/register" class="button register"> 애니타임 회원가입</a>
+
 			<p class="find">
 				<a href="${pageContext.request.contextPath}/member/forgotid">아이디/비밀번호
 					찾기</a>
