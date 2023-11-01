@@ -399,7 +399,7 @@ function drawTimetable(timetableData) {
     const daysOfWeek = ["월", "화", "수", "목", "금"];
 
     // 각 요일에 대한 배경색 지정
-    const subjectColors = ["#f2e8e8", "#ffe9e9", "#eff9cc", "#dcf2e9", "#dee8f6"];
+    const subjectColors = ["#cddafd", "#dfe7fd", "#f0efeb", "#bee1e6", "#e2ece9", "#fad2e1", "#fde2e4", "#fff1e6", "#eae4e9"];
 
     // 요일과 시간 텍스트 크기 및 글꼴 설정
     ctx.font = '13px "맑은 고딕", 돋움,  "Apple SD Gothic Neo", tahoma';
@@ -438,24 +438,6 @@ function drawTimetable(timetableData) {
         ctx.fillText(daysOfWeek[i], x + 93, 32);
     }
 
-            // 열 백그라운드 적용할때 사용하기 위해 임시주석 //
-    // // 첫 번째 열 배경색 적용
-    // ctx.fillStyle = "#eeeef7";
-    // ctx.fillRect(50, 0, 150, canvas.height);
-
-    // // 시간 표시
-    // for (let j = 0; j <= 14; j++) {
-    //     let y = (j + 1) * (canvas.height / (21 - 7));
-
-    //     if (j < 14) {
-    //         let hour = j + 8;
-    //         let ampm = hour >= 12 ? "오후" : "오전";
-    //         hour = hour > 12 ? hour - 12 : hour;
-    //         ctx.fillStyle = "#000"; // 다음에 그릴 텍스트의 색상을 검은색으로 변경
-    //         ctx.fillText(ampm + " " + hour + "시", 100, y + 32);
-    //     }
-    // }
-
     // 왼쪽 경계선 추가
     ctx.moveTo(50, 0);
     ctx.lineTo(50, canvas.height);
@@ -474,7 +456,7 @@ function drawTimetable(timetableData) {
     ctx.closePath();
 
     if (timetableData) {
-        timetableData.forEach((classItem) => {
+        timetableData.forEach((classItem, index) => {
             const dayIndex = daysOfWeek.indexOf(classItem.day);
 
             // 요일에 따른 가로 위치 계산
@@ -485,7 +467,7 @@ function drawTimetable(timetableData) {
 
             const blockHeight = (classItem.end_time - classItem.start_time) * (canvas.height / 14) - 3;
 
-            ctx.fillStyle = subjectColors[dayIndex];
+            ctx.fillStyle = subjectColors[index % 9];
             ctx.fillRect(xStart, yStart, (canvas.width / (daysOfWeek.length + 1)) - 2, blockHeight);
 
             ctx.fillStyle = "#000";
@@ -530,25 +512,34 @@ function drawTimetable(timetableData) {
                 mouseY >= yStart + 5 && mouseY <= yStart + 25
             ) {
                 // 클릭한 시간표를 배열에서 삭제
-                const deletedClass = timetableData.splice(i, 1)[0];
-    
-                // 캔버스를 다시 그림
-                drawTimetable(timetableData);
+const deletedClass = timetableData.splice(i, 1)[0];
 
-                // 서버에 삭제 요청을 전송
-                let token = $("meta[name='_csrf']").attr("content");
-                let header = $("meta[name='_csrf_header']").attr("content");
+// subject_id가 유효한지 확인
+if (!deletedClass || !deletedClass.subject_id) {
+    console.error('Invalid subject_id:', deletedClass);
+    return;
+}
 
-                $.ajax({
-                    url: 'deleteSubject',
-                    type: 'POST',
-                    data: {
-                        timetable_id: $("#tableName").attr("data-id"),
-                        subject_id: deletedClass.subject_id
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader(header, token)
-                    },
+// subject_id를 정수로 변환
+const subject_id = parseInt(deletedClass.subject_id, 10);
+
+// 캔버스를 다시 그림
+drawTimetable(timetableData);
+
+// 서버에 삭제 요청을 전송
+let token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
+
+$.ajax({
+    url: 'deleteSubject',
+    type: 'POST',
+    data: {
+        timetable_id: $("#tableName").attr("data-id"),
+        subject_id: subject_id // 변환된 subject_id 사용
+    },
+    beforeSend: function (xhr) {
+        xhr.setRequestHeader(header, token)
+    },
                     success: function(response) {
                         if (response.message == '수업 삭제 성공') {
                         } else {
