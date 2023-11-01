@@ -22,13 +22,15 @@
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/container.modal.css"
 	rel="stylesheet">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/post/postlist.css">
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script>
 	$(function() {
 
 		var currentPage = location.pathname;
-		var newPath = currentPage.replace('/anytime/', ''); // 나중에 설정 바꾸고서 날리기
+		var newPath = currentPage.replace('/anytime/', '');
 		console.log("currentPage" + currentPage);
 
 		$("#menu li a").each(function() {
@@ -47,6 +49,7 @@
 		$(".my").on("click", function() {
 			$("#menu > li").removeClass("active");
 		})
+
 	});
 </script>
 <nav>
@@ -69,13 +72,14 @@
 					id="school_id" value="${school.school_id}">
 			</div>
 		</sec:authorize>
-			<ul id="menu">
-				<li class="active"><a href="${pageContext.request.contextPath}/admin">대시보드</a></li>
-				<li><a href="${pageContext.request.contextPath}/boardAdmin">게시판
-						관리</a></li>
-				<li><a href="${pageContext.request.contextPath}/reportAdmin">신고
-						관리</a></li>
-				<li><a href="${pageContext.request.contextPath}/adminNotice">공지사항</a></li>
-			</ul>
+		<ul id="menu">
+			<li class="active"><a
+				href="${pageContext.request.contextPath}/admin">대시보드</a></li>
+			<li><a href="${pageContext.request.contextPath}/boardAdmin">게시판
+					관리</a></li>
+			<li><a href="${pageContext.request.contextPath}/reportAdmin">신고
+					관리</a></li>
+			<li><a href="${pageContext.request.contextPath}/adminNotice">공지사항</a></li>
+		</ul>
 	</div>
 </nav>

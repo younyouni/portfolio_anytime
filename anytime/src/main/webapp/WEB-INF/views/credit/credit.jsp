@@ -5,6 +5,7 @@
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <head>
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
 <title>애니타임</title>
 <meta charset="utf-8">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/common.css" rel="stylesheet">

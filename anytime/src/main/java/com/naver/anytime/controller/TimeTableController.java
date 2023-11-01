@@ -51,6 +51,7 @@ public class TimeTableController {
 	public ModelAndView timeTable(
 			@AuthenticationPrincipal UserCustom user,
 			ModelAndView mv) {
+		
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
@@ -62,7 +63,8 @@ public class TimeTableController {
 		return mv;
 		
 	}
-
+	
+	// 시간표 학기별로 출력
 	@RequestMapping(value = "/getTimetableByUserIdAndSemester", method = RequestMethod.POST)
 	@ResponseBody
 	public List<TimeTable> getTimetableBySemester(
@@ -91,13 +93,14 @@ public class TimeTableController {
 		}
 		return timetable;
 	}
-
+	
+	// 시간표 이름 출력
 	@RequestMapping(value = "/updateTimetable", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<String> updateTimetable(@RequestParam int timetable_id, 
-											@RequestParam String newName,
-											@RequestParam int  status,
-											Principal userPrincipal) {
+												  @RequestParam String newName,
+												  @RequestParam int  status,
+												  Principal userPrincipal) {
 		try {
 			logger.info("기본시간표 : "+status);
 			String id = userPrincipal.getName();
@@ -108,7 +111,8 @@ public class TimeTableController {
 			return new ResponseEntity<>("이름 변경 실패", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	
+	// 새 시간표 생성
 	@RequestMapping(value = "/createNewTimeTable", method = RequestMethod.POST)
 	@ResponseBody
 	public TimeTable createNewTimeTable(@RequestParam(value = "semester") String semester, Principal userPrincipal) {
@@ -132,6 +136,7 @@ public class TimeTableController {
 		return map;
 	}
 	
+	// 새 수업 추가
 	@RequestMapping(value="/addSubject", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> addSubject(TimeTable_detail detail) {
@@ -154,12 +159,12 @@ public class TimeTableController {
 	  }
 	}
 
-	
+	// 생성 시간표 삭제
 	@RequestMapping(value = "/deleteTimetable", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Map<String, String>> deleteTimetable(@RequestParam(value = "timetable_id") int timetable_id,
-																@RequestParam(value = "status") int status,
-																Principal userPrincipal) {
+															   @RequestParam(value = "status") int status,
+															   Principal userPrincipal) {
 	    HashMap<String, String> result = new HashMap<>();
 	    try {
 	    	String id = userPrincipal.getName();
@@ -175,6 +180,7 @@ public class TimeTableController {
 	    }
 	}
 	
+	// 추가수업 삭제
 	@RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> deleteSubject(@RequestParam("timetable_id") int timetable_id, 
@@ -193,8 +199,5 @@ public class TimeTableController {
 	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
-
-
-	
 
 }

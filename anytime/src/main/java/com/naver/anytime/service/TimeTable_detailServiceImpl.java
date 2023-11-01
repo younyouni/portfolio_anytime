@@ -38,6 +38,5 @@ public class TimeTable_detailServiceImpl implements TimeTable_detailService{
 		timeDetailDao.deleteSubject(userId, timetable_id, subject_id);
 		
 	}
-
 	
 }

@@ -344,7 +344,7 @@
 							output = '';
 
 							if (page <= 1) {
-								output += '<li class="page-item"><li class="page-item hidden"><a class="page-link gray">'
+								output += '<li class="page-item"><li class="page-item hidden"><a class="page-link gray first">'
 										+ '이전&nbsp;&nbsp;</a></li>																';
 							} else if (page > 1) {
 								output = '<li class="page-item"><a href="javascript:boardTotalList('
@@ -353,7 +353,7 @@
 										+ searchKey
 										+ ','
 										+ keyword
-										+ ')" class="page-link">이전</a>&nbsp;</li>';
+										+ ')" class="page-link first">이전</a>&nbsp;</li>';
 							}
 
 							for (let i = startpage; i <= endpage; i++) {
@@ -373,7 +373,7 @@
 							}
 
 							if (page >= maxpage) {
-								output += '<li class="page-item"><a class="page-link gray hidden">&nbsp;다음</a></li>';
+								output += '<li class="page-item"><a class="page-link gray hidden last">&nbsp;다음</a></li>';
 							} else if (page < maxpage) {
 								output += '<li class="page-item"><a href="javascript:boardTotalList('
 										+ nextpage
@@ -381,7 +381,7 @@
 										+ searchKey
 										+ ','
 										+ keyword
-										+ ')" class="page-link">&nbsp;다음</a></li>';
+										+ ')" class="page-link last">&nbsp;다음</a></li>';
 							}
 							$('ul.pagination').append(output);
 						}//if (rdata.boardTotal.length > 0) {
@@ -501,7 +501,8 @@
 				</table>
 			</div>
 			<%-------------------------------- ▼페이지네이션▼ --------------------------------%>
-			<div class="center-block" style="margin-left: -210px;">
+			<div class="center-block"
+				style="margin-left: -250px; margin-top: 45px;">
 				<ul class="pagination justify-content-center">
 				</ul>
 			</div>

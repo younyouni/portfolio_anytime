@@ -56,17 +56,23 @@
 				<a class="article"> <img src="${pageContext.request.contextPath}/resources/image/common/profile.png"
 					class="picture large">
 					<div class="profile">
-						 <c:if test="${boardtest.ANONYMOUS eq 0}">
-							<h3 class="large">${nickname}</h3>
-						</c:if> 
-						 <c:if test="${boardtest.ANONYMOUS eq 1}"> 
-							<h3 class="large">익명</h3>
-						 </c:if> 
-						 <c:if test="${postdata.USER_STATUS eq 0}"> 
-							<h3 class="large">(알 수 없음)</h3>
-						 </c:if> 
-						<time class="large">${postdata.POST_DATE}</time>
+					    <c:choose>
+					        <c:when test="${boardtest.ANONYMOUS eq 0 && postdata.USER_STATUS eq 1}">
+					            <h3 class="large">${nickname}</h3>
+					        </c:when>
+					
+					        <c:when test="${boardtest.ANONYMOUS eq 1 && postdata.USER_STATUS eq 1}">
+					            <h3 class="large">익명</h3>
+					        </c:when>
+					        
+					        <c:otherwise>
+					            <h3 class="large">(알 수 없음)</h3>
+					        </c:otherwise>
+					    </c:choose>
+					
+					    <time class="large">${postdata.POST_DATE}</time>
 					</div>
+
 					<ul class="status">
 					   <!-- 사용자 아이디와 게시물 작성자 아이디가 일치하는 경우에만 수정 버튼 표시 -->
 					   <c:choose>

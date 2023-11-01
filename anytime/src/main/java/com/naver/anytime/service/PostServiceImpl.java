@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.naver.anytime.domain.Photo;
 import com.naver.anytime.domain.Post;
-import com.naver.anytime.mybatis.mapper.BoardMapper;
 import com.naver.anytime.mybatis.mapper.PostMapper;
 import com.naver.anytime.mybatis.mapper.PostPhotoMapper;
 import com.naver.constants.AnytimeConstants;
@@ -20,15 +19,12 @@ import com.naver.constants.AnytimeConstants;
 @Service
 public class PostServiceImpl implements PostService {
 	private PostMapper postDao;
-	private BoardMapper boardDao;
 	private SqlSession sqlSession;
 	private PostPhotoMapper PostPhotoDao;
 
 	@Autowired
-	public PostServiceImpl(PostMapper postDao, BoardMapper boardDao, SqlSession sqlSession,
-			PostPhotoMapper PostPhotoDao) {
+	public PostServiceImpl(PostMapper postDao, SqlSession sqlSession, PostPhotoMapper PostPhotoDao) {
 		this.postDao = postDao;
-		this.boardDao = boardDao;
 		this.sqlSession = sqlSession;
 		this.PostPhotoDao = PostPhotoDao;
 	}
@@ -191,7 +187,7 @@ public class PostServiceImpl implements PostService {
 		return postDao.updatePostStatus(post_id);
 	}
 
-	// 글쓰기 실험용
+	// 글쓰기 
 	@Override
 	public void insertPost(Post post) {
 		if (post.getSUBJECT() == null || post.getSUBJECT().isEmpty()) {
@@ -201,16 +197,11 @@ public class PostServiceImpl implements PostService {
 
 	}
 
-	// 글수정 실험용
+	// 글수정 
 	@Override
 	public void updatePost(Post post) {
 		postDao.updatePost(post);
 	}
-
-//	@Override
-//	public int increaseLike(Integer post_id, int currentUserId) {
-//		return postDao.increaseLike(post_id, currentUserId);
-//	}
 
 	@Override
 	public int getPostLikes(int post_id) {
@@ -247,12 +238,12 @@ public class PostServiceImpl implements PostService {
 			PostPhotoDao.deletePhoto(photo_id);
 		}
 	}
-	
+
 	@Override
 	public int getPostReportCount(int post_id) {
 		return postDao.getPostReportCount(post_id);
 	}
-	
+
 	@Override
 	public List<Post> getMyScrapList(int page, int limit, int user_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -263,12 +254,12 @@ public class PostServiceImpl implements PostService {
 		map.put("user_id", user_id);
 		return postDao.getMyScrapList(map);
 	}
-	
+
 	@Override
 	public int getMyArticlesListCount(int user_id) {
 		return postDao.getMyArticlesListCount(user_id);
 	}
-	
+
 	@Override
 	public List<Post> getMyArticlesList(int page, int limit, int user_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -279,12 +270,12 @@ public class PostServiceImpl implements PostService {
 		map.put("user_id", user_id);
 		return postDao.getMyArticlesList(map);
 	}
-	
+
 	@Override
 	public int getMyCommentArticlesListCount(int user_id) {
 		return postDao.getMyCommentArticlesListCount(user_id);
 	}
-	
+
 	@Override
 	public List<Post> getMyCommentArticlesList(int page, int limit, int user_id) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -295,7 +286,7 @@ public class PostServiceImpl implements PostService {
 		map.put("user_id", user_id);
 		return postDao.getMyCommentArticlesList(map);
 	}
-	
+
 	// ********************************= 윤희 =********************************
 	@Override
 	public List<List<Post>> getPostListByBoard(int[] board_ids) {
@@ -338,9 +329,9 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public int getPost(int content_id) {
 		int result = -1;
-		if(postDao.getPost(content_id) == 0) {
+		if (postDao.getPost(content_id) == 0) {
 			result = AnytimeConstants.NON_EXISTENT;
-		}else {
+		} else {
 			result = AnytimeConstants.EXISTENT;
 		}
 		return result;
@@ -379,12 +370,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getHotPostSampleList(int school_id) {	
+	public List<Post> getHotPostSampleList(int school_id) {
 		return postDao.getHotPostSampleList(school_id);
 	}
-	
+
 	@Override
-	public List<Post> getBestPostSampleList(int school_id) {	
+	public List<Post> getBestPostSampleList(int school_id) {
 		return postDao.getBestPostSampleList(school_id);
 	}
 

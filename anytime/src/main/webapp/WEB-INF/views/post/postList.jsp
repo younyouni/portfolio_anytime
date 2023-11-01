@@ -18,7 +18,7 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/modal.css">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/post/postwrite.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/post/write2.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/post/board.index.js"></script> --%>
 
 </head>

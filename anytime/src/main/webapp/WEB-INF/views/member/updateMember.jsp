@@ -1,25 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>회원 정보 변경 - 애니타임</title>
-<script
-	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<jsp:include page="../common/header.jsp" />
-<style>
-nav {
-	border-bottom: 0 !important;
-}
-</style>
+<c:if test="${auth eq 'ROLE_MEMBER'}">
+	<jsp:include page="../common/header.jsp" />
+</c:if>
+<c:if test="${auth eq 'ROLE_ADMIN'}">
+	<jsp:include page="../common/header_admin.jsp" />
+</c:if>
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/member/info/info.css"
 	rel="stylesheet">
-<!-- 
- <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/info/changePwd.css">
- -->
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 	if ("${result}" == "passwordFail") {
 		alert("현재 비밀번호와 일치하지 않습니다.");
@@ -182,8 +179,17 @@ nav {
 		}); //submit end
 	}); //ready function() end
 </script>
+<style>
+nav {
+	border-bottom: 0 !important;
+}
+
+body {
+	background-color: #EEEEF6 !important;
+}
+</style>
 </head>
-<body id="my">
+<body>
 	<div>
 		<form id="container" action="updateProcess" method="post"
 			data-adagreement="1" data-redirecturl="/">
