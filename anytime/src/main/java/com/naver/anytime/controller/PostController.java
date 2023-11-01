@@ -103,8 +103,6 @@ public class PostController {
 			if (post != null && post.getSTATUS() == 0) {
 				redirectAttrs.addFlashAttribute("result", "postStatus_fail");
 				mv.setViewName("redirect:/" + schoolService.getSchoolDomain(school_name));
-//				mv.setViewName("error/noAuthority");
-//				mv.addObject("redirectUrl", "/anytime/post/list?board_id=" + post.getBOARD_ID());
 				return mv;
 			}
 			logger.info("상세보기 실패");

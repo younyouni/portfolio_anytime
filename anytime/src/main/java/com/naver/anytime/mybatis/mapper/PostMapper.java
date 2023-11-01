@@ -19,31 +19,7 @@ public interface PostMapper {
 
 	public List<Post> getPostList(int page, int limit, int board_id); // 수정 ?
 
-	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit);
-
-	public List<Post> findSchoolBoardlistcount(int school_num);
-
-	public int getSearchListCount(List<Post> bnc, String search_word);
-
-	public List<Post> getSearchPostList(List<Post> bnc, String search_word, int page, int limit);
-
-	public String findNickname(int num);
-
-	public String findBoardname(int board_num);
-
-	public int boardAnonymousCheck(int board_num);
-
-	public int getListCount(int board_num, String search_field, String search_word);
-
 	public Post getDetail(int post_id);
-
-	public int getHotListCount(int school_num);
-
-	public List<Post> getHotList(int school_num, int page, int limit);
-
-	public int getBestListCount(int school_num);
-
-	public List<Post> getBestList(int school_num, int page, int limit);
 
 	public boolean postInsert(Post postdata, String userid, String filename);
 
@@ -52,15 +28,6 @@ public interface PostMapper {
 	public boolean photoDataInsert(Connection con, int post_num, String filename);
 
 	public boolean postModify(Post modifypost, String filename);
-
-	/*
-	 * private void photoDataUpdate(Connection con, int post_num, String filename);
-	 * 
-	 * private boolean photoDataUpdate2(Connection con, int post_num, String
-	 * filename);
-	 * 
-	 * private boolean postDataUpdate(Connection con, PostBean modifypost);
-	 */
 
 	// 글삭제 => STATUS로 접근불가
 	public int updatePostStatus(int post_id);
@@ -75,8 +42,6 @@ public interface PostMapper {
 
 	// 글수정 실험용
 	public void updatePost(Post post);
-
-//	int increaseLike(Integer post_id, int currentUserId);
 
 	public int getPostLikes(int post_id);
 
