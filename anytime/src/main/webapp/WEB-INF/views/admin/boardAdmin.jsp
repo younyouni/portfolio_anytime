@@ -507,7 +507,6 @@
 				</ul>
 			</div>
 		</div>
-		<jsp:include page="../common/footer2.jsp" />
 	</div>
 	<div id="container">
 		<form id="approvalreview" class="modal"
