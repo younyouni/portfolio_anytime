@@ -457,7 +457,6 @@ function drawTimetable(timetableData) {
     ctx.lineTo(canvas.width, 0);
     ctx.strokeStyle = "#a6a6a6";
     ctx.stroke();
-
     ctx.closePath();
 
     if (timetableData) {
