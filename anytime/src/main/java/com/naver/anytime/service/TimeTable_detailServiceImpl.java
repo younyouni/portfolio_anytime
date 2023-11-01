@@ -28,8 +28,8 @@ public class TimeTable_detailServiceImpl implements TimeTable_detailService{
 	}
 
 	@Override
-	public void addSubject(TimeTable_detail detail) {
-		timeDetailDao.addSubject(detail);
+	public int addSubject(TimeTable_detail detail) {
+		return timeDetailDao.addSubject(detail);
 	}
 
 

@@ -17,6 +17,7 @@
 		GROUP BY school_id) b
 		ON
 		SCHOOL.school_id = b.school_id
+		WHERE SCHOOL.school_id != 1
 	</select>
 
 	<select id="getSchoolDomain" parameterType="String"

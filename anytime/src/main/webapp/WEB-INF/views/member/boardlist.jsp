@@ -117,6 +117,5 @@ nav {
 	</form>
 	<input type="hidden" name="${_csrf.parameterName}"
 		value="${_csrf.token}">
-	<jsp:include page="../common/footer2.jsp" />
 </body>
 </html>

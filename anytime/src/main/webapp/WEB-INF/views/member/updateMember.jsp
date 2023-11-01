@@ -261,7 +261,6 @@ body {
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}">
 		</form>
-		<jsp:include page="../common/footer.jsp" />
 	</div>
 </body>
 </html>

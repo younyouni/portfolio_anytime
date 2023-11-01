@@ -109,8 +109,9 @@
 	</div> 
  
 	<form id="customsubjects" style="display: none;"> 
-		<input type="hidden" name="id" value=""> <a title="닫기" 
+		<input type="hidden" name="subject_id" value=""> <a title="닫기" 
 			class="close"></a> 
+			
 		<h2>새 수업 추가</h2> 
 		<dl> 
 			<dt>과목명 (필수)</dt> 

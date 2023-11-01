@@ -146,6 +146,7 @@ public class TimeTableController {
 	      timeTable_detailService.addSubject(detail); 
 	      
 	      result.put("newClass", detail);
+	      result.put("subject_id", detail.getSubject_id());
 	      
 	      result.put("message", "새로운 과목이 성공적으로 추가되었습니다.");
 	      result.put("status", "success");

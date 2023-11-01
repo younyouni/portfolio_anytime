@@ -208,7 +208,7 @@ $(document).ready(function () {
 // 새 수업 추가
 $("#customsubjects").submit(function (e) {
     e.preventDefault();
-
+    var subject_id = $("input[name='subject_id']").val();
     var timetable_id = $("#tableName").attr("data-id");
     var subject = $("input[name='subject']").val();
     var professor = $("input[name='professor']").val();
@@ -230,6 +230,7 @@ $("#customsubjects").submit(function (e) {
     }
 
     var newClass = {
+        subject_id: subject_id,
         subject: subject,
         professor: professor,
         day: day,
@@ -246,8 +247,10 @@ $("#customsubjects").submit(function (e) {
 
     // 현재 선택한 시간표에 수업 추가
     if (timetable_id in timetableData) {
+        newClass.subject_id = $("input[name='subject_id']").val();
         timetableData[timetable_id].push(newClass);
     } else {
+        newClass.subject_id = $("input[name='subject_id']").val();
         timetableData[timetable_id] = [newClass];
     }
     // Canvas에 시간표 다시 그리기
@@ -256,6 +259,7 @@ $("#customsubjects").submit(function (e) {
     // 기존 저장 방식에 따라 저장
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
+
 
     $.ajax({
         url: 'addSubject',
@@ -274,7 +278,8 @@ $("#customsubjects").submit(function (e) {
             xhr.setRequestHeader(header, token)
         },
         success: function (response) {
-            if (response.status === 'success') {
+            if (response.status == 'success') {
+                $("input[name='subject_id']").val(response.subject_id);
                 alert('수업 추가 성공');
                 location.reload();
             } else {
@@ -452,7 +457,6 @@ function drawTimetable(timetableData) {
     ctx.lineTo(canvas.width, 0);
     ctx.strokeStyle = "#a6a6a6";
     ctx.stroke();
-
     ctx.closePath();
 
     if (timetableData) {
@@ -512,34 +516,26 @@ function drawTimetable(timetableData) {
                 mouseY >= yStart + 5 && mouseY <= yStart + 25
             ) {
                 // 클릭한 시간표를 배열에서 삭제
-const deletedClass = timetableData.splice(i, 1)[0];
+                const deletedClass = timetableData.splice(i, 1)[0];
+                
 
-// subject_id가 유효한지 확인
-if (!deletedClass || !deletedClass.subject_id) {
-    console.error('Invalid subject_id:', deletedClass);
-    return;
-}
+                // 캔버스를 다시 그림
+                drawTimetable(timetableData);
 
-// subject_id를 정수로 변환
-const subject_id = parseInt(deletedClass.subject_id, 10);
+                // 서버에 삭제 요청을 전송
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
 
-// 캔버스를 다시 그림
-drawTimetable(timetableData);
-
-// 서버에 삭제 요청을 전송
-let token = $("meta[name='_csrf']").attr("content");
-let header = $("meta[name='_csrf_header']").attr("content");
-
-$.ajax({
-    url: 'deleteSubject',
-    type: 'POST',
-    data: {
-        timetable_id: $("#tableName").attr("data-id"),
-        subject_id: subject_id // 변환된 subject_id 사용
-    },
-    beforeSend: function (xhr) {
-        xhr.setRequestHeader(header, token)
-    },
+                $.ajax({
+                    url: 'deleteSubject',
+                    type: 'POST',
+                    data: {
+                        timetable_id: $("#tableName").attr("data-id"),
+                        subject_id: deletedClass.subject_id
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token)
+                    },
                     success: function(response) {
                         if (response.message == '수업 삭제 성공') {
                         } else {
