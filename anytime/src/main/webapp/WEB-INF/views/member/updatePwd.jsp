@@ -161,6 +161,5 @@ nav {
 				value="${_csrf.token}">
 		</form>
 	</div>
-	<jsp:include page="../common/footer2.jsp" />
 </body>
 </html>
