@@ -78,7 +78,7 @@ public class PostController {
 		this.postLikeService = postLikeService;
 		this.postPhotoService = postPhotoService;
 	}
-	
+
 	// 게시판 상세페이지
 	@GetMapping("/detail") // http://localhost:9700/anytime/post/detail?post_id=1 주소예시입니다.
 	public ModelAndView postDetail(@RequestParam(value = "post_id", required = false) Integer post_id, ModelAndView mv,
@@ -99,7 +99,9 @@ public class PostController {
 		school.put("domain", schoolService.getSchoolDomain(school_name));
 
 		// post = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
-		if (post == null || post.getSTATUS() == 0) {
+		
+		
+		if (post == null ||( post.getSTATUS() == 0 && member.getAuth().equals("ROLE_MEMBER"))) {
 			if (post != null && post.getSTATUS() == 0) {
 				redirectAttrs.addFlashAttribute("result", "postStatus_fail");
 				mv.setViewName("redirect:/" + schoolService.getSchoolDomain(school_name));
@@ -148,7 +150,7 @@ public class PostController {
 
 		return mv;
 	}
-	
+
 	// 게시판 글쓰기
 	@ResponseBody
 	@PostMapping(value = "/write")
@@ -210,7 +212,7 @@ public class PostController {
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
+
 	// 업로드시 저장되는 파일명
 	private String fileDBName(String fileName, String saveFolder) {
 		Calendar c = Calendar.getInstance();
@@ -234,7 +236,7 @@ public class PostController {
 
 		return fileDBName;
 	}
-	
+
 	// 게시판 글수정 데이터값 받기
 	@ResponseBody
 	@GetMapping("/updateGet")
@@ -259,7 +261,7 @@ public class PostController {
 			return responseMap;
 		}
 	}
-	
+
 	// 게시판 글수정 데이터값 보내기
 	@ResponseBody
 	@PostMapping("/updatePost")
@@ -271,15 +273,15 @@ public class PostController {
 			// 기존에 업로드된 파일들
 			@RequestPart(value = "existingFile[]", required = false) List<MultipartFile> existingFiles,
 			// 삭제될 파일들
-			@RequestParam(value = "deleteFile[]", required = false) String[] deleteFiles,
-			HttpServletRequest request, Principal userPrincipal) {
+			@RequestParam(value = "deleteFile[]", required = false) String[] deleteFiles, HttpServletRequest request,
+			Principal userPrincipal) {
 
 		// 현재 로그인된 유저아이디를 가져오기 위한 코드입니다.
 		String id = userPrincipal.getName();
 		Member member = memberService.getLoginMember(id);
 		int currentUserId = member.getUser_id();
 
-		Post postToUpdate = postService.getDetail(post_id); 
+		Post postToUpdate = postService.getDetail(post_id);
 
 		if (USER_ID != null) {
 			int userId = memberService.getUserId(USER_ID);
@@ -408,7 +410,7 @@ public class PostController {
 			return result;
 		}
 	}
-	
+
 	// 게시판 글삭제
 	@ResponseBody
 	@GetMapping("/delete")

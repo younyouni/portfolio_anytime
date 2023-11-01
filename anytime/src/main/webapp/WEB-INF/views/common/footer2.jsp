@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
 <head>
-<link type="text/css" href="${pageContext.request.contextPath}/resources/css/common/footer2.css" rel="stylesheet">
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/footer2.css"
+	rel="stylesheet">
 </head>
-<body>
+<div id="bottom">
 	<section class="footer white">
 		<ul class="links">
-			<li><a href="/page/serviceagreement">이용약관</a></li>
-			<li class="privacy"><a href="/page/privacy">개인정보처리방침</a></li>
-			<li><a href="/page/faq">문의하기</a></li>
-			<li class="copyright"><a href="/">© 애니타임</a></li>
+			<li>이용약관</li>
+			<li class="privacy">개인정보처리방침</li>
+			<li>청소년보호정책</li>
+			<li>커뮤니티이용규칙</li>
+			<li><a href="${pageContext.request.contextPath}/notice" style="font-weight: bold;">공지사항</a></li>
+			<li>문의하기</li>
+			<li class="copyright" style="font-weight: bold;">© 애니타임</li>
 		</ul>
 	</section>
-</body>
-</html>
+</div>

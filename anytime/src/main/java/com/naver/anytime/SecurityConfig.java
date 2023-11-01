@@ -88,6 +88,8 @@ public class SecurityConfig{
 			    .antMatchers("/reportProcess").access("hasRole('ROLE_ADMIN')")
 			    .antMatchers("/adminNotice").access("hasRole('ROLE_ADMIN')")  
 			    .antMatchers("/adminNoticeList").access("hasRole('ROLE_ADMIN')")
+			    .antMatchers("/notice").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
+			    .antMatchers("/noticeList").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
 				
 			     // Board 
 				.antMatchers("/submenulist").permitAll() //바꿀게요
