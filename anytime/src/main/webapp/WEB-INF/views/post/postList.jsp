@@ -420,8 +420,6 @@
 			<input type="submit" id="deleteCheckButton" value="삭제" class="button">
 		</form>
 	</div>
-
-	<jsp:include page="../common/footer.jsp" />
 	
 	<script>
 	
