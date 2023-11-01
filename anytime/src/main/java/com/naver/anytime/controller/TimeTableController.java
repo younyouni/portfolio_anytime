@@ -146,6 +146,7 @@ public class TimeTableController {
 	      timeTable_detailService.addSubject(detail); 
 	      
 	      result.put("newClass", detail);
+	      result.put("subject_id", detail.getSubject_id());
 	      
 	      result.put("message", "새로운 과목이 성공적으로 추가되었습니다.");
 	      result.put("status", "success");
@@ -183,8 +184,8 @@ public class TimeTableController {
 	// 추가수업 삭제
 	@RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> deleteSubject(@RequestParam("timetable_id") int timetable_id, 
-											@RequestParam("subject_id") int subject_id,
+	public ResponseEntity<?> deleteSubject(@RequestParam("timetable_id") Integer timetable_id, 
+											@RequestParam("subject_id") Integer subject_id,
 											Principal userPrincipal) {
 		try {
 	        String id = userPrincipal.getName();

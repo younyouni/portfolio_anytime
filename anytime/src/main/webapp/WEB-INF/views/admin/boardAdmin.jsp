@@ -502,12 +502,11 @@
 			</div>
 			<%-------------------------------- ▼페이지네이션▼ --------------------------------%>
 			<div class="center-block"
-				style="margin-left: -250px; margin-top: 45px;">
+				style="margin-left: 280px; margin-top: 45px;">
 				<ul class="pagination justify-content-center">
 				</ul>
 			</div>
 		</div>
-		<jsp:include page="../common/footer2.jsp" />
 	</div>
 	<div id="container">
 		<form id="approvalreview" class="modal"
@@ -529,7 +528,7 @@
 					<td>학교명</td>
 					<td class="box"><input type="text" class="first school_name"
 						readOnly value="x대"></td>
-					<td style="padding: 0 20px;">유형</td>
+					<td style="padding: 0 19px;">유형</td>
 					<td class="box"><input type="text" class="first type" readOnly
 						value="단체"></td>
 					<td style="padding: 0 20px;">운영자</td>

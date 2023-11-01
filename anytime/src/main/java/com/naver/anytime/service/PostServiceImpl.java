@@ -97,46 +97,6 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getPostList(int board_num, String search_field, String search_word, int page, int limit) {
-		return null;
-	}
-
-	@Override
-	public List<Post> findSchoolBoardlistcount(int school_num) {
-		return null;
-	}
-
-	@Override
-	public int getSearchListCount(List<Post> bnc, String search_word) {
-		return 0;
-	}
-
-	@Override
-	public List<Post> getSearchPostList(List<Post> bnc, String search_word, int page, int limit) {
-		return null;
-	}
-
-	@Override
-	public String findNickname(int num) {
-		return null;
-	}
-
-	@Override
-	public String findBoardname(int board_num) {
-		return null;
-	}
-
-	@Override
-	public int boardAnonymousCheck(int board_num) {
-		return 0;
-	}
-
-	@Override
-	public int getListCount(int board_num, String search_field, String search_word) {
-		return 0;
-	}
-
-	@Override
 	public Post getDetail(int post_id) {
 		return postDao.getDetail(post_id);
 	}

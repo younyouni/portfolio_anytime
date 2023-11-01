@@ -25,8 +25,10 @@ $(document).ready(function () {
 			success: function (scrapResult){
 				if(scrapResult == 1){
 					alert("스크랩이 완료 되었습니다.");
+					location.reload();
 				} else if(scrapResult == 2) {
 					alert("스크랩이 취소 되었습니다.");
+					location.reload();
 				} else {
 					alert("스크랩중 오류가 발생했습니다.");
 				}

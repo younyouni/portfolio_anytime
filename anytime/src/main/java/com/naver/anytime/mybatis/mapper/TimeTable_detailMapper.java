@@ -13,7 +13,7 @@ public interface TimeTable_detailMapper {
 
 	List<TimeTable_detail> getTimetableDetails(int timetable_id);
 	
-	public void addSubject(TimeTable_detail detail);
+	public int addSubject(TimeTable_detail detail);
 
 	public void deleteTimetableDetail(int timetable_id);
 	
