@@ -114,8 +114,12 @@
 	display: flex;
 }
 
+label.purpose{
+	margin-right:-8px !important;
+	
+}
 #explain {
-	margin-left: 185px !important;
+	margin-left: 236px !important;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * 게시판 모달 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

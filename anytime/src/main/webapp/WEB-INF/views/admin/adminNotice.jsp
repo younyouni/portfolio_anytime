@@ -26,7 +26,7 @@
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script
-	src="${pageContext.request.contextPath}/resources/js/post/write2.js"></script>
+	src="${pageContext.request.contextPath}/resources/js/post/write.js"></script>
 </head>
 <script>
 	$(function() {

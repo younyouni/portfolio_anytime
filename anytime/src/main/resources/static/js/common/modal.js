@@ -4,7 +4,6 @@ function createBoard(anony) {//익명 or 닉네임 사용하는 게시판을 생
 
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
-	alert(option);
 	$.ajax({
 		type: "post",
 		url: "create",

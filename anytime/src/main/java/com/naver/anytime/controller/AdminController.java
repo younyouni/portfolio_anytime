@@ -332,7 +332,7 @@ public class AdminController {
 			keyword = null;
 		}
 
-		int board_id = AnytimeConstants.ADMIN_NOTICE;// 공지사항 board_id로 변경
+		int board_id = 1;// 공지사항 board_id로 변경
 
 		int limit = 10;
 
@@ -399,7 +399,7 @@ public class AdminController {
 			keyword = null;
 		}
 		
-		int board_id = 23;// 공지사항 board_id로 변경
+		int board_id = 1;// 공지사항 board_id로 변경
 		
 		int limit = 10;
 		

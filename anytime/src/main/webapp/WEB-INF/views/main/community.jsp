@@ -217,7 +217,7 @@
 				<p id="explain" class="purpose">승인 심사시 필요</p>
 			</div>
 			<input type="text" name="purpose" placeholder="개설 목적"
-				class="text info boardinfo purpose" style="display: none;">
+				class="text info boardinfo purpose" style="display: none; margin-right: 0px;">
 
 			<label class="custom-checkbox-label"> <input type="checkbox"
 				class="custom-checkbox" name="anony"> <span
