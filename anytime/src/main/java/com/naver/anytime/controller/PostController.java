@@ -721,7 +721,7 @@ public class PostController {
 
 		mv.addObject("searchcheck", searchcheck);
 
-		// 글이 없을때 체크 (1= 일반, 2= 검색)
+		// 글이 없을때 체크 (1= 일반, 2= 검색) 
 		if (postlist != null) {
 			mv.addObject("emptycheck", 2);
 		}
