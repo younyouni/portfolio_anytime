@@ -72,7 +72,7 @@
 				<div class="screen">
 					<div class="image home"></div>
 					<div class="image timetable"></div>
-					<div class="image board"></div>
+					<div class="image calculator"></div>
 				</div>
 			</div>
 		</div>

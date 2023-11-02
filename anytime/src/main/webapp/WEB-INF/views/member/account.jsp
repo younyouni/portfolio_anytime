@@ -62,8 +62,11 @@ nav {
 							<span>${member.nickname}</span>
 						</p>
 						<p>
-							<span>${school.name}</span> <span>${member.admission_year}</span>
+							<span>${school.name}</span> 
+							<c:if test="${member.auth eq 'ROLE_MEMBER' }">
+							<span>${member.admission_year}</span>
 							<span>학번</span>
+							</c:if>
 						</p>
 					</div>
 				</sec:authorize>

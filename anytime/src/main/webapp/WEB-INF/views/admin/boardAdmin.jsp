@@ -502,7 +502,7 @@
 			</div>
 			<%-------------------------------- ▼페이지네이션▼ --------------------------------%>
 			<div class="center-block"
-				style="margin-left: 280px; margin-top: 45px;">
+				style="margin-left: -225px; margin-top: 45px;">
 				<ul class="pagination justify-content-center">
 				</ul>
 			</div>

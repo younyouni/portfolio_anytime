@@ -327,9 +327,14 @@ section.init>div.wrap>div.device>div.screen>div.timetable {
 	animation: active-init-timetable 6s infinite;
 }
 
-section.init>div.wrap>div.device>div.screen>div.board {
+section.init>div.wrap>div.device>div.screen>div.calculator {
 	opacity: 0;
-	animation: active-init-board 6s infinite;
+	animation: active-init-calculator 6s infinite;
+}
+
+section.init>div.wrap>div.device>div.screen>div.calendar {
+	opacity: 0;
+	animation: active-init-calendar 6s infinite;
 }
 
 @keyframes active-init-timetable { 
@@ -355,7 +360,29 @@ section.init>div.wrap>div.device>div.screen>div.board {
 		opacity:0;
 	}
 }
-@keyframes active-init-board { 
+@keyframes active-init-calculator { 
+	0% {
+		opacity: 0;
+	}
+
+	59%
+	{
+		opacity:0;
+	}
+	67%
+	{
+		opacity:1;
+	}
+	92%
+	{
+		opacity:1;
+	}
+	100%
+	{
+		opacity:0;
+	}
+}
+@keyframes active-init-calculator { 
 	0% {
 		opacity: 0;
 	}
@@ -642,25 +669,29 @@ translateY(
 	}
 	section.init>div.wrap>div.device>div.screen>div.home {
 		top: 58px;
-		    left: 56px;
-		width: 530px;
-		height: 540px;
-		background-position: 0px 0px;
+	    left: 56px;
+	    width: 530px;
+	    height: 296px;
+	    background-position: -545px 0px;
+	    background-size: 408%;
 	}
 	section.init>div.wrap>div.device>div.screen>div.timetable {
-		top:  58px;
-		    left: 56px;
-		width: 530px;
-		height: 540px;
-		background-position: -285px 0px;
+		top: 58px;
+	    left: 56px;
+	    width: 530px;
+	    height: 296px;
+	    background-size: 408%;
+	    background-position: -1089px 0px;
 	}
-	section.init>div.wrap>div.device>div.screen>div.board {
-		top:  58px;
-		    left: 56px;
-		width: 530px;
-		height: 540px;
-		background-position: -570px 0px;
+	section.init>div.wrap>div.device>div.screen>div.calculator {
+		top: 58px;
+    left: 56px;
+    width: 530px;
+    height: 296px;
+    background-size: 408%;
+		background-position: -1625px 0px;
 	}
+	
 	section.footer>ul.links>li>a {
 		margin: 0 8px;
 		font-size: 13px;

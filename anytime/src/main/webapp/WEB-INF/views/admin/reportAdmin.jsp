@@ -447,7 +447,7 @@
 					</label>
 				</div>
 			</div>
-			<div class="section">
+			<div class="section report">
 				<table class="request">
 					<thead>
 						<tr>
@@ -479,7 +479,6 @@
 				</ul>
 			</div>
 		</div>
-		<jsp:include page="../common/footer2.jsp" />
 	</div>
 	<div id="container">
 		<form id="reportprocess" class="modal"
