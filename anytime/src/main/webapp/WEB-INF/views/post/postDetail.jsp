@@ -50,6 +50,7 @@
 			<hr>
 			
 		</div>
+		<input type="hidden" id="contextpass" value="${pageContext.request.contextPath}">
 		<div class="wrap articles" id="writeBoardContainer">
 		<a id="writeArticleButton" style="display: none;">새 글을 작성해주세요!</a>
 			<article id="boardInfo" class="item">

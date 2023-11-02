@@ -88,12 +88,14 @@ $(document).ready(function () {
                 // 가져온 값으로 입력 필드 업데이트
                 $('#title').val(SUBJECT);
                 $('#content').val(CONTENT);
+                
+                let context = $('#contextpass').val();
 
                 // 첨부 파일 데이터 업데이트
                 let files = data.FILES;  // 서버에서 반환하는 데이터가 문자열 형태라면, JSON.parse를 사용하여 배열로 변환
                 if (files && files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
-                        addThumbnail(location.host+'/upload/' + files[i]);  // 상대 경로를 사용하여 썸네일 추가
+                        addThumbnail(context+'/upload/' + files[i]);  // 상대 경로를 사용하여 썸네일 추가
 		                existingFiles.push(files[i]);         // 기존에 있던 파일들도 업로드 대상 배열에 추가.
                     }
                     $('#container>div.articles>form.write ol.thumbnails').css('display', 'block');   // 썸네일 영역 보이기 추가
