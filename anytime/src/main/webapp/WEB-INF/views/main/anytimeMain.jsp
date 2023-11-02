@@ -45,7 +45,7 @@
 			<hr>
 		</div>
 		<form class="search">
-			<p>우리 학교 커뮤니티 둘러보기기기기기</p>
+			<p>우리 학교 커뮤니티 둘러보기</p>
 			<input type="text" name="name" placeholder="찾으시는 캠퍼스를 검색하세요."
 				autocomplete="off" id="searchInput">
 
