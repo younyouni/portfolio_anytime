@@ -22,7 +22,10 @@
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/modal.css"
 	rel="stylesheet">
-
+<link type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/common/footer2.css"
+	rel="stylesheet">
+	
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script type="text/javascript"
@@ -225,6 +228,20 @@
 			</label> <input type="submit" value="완료" class="button">
 		</form>
 	</div>
-	<jsp:include page="../common/footer2.jsp" />
+	
+	<div id="bottom">
+		<section class="footer white">
+			<ul class="links">
+				<li>이용약관</li>
+				<li class="privacy">개인정보처리방침</li>
+				<li>청소년보호정책</li>
+				<li>커뮤니티이용규칙</li>
+				<li><a href="${pageContext.request.contextPath}/notice" style="font-weight: bold;">공지사항</a></li>
+				<li>문의하기</li>
+				<li class="copyright" style="font-weight: bold;">© 애니타임</li>
+			</ul>
+		</section>
+	</div>
+
 </body>
 </html>
