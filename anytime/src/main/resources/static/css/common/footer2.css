@@ -11,7 +11,7 @@ section.footer>ul.links {
 }
 
 body {
-	_font-family: ����, tahoma;
+	_font-family: 돋움, tahoma;
 	font-size: 12px;
 	letter-spacing: -0.5px;
 	overflow-x: hidden;
@@ -19,9 +19,7 @@ body {
 
 div, nav, aside, article, h1, h2, h3, h4, ol, ul, li, dl, dt, dd, p,
 	span, form, th, td, input, textarea, select, pre, address {
-	/* color: #666; */
-	/* font-family: "���� ���", ����,  "Apple SD Gothic Neo", tahoma; */
-	_font-family: ����, tahoma;
+	_font-family: 돋움, tahoma;
 	font-size: 12px;
 	letter-spacing: -0.5px;
 }
@@ -54,7 +52,7 @@ section.footer {
 
 body, div, nav, aside, article, h1, h2, h3, h4, ol, ul, li, dl, dt, dd,
 	p, span, form, th, td, input, textarea, select, pre, address {
-	_font-family: ����, tahoma;
+	_font-family: 돋움, tahoma;
 	font-size: 12px;
 	letter-spacing: -0.5px;
 }
