@@ -183,7 +183,7 @@ public class PostController {
 						sbFiles.append(originalFilename).append(",");
 
 						// 파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
-						String saveFolder = "c:/upload/";
+						//String saveFolder = "c:/upload/";
 						String fileDBName = fileDBName(originalFilename, saveFolder);
 						file.transferTo(new File(saveFolder + fileDBName));
 //                      photo.setPATH(saveFolder+fileDBName);
@@ -327,7 +327,7 @@ public class PostController {
 						sbFiles.append(originalFilename).append(",");
 
 						// 파일 경로 설정 및 실제 파일을 디스크에 저장하는 로직.
-						String saveFolder = "c:/upload/";
+						//String saveFolder = "c:/upload/";
 						String fileDBName = fileDBName(originalFilename, saveFolder);
 						file.transferTo(new File(saveFolder + fileDBName));
 
