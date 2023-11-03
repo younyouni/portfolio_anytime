@@ -364,7 +364,7 @@ div.order label, div.report_content label, div.report_member label {
 
 /*신고 관리 페이지*/
 table.request a.article {
-	height: 155px;
+	height: 165px;
 	display: block;
 	padding: 20px 25px;
 	background-color: #F4F4F4;

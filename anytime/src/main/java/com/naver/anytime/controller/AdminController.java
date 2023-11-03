@@ -314,10 +314,12 @@ public class AdminController {
 
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
 	public ModelAndView getAdminNotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv,
-			HttpServletRequest request) {
+			HttpServletRequest request,HttpSession session) {
 
 		String login_id = user.getUsername();
 		String email = user.getEmail();
+		
+		session.setAttribute("board_id", AnytimeConstants.ADMIN_NOTICE);
 
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
