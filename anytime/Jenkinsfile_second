@@ -111,15 +111,18 @@ stages {
             sh 'echo " docker image rmi"'
             sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
             sh "docker rmi $repository"              // docker image 제거
+	    sh 'echo "Cleaning up workspace"'
+            deleteDir()
         }
         post {
             success {
                 sh 'echo "Docker hub push Success"'
+                sh 'echo "Workspace cleanup success"'
             }
 
             failure {
                 sh 'echo "Docker hub push Fail"'
-                exit 1
+                //exit 1
             }
         }
     }
