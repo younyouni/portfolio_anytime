@@ -44,7 +44,7 @@ $(document).ready(function () {
 			});
 			
 		if (response.hotlist.length === 0) {
-		    rightsideList += '<a class="list">핫 게시물이 없습니다</a>';
+		    rightsideList += '<a class="list">HOT 게시물이 없습니다</a>';
 		} 
 		
 		} else if(response.login_check == 1){
@@ -69,7 +69,7 @@ $(document).ready(function () {
 			});
 		
 			if (response.bestlist.length === 0) {
-			    rightsideList += '<a class="list">핫 게시물이 없습니다</a>';
+			    rightsideList += '<a class="list">BEST 게시물이 없습니다</a>';
 			}
 		
 		} else if(response.login_check == 1){
