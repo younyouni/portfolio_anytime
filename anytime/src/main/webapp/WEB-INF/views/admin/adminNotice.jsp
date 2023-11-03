@@ -145,7 +145,7 @@
 				type="hidden" id="board_id" value="1">
 			<div class="wrap title">
 				<h1>
-					<a href="${pageContext.request.contextPath}/notice">공지사항</a>
+					<a href="list?board_id=1">공지사항</a>
 				</h1>
 				<hr>
 			</div>

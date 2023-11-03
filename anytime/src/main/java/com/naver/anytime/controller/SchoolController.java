@@ -55,12 +55,12 @@ public class SchoolController {
 		int isDomain = schoolService.isDomain(schoolDomain);
 
 		if (isDomain > 0) {
-			if (user != null) {
+			if (user != null && user.getAuth().equals("ROLE_MEMBER")) {
 				String id = user.getUsername();
 				logger.info("인증된 사용자 : " + user.getUsername());
 				logger.info("유저 학교 도메인 : " + memberService.getSchoolDomain(id));
 
-				if (!schoolDomain.equals(memberService.getSchoolDomain(id)) && user.getAuth().equals("ROLE_MEMBER")) {
+				if (!schoolDomain.equals(memberService.getSchoolDomain(id))) {
 					mv.setViewName("redirect:/" + memberService.getSchoolDomain(id));
 					logger.info("다른학교 출입");
 				}
@@ -76,6 +76,11 @@ public class SchoolController {
 				mv.addObject("list", commonPostsByBoard);
 
 			} else {
+				if (user.getAuth().equals("ROLE_ADMIN")) {
+					String id = user.getUsername();
+					Member m = memberService.getLoginMember(id);
+					mv.addObject("member", m);
+				}
 				int[] board_ids = boardService.getBoardIdsByDomain(schoolDomain);
 				List<List<Post>> commonPostsByBoard = postService.getPostListByBoard(board_ids);
 				school_id = schoolService.getSchoolId(schoolDomain);
@@ -88,7 +93,7 @@ public class SchoolController {
 			school.put("domain", schoolDomain);
 
 			mv.addObject("school", school);
-		}else {
+		} else {
 			mv.setViewName("redirect:/");
 		}
 
