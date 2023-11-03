@@ -4,6 +4,7 @@
 <meta name="_csrf_header" content="${_csrf.headerName}">	
 <html>
 <head>
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png" >
 <title>애니타임_이메일 본인 인증</title>
 <script src="<%=request.getContextPath()%>/resources/js/jquery-3.7.0.js"></script>
 <link type="text/css"

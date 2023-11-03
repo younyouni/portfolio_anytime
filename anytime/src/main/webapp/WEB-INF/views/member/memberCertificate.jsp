@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png" >
 <title>재학생 인증 - 애니타임</title>
 <jsp:include page="../common/header.jsp" />
 
