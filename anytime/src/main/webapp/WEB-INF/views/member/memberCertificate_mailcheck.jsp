@@ -3,7 +3,7 @@
 	
 <html>
 <head>
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png" >
 <title>애니타임_이메일 본인 인증</title>
 <script src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/info/mailcheck.css">
