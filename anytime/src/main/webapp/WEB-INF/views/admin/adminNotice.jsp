@@ -149,7 +149,8 @@
 				</h1>
 				<hr>
 			</div>
-			<div id="board_id" style="display: none;">1</div>
+			<div id="board_id" style="display: none;"><%= session.getAttribute("board_id") %></div>
+			<div id="user_id" style="display: none;"><%= session.getAttribute("user_id") %></div>
 			<div class="wrap articles" id="writeBoardContainer">
 				<label class="postwriteform"> </label> <a id="writeArticleButton">새
 					글을 작성해주세요! <img
