@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -310,9 +313,12 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
-	public ModelAndView getAdminNotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+	public ModelAndView getAdminNotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv,
+			HttpServletRequest request) {
+
 		String login_id = user.getUsername();
 		String email = user.getEmail();
+
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
 
@@ -370,14 +376,14 @@ public class AdminController {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
 		String auth = user.getAuth();
-		
+
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());
 
 		school.put("id", user.getSchool_id());
 		school.put("name", school_name);
 		school.put("domain", schoolService.getSchoolDomain(school_name));
-		
+
 		mv.addObject("school", school);
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
@@ -387,42 +393,42 @@ public class AdminController {
 
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/noticeList", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getNoticeList(
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "searchKey", defaultValue = "0", required = false) int searchKey,
 			@RequestParam(value = "keyword", defaultValue = "", required = true) String keyword, ModelAndView mv) {
-		
+
 		if (keyword.equals("null")) {
 			keyword = null;
 		}
-		
+
 		int board_id = 1;// 공지사항 board_id로 변경
-		
+
 		int limit = 10;
-		
+
 		int listcount = postService.getPostTotalListCount(board_id, searchKey, keyword);
-		
+
 		// 총 페이지 수
 		int maxpage = (listcount + limit - 1) / limit;
-		
+
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등...)
 		int startpage = ((page - 1) / 10) * 10 + 1;
-		
+
 		// 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 등...)
 		int endpage = startpage + 10 - 1;
-		
+
 		if (endpage > maxpage)
 			endpage = maxpage;
-		
-		logger.info("maxpage:"+maxpage);
-		
+
+		logger.info("maxpage:" + maxpage);
+
 		List<Post> notice = postService.getPostTotalList(board_id, page, limit, searchKey, keyword);
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		map.put("notice", notice);
 		map.put("page", page);
 		map.put("maxpage", maxpage);
@@ -430,7 +436,7 @@ public class AdminController {
 		map.put("endpage", endpage);
 		map.put("listcount", listcount);
 		map.put("limit", limit);
-		
+
 		return map;
 	}
 
