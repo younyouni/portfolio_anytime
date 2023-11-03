@@ -65,7 +65,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv,HttpSession session) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
 
@@ -86,6 +86,8 @@ public class AdminController {
 
 		// 게시판 승인 to do list
 		DailyData todoList = dailyDataService.getTodoList();
+		
+		session.setAttribute("board_id", 1);
 
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
@@ -320,6 +322,7 @@ public class AdminController {
 		String email = user.getEmail();
 		
 		session.setAttribute("board_id", 1);
+		logger.info("@@@@@@@"+(String) session.getAttribute("board_id"));
 
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
