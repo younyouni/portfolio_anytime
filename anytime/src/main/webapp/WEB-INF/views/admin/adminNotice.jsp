@@ -141,8 +141,8 @@
 		<jsp:include page="../common/left_admin.jsp" />
 		<div id="container" class="article notice"
 			style="margin-top: 85px; margin-left: 55px;">
-			<input type="hidden" id="isUser" value="1"> <input
-				type="hidden" id="board_id" value=1>
+			<input type="hidden" id="isUser" value="1">
+				<input type="hidden" id="board_id" value="1">
 			<div class="wrap title">
 				<h1>
 					<a href="list?board_id=1">공지사항</a>
