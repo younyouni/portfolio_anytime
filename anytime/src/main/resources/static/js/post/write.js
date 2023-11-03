@@ -148,7 +148,7 @@ $('body').on('click', 'li.new', function() {
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
 
-	    var board_id =$("#board_id").html(); 
+	    var board_id = parseInt($("#board_id").html(), 10); 
 
 	    var formData=new FormData();
 	    formData.append('BOARD_ID', board_id);

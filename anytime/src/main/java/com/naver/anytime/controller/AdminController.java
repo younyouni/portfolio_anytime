@@ -319,7 +319,7 @@ public class AdminController {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
 		
-		session.setAttribute("board_id", AnytimeConstants.ADMIN_NOTICE);
+		session.setAttribute("board_id", 1);
 
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
