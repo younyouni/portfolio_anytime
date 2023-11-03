@@ -149,7 +149,7 @@
 				</h1>
 				<hr>
 			</div>
-			<div id="board_id" style="display: none;"><%= session.getAttribute("board_id") %></div>
+			<div id="board_id" style="display: none;">${sessionScope.board_id}</div>
 			<div id="user_id" style="display: none;"><%= session.getAttribute("user_id") %></div>
 			<div class="wrap articles" id="writeBoardContainer">
 				<label class="postwriteform"> </label> <a id="writeArticleButton">새
