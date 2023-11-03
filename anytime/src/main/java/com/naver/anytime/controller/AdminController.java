@@ -65,7 +65,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv,HttpSession session) {
+	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv, HttpSession session) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
 
