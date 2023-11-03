@@ -105,7 +105,7 @@ nav {
 				<div data-v-703578ac="" class="input">
 					<div data-v-703578ac="" class="label">
 						<label data-v-703578ac="">이메일</label>
-						<p data-v-703578ac="">@${school.address}</p>
+						<p data-v-703578ac="">${school.address}</p>
 					</div>
 					<input data-v-703578ac="" type="email" name ="webemail" maxlength="255"
 						placeholder="이메일" autocomplete="off">

@@ -20,6 +20,9 @@ import org.springframework.stereotype.Component;
 public class SendMail {
 	private static final Logger logger = LoggerFactory.getLogger(SendMail.class);
 
+	@Value("${my.sendfile}")
+	 private String sendfile;
+	
 	private JavaMailSenderImpl mailSender;
 
 	@Autowired
@@ -50,7 +53,7 @@ public class SendMail {
 					                        + "<tbody>"
 					                            + "<tr>"
 					                                + "<td style='padding: 16px 16px 0 16px;'>"
-					                                    + "<a href='http://localhost:9700/anytime/member/login' target='_blank' style='text-decoration: none;' rel='noreferrer noopener'>"
+					                                    + "<a href='${pageContext.request.contextPath}/member/login' target='_blank' style='text-decoration: none;' rel='noreferrer noopener'>"
 					                                        + "<img src='cid:logo' width='28' height='30' loading='lazy'>"
 					                                    + "</a>"
 					                                + "</td>"
@@ -69,7 +72,7 @@ public class SendMail {
 					                                + "<td style='padding: 32px 16px 0 16px; line-height: 20px; color: #292929; font-size: 14px;'>안녕하세요, 애니타임입니다.<br><br>"
 					                                    + now + "에 인증번호 발송 요청이 있었습니다.<br>"
 					                                    + "본 이메일에 해당하는 인증번호는 <strong>" + authCode + "</strong> 입니다.<br><br>"
-					                                    + "<a href='http://localhost:9700/anytime/member/login' target='_blank' rel='noreferrer noopener'>애니타임 바로가기</a>"
+					                                    + "<a href='${pageContext.request.contextPath}/member/login' target='_blank' rel='noreferrer noopener'>애니타임 바로가기</a>"
 					                                + "</td>"
 					                            + "</tr>"
 					                            + "<tr>"
@@ -96,7 +99,7 @@ public class SendMail {
 					+ "</div>";
 				
 				helper.setText(content, true);
-				FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/image/common/logo.png"));
+				FileSystemResource file = new FileSystemResource(new File(sendfile));
 				helper.addInline("logo", file);
 			}
 		};
@@ -128,7 +131,7 @@ public class SendMail {
 					                        + "<tbody>"
 					                            + "<tr>"
 					                                + "<td style='padding: 16px 16px 0 16px;'>"
-					                                    + "<a href='http://localhost:9700/anytime/member/login' target='_blank' style='text-decoration: none;' rel='noreferrer noopener'>"
+					                                    + "<a href='${pageContext.request.contextPath}/member/login' target='_blank' style='text-decoration: none;' rel='noreferrer noopener'>"
 					                                        + "<img src='cid:logo' width='32' height='37' loading='lazy'>"
 					                                    + "</a>"
 					                                + "</td>"
@@ -147,7 +150,7 @@ public class SendMail {
 					                                + "<td style='padding: 32px 16px 0 16px; line-height: 20px; color: #292929; font-size: 14px;'>안녕하세요, 애니타임입니다.<br><br>"
 					                                    + now + "에 아이디 찾기 요청이 있었습니다.<br>"
 					                                    + "본 이메일에 해당하는 아이디는 <strong>" + foundId + "</strong> 입니다.<br><br>"
-					                                    + "<a href='http://localhost:9700/anytime/member/login' target='_blank' rel='noreferrer noopener'>애니타임 바로가기</a>"
+					                                    + "<a href='${pageContext.request.contextPath}/member/login' target='_blank' rel='noreferrer noopener'>애니타임 바로가기</a>"
 					                                + "</td>"
 					                            + "</tr>"
 					                            + "<tr>"
@@ -177,7 +180,7 @@ public class SendMail {
 			
 				
 				helper.setText(content, true);
-				FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/image/common/logo.png"));
+				FileSystemResource file = new FileSystemResource(new File(sendfile));
 				helper.addInline("logo", file);
 
 			}
