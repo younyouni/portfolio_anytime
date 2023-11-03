@@ -21,7 +21,7 @@ function Verifyemail(){
         alert("인증되었습니다.");
         isVerified = true;
     } else {
-        alert("인증번호가 올바르지 않습니다. 다시 시도해주세요.");
+        alert("인증번호가 올바르지 않습니다. 다시 시도해주세요. ");
         isVerified =false;
     }
 }
