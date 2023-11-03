@@ -63,7 +63,7 @@
 														+ '"><div class="desc">'
 														+ '<h2 class="medium bold">'
 														+ this.subject
-														+ '</h2><p class="medium">'
+														+ '</h2><p class="small">'
 														+ this.content
 														+ '</p><div class="info"><ul class="status"><li title="공감" class="vote">'
 														+ this.like_COUNT
@@ -142,7 +142,7 @@
 		<div id="container" class="article notice"
 			style="margin-top: 85px; margin-left: 55px;">
 			<input type="hidden" id="isUser" value="1"> <input
-				type="hidden" id="boardId" value="1">
+				type="hidden" id="board_id" value="1">
 			<div class="wrap title">
 				<h1>
 					<a href="${pageContext.request.contextPath}/notice">공지사항</a>

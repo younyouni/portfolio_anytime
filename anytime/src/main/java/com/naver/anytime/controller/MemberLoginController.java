@@ -128,7 +128,7 @@ public class MemberLoginController {
 			url = "redirect:/member/login";
 		} else {
 			rattr.addFlashAttribute("changePassword", "Fail");
-			url = "redirect:password";
+			url = "redirect:my";
 		}
 
 		return url;
