@@ -151,7 +151,6 @@ public class SendMail {
 					                                + "<td style='padding: 32px 16px 0 16px; line-height: 20px; color: #292929; font-size: 14px;'>안녕하세요, 애니타임입니다.<br><br>"
 					                                    + now + "에 아이디 찾기 요청이 있었습니다.<br>"
 					                                    + "본 이메일에 해당하는 아이디는 <strong>" + foundId + "</strong> 입니다.<br><br>"
-					                                    + "<a href='${pageContext.request.contextPath}/member/login' target='_blank' rel='noreferrer noopener'>애니타임 바로가기</a>"
 					                                + "</td>"
 					                            + "</tr>"
 					                            + "<tr>"

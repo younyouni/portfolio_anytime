@@ -6,7 +6,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
+<link rel="shortcut icon" type="image/x-icon"
+	href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
 <title>애니타임</title>
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath}/resources/image/common/nav.logo.png">
@@ -25,7 +26,7 @@
 <link type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/common/footer2.css"
 	rel="stylesheet">
-	
+
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <script type="text/javascript"
@@ -35,7 +36,7 @@
 <script>
 	if ("${result}" == 'SchoolCk_fail') {
 		alert("학교 승인을 받아야 볼 수 있습니다.");
-	}else if("${result}" == 'postStatus_fail'){
+	} else if ("${result}" == 'postStatus_fail') {
 		alert("삭제된 게시물입니다.");
 	}
 	$(function() {
@@ -45,6 +46,11 @@
 		})
 	})
 </script>
+<style>
+#container.community {
+	height: 825px !important;
+}
+</style>
 <body style="">
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/submenu.jsp" />
@@ -220,15 +226,15 @@
 				<p id="explain" class="purpose">승인 심사시 필요</p>
 			</div>
 			<input type="text" name="purpose" placeholder="개설 목적"
-				class="text info boardinfo purpose" style="display: none; margin-right: 0px;">
-
-			<label class="custom-checkbox-label"> <input type="checkbox"
+				class="text info boardinfo purpose"
+				style="display: none; margin-right: 0px;"> <label
+				class="custom-checkbox-label"> <input type="checkbox"
 				class="custom-checkbox" name="anony"> <span
 				class="custom-checkbox-image"></span>
 			</label> <input type="submit" value="완료" class="button">
 		</form>
 	</div>
-	
+
 	<div id="bottom">
 		<section class="footer white">
 			<ul class="links">
@@ -236,7 +242,8 @@
 				<li class="privacy">개인정보처리방침</li>
 				<li>청소년보호정책</li>
 				<li>커뮤니티이용규칙</li>
-				<li><a href="${pageContext.request.contextPath}/notice" style="font-weight: bold;">공지사항</a></li>
+				<li><a href="${pageContext.request.contextPath}/notice"
+					style="font-weight: bold;">공지사항</a></li>
 				<li>문의하기</li>
 				<li class="copyright" style="font-weight: bold;">© 애니타임</li>
 			</ul>
