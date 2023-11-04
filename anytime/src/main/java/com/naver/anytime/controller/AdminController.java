@@ -135,7 +135,7 @@ public class AdminController {
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
 	//@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
-	@Scheduled(cron = "0 0/5 * 1/1 * ?" /* 5분마다 */)
+	@Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
 	public int updateBoardStatusCompleteScheduled() {
 		return boardService.updateBoardStatusComplete();
 	}
