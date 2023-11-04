@@ -63,7 +63,7 @@
 														+ '"><div class="desc">'
 														+ '<h2 class="medium bold">'
 														+ this.subject
-														+ '</h2><p class="medium">'
+														+ '</h2><p class="small">'
 														+ this.content
 														+ '</p><div class="info"><ul class="status"><li title="공감" class="vote">'
 														+ this.like_COUNT
