@@ -62,7 +62,7 @@
 														+ '"><div class="desc">'
 														+ '<h2 class="medium bold">'
 														+ this.subject
-														+ '</h2><p class="small">'
+														+ '</h2><p class="medium">'
 														+ this.content
 														+ '</p><div class="info"><ul class="status"><li title="공감" class="vote">'
 														+ this.like_COUNT
@@ -70,7 +70,7 @@
 														+ this.post_DATE
 														+ '</time><h3 class="admin bold small">애니타임</h3></div><hr></div></a></article>'
 											})//each end
-											 $("div.wrap.bubbles").before(output);
+							$("div.wrap.bubbles").before(output);
 
 							let maxpage = rdata.maxpage;
 							let startpage = rdata.startpage;
@@ -132,8 +132,8 @@
 </script>
 <style>
 #container>div.rightside {
-    right: 370px;
-    top: 288px;
+	right: 370px;
+	top: 288px;
 }
 </style>
 <body>
@@ -145,18 +145,22 @@
 					type="hidden" id="boardId" value="1">
 				<div class="wrap title">
 					<h1>
-						<a href="/1">공지사항</a>
+						<a href="list?board_id=1">공지사항</a>
 					</h1>
 					<hr>
 				</div>
-				<div id="board_id" style="display: none;">1</div>
+				<div id="board_id" style="display: none;"><%=session.getAttribute("board_id")%></div>
 				<div class="wrap articles" id="writeBoardContainer">
-					<c:if test="${auth eq 'ROLE_ADMIN'} ">
-						<label class="postwriteform"> </label>
-						<a id="writeArticleButton">새 글을 작성해주세요! <img
-							src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
-						</a>
-					</c:if>
+					<c:choose>
+						<c:when test="${auth eq 'ROLE_ADMIN'} ">
+							<label class="postwriteform"> </label>
+							<a id="writeArticleButton">새 글을 작성해주세요! <img
+								src="${pageContext.request.contextPath}/resources/image/post/write.button.png">
+							</a>
+						</c:when>
+						<c:otherwise>
+						</c:otherwise>
+					</c:choose>
 					<div class="wrap bubbles none"></div>
 					<article class="list"></article>
 				</div>

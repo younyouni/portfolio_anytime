@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -65,9 +64,11 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
+	public ModelAndView adminPage(@AuthenticationPrincipal UserCustom user, ModelAndView mv, HttpSession session) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
+
+		session.setAttribute("board_id", 1);
 
 		// 일별 데이터
 		DailyData dataTrend = dailyDataService.getDataTrend();
@@ -133,8 +134,8 @@ public class AdminController {
 
 	// "0 0/5 * 1/1 * ?" 5분마다
 	// 0: 초 0/5: 5분 간격 (매 5분) 1/1: 매일 * : 매월 ?: 요일을 지정하지 않음
-	//@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
-	@Scheduled(cron = "0 0/5 * 1/1 * ?" /* 1분마다 */)
+	@Scheduled(cron = "0 0 0 * * ?" /* 매일마다 */)
+	// @Scheduled(cron = "0 0/1 * 1/1 * ?" /* 1분마다 */)
 	public int updateBoardStatusCompleteScheduled() {
 		return boardService.updateBoardStatusComplete();
 	}
@@ -313,14 +314,9 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/adminNotice", method = RequestMethod.GET)
-	public ModelAndView getAdminNotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv,
-			HttpServletRequest request,HttpSession session) {
-
+	public ModelAndView getAdminNotice(@AuthenticationPrincipal UserCustom user, ModelAndView mv) {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
-		
-		session.setAttribute("board_id", 1);
-
 		mv.addObject("login_id", login_id);
 		mv.addObject("email", email);
 
@@ -378,6 +374,8 @@ public class AdminController {
 		String login_id = user.getUsername();
 		String email = user.getEmail();
 		String auth = user.getAuth();
+
+		logger.info("관리자 auth : " + auth);
 
 		Map<String, Object> school = new HashMap<String, Object>();
 		String school_name = schoolService.getSchoolNameById(user.getSchool_id());

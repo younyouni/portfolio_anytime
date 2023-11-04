@@ -63,7 +63,7 @@
 														+ '"><div class="desc">'
 														+ '<h2 class="medium bold">'
 														+ this.subject
-														+ '</h2><p class="small">'
+														+ '</h2><p class="medium">'
 														+ this.content
 														+ '</p><div class="info"><ul class="status"><li title="공감" class="vote">'
 														+ this.like_COUNT
@@ -141,16 +141,13 @@
 		<jsp:include page="../common/left_admin.jsp" />
 		<div id="container" class="article notice"
 			style="margin-top: 85px; margin-left: 55px;">
-			<input type="hidden" id="isUser" value="1">
-				<input type="hidden" id="board_id" value="1">
 			<div class="wrap title">
 				<h1>
-					<a href="list?board_id=1">공지사항</a>
+					<a href="${pageContext.request.contextPath}/notice">공지사항</a>
 				</h1>
 				<hr>
 			</div>
-			<div id="board_id" style="display: none;">${sessionScope.board_id} </div>
-			<div id="user_id" style="display: none;"><%= session.getAttribute("user_id") %></div>
+			<div id="board_id" style="display: none;"><%= session.getAttribute("board_id") %></div>
 			<div class="wrap articles" id="writeBoardContainer">
 				<label class="postwriteform"> </label> <a id="writeArticleButton">새
 					글을 작성해주세요! <img
