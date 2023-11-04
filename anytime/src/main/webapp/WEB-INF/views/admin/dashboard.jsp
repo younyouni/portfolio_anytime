@@ -301,7 +301,7 @@ a:link, a:visited, a:active, a:hover {
 										style="min-height: 365px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
 										class="echart" _echarts_instance_="ec_1698273089873">
 										<div id="piechart"
-											style="width: 100%; height: 480px; margin-top: -20px;"></div>
+											style="width: 100%; height: 480px; margin-top: -20px; text-align: -webkit-center;"></div>
 									</div>
 								</div>
 							</div>
