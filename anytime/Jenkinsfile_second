@@ -111,8 +111,7 @@ stages {
             sh 'echo " docker image rmi"'
             sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
             sh "docker rmi $repository"              // docker image 제거
-	    sh 'echo "Cleaning up workspace"'
-            deleteDir()
+            sh "docker system prune -f"
         }
         post {
             success {
