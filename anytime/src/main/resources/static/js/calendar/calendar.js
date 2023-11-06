@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	          	 
 	          	//종일 일때, 1일 추가 표시 ( allDay 일때 하루가 모자람 )
 	          	if(data.allday){
-	          		//data.end.setDate(data.end.getDate() + 1);	
+	          		data.end.setDate(data.end.getDate() + 1);	
 	          	}
 	          	
 				//자정 일때, 1초 추가 표시 ( end 가 다음날의 00:00:00 일때 익일로 넘어가지 않음 )
