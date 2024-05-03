@@ -1,5 +1,4 @@
 # SpringBoot - Project - Anytime
----
 스프링 부트 + 커뮤니티 사이트
 
 ## 프로젝트 소개
